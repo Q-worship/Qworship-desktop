@@ -1,0 +1,60 @@
+react-dom.development.js:29895 Download the React DevTools for a better development experience: https://reactjs.org/link/react-devtools
+QworshipHome.tsx:1152 QworshipHome - songsData: undefined
+QworshipHome.tsx:1153 QworshipHome - savedSongs: Array(0)
+SongbookModal.tsx:172 SongbookModal received savedSongs: Array(0)
+QworshipHome.tsx:1152 QworshipHome - songsData: undefined
+QworshipHome.tsx:1153 QworshipHome - savedSongs: Array(0)
+SongbookModal.tsx:172 SongbookModal received savedSongs: Array(0)
+QworshipHome.tsx:1152 QworshipHome - songsData: undefined
+QworshipHome.tsx:1153 QworshipHome - savedSongs: Array(0)
+SongbookModal.tsx:172 SongbookModal received savedSongs: Array(0)
+QworshipHome.tsx:1152 QworshipHome - songsData: Object
+QworshipHome.tsx:1153 QworshipHome - savedSongs: Object
+SongbookModal.tsx:172 SongbookModal received savedSongs: Object
+QworshipHome.tsx:1152 QworshipHome - songsData: Object
+QworshipHome.tsx:1153 QworshipHome - savedSongs: Object
+SongbookModal.tsx:172 SongbookModal received savedSongs: Object
+QworshipHome.tsx:3390 Browse media clicked
+QworshipHome.tsx:1152 QworshipHome - songsData: Object
+QworshipHome.tsx:1153 QworshipHome - savedSongs: Object
+SongbookModal.tsx:172 SongbookModal received savedSongs: Object
+QworshipHome.tsx:1152 QworshipHome - songsData: Object
+QworshipHome.tsx:1153 QworshipHome - savedSongs: Object
+QworshipHome.tsx:450 Processing assets for tags: Array(0)
+QworshipHome.tsx:459 Extracted tags: Array(0)
+SongbookModal.tsx:172 SongbookModal received savedSongs: Object
+QworshipHome.tsx:1152 QworshipHome - songsData: Object
+QworshipHome.tsx:1153 QworshipHome - savedSongs: Object
+QworshipHome.tsx:450 Processing assets for tags: Array(0)
+QworshipHome.tsx:459 Extracted tags: Array(0)
+SongbookModal.tsx:172 SongbookModal received savedSongs: Object
+QworshipHome.tsx:1152 QworshipHome - songsData: Object
+QworshipHome.tsx:1153 QworshipHome - savedSongs: Object
+QworshipHome.tsx:450 Processing assets for tags: Array(0)
+QworshipHome.tsx:459 Extracted tags: Array(0)
+SongbookModal.tsx:172 SongbookModal received savedSongs: Object
+QworshipHome.tsx:1152 QworshipHome - songsData: Object
+QworshipHome.tsx:1153 QworshipHome - savedSongs: Object
+QworshipHome.tsx:450 Processing assets for tags: Array(10)
+QworshipHome.tsx:453 Asset: Object Tags: Array(2)
+QworshipHome.tsx:453 Asset: Object Tags: Array(1)
+QworshipHome.tsx:453 Asset: Object Tags: Array(1)
+QworshipHome.tsx:453 Asset: Object Tags: Array(1)
+QworshipHome.tsx:453 Asset: Object Tags: Array(1)
+QworshipHome.tsx:453 Asset: Object Tags: Array(1)
+QworshipHome.tsx:453 Asset: Object Tags: Array(1)
+QworshipHome.tsx:453 Asset: Object Tags: Array(0)
+QworshipHome.tsx:453 Asset: Object Tags: Array(0)
+QworshipHome.tsx:453 Asset: Object Tags: Array(0)
+QworshipHome.tsx:459 Extracted tags: Array(8)
+SongbookModal.tsx:172 SongbookModal received savedSongs: Object
+thumbnail:1   Failed to load resource: the server responded with a status of 404 (Not Found)
+thumbnail:1   Failed to load resource: the server responded with a status of 404 (Not Found)
+thumbnail:1   Failed to load resource: the server responded with a status of 404 (Not Found)
+thumbnail:1   Failed to load resource: the server responded with a status of 404 (Not Found)
+thumbnail:1   Failed to load resource: the server responded with a status of 404 (Not Found)
+[NEW] Explain Console errors by using Copilot in Edge: click
+         
+         to explain an error. 
+        Learn more
+        Don't show again

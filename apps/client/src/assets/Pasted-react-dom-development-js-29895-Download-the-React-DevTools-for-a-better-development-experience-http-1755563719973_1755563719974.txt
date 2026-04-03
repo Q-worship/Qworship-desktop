@@ -1,0 +1,177 @@
+react-dom.development.js:29895 Download the React DevTools for a better development experience: https://reactjs.org/link/react-devtools
+QworshipHome.tsx:1330 QworshipHome - songsData: undefined
+QworshipHome.tsx:1331 QworshipHome - savedSongs: []
+QworshipHome.tsx:641 getCurrentItemId called with: {selectedSlide: null, currentSlide: 1, slidesLength: 0, serviceItemsLength: 0}
+QworshipHome.tsx:671 Falling back to default
+SongbookModal.tsx:172 SongbookModal received savedSongs: []
+QworshipHome.tsx:1330 QworshipHome - songsData: undefined
+QworshipHome.tsx:1331 QworshipHome - savedSongs: []
+QworshipHome.tsx:641 getCurrentItemId called with: {selectedSlide: null, currentSlide: 1, slidesLength: 0, serviceItemsLength: 0}
+QworshipHome.tsx:671 Falling back to default
+SongbookModal.tsx:172 SongbookModal received savedSongs: []
+QworshipHome.tsx:1330 QworshipHome - songsData: {success: true, songs: Array(7)}
+QworshipHome.tsx:1331 QworshipHome - savedSongs: {success: true, songs: Array(7)}
+QworshipHome.tsx:641 getCurrentItemId called with: {selectedSlide: null, currentSlide: 1, slidesLength: 0, serviceItemsLength: 0}
+QworshipHome.tsx:671 Falling back to default
+SongbookModal.tsx:172 SongbookModal received savedSongs: {success: true, songs: Array(7)}
+QworshipHome.tsx:1330 QworshipHome - songsData: {success: true, songs: Array(7)}
+QworshipHome.tsx:1331 QworshipHome - savedSongs: {success: true, songs: Array(7)}
+QworshipHome.tsx:641 getCurrentItemId called with: {selectedSlide: null, currentSlide: 1, slidesLength: 0, serviceItemsLength: 0}
+QworshipHome.tsx:671 Falling back to default
+SongbookModal.tsx:172 SongbookModal received savedSongs: {success: true, songs: Array(7)}
+QworshipHome.tsx:1330 QworshipHome - songsData: {success: true, songs: Array(7)}
+QworshipHome.tsx:1331 QworshipHome - savedSongs: {success: true, songs: Array(7)}
+QworshipHome.tsx:641 getCurrentItemId called with: {selectedSlide: null, currentSlide: 1, slidesLength: 0, serviceItemsLength: 0}
+QworshipHome.tsx:671 Falling back to default
+SongbookModal.tsx:172 SongbookModal received savedSongs: {success: true, songs: Array(7)}
+QworshipHome.tsx:1330 QworshipHome - songsData: {success: true, songs: Array(7)}
+QworshipHome.tsx:1331 QworshipHome - savedSongs: {success: true, songs: Array(7)}
+QworshipHome.tsx:641 getCurrentItemId called with: {selectedSlide: null, currentSlide: 1, slidesLength: 0, serviceItemsLength: 0}
+QworshipHome.tsx:671 Falling back to default
+SongbookModal.tsx:172 SongbookModal received savedSongs: {success: true, songs: Array(7)}
+QworshipHome.tsx:1330 QworshipHome - songsData: {success: true, songs: Array(7)}
+QworshipHome.tsx:1331 QworshipHome - savedSongs: {success: true, songs: Array(7)}
+QworshipHome.tsx:641 getCurrentItemId called with: {selectedSlide: null, currentSlide: 1, slidesLength: 0, serviceItemsLength: 0}
+QworshipHome.tsx:671 Falling back to default
+SongbookModal.tsx:172 SongbookModal received savedSongs: {success: true, songs: Array(7)}
+QworshipHome.tsx:1330 QworshipHome - songsData: {success: true, songs: Array(7)}
+QworshipHome.tsx:1331 QworshipHome - savedSongs: {success: true, songs: Array(7)}
+QworshipHome.tsx:641 getCurrentItemId called with: {selectedSlide: null, currentSlide: 1, slidesLength: 0, serviceItemsLength: 0}
+QworshipHome.tsx:671 Falling back to default
+SongbookModal.tsx:172 SongbookModal received savedSongs: {success: true, songs: Array(7)}
+QworshipHome.tsx:1330 QworshipHome - songsData: {success: true, songs: Array(7)}
+QworshipHome.tsx:1331 QworshipHome - savedSongs: {success: true, songs: Array(7)}
+QworshipHome.tsx:641 getCurrentItemId called with: {selectedSlide: null, currentSlide: 1, slidesLength: 0, serviceItemsLength: 0}
+QworshipHome.tsx:671 Falling back to default
+SongbookModal.tsx:172 SongbookModal received savedSongs: {success: true, songs: Array(7)}
+QworshipHome.tsx:1330 QworshipHome - songsData: {success: true, songs: Array(7)}
+QworshipHome.tsx:1331 QworshipHome - savedSongs: {success: true, songs: Array(7)}
+QworshipHome.tsx:641 getCurrentItemId called with: {selectedSlide: null, currentSlide: 1, slidesLength: 0, serviceItemsLength: 0}
+QworshipHome.tsx:671 Falling back to default
+SongbookModal.tsx:172 SongbookModal received savedSongs: {success: true, songs: Array(7)}
+QworshipHome.tsx:1330 QworshipHome - songsData: {success: true, songs: Array(7)}
+QworshipHome.tsx:1331 QworshipHome - savedSongs: {success: true, songs: Array(7)}
+QworshipHome.tsx:641 getCurrentItemId called with: {selectedSlide: null, currentSlide: 1, slidesLength: 0, serviceItemsLength: 0}
+QworshipHome.tsx:671 Falling back to default
+SongbookModal.tsx:172 SongbookModal received savedSongs: {success: true, songs: Array(7)}
+QworshipHome.tsx:1330 QworshipHome - songsData: {success: true, songs: Array(7)}
+QworshipHome.tsx:1331 QworshipHome - savedSongs: {success: true, songs: Array(7)}
+QworshipHome.tsx:641 getCurrentItemId called with: {selectedSlide: null, currentSlide: 1, slidesLength: 0, serviceItemsLength: 0}
+QworshipHome.tsx:671 Falling back to default
+SongbookModal.tsx:172 SongbookModal received savedSongs: {success: true, songs: Array(7)}
+QworshipHome.tsx:1330 QworshipHome - songsData: {success: true, songs: Array(7)}
+QworshipHome.tsx:1331 QworshipHome - savedSongs: {success: true, songs: Array(7)}
+QworshipHome.tsx:641 getCurrentItemId called with: {selectedSlide: null, currentSlide: 1, slidesLength: 0, serviceItemsLength: 0}
+QworshipHome.tsx:671 Falling back to default
+SongbookModal.tsx:172 SongbookModal received savedSongs: {success: true, songs: Array(7)}
+QworshipHome.tsx:1330 QworshipHome - songsData: {success: true, songs: Array(7)}
+QworshipHome.tsx:1331 QworshipHome - savedSongs: {success: true, songs: Array(7)}
+QworshipHome.tsx:641 getCurrentItemId called with: {selectedSlide: null, currentSlide: 1, slidesLength: 0, serviceItemsLength: 0}
+QworshipHome.tsx:671 Falling back to default
+SongbookModal.tsx:172 SongbookModal received savedSongs: {success: true, songs: Array(7)}
+QworshipHome.tsx:1330 QworshipHome - songsData: {success: true, songs: Array(7)}
+QworshipHome.tsx:1331 QworshipHome - savedSongs: {success: true, songs: Array(7)}
+QworshipHome.tsx:641 getCurrentItemId called with: {selectedSlide: null, currentSlide: 1, slidesLength: 0, serviceItemsLength: 0}
+QworshipHome.tsx:671 Falling back to default
+SongbookModal.tsx:172 SongbookModal received savedSongs: {success: true, songs: Array(7)}
+QworshipHome.tsx:1330 QworshipHome - songsData: {success: true, songs: Array(7)}
+QworshipHome.tsx:1331 QworshipHome - savedSongs: {success: true, songs: Array(7)}
+QworshipHome.tsx:641 getCurrentItemId called with: {selectedSlide: null, currentSlide: 1, slidesLength: 0, serviceItemsLength: 0}
+QworshipHome.tsx:671 Falling back to default
+SongbookModal.tsx:172 SongbookModal received savedSongs: {success: true, songs: Array(7)}
+QworshipHome.tsx:1330 QworshipHome - songsData: {success: true, songs: Array(7)}
+QworshipHome.tsx:1331 QworshipHome - savedSongs: {success: true, songs: Array(7)}
+QworshipHome.tsx:641 getCurrentItemId called with: {selectedSlide: null, currentSlide: 1, slidesLength: 0, serviceItemsLength: 0}
+QworshipHome.tsx:671 Falling back to default
+SongbookModal.tsx:172 SongbookModal received savedSongs: {success: true, songs: Array(7)}
+QworshipHome.tsx:1330 QworshipHome - songsData: {success: true, songs: Array(7)}
+QworshipHome.tsx:1331 QworshipHome - savedSongs: {success: true, songs: Array(7)}
+QworshipHome.tsx:641 getCurrentItemId called with: {selectedSlide: null, currentSlide: 1, slidesLength: 0, serviceItemsLength: 0}
+QworshipHome.tsx:671 Falling back to default
+SongbookModal.tsx:172 SongbookModal received savedSongs: {success: true, songs: Array(7)}
+QworshipHome.tsx:1330 QworshipHome - songsData: {success: true, songs: Array(7)}
+QworshipHome.tsx:1331 QworshipHome - savedSongs: {success: true, songs: Array(7)}
+QworshipHome.tsx:641 getCurrentItemId called with: {selectedSlide: null, currentSlide: 1, slidesLength: 0, serviceItemsLength: 0}
+QworshipHome.tsx:671 Falling back to default
+SongbookModal.tsx:172 SongbookModal received savedSongs: {success: true, songs: Array(7)}
+QworshipHome.tsx:1330 QworshipHome - songsData: {success: true, songs: Array(7)}
+QworshipHome.tsx:1331 QworshipHome - savedSongs: {success: true, songs: Array(7)}
+QworshipHome.tsx:641 getCurrentItemId called with: {selectedSlide: null, currentSlide: 1, slidesLength: 0, serviceItemsLength: 0}
+QworshipHome.tsx:671 Falling back to default
+SongbookModal.tsx:172 SongbookModal received savedSongs: {success: true, songs: Array(7)}
+QworshipHome.tsx:3353 Attempting to create presentation with data: {name: 'Test Sunday', presentationDate: '2025-08-19', description: 'New presentation created on 19/08/2025'}
+QworshipHome.tsx:1330 QworshipHome - songsData: {success: true, songs: Array(7)}
+QworshipHome.tsx:1331 QworshipHome - savedSongs: {success: true, songs: Array(7)}
+QworshipHome.tsx:641 getCurrentItemId called with: {selectedSlide: null, currentSlide: 1, slidesLength: 0, serviceItemsLength: 0}
+QworshipHome.tsx:671 Falling back to default
+SongbookModal.tsx:172 SongbookModal received savedSongs: {success: true, songs: Array(7)}
+queryClient.ts:15   POST https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/api/presentations 500 (Internal Server Error)
+apiRequest @ queryClient.ts:15
+mutationFn @ QworshipHome.tsx:3355
+fn @ mutation.ts:170
+run @ retryer.ts:153
+start @ retryer.ts:218
+execute @ mutation.ts:208
+await in execute
+mutate @ mutationObserver.ts:125
+(anonymous) @ useMutation.ts:52
+handleCreateNewPresentation @ QworshipHome.tsx:3416
+callCallback2 @ react-dom.development.js:4164
+invokeGuardedCallbackDev @ react-dom.development.js:4213
+invokeGuardedCallback @ react-dom.development.js:4277
+invokeGuardedCallbackAndCatchFirstError @ react-dom.development.js:4291
+executeDispatch @ react-dom.development.js:9041
+processDispatchQueueItemsInOrder @ react-dom.development.js:9073
+processDispatchQueue @ react-dom.development.js:9086
+dispatchEventsForPlugins @ react-dom.development.js:9097
+(anonymous) @ react-dom.development.js:9288
+batchedUpdates$1 @ react-dom.development.js:26179
+batchedUpdates @ react-dom.development.js:3991
+dispatchEventForPluginEventSystem @ react-dom.development.js:9287
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ react-dom.development.js:6465
+dispatchEvent @ react-dom.development.js:6457
+dispatchDiscreteEvent @ react-dom.development.js:6430
+QworshipHome.tsx:3360  API request failed: Error: 500: {"success":false,"error":"Failed to create presentation","details":"null value in column \"user_id\" of relation \"presentations\" violates not-null constraint"}
+    at throwIfResNotOk (queryClient.ts:6:11)
+    at async apiRequest (queryClient.ts:22:3)
+    at async Object.mutationFn (QworshipHome.tsx:3355:26)
+mutationFn @ QworshipHome.tsx:3360
+await in mutationFn
+fn @ mutation.ts:170
+run @ retryer.ts:153
+start @ retryer.ts:218
+execute @ mutation.ts:208
+await in execute
+mutate @ mutationObserver.ts:125
+(anonymous) @ useMutation.ts:52
+handleCreateNewPresentation @ QworshipHome.tsx:3416
+callCallback2 @ react-dom.development.js:4164
+invokeGuardedCallbackDev @ react-dom.development.js:4213
+invokeGuardedCallback @ react-dom.development.js:4277
+invokeGuardedCallbackAndCatchFirstError @ react-dom.development.js:4291
+executeDispatch @ react-dom.development.js:9041
+processDispatchQueueItemsInOrder @ react-dom.development.js:9073
+processDispatchQueue @ react-dom.development.js:9086
+dispatchEventsForPlugins @ react-dom.development.js:9097
+(anonymous) @ react-dom.development.js:9288
+batchedUpdates$1 @ react-dom.development.js:26179
+batchedUpdates @ react-dom.development.js:3991
+dispatchEventForPluginEventSystem @ react-dom.development.js:9287
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ react-dom.development.js:6465
+dispatchEvent @ react-dom.development.js:6457
+dispatchDiscreteEvent @ react-dom.development.js:6430
+QworshipHome.tsx:1330 QworshipHome - songsData: {success: true, songs: Array(7)}
+QworshipHome.tsx:1331 QworshipHome - savedSongs: {success: true, songs: Array(7)}
+QworshipHome.tsx:641 getCurrentItemId called with: {selectedSlide: null, currentSlide: 1, slidesLength: 0, serviceItemsLength: 0}
+QworshipHome.tsx:671 Falling back to default
+[NEW] Explain Console errors by using Copilot in Edge: click
+         
+         to explain an error. 
+        Learn more
+        Don't show again
+SongbookModal.tsx:172 SongbookModal received savedSongs: {success: true, songs: Array(7)}
+QworshipHome.tsx:1330 QworshipHome - songsData: {success: true, songs: Array(7)}
+QworshipHome.tsx:1331 QworshipHome - savedSongs: {success: true, songs: Array(7)}
+QworshipHome.tsx:641 getCurrentItemId called with: {selectedSlide: null, currentSlide: 1, slidesLength: 0, serviceItemsLength: 0}
+QworshipHome.tsx:671 Falling back to default
+SongbookModal.tsx:172 SongbookModal received savedSongs: {success: true, songs: Array(7)}

@@ -1,0 +1,807 @@
+Song "Wonderful Grace of Jesus" verseOrder: V1, C, V2, V3
+SongbookModal.tsx:190 Transforming song "Wonderful Grace of Jesus": {originalSong: {…}, parsedSections: Array(4), verseOrder: 'V1, C, V2, V3', authors: null, artist: 'Haldor Lillenas'}
+SongbookModal.tsx:21 Starting lyrics parsing for: [V1]
+Wonderful grace of Jesus,
+Greater than all my sin;
+How shall my tongue describe it,
+Where shall...
+SongbookModal.tsx:55 Starting new section: V1
+SongbookModal.tsx:48 Added section: {id: 'section1', type: 'verse', number: 1, label: 'V1', content: 'Wonderful grace of Jesus,\nGreater than all my sin;…ree;\nFor the wonderful grace of Jesus reaches me.'}
+SongbookModal.tsx:55 Starting new section: C
+SongbookModal.tsx:48 Added section: {id: 'section2', type: 'chorus', number: 1, label: 'C', content: 'Wonderful the matchless grace of Jesus,\nDeeper tha…nify the precious Name of Jesus,\nPraise His Name!'}
+SongbookModal.tsx:55 Starting new section: V2
+SongbookModal.tsx:48 Added section: {id: 'section3', type: 'verse', number: 2, label: 'V2', content: 'Wonderful grace of Jesus,\nReaching to all the lost…rty;\nFor the wonderful grace of Jesus reaches me.'}
+SongbookModal.tsx:55 Starting new section: V3
+SongbookModal.tsx:82 Added final section: {id: 'section4', type: 'verse', number: 3, label: 'V3', content: 'Wonderful grace of Jesus,\nReaching the most defile…ity—\nAnd the wonderful grace of Jesus reaches me.'}
+SongbookModal.tsx:86 Final parsed sections: (4) [{…}, {…}, {…}, {…}]
+SongbookModal.tsx:186 Song "Wonderful Grace of Jesus" structure: (4) ['V1', 'C', 'V2', 'V3']
+SongbookModal.tsx:187 Song "Wonderful Grace of Jesus" verseOrder: V1, C, V2, V3
+SongbookModal.tsx:190 Transforming song "Wonderful Grace of Jesus": {originalSong: {…}, parsedSections: Array(4), verseOrder: 'V1, C, V2, V3', authors: null, artist: 'Haldor Lillenas'}
+SongbookModal.tsx:21 Starting lyrics parsing for: [V1]
+Wonderful grace of Jesus,
+Greater than all my sin;
+How shall my tongue describe it,
+Where shall...
+SongbookModal.tsx:55 Starting new section: V1
+SongbookModal.tsx:48 Added section: {id: 'section1', type: 'verse', number: 1, label: 'V1', content: 'Wonderful grace of Jesus,\nGreater than all my sin;…ree;\nFor the wonderful grace of Jesus reaches me.'}
+SongbookModal.tsx:55 Starting new section: C
+SongbookModal.tsx:48 Added section: {id: 'section2', type: 'chorus', number: 1, label: 'C', content: 'Wonderful the matchless grace of Jesus,\nDeeper tha…nify the precious Name of Jesus,\nPraise His Name!'}
+SongbookModal.tsx:55 Starting new section: V2
+SongbookModal.tsx:48 Added section: {id: 'section3', type: 'verse', number: 2, label: 'V2', content: 'Wonderful grace of Jesus,\nReaching to all the lost…rty;\nFor the wonderful grace of Jesus reaches me.'}
+SongbookModal.tsx:55 Starting new section: V3
+SongbookModal.tsx:82 Added final section: {id: 'section4', type: 'verse', number: 3, label: 'V3', content: 'Wonderful grace of Jesus,\nReaching the most defile…ity—\nAnd the wonderful grace of Jesus reaches me.'}
+SongbookModal.tsx:86 Final parsed sections: (4) [{…}, {…}, {…}, {…}]
+SongbookModal.tsx:186 Song "Sweet Jesus" structure: (4) ['V1', 'C', 'V2', 'V3']
+SongbookModal.tsx:187 Song "Sweet Jesus" verseOrder: V1, C, V2, V3
+SongbookModal.tsx:190 Transforming song "Sweet Jesus": {originalSong: {…}, parsedSections: Array(4), verseOrder: 'V1, C, V2, V3', authors: Array(1), artist: null}
+SongbookModal.tsx:21 Starting lyrics parsing for: [V1]
+Wonderful grace of Jesus,
+Greater than all my sin;
+How shall my tongue describe it,
+Where shall...
+SongbookModal.tsx:55 Starting new section: V1
+SongbookModal.tsx:48 Added section: {id: 'section1', type: 'verse', number: 1, label: 'V1', content: 'Wonderful grace of Jesus,\nGreater than all my sin;…ree;\nFor the wonderful grace of Jesus reaches me.'}
+SongbookModal.tsx:55 Starting new section: C
+SongbookModal.tsx:48 Added section: {id: 'section2', type: 'chorus', number: 1, label: 'C', content: 'Wonderful the matchless grace of Jesus,\nDeeper tha…nify the precious Name of Jesus,\nPraise His Name!'}
+SongbookModal.tsx:55 Starting new section: V2
+SongbookModal.tsx:48 Added section: {id: 'section3', type: 'verse', number: 2, label: 'V2', content: 'Wonderful grace of Jesus,\nReaching to all the lost…rty;\nFor the wonderful grace of Jesus reaches me.'}
+SongbookModal.tsx:55 Starting new section: V3
+SongbookModal.tsx:82 Added final section: {id: 'section4', type: 'verse', number: 3, label: 'V3', content: 'Wonderful grace of Jesus,\nReaching the most defile…ity—\nAnd the wonderful grace of Jesus reaches me.'}
+SongbookModal.tsx:86 Final parsed sections: (4) [{…}, {…}, {…}, {…}]
+SongbookModal.tsx:186 Song "Wonderful Grace of Jesus" structure: (4) ['V1', 'C', 'V2', 'V3']
+SongbookModal.tsx:187 Song "Wonderful Grace of Jesus" verseOrder: V1, C, V2, V3
+SongbookModal.tsx:190 Transforming song "Wonderful Grace of Jesus": {originalSong: {…}, parsedSections: Array(4), verseOrder: 'V1, C, V2, V3', authors: null, artist: 'Haldor Lillenas'}
+SongbookModal.tsx:21 Starting lyrics parsing for: [V1]
+Wonderful grace of Jesus,
+Greater than all my sin;
+How shall my tongue describe it,
+Where shall...
+SongbookModal.tsx:55 Starting new section: V1
+SongbookModal.tsx:48 Added section: {id: 'section1', type: 'verse', number: 1, label: 'V1', content: 'Wonderful grace of Jesus,\nGreater than all my sin;…ree;\nFor the wonderful grace of Jesus reaches me.'}
+SongbookModal.tsx:55 Starting new section: C
+SongbookModal.tsx:48 Added section: {id: 'section2', type: 'chorus', number: 1, label: 'C', content: 'Wonderful the matchless grace of Jesus,\nDeeper tha…nify the precious Name of Jesus,\nPraise His Name!'}
+SongbookModal.tsx:55 Starting new section: V2
+SongbookModal.tsx:48 Added section: {id: 'section3', type: 'verse', number: 2, label: 'V2', content: 'Wonderful grace of Jesus,\nReaching to all the lost…rty;\nFor the wonderful grace of Jesus reaches me.'}
+SongbookModal.tsx:55 Starting new section: V3
+SongbookModal.tsx:82 Added final section: {id: 'section4', type: 'verse', number: 3, label: 'V3', content: 'Wonderful grace of Jesus,\nReaching the most defile…ity—\nAnd the wonderful grace of Jesus reaches me.'}
+SongbookModal.tsx:86 Final parsed sections: (4) [{…}, {…}, {…}, {…}]
+SongbookModal.tsx:186 Song "Wonderful Grace of Jesus" structure: (4) ['V1', 'C', 'V2', 'V3']
+SongbookModal.tsx:187 Song "Wonderful Grace of Jesus" verseOrder: V1, C, V2, V3
+SongbookModal.tsx:190 Transforming song "Wonderful Grace of Jesus": {originalSong: {…}, parsedSections: Array(4), verseOrder: 'V1, C, V2, V3', authors: null, artist: 'Haldor Lillenas'}
+SongbookModal.tsx:21 Starting lyrics parsing for: [V1 (Verse 1)]
+Abide with me; fast falls the eventide;
+The darkness deepens; Lord, with me abide;
+Wh...
+SongbookModal.tsx:55 Starting new section: V1 (Verse 1)
+SongbookModal.tsx:48 Added section: {id: 'section1', type: 'verse', number: 1, label: 'V1 (Verse 1)', content: 'Abide with me; fast falls the eventide;\nThe darkne…ts flee,\nHelp of the helpless, oh, abide with me.'}
+SongbookModal.tsx:55 Starting new section: V2 (Verse 2)
+SongbookModal.tsx:48 Added section: {id: 'section2', type: 'verse', number: 2, label: 'V2 (Verse 2)', content: 'Swift to its close ebbs out life’s little day;\nEar…nd I see—\nO Thou who changest not, abide with me.'}
+SongbookModal.tsx:55 Starting new section: V3 (Verse 3)
+SongbookModal.tsx:48 Added section: {id: 'section3', type: 'verse', number: 3, label: 'V3 (Verse 3)', content: 'Test 3'}
+SongbookModal.tsx:55 Starting new section: V4 (Verse 4)
+SongbookModal.tsx:48 Added section: {id: 'section4', type: 'verse', number: 4, label: 'V4 (Verse 4)', content: 'Hold Thou Thy cross before my closing eyes;\nShine …s flee;\nIn life, in death, O Lord, abide with me.'}
+SongbookModal.tsx:55 Starting new section: C1 (Chorus 1)
+SongbookModal.tsx:82 Added final section: {id: 'section5', type: 'chorus', number: 1, label: 'C1 (Chorus 1)', content: 'Hold Thou Thy cross before my closing eyes;\nShine …s flee;\nIn life, in death, O Lord, abide with me.'}
+SongbookModal.tsx:86 Final parsed sections: (5) [{…}, {…}, {…}, {…}, {…}]
+SongbookModal.tsx:186 Song "Abide with Me" structure: (4) ['V1', 'V2', 'V3', 'C1']
+SongbookModal.tsx:187 Song "Abide with Me" verseOrder: V1, V2, V3, C1
+SongbookModal.tsx:190 Transforming song "Abide with Me": {originalSong: {…}, parsedSections: Array(5), verseOrder: 'V1, V2, V3, C1', authors: Array(1), artist: null}
+SongbookModal.tsx:21 Starting lyrics parsing for: [V1]
+Wonderful grace of Jesus,
+Greater than all my sin;
+How shall my tongue describe it,
+Where shall...
+SongbookModal.tsx:55 Starting new section: V1
+SongbookModal.tsx:48 Added section: {id: 'section1', type: 'verse', number: 1, label: 'V1', content: 'Wonderful grace of Jesus,\nGreater than all my sin;…ree;\nFor the wonderful grace of Jesus reaches me.'}
+SongbookModal.tsx:55 Starting new section: C
+SongbookModal.tsx:48 Added section: {id: 'section2', type: 'chorus', number: 1, label: 'C', content: 'Wonderful the matchless grace of Jesus,\nDeeper tha…nify the precious Name of Jesus,\nPraise His Name!'}
+SongbookModal.tsx:55 Starting new section: V2
+SongbookModal.tsx:48 Added section: {id: 'section3', type: 'verse', number: 2, label: 'V2', content: 'Wonderful grace of Jesus,\nReaching to all the lost…rty;\nFor the wonderful grace of Jesus reaches me.'}
+SongbookModal.tsx:55 Starting new section: V3
+SongbookModal.tsx:82 Added final section: {id: 'section4', type: 'verse', number: 3, label: 'V3', content: 'Wonderful grace of Jesus,\nReaching the most defile…ity—\nAnd the wonderful grace of Jesus reaches me.'}
+SongbookModal.tsx:86 Final parsed sections: (4) [{…}, {…}, {…}, {…}]
+SongbookModal.tsx:186 Song "Wonderful Grace of Jesus" structure: (4) ['V1', 'C', 'V2', 'V3']
+SongbookModal.tsx:187 Song "Wonderful Grace of Jesus" verseOrder: V1, C, V2, V3
+SongbookModal.tsx:190 Transforming song "Wonderful Grace of Jesus": {originalSong: {…}, parsedSections: Array(4), verseOrder: 'V1, C, V2, V3', authors: null, artist: 'Haldor Lillenas'}
+SongbookModal.tsx:21 Starting lyrics parsing for: [V1]
+Wonderful grace of Jesus,
+Greater than all my sin;
+How shall my tongue describe it,
+Where shall...
+SongbookModal.tsx:55 Starting new section: V1
+SongbookModal.tsx:48 Added section: {id: 'section1', type: 'verse', number: 1, label: 'V1', content: 'Wonderful grace of Jesus,\nGreater than all my sin;…ree;\nFor the wonderful grace of Jesus reaches me.'}
+SongbookModal.tsx:55 Starting new section: C
+SongbookModal.tsx:48 Added section: {id: 'section2', type: 'chorus', number: 1, label: 'C', content: 'Wonderful the matchless grace of Jesus,\nDeeper tha…nify the precious Name of Jesus,\nPraise His Name!'}
+SongbookModal.tsx:55 Starting new section: V2
+SongbookModal.tsx:48 Added section: {id: 'section3', type: 'verse', number: 2, label: 'V2', content: 'Wonderful grace of Jesus,\nReaching to all the lost…rty;\nFor the wonderful grace of Jesus reaches me.'}
+SongbookModal.tsx:55 Starting new section: V3
+SongbookModal.tsx:82 Added final section: {id: 'section4', type: 'verse', number: 3, label: 'V3', content: 'Wonderful grace of Jesus,\nReaching the most defile…ity—\nAnd the wonderful grace of Jesus reaches me.'}
+SongbookModal.tsx:86 Final parsed sections: (4) [{…}, {…}, {…}, {…}]
+SongbookModal.tsx:186 Song "Wonderful Grace of Jesus" structure: (4) ['V1', 'C', 'V2', 'V3']
+SongbookModal.tsx:187 Song "Wonderful Grace of Jesus" verseOrder: V1, C, V2, V3
+SongbookModal.tsx:190 Transforming song "Wonderful Grace of Jesus": {originalSong: {…}, parsedSections: Array(4), verseOrder: 'V1, C, V2, V3', authors: null, artist: 'Haldor Lillenas'}
+QworshipHome.tsx:4712 💾 Workspace state saved to localStorage
+QworshipHome.tsx:800 getCurrentItemId called with: {selectedSlide: null, currentSlide: 1, slidesLength: 10, serviceItemsLength: 2}
+QworshipHome.tsx:819 Using currentSlide parent item: song-1756425850774
+QworshipHome.tsx:837 🔍 getItemBackground called for item: onscreen-bible-1756425880384
+QworshipHome.tsx:838 🗂️ Current itemBackgrounds state: {
+  "song-1755909909271": {
+    "type": "image",
+    "value": "/uploads/5af2b53f-fc7e-4dec-b41d-38de0c4f7916.jpg",
+    "name": "Selected Asset"
+  },
+  "song-1755913928828": {
+    "type": "gradient",
+    "value": "#3b82f6",
+    "name": "Blue"
+  },
+  "song-1755923032781": {
+    "type": "image",
+    "value": "/uploads/b78615a4-edfc-409f-9875-52045a2e0613.jpg",
+    "name": "Selected Asset"
+  },
+  "onscreen-bible-1756380014616": {
+    "type": "gradient",
+    "value": "#06b6d4",
+    "name": "Cyan"
+  },
+  "song-1756408060714": {
+    "type": "image",
+    "value": "/uploads/5af2b53f-fc7e-4dec-b41d-38de0c4f7916.jpg",
+    "name": "Selected Asset"
+  },
+  "onscreen-bible-1756424925930": {
+    "type": "gradient",
+    "value": "#06b6d4",
+    "name": "Cyan"
+  },
+  "song-1756425305133": {
+    "type": "image",
+    "value": "/uploads/b78615a4-edfc-409f-9875-52045a2e0613.jpg",
+    "name": "Selected Asset"
+  },
+  "song-1756425850774": {
+    "type": "image",
+    "value": "/uploads/5af2b53f-fc7e-4dec-b41d-38de0c4f7916.jpg",
+    "name": "Selected Asset"
+  },
+  "onscreen-bible-1756425880384": {
+    "type": "image",
+    "value": "/uploads/5ef2fc94-8bdb-46c4-baf4-a5c85f62d4bc.jpg",
+    "name": "Selected Asset"
+  }
+}
+QworshipHome.tsx:839 🎨 Returning background: {
+  "type": "image",
+  "value": "/uploads/5ef2fc94-8bdb-46c4-baf4-a5c85f62d4bc.jpg",
+  "name": "Selected Asset"
+}
+QworshipHome.tsx:8471 🎯 Build mode preview - editing content ID: onscreen-bible-1756425880384
+QworshipHome.tsx:8472 🎨 Build mode preview - retrieved background: {type: 'image', value: '/uploads/5ef2fc94-8bdb-46c4-baf4-a5c85f62d4bc.jpg', name: 'Selected Asset'}
+QworshipHome.tsx:837 🔍 getItemBackground called for item: song-1756425850774
+QworshipHome.tsx:838 🗂️ Current itemBackgrounds state: {
+  "song-1755909909271": {
+    "type": "image",
+    "value": "/uploads/5af2b53f-fc7e-4dec-b41d-38de0c4f7916.jpg",
+    "name": "Selected Asset"
+  },
+  "song-1755913928828": {
+    "type": "gradient",
+    "value": "#3b82f6",
+    "name": "Blue"
+  },
+  "song-1755923032781": {
+    "type": "image",
+    "value": "/uploads/b78615a4-edfc-409f-9875-52045a2e0613.jpg",
+    "name": "Selected Asset"
+  },
+  "onscreen-bible-1756380014616": {
+    "type": "gradient",
+    "value": "#06b6d4",
+    "name": "Cyan"
+  },
+  "song-1756408060714": {
+    "type": "image",
+    "value": "/uploads/5af2b53f-fc7e-4dec-b41d-38de0c4f7916.jpg",
+    "name": "Selected Asset"
+  },
+  "onscreen-bible-1756424925930": {
+    "type": "gradient",
+    "value": "#06b6d4",
+    "name": "Cyan"
+  },
+  "song-1756425305133": {
+    "type": "image",
+    "value": "/uploads/b78615a4-edfc-409f-9875-52045a2e0613.jpg",
+    "name": "Selected Asset"
+  },
+  "song-1756425850774": {
+    "type": "image",
+    "value": "/uploads/5af2b53f-fc7e-4dec-b41d-38de0c4f7916.jpg",
+    "name": "Selected Asset"
+  },
+  "onscreen-bible-1756425880384": {
+    "type": "image",
+    "value": "/uploads/5ef2fc94-8bdb-46c4-baf4-a5c85f62d4bc.jpg",
+    "name": "Selected Asset"
+  }
+}
+QworshipHome.tsx:839 🎨 Returning background: {
+  "type": "image",
+  "value": "/uploads/5af2b53f-fc7e-4dec-b41d-38de0c4f7916.jpg",
+  "name": "Selected Asset"
+}
+QworshipHome.tsx:9264 Slide preview background for item song-1756425850774 : {type: 'image', value: '/uploads/5af2b53f-fc7e-4dec-b41d-38de0c4f7916.jpg', name: 'Selected Asset'}
+QworshipHome.tsx:9266 🎯 Slide thumbnail media background detected: /uploads/5af2b53f-fc7e-4dec-b41d-38de0c4f7916.jpg
+QworshipHome.tsx:9282 🎨 Applying slide thumbnail image background styles: {backgroundImage: 'url("https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-…ploads/5af2b53f-fc7e-4dec-b41d-38de0c4f7916.jpg")', backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundColor: '#1a0f2e'}
+QworshipHome.tsx:9283 🔗 Final thumbnail background URL: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/uploads/5af2b53f-fc7e-4dec-b41d-38de0c4f7916.jpg
+QworshipHome.tsx:837 🔍 getItemBackground called for item: song-1756425850774
+QworshipHome.tsx:838 🗂️ Current itemBackgrounds state: {
+  "song-1755909909271": {
+    "type": "image",
+    "value": "/uploads/5af2b53f-fc7e-4dec-b41d-38de0c4f7916.jpg",
+    "name": "Selected Asset"
+  },
+  "song-1755913928828": {
+    "type": "gradient",
+    "value": "#3b82f6",
+    "name": "Blue"
+  },
+  "song-1755923032781": {
+    "type": "image",
+    "value": "/uploads/b78615a4-edfc-409f-9875-52045a2e0613.jpg",
+    "name": "Selected Asset"
+  },
+  "onscreen-bible-1756380014616": {
+    "type": "gradient",
+    "value": "#06b6d4",
+    "name": "Cyan"
+  },
+  "song-1756408060714": {
+    "type": "image",
+    "value": "/uploads/5af2b53f-fc7e-4dec-b41d-38de0c4f7916.jpg",
+    "name": "Selected Asset"
+  },
+  "onscreen-bible-1756424925930": {
+    "type": "gradient",
+    "value": "#06b6d4",
+    "name": "Cyan"
+  },
+  "song-1756425305133": {
+    "type": "image",
+    "value": "/uploads/b78615a4-edfc-409f-9875-52045a2e0613.jpg",
+    "name": "Selected Asset"
+  },
+  "song-1756425850774": {
+    "type": "image",
+    "value": "/uploads/5af2b53f-fc7e-4dec-b41d-38de0c4f7916.jpg",
+    "name": "Selected Asset"
+  },
+  "onscreen-bible-1756425880384": {
+    "type": "image",
+    "value": "/uploads/5ef2fc94-8bdb-46c4-baf4-a5c85f62d4bc.jpg",
+    "name": "Selected Asset"
+  }
+}
+QworshipHome.tsx:839 🎨 Returning background: {
+  "type": "image",
+  "value": "/uploads/5af2b53f-fc7e-4dec-b41d-38de0c4f7916.jpg",
+  "name": "Selected Asset"
+}
+QworshipHome.tsx:9264 Slide preview background for item song-1756425850774 : {type: 'image', value: '/uploads/5af2b53f-fc7e-4dec-b41d-38de0c4f7916.jpg', name: 'Selected Asset'}
+QworshipHome.tsx:9266 🎯 Slide thumbnail media background detected: /uploads/5af2b53f-fc7e-4dec-b41d-38de0c4f7916.jpg
+QworshipHome.tsx:9282 🎨 Applying slide thumbnail image background styles: {backgroundImage: 'url("https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-…ploads/5af2b53f-fc7e-4dec-b41d-38de0c4f7916.jpg")', backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundColor: '#1a0f2e'}
+QworshipHome.tsx:9283 🔗 Final thumbnail background URL: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/uploads/5af2b53f-fc7e-4dec-b41d-38de0c4f7916.jpg
+QworshipHome.tsx:837 🔍 getItemBackground called for item: song-1756425850774
+QworshipHome.tsx:838 🗂️ Current itemBackgrounds state: {
+  "song-1755909909271": {
+    "type": "image",
+    "value": "/uploads/5af2b53f-fc7e-4dec-b41d-38de0c4f7916.jpg",
+    "name": "Selected Asset"
+  },
+  "song-1755913928828": {
+    "type": "gradient",
+    "value": "#3b82f6",
+    "name": "Blue"
+  },
+  "song-1755923032781": {
+    "type": "image",
+    "value": "/uploads/b78615a4-edfc-409f-9875-52045a2e0613.jpg",
+    "name": "Selected Asset"
+  },
+  "onscreen-bible-1756380014616": {
+    "type": "gradient",
+    "value": "#06b6d4",
+    "name": "Cyan"
+  },
+  "song-1756408060714": {
+    "type": "image",
+    "value": "/uploads/5af2b53f-fc7e-4dec-b41d-38de0c4f7916.jpg",
+    "name": "Selected Asset"
+  },
+  "onscreen-bible-1756424925930": {
+    "type": "gradient",
+    "value": "#06b6d4",
+    "name": "Cyan"
+  },
+  "song-1756425305133": {
+    "type": "image",
+    "value": "/uploads/b78615a4-edfc-409f-9875-52045a2e0613.jpg",
+    "name": "Selected Asset"
+  },
+  "song-1756425850774": {
+    "type": "image",
+    "value": "/uploads/5af2b53f-fc7e-4dec-b41d-38de0c4f7916.jpg",
+    "name": "Selected Asset"
+  },
+  "onscreen-bible-1756425880384": {
+    "type": "image",
+    "value": "/uploads/5ef2fc94-8bdb-46c4-baf4-a5c85f62d4bc.jpg",
+    "name": "Selected Asset"
+  }
+}
+QworshipHome.tsx:839 🎨 Returning background: {
+  "type": "image",
+  "value": "/uploads/5af2b53f-fc7e-4dec-b41d-38de0c4f7916.jpg",
+  "name": "Selected Asset"
+}
+QworshipHome.tsx:9264 Slide preview background for item song-1756425850774 : {type: 'image', value: '/uploads/5af2b53f-fc7e-4dec-b41d-38de0c4f7916.jpg', name: 'Selected Asset'}
+QworshipHome.tsx:9266 🎯 Slide thumbnail media background detected: /uploads/5af2b53f-fc7e-4dec-b41d-38de0c4f7916.jpg
+QworshipHome.tsx:9282 🎨 Applying slide thumbnail image background styles: {backgroundImage: 'url("https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-…ploads/5af2b53f-fc7e-4dec-b41d-38de0c4f7916.jpg")', backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundColor: '#1a0f2e'}
+QworshipHome.tsx:9283 🔗 Final thumbnail background URL: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/uploads/5af2b53f-fc7e-4dec-b41d-38de0c4f7916.jpg
+QworshipHome.tsx:837 🔍 getItemBackground called for item: song-1756425850774
+QworshipHome.tsx:838 🗂️ Current itemBackgrounds state: {
+  "song-1755909909271": {
+    "type": "image",
+    "value": "/uploads/5af2b53f-fc7e-4dec-b41d-38de0c4f7916.jpg",
+    "name": "Selected Asset"
+  },
+  "song-1755913928828": {
+    "type": "gradient",
+    "value": "#3b82f6",
+    "name": "Blue"
+  },
+  "song-1755923032781": {
+    "type": "image",
+    "value": "/uploads/b78615a4-edfc-409f-9875-52045a2e0613.jpg",
+    "name": "Selected Asset"
+  },
+  "onscreen-bible-1756380014616": {
+    "type": "gradient",
+    "value": "#06b6d4",
+    "name": "Cyan"
+  },
+  "song-1756408060714": {
+    "type": "image",
+    "value": "/uploads/5af2b53f-fc7e-4dec-b41d-38de0c4f7916.jpg",
+    "name": "Selected Asset"
+  },
+  "onscreen-bible-1756424925930": {
+    "type": "gradient",
+    "value": "#06b6d4",
+    "name": "Cyan"
+  },
+  "song-1756425305133": {
+    "type": "image",
+    "value": "/uploads/b78615a4-edfc-409f-9875-52045a2e0613.jpg",
+    "name": "Selected Asset"
+  },
+  "song-1756425850774": {
+    "type": "image",
+    "value": "/uploads/5af2b53f-fc7e-4dec-b41d-38de0c4f7916.jpg",
+    "name": "Selected Asset"
+  },
+  "onscreen-bible-1756425880384": {
+    "type": "image",
+    "value": "/uploads/5ef2fc94-8bdb-46c4-baf4-a5c85f62d4bc.jpg",
+    "name": "Selected Asset"
+  }
+}
+QworshipHome.tsx:839 🎨 Returning background: {
+  "type": "image",
+  "value": "/uploads/5af2b53f-fc7e-4dec-b41d-38de0c4f7916.jpg",
+  "name": "Selected Asset"
+}
+QworshipHome.tsx:9264 Slide preview background for item song-1756425850774 : {type: 'image', value: '/uploads/5af2b53f-fc7e-4dec-b41d-38de0c4f7916.jpg', name: 'Selected Asset'}
+QworshipHome.tsx:9266 🎯 Slide thumbnail media background detected: /uploads/5af2b53f-fc7e-4dec-b41d-38de0c4f7916.jpg
+QworshipHome.tsx:9282 🎨 Applying slide thumbnail image background styles: {backgroundImage: 'url("https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-…ploads/5af2b53f-fc7e-4dec-b41d-38de0c4f7916.jpg")', backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundColor: '#1a0f2e'}
+QworshipHome.tsx:9283 🔗 Final thumbnail background URL: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/uploads/5af2b53f-fc7e-4dec-b41d-38de0c4f7916.jpg
+QworshipHome.tsx:837 🔍 getItemBackground called for item: song-1756425850774
+QworshipHome.tsx:838 🗂️ Current itemBackgrounds state: {
+  "song-1755909909271": {
+    "type": "image",
+    "value": "/uploads/5af2b53f-fc7e-4dec-b41d-38de0c4f7916.jpg",
+    "name": "Selected Asset"
+  },
+  "song-1755913928828": {
+    "type": "gradient",
+    "value": "#3b82f6",
+    "name": "Blue"
+  },
+  "song-1755923032781": {
+    "type": "image",
+    "value": "/uploads/b78615a4-edfc-409f-9875-52045a2e0613.jpg",
+    "name": "Selected Asset"
+  },
+  "onscreen-bible-1756380014616": {
+    "type": "gradient",
+    "value": "#06b6d4",
+    "name": "Cyan"
+  },
+  "song-1756408060714": {
+    "type": "image",
+    "value": "/uploads/5af2b53f-fc7e-4dec-b41d-38de0c4f7916.jpg",
+    "name": "Selected Asset"
+  },
+  "onscreen-bible-1756424925930": {
+    "type": "gradient",
+    "value": "#06b6d4",
+    "name": "Cyan"
+  },
+  "song-1756425305133": {
+    "type": "image",
+    "value": "/uploads/b78615a4-edfc-409f-9875-52045a2e0613.jpg",
+    "name": "Selected Asset"
+  },
+  "song-1756425850774": {
+    "type": "image",
+    "value": "/uploads/5af2b53f-fc7e-4dec-b41d-38de0c4f7916.jpg",
+    "name": "Selected Asset"
+  },
+  "onscreen-bible-1756425880384": {
+    "type": "image",
+    "value": "/uploads/5ef2fc94-8bdb-46c4-baf4-a5c85f62d4bc.jpg",
+    "name": "Selected Asset"
+  }
+}
+QworshipHome.tsx:839 🎨 Returning background: {
+  "type": "image",
+  "value": "/uploads/5af2b53f-fc7e-4dec-b41d-38de0c4f7916.jpg",
+  "name": "Selected Asset"
+}
+QworshipHome.tsx:9264 Slide preview background for item song-1756425850774 : {type: 'image', value: '/uploads/5af2b53f-fc7e-4dec-b41d-38de0c4f7916.jpg', name: 'Selected Asset'}
+QworshipHome.tsx:9266 🎯 Slide thumbnail media background detected: /uploads/5af2b53f-fc7e-4dec-b41d-38de0c4f7916.jpg
+QworshipHome.tsx:9282 🎨 Applying slide thumbnail image background styles: {backgroundImage: 'url("https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-…ploads/5af2b53f-fc7e-4dec-b41d-38de0c4f7916.jpg")', backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundColor: '#1a0f2e'}
+QworshipHome.tsx:9283 🔗 Final thumbnail background URL: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/uploads/5af2b53f-fc7e-4dec-b41d-38de0c4f7916.jpg
+QworshipHome.tsx:837 🔍 getItemBackground called for item: onscreen-bible-1756425880384
+QworshipHome.tsx:838 🗂️ Current itemBackgrounds state: {
+  "song-1755909909271": {
+    "type": "image",
+    "value": "/uploads/5af2b53f-fc7e-4dec-b41d-38de0c4f7916.jpg",
+    "name": "Selected Asset"
+  },
+  "song-1755913928828": {
+    "type": "gradient",
+    "value": "#3b82f6",
+    "name": "Blue"
+  },
+  "song-1755923032781": {
+    "type": "image",
+    "value": "/uploads/b78615a4-edfc-409f-9875-52045a2e0613.jpg",
+    "name": "Selected Asset"
+  },
+  "onscreen-bible-1756380014616": {
+    "type": "gradient",
+    "value": "#06b6d4",
+    "name": "Cyan"
+  },
+  "song-1756408060714": {
+    "type": "image",
+    "value": "/uploads/5af2b53f-fc7e-4dec-b41d-38de0c4f7916.jpg",
+    "name": "Selected Asset"
+  },
+  "onscreen-bible-1756424925930": {
+    "type": "gradient",
+    "value": "#06b6d4",
+    "name": "Cyan"
+  },
+  "song-1756425305133": {
+    "type": "image",
+    "value": "/uploads/b78615a4-edfc-409f-9875-52045a2e0613.jpg",
+    "name": "Selected Asset"
+  },
+  "song-1756425850774": {
+    "type": "image",
+    "value": "/uploads/5af2b53f-fc7e-4dec-b41d-38de0c4f7916.jpg",
+    "name": "Selected Asset"
+  },
+  "onscreen-bible-1756425880384": {
+    "type": "image",
+    "value": "/uploads/5ef2fc94-8bdb-46c4-baf4-a5c85f62d4bc.jpg",
+    "name": "Selected Asset"
+  }
+}
+QworshipHome.tsx:839 🎨 Returning background: {
+  "type": "image",
+  "value": "/uploads/5ef2fc94-8bdb-46c4-baf4-a5c85f62d4bc.jpg",
+  "name": "Selected Asset"
+}
+QworshipHome.tsx:9264 Slide preview background for item onscreen-bible-1756425880384 : {type: 'image', value: '/uploads/5ef2fc94-8bdb-46c4-baf4-a5c85f62d4bc.jpg', name: 'Selected Asset'}
+QworshipHome.tsx:9266 🎯 Slide thumbnail media background detected: /uploads/5ef2fc94-8bdb-46c4-baf4-a5c85f62d4bc.jpg
+QworshipHome.tsx:9282 🎨 Applying slide thumbnail image background styles: {backgroundImage: 'url("https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-…ploads/5ef2fc94-8bdb-46c4-baf4-a5c85f62d4bc.jpg")', backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundColor: '#1a0f2e'}
+QworshipHome.tsx:9283 🔗 Final thumbnail background URL: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/uploads/5ef2fc94-8bdb-46c4-baf4-a5c85f62d4bc.jpg
+QworshipHome.tsx:837 🔍 getItemBackground called for item: onscreen-bible-1756425880384
+QworshipHome.tsx:838 🗂️ Current itemBackgrounds state: {
+  "song-1755909909271": {
+    "type": "image",
+    "value": "/uploads/5af2b53f-fc7e-4dec-b41d-38de0c4f7916.jpg",
+    "name": "Selected Asset"
+  },
+  "song-1755913928828": {
+    "type": "gradient",
+    "value": "#3b82f6",
+    "name": "Blue"
+  },
+  "song-1755923032781": {
+    "type": "image",
+    "value": "/uploads/b78615a4-edfc-409f-9875-52045a2e0613.jpg",
+    "name": "Selected Asset"
+  },
+  "onscreen-bible-1756380014616": {
+    "type": "gradient",
+    "value": "#06b6d4",
+    "name": "Cyan"
+  },
+  "song-1756408060714": {
+    "type": "image",
+    "value": "/uploads/5af2b53f-fc7e-4dec-b41d-38de0c4f7916.jpg",
+    "name": "Selected Asset"
+  },
+  "onscreen-bible-1756424925930": {
+    "type": "gradient",
+    "value": "#06b6d4",
+    "name": "Cyan"
+  },
+  "song-1756425305133": {
+    "type": "image",
+    "value": "/uploads/b78615a4-edfc-409f-9875-52045a2e0613.jpg",
+    "name": "Selected Asset"
+  },
+  "song-1756425850774": {
+    "type": "image",
+    "value": "/uploads/5af2b53f-fc7e-4dec-b41d-38de0c4f7916.jpg",
+    "name": "Selected Asset"
+  },
+  "onscreen-bible-1756425880384": {
+    "type": "image",
+    "value": "/uploads/5ef2fc94-8bdb-46c4-baf4-a5c85f62d4bc.jpg",
+    "name": "Selected Asset"
+  }
+}
+QworshipHome.tsx:839 🎨 Returning background: {
+  "type": "image",
+  "value": "/uploads/5ef2fc94-8bdb-46c4-baf4-a5c85f62d4bc.jpg",
+  "name": "Selected Asset"
+}
+QworshipHome.tsx:9264 Slide preview background for item onscreen-bible-1756425880384 : {type: 'image', value: '/uploads/5ef2fc94-8bdb-46c4-baf4-a5c85f62d4bc.jpg', name: 'Selected Asset'}
+QworshipHome.tsx:9266 🎯 Slide thumbnail media background detected: /uploads/5ef2fc94-8bdb-46c4-baf4-a5c85f62d4bc.jpg
+QworshipHome.tsx:9282 🎨 Applying slide thumbnail image background styles: {backgroundImage: 'url("https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-…ploads/5ef2fc94-8bdb-46c4-baf4-a5c85f62d4bc.jpg")', backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundColor: '#1a0f2e'}
+QworshipHome.tsx:9283 🔗 Final thumbnail background URL: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/uploads/5ef2fc94-8bdb-46c4-baf4-a5c85f62d4bc.jpg
+QworshipHome.tsx:837 🔍 getItemBackground called for item: onscreen-bible-1756425880384
+QworshipHome.tsx:838 🗂️ Current itemBackgrounds state: {
+  "song-1755909909271": {
+    "type": "image",
+    "value": "/uploads/5af2b53f-fc7e-4dec-b41d-38de0c4f7916.jpg",
+    "name": "Selected Asset"
+  },
+  "song-1755913928828": {
+    "type": "gradient",
+    "value": "#3b82f6",
+    "name": "Blue"
+  },
+  "song-1755923032781": {
+    "type": "image",
+    "value": "/uploads/b78615a4-edfc-409f-9875-52045a2e0613.jpg",
+    "name": "Selected Asset"
+  },
+  "onscreen-bible-1756380014616": {
+    "type": "gradient",
+    "value": "#06b6d4",
+    "name": "Cyan"
+  },
+  "song-1756408060714": {
+    "type": "image",
+    "value": "/uploads/5af2b53f-fc7e-4dec-b41d-38de0c4f7916.jpg",
+    "name": "Selected Asset"
+  },
+  "onscreen-bible-1756424925930": {
+    "type": "gradient",
+    "value": "#06b6d4",
+    "name": "Cyan"
+  },
+  "song-1756425305133": {
+    "type": "image",
+    "value": "/uploads/b78615a4-edfc-409f-9875-52045a2e0613.jpg",
+    "name": "Selected Asset"
+  },
+  "song-1756425850774": {
+    "type": "image",
+    "value": "/uploads/5af2b53f-fc7e-4dec-b41d-38de0c4f7916.jpg",
+    "name": "Selected Asset"
+  },
+  "onscreen-bible-1756425880384": {
+    "type": "image",
+    "value": "/uploads/5ef2fc94-8bdb-46c4-baf4-a5c85f62d4bc.jpg",
+    "name": "Selected Asset"
+  }
+}
+QworshipHome.tsx:839 🎨 Returning background: {
+  "type": "image",
+  "value": "/uploads/5ef2fc94-8bdb-46c4-baf4-a5c85f62d4bc.jpg",
+  "name": "Selected Asset"
+}
+QworshipHome.tsx:9264 Slide preview background for item onscreen-bible-1756425880384 : {type: 'image', value: '/uploads/5ef2fc94-8bdb-46c4-baf4-a5c85f62d4bc.jpg', name: 'Selected Asset'}
+QworshipHome.tsx:9266 🎯 Slide thumbnail media background detected: /uploads/5ef2fc94-8bdb-46c4-baf4-a5c85f62d4bc.jpg
+QworshipHome.tsx:9282 🎨 Applying slide thumbnail image background styles: {backgroundImage: 'url("https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-…ploads/5ef2fc94-8bdb-46c4-baf4-a5c85f62d4bc.jpg")', backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundColor: '#1a0f2e'}
+QworshipHome.tsx:9283 🔗 Final thumbnail background URL: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/uploads/5ef2fc94-8bdb-46c4-baf4-a5c85f62d4bc.jpg
+QworshipHome.tsx:837 🔍 getItemBackground called for item: onscreen-bible-1756425880384
+QworshipHome.tsx:838 🗂️ Current itemBackgrounds state: {
+  "song-1755909909271": {
+    "type": "image",
+    "value": "/uploads/5af2b53f-fc7e-4dec-b41d-38de0c4f7916.jpg",
+    "name": "Selected Asset"
+  },
+  "song-1755913928828": {
+    "type": "gradient",
+    "value": "#3b82f6",
+    "name": "Blue"
+  },
+  "song-1755923032781": {
+    "type": "image",
+    "value": "/uploads/b78615a4-edfc-409f-9875-52045a2e0613.jpg",
+    "name": "Selected Asset"
+  },
+  "onscreen-bible-1756380014616": {
+    "type": "gradient",
+    "value": "#06b6d4",
+    "name": "Cyan"
+  },
+  "song-1756408060714": {
+    "type": "image",
+    "value": "/uploads/5af2b53f-fc7e-4dec-b41d-38de0c4f7916.jpg",
+    "name": "Selected Asset"
+  },
+  "onscreen-bible-1756424925930": {
+    "type": "gradient",
+    "value": "#06b6d4",
+    "name": "Cyan"
+  },
+  "song-1756425305133": {
+    "type": "image",
+    "value": "/uploads/b78615a4-edfc-409f-9875-52045a2e0613.jpg",
+    "name": "Selected Asset"
+  },
+  "song-1756425850774": {
+    "type": "image",
+    "value": "/uploads/5af2b53f-fc7e-4dec-b41d-38de0c4f7916.jpg",
+    "name": "Selected Asset"
+  },
+  "onscreen-bible-1756425880384": {
+    "type": "image",
+    "value": "/uploads/5ef2fc94-8bdb-46c4-baf4-a5c85f62d4bc.jpg",
+    "name": "Selected Asset"
+  }
+}
+QworshipHome.tsx:839 🎨 Returning background: {
+  "type": "image",
+  "value": "/uploads/5ef2fc94-8bdb-46c4-baf4-a5c85f62d4bc.jpg",
+  "name": "Selected Asset"
+}
+QworshipHome.tsx:9264 Slide preview background for item onscreen-bible-1756425880384 : {type: 'image', value: '/uploads/5ef2fc94-8bdb-46c4-baf4-a5c85f62d4bc.jpg', name: 'Selected Asset'}
+QworshipHome.tsx:9266 🎯 Slide thumbnail media background detected: /uploads/5ef2fc94-8bdb-46c4-baf4-a5c85f62d4bc.jpg
+QworshipHome.tsx:9282 🎨 Applying slide thumbnail image background styles: {backgroundImage: 'url("https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-…ploads/5ef2fc94-8bdb-46c4-baf4-a5c85f62d4bc.jpg")', backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundColor: '#1a0f2e'}
+QworshipHome.tsx:9283 🔗 Final thumbnail background URL: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/uploads/5ef2fc94-8bdb-46c4-baf4-a5c85f62d4bc.jpg
+QworshipHome.tsx:837 🔍 getItemBackground called for item: onscreen-bible-1756425880384
+QworshipHome.tsx:838 🗂️ Current itemBackgrounds state: {
+  "song-1755909909271": {
+    "type": "image",
+    "value": "/uploads/5af2b53f-fc7e-4dec-b41d-38de0c4f7916.jpg",
+    "name": "Selected Asset"
+  },
+  "song-1755913928828": {
+    "type": "gradient",
+    "value": "#3b82f6",
+    "name": "Blue"
+  },
+  "song-1755923032781": {
+    "type": "image",
+    "value": "/uploads/b78615a4-edfc-409f-9875-52045a2e0613.jpg",
+    "name": "Selected Asset"
+  },
+  "onscreen-bible-1756380014616": {
+    "type": "gradient",
+    "value": "#06b6d4",
+    "name": "Cyan"
+  },
+  "song-1756408060714": {
+    "type": "image",
+    "value": "/uploads/5af2b53f-fc7e-4dec-b41d-38de0c4f7916.jpg",
+    "name": "Selected Asset"
+  },
+  "onscreen-bible-1756424925930": {
+    "type": "gradient",
+    "value": "#06b6d4",
+    "name": "Cyan"
+  },
+  "song-1756425305133": {
+    "type": "image",
+    "value": "/uploads/b78615a4-edfc-409f-9875-52045a2e0613.jpg",
+    "name": "Selected Asset"
+  },
+  "song-1756425850774": {
+    "type": "image",
+    "value": "/uploads/5af2b53f-fc7e-4dec-b41d-38de0c4f7916.jpg",
+    "name": "Selected Asset"
+  },
+  "onscreen-bible-1756425880384": {
+    "type": "image",
+    "value": "/uploads/5ef2fc94-8bdb-46c4-baf4-a5c85f62d4bc.jpg",
+    "name": "Selected Asset"
+  }
+}
+QworshipHome.tsx:839 🎨 Returning background: {
+  "type": "image",
+  "value": "/uploads/5ef2fc94-8bdb-46c4-baf4-a5c85f62d4bc.jpg",
+  "name": "Selected Asset"
+}
+QworshipHome.tsx:9264 Slide preview background for item onscreen-bible-1756425880384 : {type: 'image', value: '/uploads/5ef2fc94-8bdb-46c4-baf4-a5c85f62d4bc.jpg', name: 'Selected Asset'}
+QworshipHome.tsx:9266 🎯 Slide thumbnail media background detected: /uploads/5ef2fc94-8bdb-46c4-baf4-a5c85f62d4bc.jpg
+QworshipHome.tsx:9282 🎨 Applying slide thumbnail image background styles: {backgroundImage: 'url("https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-…ploads/5ef2fc94-8bdb-46c4-baf4-a5c85f62d4bc.jpg")', backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundColor: '#1a0f2e'}
+QworshipHome.tsx:9283 🔗 Final thumbnail background URL: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/uploads/5ef2fc94-8bdb-46c4-baf4-a5c85f62d4bc.jpg
+SongbookModal.tsx:172 SongbookModal received savedSongs: (28) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+SongbookModal.tsx:21 Starting lyrics parsing for: This is an example song for demonstration purposes.
+
+[Verse 1]
+This is a sample verse
+To show how so...
+SongbookModal.tsx:55 Starting new section: Verse 1
+SongbookModal.tsx:48 Added section: {id: 'section1', type: 'verse', number: 1, label: 'Verse 1', content: 'This is a sample verse\nTo show how songs work\nIn Q-worship presentation system'}
+SongbookModal.tsx:55 Starting new section: Verse 2
+SongbookModal.tsx:48 Added section: {id: 'section2', type: 'verse', number: 2, label: 'Verse 2', content: 'Add your church songs here\nDelete this example when ready\nQ-worship makes it easy'}
+SongbookModal.tsx:55 Starting new section: Chorus
+SongbookModal.tsx:82 Added final section: {id: 'section3', type: 'chorus', number: 1, label: 'Chorus', content: 'Example song for your ministry\nHelping you learn the system\nReplace with your own songs'}
+SongbookModal.tsx:86 Final parsed sections: (3) [{…}, {…}, {…}]
+SongbookModal.tsx:186 Song "Example Song" structure: (3) ['verse1', 'verse2', 'chorus']
+SongbookModal.tsx:187 Song "Example Song" verseOrder: verse1, verse2, chorus
+SongbookModal.tsx:190 Transforming song "Example Song": {originalSong: {…}, parsedSections: Array(3), verseOrder: 'verse1, verse2, chorus', authors: null, artist: 'Q-worship Demo'}
+SongbookModal.tsx:21 Starting lyrics parsing for: [V1]
+I love You LordOh Your mercy never fails meAll my daysI've been held in Your handsFrom the mome...
+SongbookModal.tsx:55 Starting new section: V1
+SongbookModal.tsx:48 Added section: {id: 'section1', type: 'verse', number: 1, label: 'V1', content: 'I love You LordOh Your mercy never fails meAll my …lay my headOh, I will sing of the goodness of God'}
+SongbookModal.tsx:55 Starting new section: C1
+SongbookModal.tsx:48 Added section: {id: 'section2', type: 'chorus', number: 1, label: 'C1', content: 'All my life You have been faithfulAll my life You … that I am ableI will sing of the goodness of God'}
+SongbookModal.tsx:55 Starting new section: V2
+SongbookModal.tsx:48 Added section: {id: 'section3', type: 'verse', number: 2, label: 'V2', content: 'I love Your voiceYou have led me through the fireI…s a friendAnd I have lived in the goodness of God'}
+SongbookModal.tsx:55 Starting new section: C2
+SongbookModal.tsx:48 Added section: {id: 'section4', type: 'chorus', number: 2, label: 'C2', content: 'OohAll my life You have been faithfulAll my life Y… that I am ableI will sing of the goodness of God'}
+SongbookModal.tsx:55 Starting new section: V3
+SongbookModal.tsx:82 Added final section: {id: 'section5', type: 'verse', number: 3, label: 'V3', content: "Your goodness is running afterIt's running after m…ur goodness is running afterIt's running after me"}
+SongbookModal.tsx:86 Final parsed sections: (5) [{…}, {…}, {…}, {…}, {…}]
+SongbookModal.tsx:186 Song "Goodness of God" structure: (5) ['V1', 'C1', 'V2', 'C2', 'V3']
+SongbookModal.tsx:187 Song "Goodness of God" verseOrder: V1, C1, V2, C2, V3
+SongbookModal.tsx:190 Transforming song "Goodness of God": {originalSong: {…}, parsedSections: Array(5), verseOrder: 'V1, C1, V2, C2, V3', authors: null, artist: 'Don Moen'}
+SongbookModal.tsx:21 Starting lyrics parsing for: [V1]
+I love You LordOh Your mercy never fails meAll my daysI've been held in Your handsFrom the mome...
+SongbookModal.tsx:55 Starting new section: V1
+SongbookModal.tsx:48 Added section: {id: 'section1', type: 'verse', number: 1, label: 'V1', content: 'I love You LordOh Your mercy never fails meAll my …lay my headOh, I will sing of the goodness of God'}
+SongbookModal.tsx:55 Starting new section: C1
+SongbookModal.tsx:48 Added section: {id: 'section2', type: 'chorus', number: 1, label: 'C1', content: 'All my life You have been faithfulAll my life You … that I am ableI will sing of the goodness of God'}
+SongbookModal.tsx:55 Starting new section: V2
+SongbookModal.tsx:48 Added section: {id: 'section3', type: 'verse', number: 2, label: 'V2', content: 'I love Your voiceYou have led me through the fireI…s a friendAnd I have lived in the goodness of God'}
+SongbookModal.tsx:55 Starting new section: C2
+SongbookModal.tsx:48 Added section: {id: 'section4', type: 'chorus', number: 2, label: 'C2', content: 'OohAll my life You have been faithfulAll my life Y… that I am ableI will sing of the goodness of God'}
+SongbookModal.tsx:55 Starting new section: V3
+SongbookModal.tsx:82 Added final section: {id: 'section5', type: 'verse', number: 3, label: 'V3', content: "Your goodness is running afterIt's running after m…ur goodness is running afterIt's running after me"}
+SongbookModal.tsx:86 Final parsed sections: (5) [{…}, {…}, {…}, {…}, {…}]
+SongbookModal.tsx:186 Song "Goodness of God" structure: (5) ['V1', 'C1', 'V2', 'C2', 'V3']
+SongbookModal.tsx:187 Song "Goodness of God" verseOrder: V1, C1, V2, C2, V3
+SongbookModal.tsx:190 Transforming song "Goodness of God": {originalSong: {…}, parsedSections: Array(5), verseOrder: 'V1, C1, V2, C2, V3', authors: null, artist: 'Don Moen'}
+SongbookModal.tsx:21 Starting lyrics parsing for: [V1]
+I love You LordOh Your mercy never fails meAll my daysI've been held in Your handsFrom the mome...
+SongbookModal.tsx:55 Starting new section: V1
+SongbookModal.tsx:48 Added section: {id: 'section1', type: 'verse', number: 1, label: 'V1', content: 'I love You LordOh Your mercy never fails meAll my …lay my headOh, I will sing of the goodness of God'}
+SongbookModal.tsx:55 Starting new section: C1
+SongbookModal.tsx:48 Added section: {id: 'section2', type: 'chorus', number: 1, label: 'C1', content: 'All my life You have been faithfulAll my life You … that I am ableI will sing of the goodness of God'}
+SongbookModal.tsx:55 Starting new section: V2
+SongbookModal.tsx:48 Added section: {id: 'section3', type: 'verse', number: 2, label: 'V2', content: 'I love Your voiceYou have led me through the fireI…s a friendAnd I have lived in the goodness of God'}
+SongbookModal.tsx:55 Starting new section: C2

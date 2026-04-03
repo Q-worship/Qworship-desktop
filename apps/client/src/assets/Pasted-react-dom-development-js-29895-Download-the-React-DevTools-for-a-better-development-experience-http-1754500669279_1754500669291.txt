@@ -1,0 +1,982 @@
+react-dom.development.js:29895 Download the React DevTools for a better development experience: https://reactjs.org/link/react-devtools
+QworshipHome.tsx:154 QworshipHome - songsData: undefined
+QworshipHome.tsx:155 QworshipHome - savedSongs: Array(0)
+SongbookModal.tsx:172 SongbookModal received savedSongs: Array(0)
+QworshipHome.tsx:154 QworshipHome - songsData: undefined
+QworshipHome.tsx:155 QworshipHome - savedSongs: Array(0)
+SongbookModal.tsx:172 SongbookModal received savedSongs: Array(0)
+QworshipHome.tsx:154 QworshipHome - songsData: Object
+QworshipHome.tsx:155 QworshipHome - savedSongs: Array(7)
+SongbookModal.tsx:172 SongbookModal received savedSongs: Array(7)
+SongbookModal.tsx:21 Starting lyrics parsing for: This is an example song for demonstration purposes.
+
+[Verse 1]
+This is a sample verse
+To show how so...
+SongbookModal.tsx:55 Starting new section: Verse 1
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: Verse 2
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: Chorus
+SongbookModal.tsx:82 Added final section: Object
+SongbookModal.tsx:86 Final parsed sections: Array(3)
+SongbookModal.tsx:186 Song "Example Song" structure: Array(3)
+SongbookModal.tsx:187 Song "Example Song" verseOrder: verse1, verse2, chorus
+SongbookModal.tsx:190 Transforming song "Example Song": Object
+SongbookModal.tsx:21 Starting lyrics parsing for: [V1 (Verse 1)]
+Amazing grace! How sweet the sound
+That saved a wretch like me!
+I once was lost, but ...
+SongbookModal.tsx:55 Starting new section: V1 (Verse 1)
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V2 (Verse 2)
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V3 (Verse 3)
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V4 (Verse 4)
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V5 (Verse 5)
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V6 (Verse 6)
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V7 (Verse 7)
+SongbookModal.tsx:86 Final parsed sections: Array(6)
+SongbookModal.tsx:186 Song "Amazing Grace" structure: Array(7)
+SongbookModal.tsx:187 Song "Amazing Grace" verseOrder: V1, V2, V3, V4, V5, V6, V7
+SongbookModal.tsx:190 Transforming song "Amazing Grace": Object
+SongbookModal.tsx:21 Starting lyrics parsing for: [V1]
+Wonderful grace of Jesus,
+Greater than all my sin;
+How shall my tongue describe it,
+Where shall...
+SongbookModal.tsx:55 Starting new section: V1
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: C
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V2
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V3
+SongbookModal.tsx:82 Added final section: Object
+SongbookModal.tsx:86 Final parsed sections: Array(4)
+SongbookModal.tsx:186 Song "Wonderful Grace of Jesus" structure: Array(4)
+SongbookModal.tsx:187 Song "Wonderful Grace of Jesus" verseOrder: V1, C, V2, V3
+SongbookModal.tsx:190 Transforming song "Wonderful Grace of Jesus": Object
+SongbookModal.tsx:21 Starting lyrics parsing for: [V1]
+Wonderful grace of Jesus,
+Greater than all my sin;
+How shall my tongue describe it,
+Where shall...
+SongbookModal.tsx:55 Starting new section: V1
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: C
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V2
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V3
+SongbookModal.tsx:82 Added final section: Object
+SongbookModal.tsx:86 Final parsed sections: Array(4)
+SongbookModal.tsx:186 Song "Wonderful Grace of Jesus" structure: Array(4)
+SongbookModal.tsx:187 Song "Wonderful Grace of Jesus" verseOrder: V1, C, V2, V3
+SongbookModal.tsx:190 Transforming song "Wonderful Grace of Jesus": Object
+SongbookModal.tsx:21 Starting lyrics parsing for: [V1 (Verse 1)]
+Wonderful grace of Jesus,
+Greater than all my sin;
+How shall my tongue describe it,
+W...
+SongbookModal.tsx:55 Starting new section: V1 (Verse 1)
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V2 (Verse 2)
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V3 (Verse 3)
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: C1 (Chorus 1)
+SongbookModal.tsx:82 Added final section: Object
+SongbookModal.tsx:86 Final parsed sections: Array(4)
+SongbookModal.tsx:186 Song "Grace of Jesus" structure: Array(4)
+SongbookModal.tsx:187 Song "Grace of Jesus" verseOrder: V1, C1, V2, V3
+SongbookModal.tsx:190 Transforming song "Grace of Jesus": Object
+SongbookModal.tsx:21 Starting lyrics parsing for: [V1]
+Wonderful grace of Jesus,
+Greater than all my sin;
+How shall my tongue describe it,
+Where shall...
+SongbookModal.tsx:55 Starting new section: V1
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: C
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V2
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V3
+SongbookModal.tsx:82 Added final section: Object
+SongbookModal.tsx:86 Final parsed sections: Array(4)
+SongbookModal.tsx:186 Song "Sweet Jesus" structure: Array(4)
+SongbookModal.tsx:187 Song "Sweet Jesus" verseOrder: V1, C, V2, V3
+SongbookModal.tsx:190 Transforming song "Sweet Jesus": Object
+SongbookModal.tsx:21 Starting lyrics parsing for: [V1 (Verse 1)]
+Abide with me; fast falls the eventide;
+The darkness deepens; Lord, with me abide;
+Wh...
+SongbookModal.tsx:55 Starting new section: V1 (Verse 1)
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V2 (Verse 2)
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V3 (Verse 3)
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V4 (Verse 4)
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: C1 (Chorus 1)
+SongbookModal.tsx:82 Added final section: Object
+SongbookModal.tsx:86 Final parsed sections: Array(5)
+SongbookModal.tsx:186 Song "Abide with Me" structure: Array(4)
+SongbookModal.tsx:187 Song "Abide with Me" verseOrder: V1, V2, V3, C1
+SongbookModal.tsx:190 Transforming song "Abide with Me": Object
+QworshipHome.tsx:154 QworshipHome - songsData: Object
+QworshipHome.tsx:155 QworshipHome - savedSongs: Array(7)
+SongbookModal.tsx:172 SongbookModal received savedSongs: Array(7)
+SongbookModal.tsx:21 Starting lyrics parsing for: This is an example song for demonstration purposes.
+
+[Verse 1]
+This is a sample verse
+To show how so...
+SongbookModal.tsx:55 Starting new section: Verse 1
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: Verse 2
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: Chorus
+SongbookModal.tsx:82 Added final section: Object
+SongbookModal.tsx:86 Final parsed sections: Array(3)
+SongbookModal.tsx:186 Song "Example Song" structure: Array(3)
+SongbookModal.tsx:187 Song "Example Song" verseOrder: verse1, verse2, chorus
+SongbookModal.tsx:190 Transforming song "Example Song": Object
+SongbookModal.tsx:21 Starting lyrics parsing for: [V1 (Verse 1)]
+Amazing grace! How sweet the sound
+That saved a wretch like me!
+I once was lost, but ...
+SongbookModal.tsx:55 Starting new section: V1 (Verse 1)
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V2 (Verse 2)
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V3 (Verse 3)
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V4 (Verse 4)
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V5 (Verse 5)
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V6 (Verse 6)
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V7 (Verse 7)
+SongbookModal.tsx:86 Final parsed sections: Array(6)
+SongbookModal.tsx:186 Song "Amazing Grace" structure: Array(7)
+SongbookModal.tsx:187 Song "Amazing Grace" verseOrder: V1, V2, V3, V4, V5, V6, V7
+SongbookModal.tsx:190 Transforming song "Amazing Grace": Object
+SongbookModal.tsx:21 Starting lyrics parsing for: [V1]
+Wonderful grace of Jesus,
+Greater than all my sin;
+How shall my tongue describe it,
+Where shall...
+SongbookModal.tsx:55 Starting new section: V1
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: C
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V2
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V3
+SongbookModal.tsx:82 Added final section: Object
+SongbookModal.tsx:86 Final parsed sections: Array(4)
+SongbookModal.tsx:186 Song "Wonderful Grace of Jesus" structure: Array(4)
+SongbookModal.tsx:187 Song "Wonderful Grace of Jesus" verseOrder: V1, C, V2, V3
+SongbookModal.tsx:190 Transforming song "Wonderful Grace of Jesus": Object
+SongbookModal.tsx:21 Starting lyrics parsing for: [V1]
+Wonderful grace of Jesus,
+Greater than all my sin;
+How shall my tongue describe it,
+Where shall...
+SongbookModal.tsx:55 Starting new section: V1
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: C
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V2
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V3
+SongbookModal.tsx:82 Added final section: Object
+SongbookModal.tsx:86 Final parsed sections: Array(4)
+SongbookModal.tsx:186 Song "Wonderful Grace of Jesus" structure: Array(4)
+SongbookModal.tsx:187 Song "Wonderful Grace of Jesus" verseOrder: V1, C, V2, V3
+SongbookModal.tsx:190 Transforming song "Wonderful Grace of Jesus": Object
+SongbookModal.tsx:21 Starting lyrics parsing for: [V1 (Verse 1)]
+Wonderful grace of Jesus,
+Greater than all my sin;
+How shall my tongue describe it,
+W...
+SongbookModal.tsx:55 Starting new section: V1 (Verse 1)
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V2 (Verse 2)
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V3 (Verse 3)
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: C1 (Chorus 1)
+SongbookModal.tsx:82 Added final section: Object
+SongbookModal.tsx:86 Final parsed sections: Array(4)
+SongbookModal.tsx:186 Song "Grace of Jesus" structure: Array(4)
+SongbookModal.tsx:187 Song "Grace of Jesus" verseOrder: V1, C1, V2, V3
+SongbookModal.tsx:190 Transforming song "Grace of Jesus": Object
+SongbookModal.tsx:21 Starting lyrics parsing for: [V1]
+Wonderful grace of Jesus,
+Greater than all my sin;
+How shall my tongue describe it,
+Where shall...
+SongbookModal.tsx:55 Starting new section: V1
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: C
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V2
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V3
+SongbookModal.tsx:82 Added final section: Object
+SongbookModal.tsx:86 Final parsed sections: Array(4)
+SongbookModal.tsx:186 Song "Sweet Jesus" structure: Array(4)
+SongbookModal.tsx:187 Song "Sweet Jesus" verseOrder: V1, C, V2, V3
+SongbookModal.tsx:190 Transforming song "Sweet Jesus": Object
+SongbookModal.tsx:21 Starting lyrics parsing for: [V1 (Verse 1)]
+Abide with me; fast falls the eventide;
+The darkness deepens; Lord, with me abide;
+Wh...
+SongbookModal.tsx:55 Starting new section: V1 (Verse 1)
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V2 (Verse 2)
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V3 (Verse 3)
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V4 (Verse 4)
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: C1 (Chorus 1)
+SongbookModal.tsx:82 Added final section: Object
+SongbookModal.tsx:86 Final parsed sections: Array(5)
+SongbookModal.tsx:186 Song "Abide with Me" structure: Array(4)
+SongbookModal.tsx:187 Song "Abide with Me" verseOrder: V1, V2, V3, C1
+SongbookModal.tsx:190 Transforming song "Abide with Me": Object
+SongbookModal.tsx:254 Song clicked for preview: Object
+SongbookModal.tsx:255 Song sections: Array(4)
+SongbookModal.tsx:256 Song verseOrder: V1, C, V2, V3
+SongbookModal.tsx:172 SongbookModal received savedSongs: Array(7)
+SongbookModal.tsx:21 Starting lyrics parsing for: This is an example song for demonstration purposes.
+
+[Verse 1]
+This is a sample verse
+To show how so...
+SongbookModal.tsx:55 Starting new section: Verse 1
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: Verse 2
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: Chorus
+SongbookModal.tsx:82 Added final section: Object
+SongbookModal.tsx:86 Final parsed sections: Array(3)
+SongbookModal.tsx:186 Song "Example Song" structure: Array(3)
+SongbookModal.tsx:187 Song "Example Song" verseOrder: verse1, verse2, chorus
+SongbookModal.tsx:190 Transforming song "Example Song": Object
+SongbookModal.tsx:21 Starting lyrics parsing for: [V1 (Verse 1)]
+Amazing grace! How sweet the sound
+That saved a wretch like me!
+I once was lost, but ...
+SongbookModal.tsx:55 Starting new section: V1 (Verse 1)
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V2 (Verse 2)
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V3 (Verse 3)
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V4 (Verse 4)
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V5 (Verse 5)
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V6 (Verse 6)
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V7 (Verse 7)
+SongbookModal.tsx:86 Final parsed sections: Array(6)
+SongbookModal.tsx:186 Song "Amazing Grace" structure: Array(7)
+SongbookModal.tsx:187 Song "Amazing Grace" verseOrder: V1, V2, V3, V4, V5, V6, V7
+SongbookModal.tsx:190 Transforming song "Amazing Grace": Object
+SongbookModal.tsx:21 Starting lyrics parsing for: [V1]
+Wonderful grace of Jesus,
+Greater than all my sin;
+How shall my tongue describe it,
+Where shall...
+SongbookModal.tsx:55 Starting new section: V1
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: C
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V2
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V3
+SongbookModal.tsx:82 Added final section: Object
+SongbookModal.tsx:86 Final parsed sections: Array(4)
+SongbookModal.tsx:186 Song "Wonderful Grace of Jesus" structure: Array(4)
+SongbookModal.tsx:187 Song "Wonderful Grace of Jesus" verseOrder: V1, C, V2, V3
+SongbookModal.tsx:190 Transforming song "Wonderful Grace of Jesus": Object
+SongbookModal.tsx:21 Starting lyrics parsing for: [V1]
+Wonderful grace of Jesus,
+Greater than all my sin;
+How shall my tongue describe it,
+Where shall...
+SongbookModal.tsx:55 Starting new section: V1
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: C
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V2
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V3
+SongbookModal.tsx:82 Added final section: Object
+SongbookModal.tsx:86 Final parsed sections: Array(4)
+SongbookModal.tsx:186 Song "Wonderful Grace of Jesus" structure: Array(4)
+SongbookModal.tsx:187 Song "Wonderful Grace of Jesus" verseOrder: V1, C, V2, V3
+SongbookModal.tsx:190 Transforming song "Wonderful Grace of Jesus": Object
+SongbookModal.tsx:21 Starting lyrics parsing for: [V1 (Verse 1)]
+Wonderful grace of Jesus,
+Greater than all my sin;
+How shall my tongue describe it,
+W...
+SongbookModal.tsx:55 Starting new section: V1 (Verse 1)
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V2 (Verse 2)
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V3 (Verse 3)
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: C1 (Chorus 1)
+SongbookModal.tsx:82 Added final section: Object
+SongbookModal.tsx:86 Final parsed sections: Array(4)
+SongbookModal.tsx:186 Song "Grace of Jesus" structure: Array(4)
+SongbookModal.tsx:187 Song "Grace of Jesus" verseOrder: V1, C1, V2, V3
+SongbookModal.tsx:190 Transforming song "Grace of Jesus": Object
+SongbookModal.tsx:21 Starting lyrics parsing for: [V1]
+Wonderful grace of Jesus,
+Greater than all my sin;
+How shall my tongue describe it,
+Where shall...
+SongbookModal.tsx:55 Starting new section: V1
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: C
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V2
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V3
+SongbookModal.tsx:82 Added final section: Object
+SongbookModal.tsx:86 Final parsed sections: Array(4)
+SongbookModal.tsx:186 Song "Sweet Jesus" structure: Array(4)
+SongbookModal.tsx:187 Song "Sweet Jesus" verseOrder: V1, C, V2, V3
+SongbookModal.tsx:190 Transforming song "Sweet Jesus": Object
+SongbookModal.tsx:21 Starting lyrics parsing for: [V1 (Verse 1)]
+Abide with me; fast falls the eventide;
+The darkness deepens; Lord, with me abide;
+Wh...
+SongbookModal.tsx:55 Starting new section: V1 (Verse 1)
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V2 (Verse 2)
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V3 (Verse 3)
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V4 (Verse 4)
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: C1 (Chorus 1)
+SongbookModal.tsx:82 Added final section: Object
+SongbookModal.tsx:86 Final parsed sections: Array(5)
+SongbookModal.tsx:186 Song "Abide with Me" structure: Array(4)
+SongbookModal.tsx:187 Song "Abide with Me" verseOrder: V1, V2, V3, C1
+SongbookModal.tsx:190 Transforming song "Abide with Me": Object
+SongViewerModal.tsx:152 SongViewerModal received song: Object
+SongViewerModal.tsx:153 Song sections: Array(4)
+SongViewerModal.tsx:154 Song verseOrder: V1, C, V2, V3
+SongViewerModal.tsx:185 Looking for section with tag: "V1"
+SongViewerModal.tsx:192   Checking section: V1 (type: verse, number: 1)
+SongViewerModal.tsx:193   Expected tags: "V1" or "V1"
+SongViewerModal.tsx:198   Found section for "V1": Object
+SongViewerModal.tsx:185 Looking for section with tag: "C"
+SongViewerModal.tsx:192   Checking section: V1 (type: verse, number: 1)
+SongViewerModal.tsx:193   Expected tags: "V1" or "V1"
+SongViewerModal.tsx:192   Checking section: C (type: chorus, number: 1)
+SongViewerModal.tsx:193   Expected tags: "C1" or "C"
+SongViewerModal.tsx:198   Found section for "C": Object
+SongViewerModal.tsx:185 Looking for section with tag: "V2"
+SongViewerModal.tsx:192   Checking section: V1 (type: verse, number: 1)
+SongViewerModal.tsx:193   Expected tags: "V1" or "V1"
+SongViewerModal.tsx:192   Checking section: C (type: chorus, number: 1)
+SongViewerModal.tsx:193   Expected tags: "C1" or "C"
+SongViewerModal.tsx:192   Checking section: V2 (type: verse, number: 2)
+SongViewerModal.tsx:193   Expected tags: "V2" or "V2"
+SongViewerModal.tsx:198   Found section for "V2": Object
+SongViewerModal.tsx:185 Looking for section with tag: "V3"
+SongViewerModal.tsx:192   Checking section: V1 (type: verse, number: 1)
+SongViewerModal.tsx:193   Expected tags: "V1" or "V1"
+SongViewerModal.tsx:192   Checking section: C (type: chorus, number: 1)
+SongViewerModal.tsx:193   Expected tags: "C1" or "C"
+SongViewerModal.tsx:192   Checking section: V2 (type: verse, number: 2)
+SongViewerModal.tsx:193   Expected tags: "V2" or "V2"
+SongViewerModal.tsx:192   Checking section: V3 (type: verse, number: 3)
+SongViewerModal.tsx:193   Expected tags: "V3" or "V3"
+SongViewerModal.tsx:198   Found section for "V3": Object
+SongViewerModal.tsx:152 SongViewerModal received song: Object
+SongViewerModal.tsx:153 Song sections: Array(4)
+SongViewerModal.tsx:154 Song verseOrder: V1, C, V2, V3
+SongViewerModal.tsx:185 Looking for section with tag: "V1"
+SongViewerModal.tsx:192   Checking section: V1 (type: verse, number: 1)
+SongViewerModal.tsx:193   Expected tags: "V1" or "V1"
+SongViewerModal.tsx:198   Found section for "V1": Object
+SongViewerModal.tsx:185 Looking for section with tag: "C"
+SongViewerModal.tsx:192   Checking section: V1 (type: verse, number: 1)
+SongViewerModal.tsx:193   Expected tags: "V1" or "V1"
+SongViewerModal.tsx:192   Checking section: C (type: chorus, number: 1)
+SongViewerModal.tsx:193   Expected tags: "C1" or "C"
+SongViewerModal.tsx:198   Found section for "C": Object
+SongViewerModal.tsx:185 Looking for section with tag: "V2"
+SongViewerModal.tsx:192   Checking section: V1 (type: verse, number: 1)
+SongViewerModal.tsx:193   Expected tags: "V1" or "V1"
+SongViewerModal.tsx:192   Checking section: C (type: chorus, number: 1)
+SongViewerModal.tsx:193   Expected tags: "C1" or "C"
+SongViewerModal.tsx:192   Checking section: V2 (type: verse, number: 2)
+SongViewerModal.tsx:193   Expected tags: "V2" or "V2"
+SongViewerModal.tsx:198   Found section for "V2": Object
+SongViewerModal.tsx:185 Looking for section with tag: "V3"
+SongViewerModal.tsx:192   Checking section: V1 (type: verse, number: 1)
+SongViewerModal.tsx:193   Expected tags: "V1" or "V1"
+SongViewerModal.tsx:192   Checking section: C (type: chorus, number: 1)
+SongViewerModal.tsx:193   Expected tags: "C1" or "C"
+SongViewerModal.tsx:192   Checking section: V2 (type: verse, number: 2)
+SongViewerModal.tsx:193   Expected tags: "V2" or "V2"
+SongViewerModal.tsx:192   Checking section: V3 (type: verse, number: 3)
+SongViewerModal.tsx:193   Expected tags: "V3" or "V3"
+SongViewerModal.tsx:198   Found section for "V3": Object
+SongViewerModal.tsx:152 SongViewerModal received song: Object
+SongViewerModal.tsx:153 Song sections: Array(4)
+SongViewerModal.tsx:154 Song verseOrder: V1, C, V2, V3
+SongViewerModal.tsx:185 Looking for section with tag: "V1"
+SongViewerModal.tsx:192   Checking section: V1 (type: verse, number: 1)
+SongViewerModal.tsx:193   Expected tags: "V1" or "V1"
+SongViewerModal.tsx:198   Found section for "V1": Object
+SongViewerModal.tsx:185 Looking for section with tag: "C"
+SongViewerModal.tsx:192   Checking section: V1 (type: verse, number: 1)
+SongViewerModal.tsx:193   Expected tags: "V1" or "V1"
+SongViewerModal.tsx:192   Checking section: C (type: chorus, number: 1)
+SongViewerModal.tsx:193   Expected tags: "C1" or "C"
+SongViewerModal.tsx:198   Found section for "C": Object
+SongViewerModal.tsx:185 Looking for section with tag: "V2"
+SongViewerModal.tsx:192   Checking section: V1 (type: verse, number: 1)
+SongViewerModal.tsx:193   Expected tags: "V1" or "V1"
+SongViewerModal.tsx:192   Checking section: C (type: chorus, number: 1)
+SongViewerModal.tsx:193   Expected tags: "C1" or "C"
+SongViewerModal.tsx:192   Checking section: V2 (type: verse, number: 2)
+SongViewerModal.tsx:193   Expected tags: "V2" or "V2"
+SongViewerModal.tsx:198   Found section for "V2": Object
+SongViewerModal.tsx:185 Looking for section with tag: "V3"
+SongViewerModal.tsx:192   Checking section: V1 (type: verse, number: 1)
+SongViewerModal.tsx:193   Expected tags: "V1" or "V1"
+SongViewerModal.tsx:192   Checking section: C (type: chorus, number: 1)
+SongViewerModal.tsx:193   Expected tags: "C1" or "C"
+SongViewerModal.tsx:192   Checking section: V2 (type: verse, number: 2)
+SongViewerModal.tsx:193   Expected tags: "V2" or "V2"
+SongViewerModal.tsx:192   Checking section: V3 (type: verse, number: 3)
+SongViewerModal.tsx:193   Expected tags: "V3" or "V3"
+SongViewerModal.tsx:198   Found section for "V3": Object
+SongViewerModal.tsx:152 SongViewerModal received song: Object
+SongViewerModal.tsx:153 Song sections: Array(4)
+SongViewerModal.tsx:154 Song verseOrder: V1, C, V2, V3
+SongViewerModal.tsx:185 Looking for section with tag: "V1"
+SongViewerModal.tsx:192   Checking section: V1 (type: verse, number: 1)
+SongViewerModal.tsx:193   Expected tags: "V1" or "V1"
+SongViewerModal.tsx:198   Found section for "V1": Object
+SongViewerModal.tsx:185 Looking for section with tag: "C"
+SongViewerModal.tsx:192   Checking section: V1 (type: verse, number: 1)
+SongViewerModal.tsx:193   Expected tags: "V1" or "V1"
+SongViewerModal.tsx:192   Checking section: C (type: chorus, number: 1)
+SongViewerModal.tsx:193   Expected tags: "C1" or "C"
+SongViewerModal.tsx:198   Found section for "C": Object
+SongViewerModal.tsx:185 Looking for section with tag: "V2"
+SongViewerModal.tsx:192   Checking section: V1 (type: verse, number: 1)
+SongViewerModal.tsx:193   Expected tags: "V1" or "V1"
+SongViewerModal.tsx:192   Checking section: C (type: chorus, number: 1)
+SongViewerModal.tsx:193   Expected tags: "C1" or "C"
+SongViewerModal.tsx:192   Checking section: V2 (type: verse, number: 2)
+SongViewerModal.tsx:193   Expected tags: "V2" or "V2"
+SongViewerModal.tsx:198   Found section for "V2": Object
+SongViewerModal.tsx:185 Looking for section with tag: "V3"
+SongViewerModal.tsx:192   Checking section: V1 (type: verse, number: 1)
+SongViewerModal.tsx:193   Expected tags: "V1" or "V1"
+SongViewerModal.tsx:192   Checking section: C (type: chorus, number: 1)
+SongViewerModal.tsx:193   Expected tags: "C1" or "C"
+SongViewerModal.tsx:192   Checking section: V2 (type: verse, number: 2)
+SongViewerModal.tsx:193   Expected tags: "V2" or "V2"
+SongViewerModal.tsx:192   Checking section: V3 (type: verse, number: 3)
+SongViewerModal.tsx:193   Expected tags: "V3" or "V3"
+SongViewerModal.tsx:198   Found section for "V3": Object
+QworshipHome.tsx:1014 === ADD SONG TO SERVICE SECTIONS CALLED ===
+QworshipHome.tsx:1015 Song item: Object
+QworshipHome.tsx:1016 Section IDs: Array(2)
+QworshipHome.tsx:1017 Song sections data: Array(4)
+QworshipHome.tsx:1018 Song content data: Array(4)
+QworshipHome.tsx:1021 Full songItem structure: {
+  "id": "song-28-1754500548253",
+  "type": "song",
+  "title": "Wonderful Grace of Jesus",
+  "artist": "Haldor Lillenas",
+  "content": [
+    {
+      "id": "section1",
+      "type": "verse",
+      "number": 1,
+      "label": "V1",
+      "content": "Wonderful grace of Jesus,\nGreater than all my sin;\nHow shall my tongue describe it,\nWhere shall its praise begin?\nTaking away my burden,\nSetting my spirit free;\nFor the wonderful grace of Jesus reaches me."
+    },
+    {
+      "id": "section2",
+      "type": "chorus",
+      "number": 1,
+      "label": "C",
+      "content": "Wonderful the matchless grace of Jesus,\nDeeper than the mighty rolling sea;\nHigher than the mountain, sparkling like a fountain,\nAll-sufficient grace for even me!\nBroader than the scope of my transgressions,\nGreater far than all my sin and shame;\nOh, magnify the precious Name of Jesus,\nPraise His Name!"
+    },
+    {
+      "id": "section3",
+      "type": "verse",
+      "number": 2,
+      "label": "V2",
+      "content": "Wonderful grace of Jesus,\nReaching to all the lost,\nBy it I have been pardoned,\nSaved to the uttermost;\nChains have been torn asunder,\nGiving me liberty;\nFor the wonderful grace of Jesus reaches me."
+    },
+    {
+      "id": "section4",
+      "type": "verse",
+      "number": 3,
+      "label": "V3",
+      "content": "Wonderful grace of Jesus,\nReaching the most defiled,\nBy its transforming power,\nMaking him God’s dear child,\nPurchasing peace and heaven\nFor all eternity—\nAnd the wonderful grace of Jesus reaches me."
+    }
+  ],
+  "sections": [
+    {
+      "id": "section1",
+      "type": "verse",
+      "number": 1,
+      "label": "V1",
+      "content": "Wonderful grace of Jesus,\nGreater than all my sin;\nHow shall my tongue describe it,\nWhere shall its praise begin?\nTaking away my burden,\nSetting my spirit free;\nFor the wonderful grace of Jesus reaches me."
+    },
+    {
+      "id": "section2",
+      "type": "chorus",
+      "number": 1,
+      "label": "C",
+      "content": "Wonderful the matchless grace of Jesus,\nDeeper than the mighty rolling sea;\nHigher than the mountain, sparkling like a fountain,\nAll-sufficient grace for even me!\nBroader than the scope of my transgressions,\nGreater far than all my sin and shame;\nOh, magnify the precious Name of Jesus,\nPraise His Name!"
+    },
+    {
+      "id": "section3",
+      "type": "verse",
+      "number": 2,
+      "label": "V2",
+      "content": "Wonderful grace of Jesus,\nReaching to all the lost,\nBy it I have been pardoned,\nSaved to the uttermost;\nChains have been torn asunder,\nGiving me liberty;\nFor the wonderful grace of Jesus reaches me."
+    },
+    {
+      "id": "section4",
+      "type": "verse",
+      "number": 3,
+      "label": "V3",
+      "content": "Wonderful grace of Jesus,\nReaching the most defiled,\nBy its transforming power,\nMaking him God’s dear child,\nPurchasing peace and heaven\nFor all eternity—\nAnd the wonderful grace of Jesus reaches me."
+    }
+  ],
+  "verseOrder": "V1, C, V2, V3",
+  "songId": "28"
+}
+QworshipHome.tsx:1022 songItem.sections: Array(4)
+QworshipHome.tsx:1023 songItem.content: Array(4)
+QworshipHome.tsx:1024 songItem.lyrics: undefined
+QworshipHome.tsx:1032 Creating item for section "PRE-SERVICE ITEMS": Object
+QworshipHome.tsx:1032 Creating item for section "SERVICE ITEMS": Object
+QworshipHome.tsx:1053 About to call rebuildSlidesFromServiceItems...
+QworshipHome.tsx:1074 Added song to sections: PRE-SERVICE ITEMS, SERVICE ITEMS Object
+QworshipHome.tsx:154 QworshipHome - songsData: Object
+QworshipHome.tsx:155 QworshipHome - savedSongs: Array(7)
+SongbookModal.tsx:172 SongbookModal received savedSongs: Array(7)
+SongbookModal.tsx:21 Starting lyrics parsing for: This is an example song for demonstration purposes.
+
+[Verse 1]
+This is a sample verse
+To show how so...
+SongbookModal.tsx:55 Starting new section: Verse 1
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: Verse 2
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: Chorus
+SongbookModal.tsx:82 Added final section: Object
+SongbookModal.tsx:86 Final parsed sections: Array(3)
+SongbookModal.tsx:186 Song "Example Song" structure: Array(3)
+SongbookModal.tsx:187 Song "Example Song" verseOrder: verse1, verse2, chorus
+SongbookModal.tsx:190 Transforming song "Example Song": Object
+SongbookModal.tsx:21 Starting lyrics parsing for: [V1 (Verse 1)]
+Amazing grace! How sweet the sound
+That saved a wretch like me!
+I once was lost, but ...
+SongbookModal.tsx:55 Starting new section: V1 (Verse 1)
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V2 (Verse 2)
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V3 (Verse 3)
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V4 (Verse 4)
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V5 (Verse 5)
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V6 (Verse 6)
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V7 (Verse 7)
+SongbookModal.tsx:86 Final parsed sections: Array(6)
+SongbookModal.tsx:186 Song "Amazing Grace" structure: Array(7)
+SongbookModal.tsx:187 Song "Amazing Grace" verseOrder: V1, V2, V3, V4, V5, V6, V7
+SongbookModal.tsx:190 Transforming song "Amazing Grace": Object
+SongbookModal.tsx:21 Starting lyrics parsing for: [V1]
+Wonderful grace of Jesus,
+Greater than all my sin;
+How shall my tongue describe it,
+Where shall...
+SongbookModal.tsx:55 Starting new section: V1
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: C
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V2
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V3
+SongbookModal.tsx:82 Added final section: Object
+SongbookModal.tsx:86 Final parsed sections: Array(4)
+SongbookModal.tsx:186 Song "Wonderful Grace of Jesus" structure: Array(4)
+SongbookModal.tsx:187 Song "Wonderful Grace of Jesus" verseOrder: V1, C, V2, V3
+SongbookModal.tsx:190 Transforming song "Wonderful Grace of Jesus": Object
+SongbookModal.tsx:21 Starting lyrics parsing for: [V1]
+Wonderful grace of Jesus,
+Greater than all my sin;
+How shall my tongue describe it,
+Where shall...
+SongbookModal.tsx:55 Starting new section: V1
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: C
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V2
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V3
+SongbookModal.tsx:82 Added final section: Object
+SongbookModal.tsx:86 Final parsed sections: Array(4)
+SongbookModal.tsx:186 Song "Wonderful Grace of Jesus" structure: Array(4)
+SongbookModal.tsx:187 Song "Wonderful Grace of Jesus" verseOrder: V1, C, V2, V3
+SongbookModal.tsx:190 Transforming song "Wonderful Grace of Jesus": Object
+SongbookModal.tsx:21 Starting lyrics parsing for: [V1 (Verse 1)]
+Wonderful grace of Jesus,
+Greater than all my sin;
+How shall my tongue describe it,
+W...
+SongbookModal.tsx:55 Starting new section: V1 (Verse 1)
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V2 (Verse 2)
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V3 (Verse 3)
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: C1 (Chorus 1)
+SongbookModal.tsx:82 Added final section: Object
+SongbookModal.tsx:86 Final parsed sections: Array(4)
+SongbookModal.tsx:186 Song "Grace of Jesus" structure: Array(4)
+SongbookModal.tsx:187 Song "Grace of Jesus" verseOrder: V1, C1, V2, V3
+SongbookModal.tsx:190 Transforming song "Grace of Jesus": Object
+SongbookModal.tsx:21 Starting lyrics parsing for: [V1]
+Wonderful grace of Jesus,
+Greater than all my sin;
+How shall my tongue describe it,
+Where shall...
+SongbookModal.tsx:55 Starting new section: V1
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: C
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V2
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V3
+SongbookModal.tsx:82 Added final section: Object
+SongbookModal.tsx:86 Final parsed sections: Array(4)
+SongbookModal.tsx:186 Song "Sweet Jesus" structure: Array(4)
+SongbookModal.tsx:187 Song "Sweet Jesus" verseOrder: V1, C, V2, V3
+SongbookModal.tsx:190 Transforming song "Sweet Jesus": Object
+SongbookModal.tsx:21 Starting lyrics parsing for: [V1 (Verse 1)]
+Abide with me; fast falls the eventide;
+The darkness deepens; Lord, with me abide;
+Wh...
+SongbookModal.tsx:55 Starting new section: V1 (Verse 1)
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V2 (Verse 2)
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V3 (Verse 3)
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V4 (Verse 4)
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: C1 (Chorus 1)
+SongbookModal.tsx:82 Added final section: Object
+SongbookModal.tsx:86 Final parsed sections: Array(5)
+SongbookModal.tsx:186 Song "Abide with Me" structure: Array(4)
+SongbookModal.tsx:187 Song "Abide with Me" verseOrder: V1, V2, V3, C1
+SongbookModal.tsx:190 Transforming song "Abide with Me": Object
+QworshipHome.tsx:1070 Calling rebuildSlidesFromServiceItems after timeout...
+QworshipHome.tsx:1111 === REBUILDING SLIDES ===
+QworshipHome.tsx:1112 Current sectionItems: Object
+QworshipHome.tsx:1118 Processing section "PRE-SERVICE ITEMS" with 0 items: Array(0)
+QworshipHome.tsx:1118 Processing section "WARM - UP" with 0 items: Array(0)
+QworshipHome.tsx:1118 Processing section "SERVICE ITEMS" with 0 items: Array(0)
+QworshipHome.tsx:1118 Processing section "POST SERVICE LOOP" with 0 items: Array(0)
+QworshipHome.tsx:1197 Total slides created: 0 Array(0)
+QworshipHome.tsx:1199 Current slides state before setting: Array(8)
+QworshipHome.tsx:1200 New slides array being set: Array(0)
+QworshipHome.tsx:1201 === REBUILD COMPLETE ===
+QworshipHome.tsx:1205  NO SLIDES CREATED - This is the bug we're debugging!
+rebuildSlidesFromServiceItems @ QworshipHome.tsx:1205
+QworshipHome.tsx:1206  Service section items that were processed: Object
+rebuildSlidesFromServiceItems @ QworshipHome.tsx:1206
+QworshipHome.tsx:154 QworshipHome - songsData: Object
+QworshipHome.tsx:155 QworshipHome - savedSongs: Array(7)
+SongbookModal.tsx:172 SongbookModal received savedSongs: Array(7)
+SongbookModal.tsx:21 Starting lyrics parsing for: This is an example song for demonstration purposes.
+
+[Verse 1]
+This is a sample verse
+To show how so...
+SongbookModal.tsx:55 Starting new section: Verse 1
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: Verse 2
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: Chorus
+SongbookModal.tsx:82 Added final section: Object
+SongbookModal.tsx:86 Final parsed sections: Array(3)
+SongbookModal.tsx:186 Song "Example Song" structure: Array(3)
+SongbookModal.tsx:187 Song "Example Song" verseOrder: verse1, verse2, chorus
+SongbookModal.tsx:190 Transforming song "Example Song": Object
+SongbookModal.tsx:21 Starting lyrics parsing for: [V1 (Verse 1)]
+Amazing grace! How sweet the sound
+That saved a wretch like me!
+I once was lost, but ...
+SongbookModal.tsx:55 Starting new section: V1 (Verse 1)
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V2 (Verse 2)
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V3 (Verse 3)
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V4 (Verse 4)
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V5 (Verse 5)
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V6 (Verse 6)
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V7 (Verse 7)
+SongbookModal.tsx:86 Final parsed sections: Array(6)
+SongbookModal.tsx:186 Song "Amazing Grace" structure: Array(7)
+SongbookModal.tsx:187 Song "Amazing Grace" verseOrder: V1, V2, V3, V4, V5, V6, V7
+SongbookModal.tsx:190 Transforming song "Amazing Grace": Object
+SongbookModal.tsx:21 Starting lyrics parsing for: [V1]
+Wonderful grace of Jesus,
+Greater than all my sin;
+How shall my tongue describe it,
+Where shall...
+SongbookModal.tsx:55 Starting new section: V1
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: C
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V2
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V3
+SongbookModal.tsx:82 Added final section: Object
+SongbookModal.tsx:86 Final parsed sections: Array(4)
+SongbookModal.tsx:186 Song "Wonderful Grace of Jesus" structure: Array(4)
+SongbookModal.tsx:187 Song "Wonderful Grace of Jesus" verseOrder: V1, C, V2, V3
+SongbookModal.tsx:190 Transforming song "Wonderful Grace of Jesus": Object
+SongbookModal.tsx:21 Starting lyrics parsing for: [V1]
+Wonderful grace of Jesus,
+Greater than all my sin;
+How shall my tongue describe it,
+Where shall...
+SongbookModal.tsx:55 Starting new section: V1
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: C
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V2
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V3
+SongbookModal.tsx:82 Added final section: Object
+SongbookModal.tsx:86 Final parsed sections: Array(4)
+SongbookModal.tsx:186 Song "Wonderful Grace of Jesus" structure: Array(4)
+SongbookModal.tsx:187 Song "Wonderful Grace of Jesus" verseOrder: V1, C, V2, V3
+SongbookModal.tsx:190 Transforming song "Wonderful Grace of Jesus": Object
+SongbookModal.tsx:21 Starting lyrics parsing for: [V1 (Verse 1)]
+Wonderful grace of Jesus,
+Greater than all my sin;
+How shall my tongue describe it,
+W...
+SongbookModal.tsx:55 Starting new section: V1 (Verse 1)
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V2 (Verse 2)
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V3 (Verse 3)
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: C1 (Chorus 1)
+SongbookModal.tsx:82 Added final section: Object
+SongbookModal.tsx:86 Final parsed sections: Array(4)
+SongbookModal.tsx:186 Song "Grace of Jesus" structure: Array(4)
+SongbookModal.tsx:187 Song "Grace of Jesus" verseOrder: V1, C1, V2, V3
+SongbookModal.tsx:190 Transforming song "Grace of Jesus": Object
+SongbookModal.tsx:21 Starting lyrics parsing for: [V1]
+Wonderful grace of Jesus,
+Greater than all my sin;
+How shall my tongue describe it,
+Where shall...
+SongbookModal.tsx:55 Starting new section: V1
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: C
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V2
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V3
+SongbookModal.tsx:82 Added final section: Object
+SongbookModal.tsx:86 Final parsed sections: Array(4)
+SongbookModal.tsx:186 Song "Sweet Jesus" structure: Array(4)
+SongbookModal.tsx:187 Song "Sweet Jesus" verseOrder: V1, C, V2, V3
+SongbookModal.tsx:190 Transforming song "Sweet Jesus": Object
+SongbookModal.tsx:21 Starting lyrics parsing for: [V1 (Verse 1)]
+Abide with me; fast falls the eventide;
+The darkness deepens; Lord, with me abide;
+Wh...
+SongbookModal.tsx:55 Starting new section: V1 (Verse 1)
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V2 (Verse 2)
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V3 (Verse 3)
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V4 (Verse 4)
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: C1 (Chorus 1)
+SongbookModal.tsx:82 Added final section: Object
+SongbookModal.tsx:86 Final parsed sections: Array(5)
+SongbookModal.tsx:186 Song "Abide with Me" structure: Array(4)
+SongbookModal.tsx:187 Song "Abide with Me" verseOrder: V1, V2, V3, C1
+SongbookModal.tsx:190 Transforming song "Abide with Me": Object
+QworshipHome.tsx:154 QworshipHome - songsData: Object
+QworshipHome.tsx:155 QworshipHome - savedSongs: Array(7)
+SongbookModal.tsx:172 SongbookModal received savedSongs: Array(7)
+SongbookModal.tsx:21 Starting lyrics parsing for: This is an example song for demonstration purposes.
+
+[Verse 1]
+This is a sample verse
+To show how so...
+SongbookModal.tsx:55 Starting new section: Verse 1
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: Verse 2
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: Chorus
+SongbookModal.tsx:82 Added final section: Object
+SongbookModal.tsx:86 Final parsed sections: Array(3)
+SongbookModal.tsx:186 Song "Example Song" structure: Array(3)
+SongbookModal.tsx:187 Song "Example Song" verseOrder: verse1, verse2, chorus
+SongbookModal.tsx:190 Transforming song "Example Song": Object
+SongbookModal.tsx:21 Starting lyrics parsing for: [V1 (Verse 1)]
+Amazing grace! How sweet the sound
+That saved a wretch like me!
+I once was lost, but ...
+SongbookModal.tsx:55 Starting new section: V1 (Verse 1)
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V2 (Verse 2)
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V3 (Verse 3)
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V4 (Verse 4)
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V5 (Verse 5)
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V6 (Verse 6)
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V7 (Verse 7)
+SongbookModal.tsx:86 Final parsed sections: Array(6)
+SongbookModal.tsx:186 Song "Amazing Grace" structure: Array(7)
+SongbookModal.tsx:187 Song "Amazing Grace" verseOrder: V1, V2, V3, V4, V5, V6, V7
+SongbookModal.tsx:190 Transforming song "Amazing Grace": Object
+SongbookModal.tsx:21 Starting lyrics parsing for: [V1]
+Wonderful grace of Jesus,
+Greater than all my sin;
+How shall my tongue describe it,
+Where shall...
+SongbookModal.tsx:55 Starting new section: V1
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: C
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V2
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V3
+SongbookModal.tsx:82 Added final section: Object
+SongbookModal.tsx:86 Final parsed sections: Array(4)
+SongbookModal.tsx:186 Song "Wonderful Grace of Jesus" structure: Array(4)
+SongbookModal.tsx:187 Song "Wonderful Grace of Jesus" verseOrder: V1, C, V2, V3
+SongbookModal.tsx:190 Transforming song "Wonderful Grace of Jesus": Object
+SongbookModal.tsx:21 Starting lyrics parsing for: [V1]
+Wonderful grace of Jesus,
+Greater than all my sin;
+How shall my tongue describe it,
+Where shall...
+SongbookModal.tsx:55 Starting new section: V1
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: C
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V2
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V3
+SongbookModal.tsx:82 Added final section: Object
+SongbookModal.tsx:86 Final parsed sections: Array(4)
+SongbookModal.tsx:186 Song "Wonderful Grace of Jesus" structure: Array(4)
+SongbookModal.tsx:187 Song "Wonderful Grace of Jesus" verseOrder: V1, C, V2, V3
+SongbookModal.tsx:190 Transforming song "Wonderful Grace of Jesus": Object
+SongbookModal.tsx:21 Starting lyrics parsing for: [V1 (Verse 1)]
+Wonderful grace of Jesus,
+Greater than all my sin;
+How shall my tongue describe it,
+W...
+SongbookModal.tsx:55 Starting new section: V1 (Verse 1)
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V2 (Verse 2)
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V3 (Verse 3)
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: C1 (Chorus 1)
+SongbookModal.tsx:82 Added final section: Object
+SongbookModal.tsx:86 Final parsed sections: Array(4)
+SongbookModal.tsx:186 Song "Grace of Jesus" structure: Array(4)
+SongbookModal.tsx:187 Song "Grace of Jesus" verseOrder: V1, C1, V2, V3
+SongbookModal.tsx:190 Transforming song "Grace of Jesus": Object
+SongbookModal.tsx:21 Starting lyrics parsing for: [V1]
+Wonderful grace of Jesus,
+Greater than all my sin;
+How shall my tongue describe it,
+Where shall...
+SongbookModal.tsx:55 Starting new section: V1
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: C
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V2
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V3
+SongbookModal.tsx:82 Added final section: Object
+SongbookModal.tsx:86 Final parsed sections: Array(4)
+SongbookModal.tsx:186 Song "Sweet Jesus" structure: Array(4)
+SongbookModal.tsx:187 Song "Sweet Jesus" verseOrder: V1, C, V2, V3
+SongbookModal.tsx:190 Transforming song "Sweet Jesus": Object
+SongbookModal.tsx:21 Starting lyrics parsing for: [V1 (Verse 1)]
+Abide with me; fast falls the eventide;
+The darkness deepens; Lord, with me abide;
+Wh...
+SongbookModal.tsx:55 Starting new section: V1 (Verse 1)
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V2 (Verse 2)
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V3 (Verse 3)
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V4 (Verse 4)
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: C1 (Chorus 1)
+SongbookModal.tsx:82 Added final section: Object
+SongbookModal.tsx:86 Final parsed sections: Array(5)
+SongbookModal.tsx:186 Song "Abide with Me" structure: Array(4)
+SongbookModal.tsx:187 Song "Abide with Me" verseOrder: V1, V2, V3, C1
+SongbookModal.tsx:190 Transforming song "Abide with Me": Object
+[NEW] Explain Console errors by using Copilot in Edge: click
+         
+         to explain an error. 
+        Learn more
+        Don't show again

@@ -1,0 +1,1280 @@
+DynamicMediaSections.tsx:124 Processing video asset: Object
+DynamicMediaSections.tsx:124 Processing video asset: Object
+DynamicMediaSections.tsx:124 Processing video asset: Object
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pexels-keira-burton-6623778.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: tropical_maldives_beach_4k-1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: stones_flowers 1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: stones_flowers 1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: poppies_5k 1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pink_water_lily_flower 1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: love_heart_maple leaf-1600x900.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: lotus_flowers 1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: flower_buds_5k 1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: beautiful_red_rose_4k-1920x1080.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: Group 1171275490.png isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: Capturetyyt.PNG isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: photo_2025-06-18_21-37-27.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pexels-mikhail-nilov-8872476.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: intence1.mp4 isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: video.mp4 isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: video.mp4 isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pexels-shelaghmurphy-1666816.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: bible reading1.mp4 isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pexels-mart-production-7679473.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pexels-ninthgrid-2149521550-30690398.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pexels-rebrand-cities-581004-1367272 (1).jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: Company Photo.JPEG isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: test isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/7fddc501-65a5-48fd-bd11-ffd96988a4ad.jpg for asset: pexels-keira-burton-6623778.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/7111863c-c301-4014-b40e-03787aa3ee3d.jpg for asset: tropical_maldives_beach_4k-1366x768.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/5ef2fc94-8bdb-46c4-baf4-a5c85f62d4bc.jpg for asset: stones_flowers 1366x768.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/1f764d40-03a5-4bc7-9d6a-d59dc82bd422.jpg for asset: stones_flowers 1366x768.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/5b39e522-0d3c-4532-8129-bfcaf084bd36.jpg for asset: poppies_5k 1366x768.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/e4e63eeb-57e1-40b4-84bc-abb412176700.jpg for asset: pink_water_lily_flower 1366x768.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/71e3395b-bd65-4258-a0c4-22d34e4d8398.jpg for asset: love_heart_maple leaf-1600x900.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/17c8cc92-c003-4c25-a9f6-36c411df28df.jpg for asset: lotus_flowers 1366x768.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/2b076147-c091-411d-8ef1-a1bf7b68417f.jpg for asset: flower_buds_5k 1366x768.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/191990c7-ae31-4f0a-870c-a330932c961c.jpg for asset: beautiful_red_rose_4k-1920x1080.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/790cd386-f164-46c4-93fa-e421d19199e0.png for asset: Group 1171275490.png type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/c7e1f808-4d30-4734-853f-165a3c90c257.PNG for asset: Capturetyyt.PNG type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/9e984074-9868-4ae9-82c9-107881bb8ecb.jpg for asset: photo_2025-06-18_21-37-27.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/e1e6f3cc-31ed-4efd-a275-2655917c4c3e.jpg for asset: pexels-mikhail-nilov-8872476.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/thumbnails/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4_thumbnail.jpg for asset: intence1.mp4 type: video
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/thumbnails/ec4972c7-b9c0-4ad4-a815-a3111a5857aa_thumbnail.jpg for asset: video.mp4 type: video
+DynamicMediaSections.tsx:606 Image loaded successfully: data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDQwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSIzMDAiIGZpbGw9IiMxYTFhMWEiLz4KICA8Y2lyY2xlIGN4PSIyMDAiIGN5PSIxNTAiIHI9IjMwIiBmaWxsPSJ3aGl0ZSIgZmlsbC1vcGFjaXR5PSIwLjgiLz4KICA8cG9seWdvbiBwb2ludHM9IjE4OCwxMzUgMTg4LDE2NSAyMTgsMTUwIiBmaWxsPSIjMWExYTFhIi8+CiAgPHRleHQgeD0iMjAwIiB5PSIyMDAiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIG9wYWNpdHk9IjAuNyI+VmlkZW88L3RleHQ+Cjwvc3ZnPg== for asset: video.mp4 type: video
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/b78615a4-edfc-409f-9875-52045a2e0613.jpg for asset: pexels-shelaghmurphy-1666816.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDQwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSIzMDAiIGZpbGw9IiMxYTFhMWEiLz4KICA8Y2lyY2xlIGN4PSIyMDAiIGN5PSIxNTAiIHI9IjMwIiBmaWxsPSJ3aGl0ZSIgZmlsbC1vcGFjaXR5PSIwLjgiLz4KICA8cG9seWdvbiBwb2ludHM9IjE4OCwxMzUgMTg4LDE2NSAyMTgsMTUwIiBmaWxsPSIjMWExYTFhIi8+CiAgPHRleHQgeD0iMjAwIiB5PSIyMDAiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIG9wYWNpdHk9IjAuNyI+VmlkZW88L3RleHQ+Cjwvc3ZnPg== for asset: bible reading1.mp4 type: video
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/ffcf7749-6816-4c2f-a3fe-cf8abb467638.jpg for asset: pexels-mart-production-7679473.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/ffdb0cb8-c232-493a-9119-a1431a8a0abc.jpg for asset: pexels-ninthgrid-2149521550-30690398.jpg type: image
+DynamicMediaSections.tsx:124 Processing video asset: Object
+DynamicMediaSections.tsx:124 Processing video asset: Object
+DynamicMediaSections.tsx:124 Processing video asset: Object
+DynamicMediaSections.tsx:124 Processing video asset: Object
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pexels-keira-burton-6623778.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: tropical_maldives_beach_4k-1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: stones_flowers 1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: stones_flowers 1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: poppies_5k 1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pink_water_lily_flower 1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: love_heart_maple leaf-1600x900.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: lotus_flowers 1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: flower_buds_5k 1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: beautiful_red_rose_4k-1920x1080.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: Group 1171275490.png isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: Capturetyyt.PNG isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: photo_2025-06-18_21-37-27.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pexels-mikhail-nilov-8872476.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: intence1.mp4 isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: video.mp4 isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: video.mp4 isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pexels-shelaghmurphy-1666816.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: bible reading1.mp4 isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pexels-mart-production-7679473.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pexels-ninthgrid-2149521550-30690398.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pexels-rebrand-cities-581004-1367272 (1).jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: Company Photo.JPEG isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: test isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/7fddc501-65a5-48fd-bd11-ffd96988a4ad.jpg for asset: pexels-keira-burton-6623778.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/7111863c-c301-4014-b40e-03787aa3ee3d.jpg for asset: tropical_maldives_beach_4k-1366x768.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/5ef2fc94-8bdb-46c4-baf4-a5c85f62d4bc.jpg for asset: stones_flowers 1366x768.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/1f764d40-03a5-4bc7-9d6a-d59dc82bd422.jpg for asset: stones_flowers 1366x768.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/5b39e522-0d3c-4532-8129-bfcaf084bd36.jpg for asset: poppies_5k 1366x768.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/e4e63eeb-57e1-40b4-84bc-abb412176700.jpg for asset: pink_water_lily_flower 1366x768.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/71e3395b-bd65-4258-a0c4-22d34e4d8398.jpg for asset: love_heart_maple leaf-1600x900.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/17c8cc92-c003-4c25-a9f6-36c411df28df.jpg for asset: lotus_flowers 1366x768.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/2b076147-c091-411d-8ef1-a1bf7b68417f.jpg for asset: flower_buds_5k 1366x768.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/191990c7-ae31-4f0a-870c-a330932c961c.jpg for asset: beautiful_red_rose_4k-1920x1080.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/790cd386-f164-46c4-93fa-e421d19199e0.png for asset: Group 1171275490.png type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/c7e1f808-4d30-4734-853f-165a3c90c257.PNG for asset: Capturetyyt.PNG type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/9e984074-9868-4ae9-82c9-107881bb8ecb.jpg for asset: photo_2025-06-18_21-37-27.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/e1e6f3cc-31ed-4efd-a275-2655917c4c3e.jpg for asset: pexels-mikhail-nilov-8872476.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/thumbnails/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4_thumbnail.jpg for asset: intence1.mp4 type: video
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/thumbnails/ec4972c7-b9c0-4ad4-a815-a3111a5857aa_thumbnail.jpg for asset: video.mp4 type: video
+DynamicMediaSections.tsx:606 Image loaded successfully: data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDQwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSIzMDAiIGZpbGw9IiMxYTFhMWEiLz4KICA8Y2lyY2xlIGN4PSIyMDAiIGN5PSIxNTAiIHI9IjMwIiBmaWxsPSJ3aGl0ZSIgZmlsbC1vcGFjaXR5PSIwLjgiLz4KICA8cG9seWdvbiBwb2ludHM9IjE4OCwxMzUgMTg4LDE2NSAyMTgsMTUwIiBmaWxsPSIjMWExYTFhIi8+CiAgPHRleHQgeD0iMjAwIiB5PSIyMDAiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIG9wYWNpdHk9IjAuNyI+VmlkZW88L3RleHQ+Cjwvc3ZnPg== for asset: video.mp4 type: video
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/b78615a4-edfc-409f-9875-52045a2e0613.jpg for asset: pexels-shelaghmurphy-1666816.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDQwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSIzMDAiIGZpbGw9IiMxYTFhMWEiLz4KICA8Y2lyY2xlIGN4PSIyMDAiIGN5PSIxNTAiIHI9IjMwIiBmaWxsPSJ3aGl0ZSIgZmlsbC1vcGFjaXR5PSIwLjgiLz4KICA8cG9seWdvbiBwb2ludHM9IjE4OCwxMzUgMTg4LDE2NSAyMTgsMTUwIiBmaWxsPSIjMWExYTFhIi8+CiAgPHRleHQgeD0iMjAwIiB5PSIyMDAiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIG9wYWNpdHk9IjAuNyI+VmlkZW88L3RleHQ+Cjwvc3ZnPg== for asset: bible reading1.mp4 type: video
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/ffcf7749-6816-4c2f-a3fe-cf8abb467638.jpg for asset: pexels-mart-production-7679473.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/ffdb0cb8-c232-493a-9119-a1431a8a0abc.jpg for asset: pexels-ninthgrid-2149521550-30690398.jpg type: image
+DynamicMediaSections.tsx:124 Processing video asset: Object
+DynamicMediaSections.tsx:124 Processing video asset: Object
+DynamicMediaSections.tsx:124 Processing video asset: Object
+DynamicMediaSections.tsx:124 Processing video asset: Object
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pexels-keira-burton-6623778.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: tropical_maldives_beach_4k-1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: stones_flowers 1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: stones_flowers 1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: poppies_5k 1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pink_water_lily_flower 1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: love_heart_maple leaf-1600x900.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: lotus_flowers 1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: flower_buds_5k 1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: beautiful_red_rose_4k-1920x1080.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: Group 1171275490.png isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: Capturetyyt.PNG isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: photo_2025-06-18_21-37-27.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pexels-mikhail-nilov-8872476.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: intence1.mp4 isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: video.mp4 isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: video.mp4 isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pexels-shelaghmurphy-1666816.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: bible reading1.mp4 isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pexels-mart-production-7679473.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pexels-ninthgrid-2149521550-30690398.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pexels-rebrand-cities-581004-1367272 (1).jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: Company Photo.JPEG isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: test isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/7fddc501-65a5-48fd-bd11-ffd96988a4ad.jpg for asset: pexels-keira-burton-6623778.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/7111863c-c301-4014-b40e-03787aa3ee3d.jpg for asset: tropical_maldives_beach_4k-1366x768.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/5ef2fc94-8bdb-46c4-baf4-a5c85f62d4bc.jpg for asset: stones_flowers 1366x768.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/1f764d40-03a5-4bc7-9d6a-d59dc82bd422.jpg for asset: stones_flowers 1366x768.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/5b39e522-0d3c-4532-8129-bfcaf084bd36.jpg for asset: poppies_5k 1366x768.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/e4e63eeb-57e1-40b4-84bc-abb412176700.jpg for asset: pink_water_lily_flower 1366x768.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/71e3395b-bd65-4258-a0c4-22d34e4d8398.jpg for asset: love_heart_maple leaf-1600x900.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/17c8cc92-c003-4c25-a9f6-36c411df28df.jpg for asset: lotus_flowers 1366x768.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/2b076147-c091-411d-8ef1-a1bf7b68417f.jpg for asset: flower_buds_5k 1366x768.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/191990c7-ae31-4f0a-870c-a330932c961c.jpg for asset: beautiful_red_rose_4k-1920x1080.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/790cd386-f164-46c4-93fa-e421d19199e0.png for asset: Group 1171275490.png type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/c7e1f808-4d30-4734-853f-165a3c90c257.PNG for asset: Capturetyyt.PNG type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/9e984074-9868-4ae9-82c9-107881bb8ecb.jpg for asset: photo_2025-06-18_21-37-27.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/e1e6f3cc-31ed-4efd-a275-2655917c4c3e.jpg for asset: pexels-mikhail-nilov-8872476.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/thumbnails/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4_thumbnail.jpg for asset: intence1.mp4 type: video
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/thumbnails/ec4972c7-b9c0-4ad4-a815-a3111a5857aa_thumbnail.jpg for asset: video.mp4 type: video
+DynamicMediaSections.tsx:606 Image loaded successfully: data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDQwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSIzMDAiIGZpbGw9IiMxYTFhMWEiLz4KICA8Y2lyY2xlIGN4PSIyMDAiIGN5PSIxNTAiIHI9IjMwIiBmaWxsPSJ3aGl0ZSIgZmlsbC1vcGFjaXR5PSIwLjgiLz4KICA8cG9seWdvbiBwb2ludHM9IjE4OCwxMzUgMTg4LDE2NSAyMTgsMTUwIiBmaWxsPSIjMWExYTFhIi8+CiAgPHRleHQgeD0iMjAwIiB5PSIyMDAiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIG9wYWNpdHk9IjAuNyI+VmlkZW88L3RleHQ+Cjwvc3ZnPg== for asset: video.mp4 type: video
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/b78615a4-edfc-409f-9875-52045a2e0613.jpg for asset: pexels-shelaghmurphy-1666816.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDQwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSIzMDAiIGZpbGw9IiMxYTFhMWEiLz4KICA8Y2lyY2xlIGN4PSIyMDAiIGN5PSIxNTAiIHI9IjMwIiBmaWxsPSJ3aGl0ZSIgZmlsbC1vcGFjaXR5PSIwLjgiLz4KICA8cG9seWdvbiBwb2ludHM9IjE4OCwxMzUgMTg4LDE2NSAyMTgsMTUwIiBmaWxsPSIjMWExYTFhIi8+CiAgPHRleHQgeD0iMjAwIiB5PSIyMDAiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIG9wYWNpdHk9IjAuNyI+VmlkZW88L3RleHQ+Cjwvc3ZnPg== for asset: bible reading1.mp4 type: video
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/ffcf7749-6816-4c2f-a3fe-cf8abb467638.jpg for asset: pexels-mart-production-7679473.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/ffdb0cb8-c232-493a-9119-a1431a8a0abc.jpg for asset: pexels-ninthgrid-2149521550-30690398.jpg type: image
+DynamicMediaSections.tsx:124 Processing video asset: Object
+DynamicMediaSections.tsx:124 Processing video asset: Object
+DynamicMediaSections.tsx:124 Processing video asset: Object
+DynamicMediaSections.tsx:124 Processing video asset: Object
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pexels-keira-burton-6623778.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: tropical_maldives_beach_4k-1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: stones_flowers 1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: stones_flowers 1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: poppies_5k 1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pink_water_lily_flower 1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: love_heart_maple leaf-1600x900.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: lotus_flowers 1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: flower_buds_5k 1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: beautiful_red_rose_4k-1920x1080.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: Group 1171275490.png isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: Capturetyyt.PNG isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: photo_2025-06-18_21-37-27.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pexels-mikhail-nilov-8872476.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: intence1.mp4 isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: video.mp4 isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: video.mp4 isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pexels-shelaghmurphy-1666816.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: bible reading1.mp4 isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pexels-mart-production-7679473.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pexels-ninthgrid-2149521550-30690398.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pexels-rebrand-cities-581004-1367272 (1).jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: Company Photo.JPEG isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: test isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/7fddc501-65a5-48fd-bd11-ffd96988a4ad.jpg for asset: pexels-keira-burton-6623778.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/7111863c-c301-4014-b40e-03787aa3ee3d.jpg for asset: tropical_maldives_beach_4k-1366x768.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/5ef2fc94-8bdb-46c4-baf4-a5c85f62d4bc.jpg for asset: stones_flowers 1366x768.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/1f764d40-03a5-4bc7-9d6a-d59dc82bd422.jpg for asset: stones_flowers 1366x768.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/5b39e522-0d3c-4532-8129-bfcaf084bd36.jpg for asset: poppies_5k 1366x768.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/e4e63eeb-57e1-40b4-84bc-abb412176700.jpg for asset: pink_water_lily_flower 1366x768.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/71e3395b-bd65-4258-a0c4-22d34e4d8398.jpg for asset: love_heart_maple leaf-1600x900.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/17c8cc92-c003-4c25-a9f6-36c411df28df.jpg for asset: lotus_flowers 1366x768.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/2b076147-c091-411d-8ef1-a1bf7b68417f.jpg for asset: flower_buds_5k 1366x768.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/191990c7-ae31-4f0a-870c-a330932c961c.jpg for asset: beautiful_red_rose_4k-1920x1080.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/790cd386-f164-46c4-93fa-e421d19199e0.png for asset: Group 1171275490.png type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/c7e1f808-4d30-4734-853f-165a3c90c257.PNG for asset: Capturetyyt.PNG type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/9e984074-9868-4ae9-82c9-107881bb8ecb.jpg for asset: photo_2025-06-18_21-37-27.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/e1e6f3cc-31ed-4efd-a275-2655917c4c3e.jpg for asset: pexels-mikhail-nilov-8872476.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/thumbnails/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4_thumbnail.jpg for asset: intence1.mp4 type: video
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/thumbnails/ec4972c7-b9c0-4ad4-a815-a3111a5857aa_thumbnail.jpg for asset: video.mp4 type: video
+DynamicMediaSections.tsx:606 Image loaded successfully: data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDQwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSIzMDAiIGZpbGw9IiMxYTFhMWEiLz4KICA8Y2lyY2xlIGN4PSIyMDAiIGN5PSIxNTAiIHI9IjMwIiBmaWxsPSJ3aGl0ZSIgZmlsbC1vcGFjaXR5PSIwLjgiLz4KICA8cG9seWdvbiBwb2ludHM9IjE4OCwxMzUgMTg4LDE2NSAyMTgsMTUwIiBmaWxsPSIjMWExYTFhIi8+CiAgPHRleHQgeD0iMjAwIiB5PSIyMDAiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIG9wYWNpdHk9IjAuNyI+VmlkZW88L3RleHQ+Cjwvc3ZnPg== for asset: video.mp4 type: video
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/b78615a4-edfc-409f-9875-52045a2e0613.jpg for asset: pexels-shelaghmurphy-1666816.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDQwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSIzMDAiIGZpbGw9IiMxYTFhMWEiLz4KICA8Y2lyY2xlIGN4PSIyMDAiIGN5PSIxNTAiIHI9IjMwIiBmaWxsPSJ3aGl0ZSIgZmlsbC1vcGFjaXR5PSIwLjgiLz4KICA8cG9seWdvbiBwb2ludHM9IjE4OCwxMzUgMTg4LDE2NSAyMTgsMTUwIiBmaWxsPSIjMWExYTFhIi8+CiAgPHRleHQgeD0iMjAwIiB5PSIyMDAiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIG9wYWNpdHk9IjAuNyI+VmlkZW88L3RleHQ+Cjwvc3ZnPg== for asset: bible reading1.mp4 type: video
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/ffcf7749-6816-4c2f-a3fe-cf8abb467638.jpg for asset: pexels-mart-production-7679473.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/ffdb0cb8-c232-493a-9119-a1431a8a0abc.jpg for asset: pexels-ninthgrid-2149521550-30690398.jpg type: image
+DynamicMediaSections.tsx:124 Processing video asset: Object
+DynamicMediaSections.tsx:124 Processing video asset: Object
+DynamicMediaSections.tsx:124 Processing video asset: Object
+DynamicMediaSections.tsx:124 Processing video asset: Object
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pexels-keira-burton-6623778.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: tropical_maldives_beach_4k-1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: stones_flowers 1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: stones_flowers 1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: poppies_5k 1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pink_water_lily_flower 1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: love_heart_maple leaf-1600x900.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: lotus_flowers 1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: flower_buds_5k 1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: beautiful_red_rose_4k-1920x1080.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: Group 1171275490.png isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: Capturetyyt.PNG isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: photo_2025-06-18_21-37-27.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pexels-mikhail-nilov-8872476.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: intence1.mp4 isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: video.mp4 isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: video.mp4 isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pexels-shelaghmurphy-1666816.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: bible reading1.mp4 isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pexels-mart-production-7679473.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pexels-ninthgrid-2149521550-30690398.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pexels-rebrand-cities-581004-1367272 (1).jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: Company Photo.JPEG isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: test isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/7fddc501-65a5-48fd-bd11-ffd96988a4ad.jpg for asset: pexels-keira-burton-6623778.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/7111863c-c301-4014-b40e-03787aa3ee3d.jpg for asset: tropical_maldives_beach_4k-1366x768.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/5ef2fc94-8bdb-46c4-baf4-a5c85f62d4bc.jpg for asset: stones_flowers 1366x768.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/1f764d40-03a5-4bc7-9d6a-d59dc82bd422.jpg for asset: stones_flowers 1366x768.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/5b39e522-0d3c-4532-8129-bfcaf084bd36.jpg for asset: poppies_5k 1366x768.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/e4e63eeb-57e1-40b4-84bc-abb412176700.jpg for asset: pink_water_lily_flower 1366x768.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/71e3395b-bd65-4258-a0c4-22d34e4d8398.jpg for asset: love_heart_maple leaf-1600x900.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/17c8cc92-c003-4c25-a9f6-36c411df28df.jpg for asset: lotus_flowers 1366x768.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/2b076147-c091-411d-8ef1-a1bf7b68417f.jpg for asset: flower_buds_5k 1366x768.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/191990c7-ae31-4f0a-870c-a330932c961c.jpg for asset: beautiful_red_rose_4k-1920x1080.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/790cd386-f164-46c4-93fa-e421d19199e0.png for asset: Group 1171275490.png type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/c7e1f808-4d30-4734-853f-165a3c90c257.PNG for asset: Capturetyyt.PNG type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/9e984074-9868-4ae9-82c9-107881bb8ecb.jpg for asset: photo_2025-06-18_21-37-27.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/e1e6f3cc-31ed-4efd-a275-2655917c4c3e.jpg for asset: pexels-mikhail-nilov-8872476.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/thumbnails/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4_thumbnail.jpg for asset: intence1.mp4 type: video
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/thumbnails/ec4972c7-b9c0-4ad4-a815-a3111a5857aa_thumbnail.jpg for asset: video.mp4 type: video
+DynamicMediaSections.tsx:606 Image loaded successfully: data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDQwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSIzMDAiIGZpbGw9IiMxYTFhMWEiLz4KICA8Y2lyY2xlIGN4PSIyMDAiIGN5PSIxNTAiIHI9IjMwIiBmaWxsPSJ3aGl0ZSIgZmlsbC1vcGFjaXR5PSIwLjgiLz4KICA8cG9seWdvbiBwb2ludHM9IjE4OCwxMzUgMTg4LDE2NSAyMTgsMTUwIiBmaWxsPSIjMWExYTFhIi8+CiAgPHRleHQgeD0iMjAwIiB5PSIyMDAiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIG9wYWNpdHk9IjAuNyI+VmlkZW88L3RleHQ+Cjwvc3ZnPg== for asset: video.mp4 type: video
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/b78615a4-edfc-409f-9875-52045a2e0613.jpg for asset: pexels-shelaghmurphy-1666816.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDQwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSIzMDAiIGZpbGw9IiMxYTFhMWEiLz4KICA8Y2lyY2xlIGN4PSIyMDAiIGN5PSIxNTAiIHI9IjMwIiBmaWxsPSJ3aGl0ZSIgZmlsbC1vcGFjaXR5PSIwLjgiLz4KICA8cG9seWdvbiBwb2ludHM9IjE4OCwxMzUgMTg4LDE2NSAyMTgsMTUwIiBmaWxsPSIjMWExYTFhIi8+CiAgPHRleHQgeD0iMjAwIiB5PSIyMDAiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIG9wYWNpdHk9IjAuNyI+VmlkZW88L3RleHQ+Cjwvc3ZnPg== for asset: bible reading1.mp4 type: video
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/ffcf7749-6816-4c2f-a3fe-cf8abb467638.jpg for asset: pexels-mart-production-7679473.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/ffdb0cb8-c232-493a-9119-a1431a8a0abc.jpg for asset: pexels-ninthgrid-2149521550-30690398.jpg type: image
+DynamicMediaSections.tsx:124 Processing video asset: Object
+DynamicMediaSections.tsx:124 Processing video asset: Object
+DynamicMediaSections.tsx:124 Processing video asset: Object
+DynamicMediaSections.tsx:124 Processing video asset: Object
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pexels-keira-burton-6623778.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: tropical_maldives_beach_4k-1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: stones_flowers 1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: stones_flowers 1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: poppies_5k 1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pink_water_lily_flower 1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: love_heart_maple leaf-1600x900.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: lotus_flowers 1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: flower_buds_5k 1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: beautiful_red_rose_4k-1920x1080.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: Group 1171275490.png isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: Capturetyyt.PNG isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: photo_2025-06-18_21-37-27.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pexels-mikhail-nilov-8872476.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: intence1.mp4 isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: video.mp4 isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: video.mp4 isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pexels-shelaghmurphy-1666816.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: bible reading1.mp4 isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pexels-mart-production-7679473.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pexels-ninthgrid-2149521550-30690398.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pexels-rebrand-cities-581004-1367272 (1).jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: Company Photo.JPEG isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: test isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/7fddc501-65a5-48fd-bd11-ffd96988a4ad.jpg for asset: pexels-keira-burton-6623778.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/7111863c-c301-4014-b40e-03787aa3ee3d.jpg for asset: tropical_maldives_beach_4k-1366x768.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/5ef2fc94-8bdb-46c4-baf4-a5c85f62d4bc.jpg for asset: stones_flowers 1366x768.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/1f764d40-03a5-4bc7-9d6a-d59dc82bd422.jpg for asset: stones_flowers 1366x768.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/5b39e522-0d3c-4532-8129-bfcaf084bd36.jpg for asset: poppies_5k 1366x768.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/e4e63eeb-57e1-40b4-84bc-abb412176700.jpg for asset: pink_water_lily_flower 1366x768.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/71e3395b-bd65-4258-a0c4-22d34e4d8398.jpg for asset: love_heart_maple leaf-1600x900.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/17c8cc92-c003-4c25-a9f6-36c411df28df.jpg for asset: lotus_flowers 1366x768.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/2b076147-c091-411d-8ef1-a1bf7b68417f.jpg for asset: flower_buds_5k 1366x768.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/191990c7-ae31-4f0a-870c-a330932c961c.jpg for asset: beautiful_red_rose_4k-1920x1080.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/790cd386-f164-46c4-93fa-e421d19199e0.png for asset: Group 1171275490.png type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/c7e1f808-4d30-4734-853f-165a3c90c257.PNG for asset: Capturetyyt.PNG type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/9e984074-9868-4ae9-82c9-107881bb8ecb.jpg for asset: photo_2025-06-18_21-37-27.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/e1e6f3cc-31ed-4efd-a275-2655917c4c3e.jpg for asset: pexels-mikhail-nilov-8872476.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/thumbnails/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4_thumbnail.jpg for asset: intence1.mp4 type: video
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/thumbnails/ec4972c7-b9c0-4ad4-a815-a3111a5857aa_thumbnail.jpg for asset: video.mp4 type: video
+DynamicMediaSections.tsx:606 Image loaded successfully: data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDQwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSIzMDAiIGZpbGw9IiMxYTFhMWEiLz4KICA8Y2lyY2xlIGN4PSIyMDAiIGN5PSIxNTAiIHI9IjMwIiBmaWxsPSJ3aGl0ZSIgZmlsbC1vcGFjaXR5PSIwLjgiLz4KICA8cG9seWdvbiBwb2ludHM9IjE4OCwxMzUgMTg4LDE2NSAyMTgsMTUwIiBmaWxsPSIjMWExYTFhIi8+CiAgPHRleHQgeD0iMjAwIiB5PSIyMDAiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIG9wYWNpdHk9IjAuNyI+VmlkZW88L3RleHQ+Cjwvc3ZnPg== for asset: video.mp4 type: video
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/b78615a4-edfc-409f-9875-52045a2e0613.jpg for asset: pexels-shelaghmurphy-1666816.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDQwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSIzMDAiIGZpbGw9IiMxYTFhMWEiLz4KICA8Y2lyY2xlIGN4PSIyMDAiIGN5PSIxNTAiIHI9IjMwIiBmaWxsPSJ3aGl0ZSIgZmlsbC1vcGFjaXR5PSIwLjgiLz4KICA8cG9seWdvbiBwb2ludHM9IjE4OCwxMzUgMTg4LDE2NSAyMTgsMTUwIiBmaWxsPSIjMWExYTFhIi8+CiAgPHRleHQgeD0iMjAwIiB5PSIyMDAiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIG9wYWNpdHk9IjAuNyI+VmlkZW88L3RleHQ+Cjwvc3ZnPg== for asset: bible reading1.mp4 type: video
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/ffcf7749-6816-4c2f-a3fe-cf8abb467638.jpg for asset: pexels-mart-production-7679473.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/ffdb0cb8-c232-493a-9119-a1431a8a0abc.jpg for asset: pexels-ninthgrid-2149521550-30690398.jpg type: image
+DynamicMediaSections.tsx:124 Processing video asset: Object
+DynamicMediaSections.tsx:124 Processing video asset: Object
+DynamicMediaSections.tsx:124 Processing video asset: Object
+DynamicMediaSections.tsx:124 Processing video asset: Object
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pexels-keira-burton-6623778.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: tropical_maldives_beach_4k-1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: stones_flowers 1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: stones_flowers 1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: poppies_5k 1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pink_water_lily_flower 1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: love_heart_maple leaf-1600x900.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: lotus_flowers 1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: flower_buds_5k 1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: beautiful_red_rose_4k-1920x1080.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: Group 1171275490.png isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: Capturetyyt.PNG isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: photo_2025-06-18_21-37-27.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pexels-mikhail-nilov-8872476.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: intence1.mp4 isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: video.mp4 isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: video.mp4 isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pexels-shelaghmurphy-1666816.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: bible reading1.mp4 isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pexels-mart-production-7679473.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pexels-ninthgrid-2149521550-30690398.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pexels-rebrand-cities-581004-1367272 (1).jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: Company Photo.JPEG isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: test isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/7fddc501-65a5-48fd-bd11-ffd96988a4ad.jpg for asset: pexels-keira-burton-6623778.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/7111863c-c301-4014-b40e-03787aa3ee3d.jpg for asset: tropical_maldives_beach_4k-1366x768.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/5ef2fc94-8bdb-46c4-baf4-a5c85f62d4bc.jpg for asset: stones_flowers 1366x768.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/1f764d40-03a5-4bc7-9d6a-d59dc82bd422.jpg for asset: stones_flowers 1366x768.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/5b39e522-0d3c-4532-8129-bfcaf084bd36.jpg for asset: poppies_5k 1366x768.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/e4e63eeb-57e1-40b4-84bc-abb412176700.jpg for asset: pink_water_lily_flower 1366x768.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/71e3395b-bd65-4258-a0c4-22d34e4d8398.jpg for asset: love_heart_maple leaf-1600x900.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/17c8cc92-c003-4c25-a9f6-36c411df28df.jpg for asset: lotus_flowers 1366x768.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/2b076147-c091-411d-8ef1-a1bf7b68417f.jpg for asset: flower_buds_5k 1366x768.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/191990c7-ae31-4f0a-870c-a330932c961c.jpg for asset: beautiful_red_rose_4k-1920x1080.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/790cd386-f164-46c4-93fa-e421d19199e0.png for asset: Group 1171275490.png type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/c7e1f808-4d30-4734-853f-165a3c90c257.PNG for asset: Capturetyyt.PNG type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/9e984074-9868-4ae9-82c9-107881bb8ecb.jpg for asset: photo_2025-06-18_21-37-27.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/e1e6f3cc-31ed-4efd-a275-2655917c4c3e.jpg for asset: pexels-mikhail-nilov-8872476.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/thumbnails/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4_thumbnail.jpg for asset: intence1.mp4 type: video
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/thumbnails/ec4972c7-b9c0-4ad4-a815-a3111a5857aa_thumbnail.jpg for asset: video.mp4 type: video
+DynamicMediaSections.tsx:606 Image loaded successfully: data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDQwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSIzMDAiIGZpbGw9IiMxYTFhMWEiLz4KICA8Y2lyY2xlIGN4PSIyMDAiIGN5PSIxNTAiIHI9IjMwIiBmaWxsPSJ3aGl0ZSIgZmlsbC1vcGFjaXR5PSIwLjgiLz4KICA8cG9seWdvbiBwb2ludHM9IjE4OCwxMzUgMTg4LDE2NSAyMTgsMTUwIiBmaWxsPSIjMWExYTFhIi8+CiAgPHRleHQgeD0iMjAwIiB5PSIyMDAiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIG9wYWNpdHk9IjAuNyI+VmlkZW88L3RleHQ+Cjwvc3ZnPg== for asset: video.mp4 type: video
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/b78615a4-edfc-409f-9875-52045a2e0613.jpg for asset: pexels-shelaghmurphy-1666816.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDQwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSIzMDAiIGZpbGw9IiMxYTFhMWEiLz4KICA8Y2lyY2xlIGN4PSIyMDAiIGN5PSIxNTAiIHI9IjMwIiBmaWxsPSJ3aGl0ZSIgZmlsbC1vcGFjaXR5PSIwLjgiLz4KICA8cG9seWdvbiBwb2ludHM9IjE4OCwxMzUgMTg4LDE2NSAyMTgsMTUwIiBmaWxsPSIjMWExYTFhIi8+CiAgPHRleHQgeD0iMjAwIiB5PSIyMDAiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIG9wYWNpdHk9IjAuNyI+VmlkZW88L3RleHQ+Cjwvc3ZnPg== for asset: bible reading1.mp4 type: video
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/ffcf7749-6816-4c2f-a3fe-cf8abb467638.jpg for asset: pexels-mart-production-7679473.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/ffdb0cb8-c232-493a-9119-a1431a8a0abc.jpg for asset: pexels-ninthgrid-2149521550-30690398.jpg type: image
+DynamicMediaSections.tsx:124 Processing video asset: Object
+DynamicMediaSections.tsx:124 Processing video asset: Object
+DynamicMediaSections.tsx:124 Processing video asset: Object
+DynamicMediaSections.tsx:124 Processing video asset: Object
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pexels-keira-burton-6623778.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: tropical_maldives_beach_4k-1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: stones_flowers 1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: stones_flowers 1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: poppies_5k 1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pink_water_lily_flower 1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: love_heart_maple leaf-1600x900.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: lotus_flowers 1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: flower_buds_5k 1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: beautiful_red_rose_4k-1920x1080.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: Group 1171275490.png isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: Capturetyyt.PNG isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: photo_2025-06-18_21-37-27.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pexels-mikhail-nilov-8872476.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: intence1.mp4 isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: video.mp4 isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: video.mp4 isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pexels-shelaghmurphy-1666816.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: bible reading1.mp4 isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pexels-mart-production-7679473.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pexels-ninthgrid-2149521550-30690398.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pexels-rebrand-cities-581004-1367272 (1).jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: Company Photo.JPEG isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: test isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/7fddc501-65a5-48fd-bd11-ffd96988a4ad.jpg for asset: pexels-keira-burton-6623778.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/7111863c-c301-4014-b40e-03787aa3ee3d.jpg for asset: tropical_maldives_beach_4k-1366x768.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/5ef2fc94-8bdb-46c4-baf4-a5c85f62d4bc.jpg for asset: stones_flowers 1366x768.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/1f764d40-03a5-4bc7-9d6a-d59dc82bd422.jpg for asset: stones_flowers 1366x768.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/5b39e522-0d3c-4532-8129-bfcaf084bd36.jpg for asset: poppies_5k 1366x768.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/e4e63eeb-57e1-40b4-84bc-abb412176700.jpg for asset: pink_water_lily_flower 1366x768.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/71e3395b-bd65-4258-a0c4-22d34e4d8398.jpg for asset: love_heart_maple leaf-1600x900.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/17c8cc92-c003-4c25-a9f6-36c411df28df.jpg for asset: lotus_flowers 1366x768.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/2b076147-c091-411d-8ef1-a1bf7b68417f.jpg for asset: flower_buds_5k 1366x768.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/191990c7-ae31-4f0a-870c-a330932c961c.jpg for asset: beautiful_red_rose_4k-1920x1080.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/790cd386-f164-46c4-93fa-e421d19199e0.png for asset: Group 1171275490.png type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/c7e1f808-4d30-4734-853f-165a3c90c257.PNG for asset: Capturetyyt.PNG type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/9e984074-9868-4ae9-82c9-107881bb8ecb.jpg for asset: photo_2025-06-18_21-37-27.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/e1e6f3cc-31ed-4efd-a275-2655917c4c3e.jpg for asset: pexels-mikhail-nilov-8872476.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/thumbnails/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4_thumbnail.jpg for asset: intence1.mp4 type: video
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/thumbnails/ec4972c7-b9c0-4ad4-a815-a3111a5857aa_thumbnail.jpg for asset: video.mp4 type: video
+DynamicMediaSections.tsx:606 Image loaded successfully: data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDQwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSIzMDAiIGZpbGw9IiMxYTFhMWEiLz4KICA8Y2lyY2xlIGN4PSIyMDAiIGN5PSIxNTAiIHI9IjMwIiBmaWxsPSJ3aGl0ZSIgZmlsbC1vcGFjaXR5PSIwLjgiLz4KICA8cG9seWdvbiBwb2ludHM9IjE4OCwxMzUgMTg4LDE2NSAyMTgsMTUwIiBmaWxsPSIjMWExYTFhIi8+CiAgPHRleHQgeD0iMjAwIiB5PSIyMDAiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIG9wYWNpdHk9IjAuNyI+VmlkZW88L3RleHQ+Cjwvc3ZnPg== for asset: video.mp4 type: video
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/b78615a4-edfc-409f-9875-52045a2e0613.jpg for asset: pexels-shelaghmurphy-1666816.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDQwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSIzMDAiIGZpbGw9IiMxYTFhMWEiLz4KICA8Y2lyY2xlIGN4PSIyMDAiIGN5PSIxNTAiIHI9IjMwIiBmaWxsPSJ3aGl0ZSIgZmlsbC1vcGFjaXR5PSIwLjgiLz4KICA8cG9seWdvbiBwb2ludHM9IjE4OCwxMzUgMTg4LDE2NSAyMTgsMTUwIiBmaWxsPSIjMWExYTFhIi8+CiAgPHRleHQgeD0iMjAwIiB5PSIyMDAiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIG9wYWNpdHk9IjAuNyI+VmlkZW88L3RleHQ+Cjwvc3ZnPg== for asset: bible reading1.mp4 type: video
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/ffcf7749-6816-4c2f-a3fe-cf8abb467638.jpg for asset: pexels-mart-production-7679473.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/ffdb0cb8-c232-493a-9119-a1431a8a0abc.jpg for asset: pexels-ninthgrid-2149521550-30690398.jpg type: image
+DynamicMediaSections.tsx:124 Processing video asset: Object
+DynamicMediaSections.tsx:124 Processing video asset: Object
+DynamicMediaSections.tsx:124 Processing video asset: Object
+DynamicMediaSections.tsx:124 Processing video asset: Object
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pexels-keira-burton-6623778.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: tropical_maldives_beach_4k-1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: stones_flowers 1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: stones_flowers 1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: poppies_5k 1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pink_water_lily_flower 1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: love_heart_maple leaf-1600x900.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: lotus_flowers 1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: flower_buds_5k 1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: beautiful_red_rose_4k-1920x1080.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: Group 1171275490.png isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: Capturetyyt.PNG isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: photo_2025-06-18_21-37-27.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pexels-mikhail-nilov-8872476.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: intence1.mp4 isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: video.mp4 isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: video.mp4 isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pexels-shelaghmurphy-1666816.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: bible reading1.mp4 isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pexels-mart-production-7679473.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pexels-ninthgrid-2149521550-30690398.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pexels-rebrand-cities-581004-1367272 (1).jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: Company Photo.JPEG isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: test isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/7fddc501-65a5-48fd-bd11-ffd96988a4ad.jpg for asset: pexels-keira-burton-6623778.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/7111863c-c301-4014-b40e-03787aa3ee3d.jpg for asset: tropical_maldives_beach_4k-1366x768.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/5ef2fc94-8bdb-46c4-baf4-a5c85f62d4bc.jpg for asset: stones_flowers 1366x768.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/1f764d40-03a5-4bc7-9d6a-d59dc82bd422.jpg for asset: stones_flowers 1366x768.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/5b39e522-0d3c-4532-8129-bfcaf084bd36.jpg for asset: poppies_5k 1366x768.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/e4e63eeb-57e1-40b4-84bc-abb412176700.jpg for asset: pink_water_lily_flower 1366x768.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/71e3395b-bd65-4258-a0c4-22d34e4d8398.jpg for asset: love_heart_maple leaf-1600x900.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/17c8cc92-c003-4c25-a9f6-36c411df28df.jpg for asset: lotus_flowers 1366x768.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/2b076147-c091-411d-8ef1-a1bf7b68417f.jpg for asset: flower_buds_5k 1366x768.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/191990c7-ae31-4f0a-870c-a330932c961c.jpg for asset: beautiful_red_rose_4k-1920x1080.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/790cd386-f164-46c4-93fa-e421d19199e0.png for asset: Group 1171275490.png type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/c7e1f808-4d30-4734-853f-165a3c90c257.PNG for asset: Capturetyyt.PNG type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/9e984074-9868-4ae9-82c9-107881bb8ecb.jpg for asset: photo_2025-06-18_21-37-27.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/e1e6f3cc-31ed-4efd-a275-2655917c4c3e.jpg for asset: pexels-mikhail-nilov-8872476.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/thumbnails/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4_thumbnail.jpg for asset: intence1.mp4 type: video
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/thumbnails/ec4972c7-b9c0-4ad4-a815-a3111a5857aa_thumbnail.jpg for asset: video.mp4 type: video
+DynamicMediaSections.tsx:606 Image loaded successfully: data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDQwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSIzMDAiIGZpbGw9IiMxYTFhMWEiLz4KICA8Y2lyY2xlIGN4PSIyMDAiIGN5PSIxNTAiIHI9IjMwIiBmaWxsPSJ3aGl0ZSIgZmlsbC1vcGFjaXR5PSIwLjgiLz4KICA8cG9seWdvbiBwb2ludHM9IjE4OCwxMzUgMTg4LDE2NSAyMTgsMTUwIiBmaWxsPSIjMWExYTFhIi8+CiAgPHRleHQgeD0iMjAwIiB5PSIyMDAiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIG9wYWNpdHk9IjAuNyI+VmlkZW88L3RleHQ+Cjwvc3ZnPg== for asset: video.mp4 type: video
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/b78615a4-edfc-409f-9875-52045a2e0613.jpg for asset: pexels-shelaghmurphy-1666816.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDQwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSIzMDAiIGZpbGw9IiMxYTFhMWEiLz4KICA8Y2lyY2xlIGN4PSIyMDAiIGN5PSIxNTAiIHI9IjMwIiBmaWxsPSJ3aGl0ZSIgZmlsbC1vcGFjaXR5PSIwLjgiLz4KICA8cG9seWdvbiBwb2ludHM9IjE4OCwxMzUgMTg4LDE2NSAyMTgsMTUwIiBmaWxsPSIjMWExYTFhIi8+CiAgPHRleHQgeD0iMjAwIiB5PSIyMDAiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIG9wYWNpdHk9IjAuNyI+VmlkZW88L3RleHQ+Cjwvc3ZnPg== for asset: bible reading1.mp4 type: video
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/ffcf7749-6816-4c2f-a3fe-cf8abb467638.jpg for asset: pexels-mart-production-7679473.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/ffdb0cb8-c232-493a-9119-a1431a8a0abc.jpg for asset: pexels-ninthgrid-2149521550-30690398.jpg type: image
+DynamicMediaSections.tsx:124 Processing video asset: Object
+DynamicMediaSections.tsx:124 Processing video asset: Object
+DynamicMediaSections.tsx:124 Processing video asset: Object
+DynamicMediaSections.tsx:124 Processing video asset: Object
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pexels-keira-burton-6623778.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: tropical_maldives_beach_4k-1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: stones_flowers 1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: stones_flowers 1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: poppies_5k 1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pink_water_lily_flower 1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: love_heart_maple leaf-1600x900.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: lotus_flowers 1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: flower_buds_5k 1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: beautiful_red_rose_4k-1920x1080.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: Group 1171275490.png isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: Capturetyyt.PNG isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: photo_2025-06-18_21-37-27.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pexels-mikhail-nilov-8872476.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: intence1.mp4 isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: video.mp4 isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: video.mp4 isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pexels-shelaghmurphy-1666816.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: bible reading1.mp4 isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pexels-mart-production-7679473.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pexels-ninthgrid-2149521550-30690398.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pexels-rebrand-cities-581004-1367272 (1).jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: Company Photo.JPEG isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: test isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/7fddc501-65a5-48fd-bd11-ffd96988a4ad.jpg for asset: pexels-keira-burton-6623778.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/7111863c-c301-4014-b40e-03787aa3ee3d.jpg for asset: tropical_maldives_beach_4k-1366x768.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/5ef2fc94-8bdb-46c4-baf4-a5c85f62d4bc.jpg for asset: stones_flowers 1366x768.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/1f764d40-03a5-4bc7-9d6a-d59dc82bd422.jpg for asset: stones_flowers 1366x768.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/5b39e522-0d3c-4532-8129-bfcaf084bd36.jpg for asset: poppies_5k 1366x768.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/e4e63eeb-57e1-40b4-84bc-abb412176700.jpg for asset: pink_water_lily_flower 1366x768.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/71e3395b-bd65-4258-a0c4-22d34e4d8398.jpg for asset: love_heart_maple leaf-1600x900.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/17c8cc92-c003-4c25-a9f6-36c411df28df.jpg for asset: lotus_flowers 1366x768.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/2b076147-c091-411d-8ef1-a1bf7b68417f.jpg for asset: flower_buds_5k 1366x768.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/191990c7-ae31-4f0a-870c-a330932c961c.jpg for asset: beautiful_red_rose_4k-1920x1080.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/790cd386-f164-46c4-93fa-e421d19199e0.png for asset: Group 1171275490.png type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/c7e1f808-4d30-4734-853f-165a3c90c257.PNG for asset: Capturetyyt.PNG type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/9e984074-9868-4ae9-82c9-107881bb8ecb.jpg for asset: photo_2025-06-18_21-37-27.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/e1e6f3cc-31ed-4efd-a275-2655917c4c3e.jpg for asset: pexels-mikhail-nilov-8872476.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/thumbnails/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4_thumbnail.jpg for asset: intence1.mp4 type: video
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/thumbnails/ec4972c7-b9c0-4ad4-a815-a3111a5857aa_thumbnail.jpg for asset: video.mp4 type: video
+DynamicMediaSections.tsx:606 Image loaded successfully: data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDQwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSIzMDAiIGZpbGw9IiMxYTFhMWEiLz4KICA8Y2lyY2xlIGN4PSIyMDAiIGN5PSIxNTAiIHI9IjMwIiBmaWxsPSJ3aGl0ZSIgZmlsbC1vcGFjaXR5PSIwLjgiLz4KICA8cG9seWdvbiBwb2ludHM9IjE4OCwxMzUgMTg4LDE2NSAyMTgsMTUwIiBmaWxsPSIjMWExYTFhIi8+CiAgPHRleHQgeD0iMjAwIiB5PSIyMDAiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIG9wYWNpdHk9IjAuNyI+VmlkZW88L3RleHQ+Cjwvc3ZnPg== for asset: video.mp4 type: video
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/b78615a4-edfc-409f-9875-52045a2e0613.jpg for asset: pexels-shelaghmurphy-1666816.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDQwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSIzMDAiIGZpbGw9IiMxYTFhMWEiLz4KICA8Y2lyY2xlIGN4PSIyMDAiIGN5PSIxNTAiIHI9IjMwIiBmaWxsPSJ3aGl0ZSIgZmlsbC1vcGFjaXR5PSIwLjgiLz4KICA8cG9seWdvbiBwb2ludHM9IjE4OCwxMzUgMTg4LDE2NSAyMTgsMTUwIiBmaWxsPSIjMWExYTFhIi8+CiAgPHRleHQgeD0iMjAwIiB5PSIyMDAiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIG9wYWNpdHk9IjAuNyI+VmlkZW88L3RleHQ+Cjwvc3ZnPg== for asset: bible reading1.mp4 type: video
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/ffcf7749-6816-4c2f-a3fe-cf8abb467638.jpg for asset: pexels-mart-production-7679473.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/ffdb0cb8-c232-493a-9119-a1431a8a0abc.jpg for asset: pexels-ninthgrid-2149521550-30690398.jpg type: image
+DynamicMediaSections.tsx:124 Processing video asset: Object
+DynamicMediaSections.tsx:124 Processing video asset: Object
+DynamicMediaSections.tsx:124 Processing video asset: Object
+DynamicMediaSections.tsx:124 Processing video asset: Object
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pexels-keira-burton-6623778.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: tropical_maldives_beach_4k-1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: stones_flowers 1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: stones_flowers 1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: poppies_5k 1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pink_water_lily_flower 1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: love_heart_maple leaf-1600x900.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: lotus_flowers 1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: flower_buds_5k 1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: beautiful_red_rose_4k-1920x1080.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: Group 1171275490.png isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: Capturetyyt.PNG isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: photo_2025-06-18_21-37-27.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pexels-mikhail-nilov-8872476.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: intence1.mp4 isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: video.mp4 isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: video.mp4 isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pexels-shelaghmurphy-1666816.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: bible reading1.mp4 isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pexels-mart-production-7679473.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pexels-ninthgrid-2149521550-30690398.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pexels-rebrand-cities-581004-1367272 (1).jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: Company Photo.JPEG isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: test isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/7fddc501-65a5-48fd-bd11-ffd96988a4ad.jpg for asset: pexels-keira-burton-6623778.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/7111863c-c301-4014-b40e-03787aa3ee3d.jpg for asset: tropical_maldives_beach_4k-1366x768.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/5ef2fc94-8bdb-46c4-baf4-a5c85f62d4bc.jpg for asset: stones_flowers 1366x768.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/1f764d40-03a5-4bc7-9d6a-d59dc82bd422.jpg for asset: stones_flowers 1366x768.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/5b39e522-0d3c-4532-8129-bfcaf084bd36.jpg for asset: poppies_5k 1366x768.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/e4e63eeb-57e1-40b4-84bc-abb412176700.jpg for asset: pink_water_lily_flower 1366x768.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/71e3395b-bd65-4258-a0c4-22d34e4d8398.jpg for asset: love_heart_maple leaf-1600x900.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/17c8cc92-c003-4c25-a9f6-36c411df28df.jpg for asset: lotus_flowers 1366x768.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/2b076147-c091-411d-8ef1-a1bf7b68417f.jpg for asset: flower_buds_5k 1366x768.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/191990c7-ae31-4f0a-870c-a330932c961c.jpg for asset: beautiful_red_rose_4k-1920x1080.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/790cd386-f164-46c4-93fa-e421d19199e0.png for asset: Group 1171275490.png type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/c7e1f808-4d30-4734-853f-165a3c90c257.PNG for asset: Capturetyyt.PNG type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/9e984074-9868-4ae9-82c9-107881bb8ecb.jpg for asset: photo_2025-06-18_21-37-27.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/e1e6f3cc-31ed-4efd-a275-2655917c4c3e.jpg for asset: pexels-mikhail-nilov-8872476.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/thumbnails/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4_thumbnail.jpg for asset: intence1.mp4 type: video
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/thumbnails/ec4972c7-b9c0-4ad4-a815-a3111a5857aa_thumbnail.jpg for asset: video.mp4 type: video
+DynamicMediaSections.tsx:606 Image loaded successfully: data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDQwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSIzMDAiIGZpbGw9IiMxYTFhMWEiLz4KICA8Y2lyY2xlIGN4PSIyMDAiIGN5PSIxNTAiIHI9IjMwIiBmaWxsPSJ3aGl0ZSIgZmlsbC1vcGFjaXR5PSIwLjgiLz4KICA8cG9seWdvbiBwb2ludHM9IjE4OCwxMzUgMTg4LDE2NSAyMTgsMTUwIiBmaWxsPSIjMWExYTFhIi8+CiAgPHRleHQgeD0iMjAwIiB5PSIyMDAiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIG9wYWNpdHk9IjAuNyI+VmlkZW88L3RleHQ+Cjwvc3ZnPg== for asset: video.mp4 type: video
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/b78615a4-edfc-409f-9875-52045a2e0613.jpg for asset: pexels-shelaghmurphy-1666816.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDQwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSIzMDAiIGZpbGw9IiMxYTFhMWEiLz4KICA8Y2lyY2xlIGN4PSIyMDAiIGN5PSIxNTAiIHI9IjMwIiBmaWxsPSJ3aGl0ZSIgZmlsbC1vcGFjaXR5PSIwLjgiLz4KICA8cG9seWdvbiBwb2ludHM9IjE4OCwxMzUgMTg4LDE2NSAyMTgsMTUwIiBmaWxsPSIjMWExYTFhIi8+CiAgPHRleHQgeD0iMjAwIiB5PSIyMDAiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIG9wYWNpdHk9IjAuNyI+VmlkZW88L3RleHQ+Cjwvc3ZnPg== for asset: bible reading1.mp4 type: video
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/ffcf7749-6816-4c2f-a3fe-cf8abb467638.jpg for asset: pexels-mart-production-7679473.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/ffdb0cb8-c232-493a-9119-a1431a8a0abc.jpg for asset: pexels-ninthgrid-2149521550-30690398.jpg type: image
+DynamicMediaSections.tsx:124 Processing video asset: Object
+DynamicMediaSections.tsx:124 Processing video asset: Object
+DynamicMediaSections.tsx:124 Processing video asset: Object
+DynamicMediaSections.tsx:124 Processing video asset: Object
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pexels-keira-burton-6623778.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: tropical_maldives_beach_4k-1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: stones_flowers 1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: stones_flowers 1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: poppies_5k 1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pink_water_lily_flower 1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: love_heart_maple leaf-1600x900.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: lotus_flowers 1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: flower_buds_5k 1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: beautiful_red_rose_4k-1920x1080.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: Group 1171275490.png isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: Capturetyyt.PNG isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: photo_2025-06-18_21-37-27.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pexels-mikhail-nilov-8872476.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: intence1.mp4 isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: video.mp4 isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: video.mp4 isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pexels-shelaghmurphy-1666816.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: bible reading1.mp4 isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pexels-mart-production-7679473.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pexels-ninthgrid-2149521550-30690398.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pexels-rebrand-cities-581004-1367272 (1).jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: Company Photo.JPEG isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: test isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/7fddc501-65a5-48fd-bd11-ffd96988a4ad.jpg for asset: pexels-keira-burton-6623778.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/7111863c-c301-4014-b40e-03787aa3ee3d.jpg for asset: tropical_maldives_beach_4k-1366x768.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/5ef2fc94-8bdb-46c4-baf4-a5c85f62d4bc.jpg for asset: stones_flowers 1366x768.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/1f764d40-03a5-4bc7-9d6a-d59dc82bd422.jpg for asset: stones_flowers 1366x768.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/5b39e522-0d3c-4532-8129-bfcaf084bd36.jpg for asset: poppies_5k 1366x768.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/e4e63eeb-57e1-40b4-84bc-abb412176700.jpg for asset: pink_water_lily_flower 1366x768.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/71e3395b-bd65-4258-a0c4-22d34e4d8398.jpg for asset: love_heart_maple leaf-1600x900.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/17c8cc92-c003-4c25-a9f6-36c411df28df.jpg for asset: lotus_flowers 1366x768.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/2b076147-c091-411d-8ef1-a1bf7b68417f.jpg for asset: flower_buds_5k 1366x768.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/191990c7-ae31-4f0a-870c-a330932c961c.jpg for asset: beautiful_red_rose_4k-1920x1080.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/790cd386-f164-46c4-93fa-e421d19199e0.png for asset: Group 1171275490.png type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/c7e1f808-4d30-4734-853f-165a3c90c257.PNG for asset: Capturetyyt.PNG type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/9e984074-9868-4ae9-82c9-107881bb8ecb.jpg for asset: photo_2025-06-18_21-37-27.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/e1e6f3cc-31ed-4efd-a275-2655917c4c3e.jpg for asset: pexels-mikhail-nilov-8872476.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/thumbnails/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4_thumbnail.jpg for asset: intence1.mp4 type: video
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/thumbnails/ec4972c7-b9c0-4ad4-a815-a3111a5857aa_thumbnail.jpg for asset: video.mp4 type: video
+DynamicMediaSections.tsx:606 Image loaded successfully: data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDQwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSIzMDAiIGZpbGw9IiMxYTFhMWEiLz4KICA8Y2lyY2xlIGN4PSIyMDAiIGN5PSIxNTAiIHI9IjMwIiBmaWxsPSJ3aGl0ZSIgZmlsbC1vcGFjaXR5PSIwLjgiLz4KICA8cG9seWdvbiBwb2ludHM9IjE4OCwxMzUgMTg4LDE2NSAyMTgsMTUwIiBmaWxsPSIjMWExYTFhIi8+CiAgPHRleHQgeD0iMjAwIiB5PSIyMDAiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIG9wYWNpdHk9IjAuNyI+VmlkZW88L3RleHQ+Cjwvc3ZnPg== for asset: video.mp4 type: video
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/b78615a4-edfc-409f-9875-52045a2e0613.jpg for asset: pexels-shelaghmurphy-1666816.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDQwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSIzMDAiIGZpbGw9IiMxYTFhMWEiLz4KICA8Y2lyY2xlIGN4PSIyMDAiIGN5PSIxNTAiIHI9IjMwIiBmaWxsPSJ3aGl0ZSIgZmlsbC1vcGFjaXR5PSIwLjgiLz4KICA8cG9seWdvbiBwb2ludHM9IjE4OCwxMzUgMTg4LDE2NSAyMTgsMTUwIiBmaWxsPSIjMWExYTFhIi8+CiAgPHRleHQgeD0iMjAwIiB5PSIyMDAiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIG9wYWNpdHk9IjAuNyI+VmlkZW88L3RleHQ+Cjwvc3ZnPg== for asset: bible reading1.mp4 type: video
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/ffcf7749-6816-4c2f-a3fe-cf8abb467638.jpg for asset: pexels-mart-production-7679473.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/ffdb0cb8-c232-493a-9119-a1431a8a0abc.jpg for asset: pexels-ninthgrid-2149521550-30690398.jpg type: image
+DynamicMediaSections.tsx:124 Processing video asset: Object
+DynamicMediaSections.tsx:124 Processing video asset: Object
+DynamicMediaSections.tsx:124 Processing video asset: Object
+DynamicMediaSections.tsx:124 Processing video asset: Object
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pexels-keira-burton-6623778.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: tropical_maldives_beach_4k-1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: stones_flowers 1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: stones_flowers 1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: poppies_5k 1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pink_water_lily_flower 1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: love_heart_maple leaf-1600x900.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: lotus_flowers 1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: flower_buds_5k 1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: beautiful_red_rose_4k-1920x1080.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: Group 1171275490.png isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: Capturetyyt.PNG isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: photo_2025-06-18_21-37-27.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pexels-mikhail-nilov-8872476.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: intence1.mp4 isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: video.mp4 isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: video.mp4 isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pexels-shelaghmurphy-1666816.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: bible reading1.mp4 isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pexels-mart-production-7679473.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pexels-ninthgrid-2149521550-30690398.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pexels-rebrand-cities-581004-1367272 (1).jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: Company Photo.JPEG isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: test isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/7fddc501-65a5-48fd-bd11-ffd96988a4ad.jpg for asset: pexels-keira-burton-6623778.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/7111863c-c301-4014-b40e-03787aa3ee3d.jpg for asset: tropical_maldives_beach_4k-1366x768.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/5ef2fc94-8bdb-46c4-baf4-a5c85f62d4bc.jpg for asset: stones_flowers 1366x768.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/1f764d40-03a5-4bc7-9d6a-d59dc82bd422.jpg for asset: stones_flowers 1366x768.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/5b39e522-0d3c-4532-8129-bfcaf084bd36.jpg for asset: poppies_5k 1366x768.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/e4e63eeb-57e1-40b4-84bc-abb412176700.jpg for asset: pink_water_lily_flower 1366x768.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/71e3395b-bd65-4258-a0c4-22d34e4d8398.jpg for asset: love_heart_maple leaf-1600x900.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/17c8cc92-c003-4c25-a9f6-36c411df28df.jpg for asset: lotus_flowers 1366x768.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/2b076147-c091-411d-8ef1-a1bf7b68417f.jpg for asset: flower_buds_5k 1366x768.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/191990c7-ae31-4f0a-870c-a330932c961c.jpg for asset: beautiful_red_rose_4k-1920x1080.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/790cd386-f164-46c4-93fa-e421d19199e0.png for asset: Group 1171275490.png type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/c7e1f808-4d30-4734-853f-165a3c90c257.PNG for asset: Capturetyyt.PNG type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/9e984074-9868-4ae9-82c9-107881bb8ecb.jpg for asset: photo_2025-06-18_21-37-27.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/e1e6f3cc-31ed-4efd-a275-2655917c4c3e.jpg for asset: pexels-mikhail-nilov-8872476.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/thumbnails/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4_thumbnail.jpg for asset: intence1.mp4 type: video
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/thumbnails/ec4972c7-b9c0-4ad4-a815-a3111a5857aa_thumbnail.jpg for asset: video.mp4 type: video
+DynamicMediaSections.tsx:606 Image loaded successfully: data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDQwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSIzMDAiIGZpbGw9IiMxYTFhMWEiLz4KICA8Y2lyY2xlIGN4PSIyMDAiIGN5PSIxNTAiIHI9IjMwIiBmaWxsPSJ3aGl0ZSIgZmlsbC1vcGFjaXR5PSIwLjgiLz4KICA8cG9seWdvbiBwb2ludHM9IjE4OCwxMzUgMTg4LDE2NSAyMTgsMTUwIiBmaWxsPSIjMWExYTFhIi8+CiAgPHRleHQgeD0iMjAwIiB5PSIyMDAiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIG9wYWNpdHk9IjAuNyI+VmlkZW88L3RleHQ+Cjwvc3ZnPg== for asset: video.mp4 type: video
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/b78615a4-edfc-409f-9875-52045a2e0613.jpg for asset: pexels-shelaghmurphy-1666816.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDQwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSIzMDAiIGZpbGw9IiMxYTFhMWEiLz4KICA8Y2lyY2xlIGN4PSIyMDAiIGN5PSIxNTAiIHI9IjMwIiBmaWxsPSJ3aGl0ZSIgZmlsbC1vcGFjaXR5PSIwLjgiLz4KICA8cG9seWdvbiBwb2ludHM9IjE4OCwxMzUgMTg4LDE2NSAyMTgsMTUwIiBmaWxsPSIjMWExYTFhIi8+CiAgPHRleHQgeD0iMjAwIiB5PSIyMDAiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIG9wYWNpdHk9IjAuNyI+VmlkZW88L3RleHQ+Cjwvc3ZnPg== for asset: bible reading1.mp4 type: video
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/ffcf7749-6816-4c2f-a3fe-cf8abb467638.jpg for asset: pexels-mart-production-7679473.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/ffdb0cb8-c232-493a-9119-a1431a8a0abc.jpg for asset: pexels-ninthgrid-2149521550-30690398.jpg type: image
+DynamicMediaSections.tsx:124 Processing video asset: Object
+DynamicMediaSections.tsx:124 Processing video asset: Object
+DynamicMediaSections.tsx:124 Processing video asset: Object
+DynamicMediaSections.tsx:124 Processing video asset: Object
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pexels-keira-burton-6623778.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: tropical_maldives_beach_4k-1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: stones_flowers 1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: stones_flowers 1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: poppies_5k 1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pink_water_lily_flower 1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: love_heart_maple leaf-1600x900.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: lotus_flowers 1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: flower_buds_5k 1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: beautiful_red_rose_4k-1920x1080.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: Group 1171275490.png isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: Capturetyyt.PNG isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: photo_2025-06-18_21-37-27.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pexels-mikhail-nilov-8872476.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: intence1.mp4 isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: video.mp4 isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: video.mp4 isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pexels-shelaghmurphy-1666816.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: bible reading1.mp4 isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pexels-mart-production-7679473.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pexels-ninthgrid-2149521550-30690398.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pexels-rebrand-cities-581004-1367272 (1).jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: Company Photo.JPEG isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: test isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/7fddc501-65a5-48fd-bd11-ffd96988a4ad.jpg for asset: pexels-keira-burton-6623778.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/7111863c-c301-4014-b40e-03787aa3ee3d.jpg for asset: tropical_maldives_beach_4k-1366x768.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/5ef2fc94-8bdb-46c4-baf4-a5c85f62d4bc.jpg for asset: stones_flowers 1366x768.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/1f764d40-03a5-4bc7-9d6a-d59dc82bd422.jpg for asset: stones_flowers 1366x768.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/5b39e522-0d3c-4532-8129-bfcaf084bd36.jpg for asset: poppies_5k 1366x768.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/e4e63eeb-57e1-40b4-84bc-abb412176700.jpg for asset: pink_water_lily_flower 1366x768.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/71e3395b-bd65-4258-a0c4-22d34e4d8398.jpg for asset: love_heart_maple leaf-1600x900.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/17c8cc92-c003-4c25-a9f6-36c411df28df.jpg for asset: lotus_flowers 1366x768.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/2b076147-c091-411d-8ef1-a1bf7b68417f.jpg for asset: flower_buds_5k 1366x768.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/191990c7-ae31-4f0a-870c-a330932c961c.jpg for asset: beautiful_red_rose_4k-1920x1080.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/790cd386-f164-46c4-93fa-e421d19199e0.png for asset: Group 1171275490.png type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/c7e1f808-4d30-4734-853f-165a3c90c257.PNG for asset: Capturetyyt.PNG type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/9e984074-9868-4ae9-82c9-107881bb8ecb.jpg for asset: photo_2025-06-18_21-37-27.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/e1e6f3cc-31ed-4efd-a275-2655917c4c3e.jpg for asset: pexels-mikhail-nilov-8872476.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/thumbnails/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4_thumbnail.jpg for asset: intence1.mp4 type: video
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/thumbnails/ec4972c7-b9c0-4ad4-a815-a3111a5857aa_thumbnail.jpg for asset: video.mp4 type: video
+DynamicMediaSections.tsx:606 Image loaded successfully: data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDQwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSIzMDAiIGZpbGw9IiMxYTFhMWEiLz4KICA8Y2lyY2xlIGN4PSIyMDAiIGN5PSIxNTAiIHI9IjMwIiBmaWxsPSJ3aGl0ZSIgZmlsbC1vcGFjaXR5PSIwLjgiLz4KICA8cG9seWdvbiBwb2ludHM9IjE4OCwxMzUgMTg4LDE2NSAyMTgsMTUwIiBmaWxsPSIjMWExYTFhIi8+CiAgPHRleHQgeD0iMjAwIiB5PSIyMDAiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIG9wYWNpdHk9IjAuNyI+VmlkZW88L3RleHQ+Cjwvc3ZnPg== for asset: video.mp4 type: video
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/b78615a4-edfc-409f-9875-52045a2e0613.jpg for asset: pexels-shelaghmurphy-1666816.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDQwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSIzMDAiIGZpbGw9IiMxYTFhMWEiLz4KICA8Y2lyY2xlIGN4PSIyMDAiIGN5PSIxNTAiIHI9IjMwIiBmaWxsPSJ3aGl0ZSIgZmlsbC1vcGFjaXR5PSIwLjgiLz4KICA8cG9seWdvbiBwb2ludHM9IjE4OCwxMzUgMTg4LDE2NSAyMTgsMTUwIiBmaWxsPSIjMWExYTFhIi8+CiAgPHRleHQgeD0iMjAwIiB5PSIyMDAiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIG9wYWNpdHk9IjAuNyI+VmlkZW88L3RleHQ+Cjwvc3ZnPg== for asset: bible reading1.mp4 type: video
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/ffcf7749-6816-4c2f-a3fe-cf8abb467638.jpg for asset: pexels-mart-production-7679473.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/ffdb0cb8-c232-493a-9119-a1431a8a0abc.jpg for asset: pexels-ninthgrid-2149521550-30690398.jpg type: image
+DynamicMediaSections.tsx:124 Processing video asset: Object
+DynamicMediaSections.tsx:124 Processing video asset: Object
+DynamicMediaSections.tsx:124 Processing video asset: Object
+DynamicMediaSections.tsx:124 Processing video asset: Object
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pexels-keira-burton-6623778.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: tropical_maldives_beach_4k-1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: stones_flowers 1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: stones_flowers 1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: poppies_5k 1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pink_water_lily_flower 1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: love_heart_maple leaf-1600x900.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: lotus_flowers 1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: flower_buds_5k 1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: beautiful_red_rose_4k-1920x1080.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: Group 1171275490.png isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: Capturetyyt.PNG isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: photo_2025-06-18_21-37-27.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pexels-mikhail-nilov-8872476.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: intence1.mp4 isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: video.mp4 isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: video.mp4 isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pexels-shelaghmurphy-1666816.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: bible reading1.mp4 isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pexels-mart-production-7679473.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pexels-ninthgrid-2149521550-30690398.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pexels-rebrand-cities-581004-1367272 (1).jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: Company Photo.JPEG isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: test isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/7fddc501-65a5-48fd-bd11-ffd96988a4ad.jpg for asset: pexels-keira-burton-6623778.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/7111863c-c301-4014-b40e-03787aa3ee3d.jpg for asset: tropical_maldives_beach_4k-1366x768.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/5ef2fc94-8bdb-46c4-baf4-a5c85f62d4bc.jpg for asset: stones_flowers 1366x768.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/1f764d40-03a5-4bc7-9d6a-d59dc82bd422.jpg for asset: stones_flowers 1366x768.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/5b39e522-0d3c-4532-8129-bfcaf084bd36.jpg for asset: poppies_5k 1366x768.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/e4e63eeb-57e1-40b4-84bc-abb412176700.jpg for asset: pink_water_lily_flower 1366x768.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/71e3395b-bd65-4258-a0c4-22d34e4d8398.jpg for asset: love_heart_maple leaf-1600x900.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/17c8cc92-c003-4c25-a9f6-36c411df28df.jpg for asset: lotus_flowers 1366x768.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/2b076147-c091-411d-8ef1-a1bf7b68417f.jpg for asset: flower_buds_5k 1366x768.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/191990c7-ae31-4f0a-870c-a330932c961c.jpg for asset: beautiful_red_rose_4k-1920x1080.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/790cd386-f164-46c4-93fa-e421d19199e0.png for asset: Group 1171275490.png type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/c7e1f808-4d30-4734-853f-165a3c90c257.PNG for asset: Capturetyyt.PNG type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/9e984074-9868-4ae9-82c9-107881bb8ecb.jpg for asset: photo_2025-06-18_21-37-27.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/e1e6f3cc-31ed-4efd-a275-2655917c4c3e.jpg for asset: pexels-mikhail-nilov-8872476.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/thumbnails/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4_thumbnail.jpg for asset: intence1.mp4 type: video
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/thumbnails/ec4972c7-b9c0-4ad4-a815-a3111a5857aa_thumbnail.jpg for asset: video.mp4 type: video
+DynamicMediaSections.tsx:606 Image loaded successfully: data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDQwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSIzMDAiIGZpbGw9IiMxYTFhMWEiLz4KICA8Y2lyY2xlIGN4PSIyMDAiIGN5PSIxNTAiIHI9IjMwIiBmaWxsPSJ3aGl0ZSIgZmlsbC1vcGFjaXR5PSIwLjgiLz4KICA8cG9seWdvbiBwb2ludHM9IjE4OCwxMzUgMTg4LDE2NSAyMTgsMTUwIiBmaWxsPSIjMWExYTFhIi8+CiAgPHRleHQgeD0iMjAwIiB5PSIyMDAiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIG9wYWNpdHk9IjAuNyI+VmlkZW88L3RleHQ+Cjwvc3ZnPg== for asset: video.mp4 type: video
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/b78615a4-edfc-409f-9875-52045a2e0613.jpg for asset: pexels-shelaghmurphy-1666816.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDQwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSIzMDAiIGZpbGw9IiMxYTFhMWEiLz4KICA8Y2lyY2xlIGN4PSIyMDAiIGN5PSIxNTAiIHI9IjMwIiBmaWxsPSJ3aGl0ZSIgZmlsbC1vcGFjaXR5PSIwLjgiLz4KICA8cG9seWdvbiBwb2ludHM9IjE4OCwxMzUgMTg4LDE2NSAyMTgsMTUwIiBmaWxsPSIjMWExYTFhIi8+CiAgPHRleHQgeD0iMjAwIiB5PSIyMDAiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIG9wYWNpdHk9IjAuNyI+VmlkZW88L3RleHQ+Cjwvc3ZnPg== for asset: bible reading1.mp4 type: video
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/ffcf7749-6816-4c2f-a3fe-cf8abb467638.jpg for asset: pexels-mart-production-7679473.jpg type: image
+DynamicMediaSections.tsx:606 Image loaded successfully: /uploads/ffdb0cb8-c232-493a-9119-a1431a8a0abc.jpg for asset: pexels-ninthgrid-2149521550-30690398.jpg type: image
+DynamicMediaSections.tsx:124 Processing video asset: Object
+DynamicMediaSections.tsx:124 Processing video asset: Object
+DynamicMediaSections.tsx:124 Processing video asset: Object
+DynamicMediaSections.tsx:124 Processing video asset: Object
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pexels-keira-burton-6623778.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: tropical_maldives_beach_4k-1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: stones_flowers 1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: stones_flowers 1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: poppies_5k 1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pink_water_lily_flower 1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: love_heart_maple leaf-1600x900.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: lotus_flowers 1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: flower_buds_5k 1366x768.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: beautiful_red_rose_4k-1920x1080.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: Group 1171275490.png isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: Capturetyyt.PNG isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: photo_2025-06-18_21-37-27.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pexels-mikhail-nilov-8872476.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: intence1.mp4 isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: video.mp4 isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: video.mp4 isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pexels-shelaghmurphy-1666816.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: bible reading1.mp4 isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pexels-mart-production-7679473.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pexels-ninthgrid-2149521550-30690398.jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: pexels-rebrand-cities-581004-1367272 (1).jpg isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: Company Photo.JPEG isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:572 🔄 Rendering media card: test isModal: true onAssetSelect: true
+DynamicMediaSections.tsx:586 🖱️ MOUSEDOWN EVENT TRIGGERED for asset: intence1.mp4
+DynamicMediaSections.tsx:489 🎬 CARD CLICKED - Asset: intence1.mp4 Type: video
+DynamicMediaSections.tsx:490 🔧 Modal mode: true
+DynamicMediaSections.tsx:491 📋 OnAssetSelect available: true
+DynamicMediaSections.tsx:495 🪟 Background selection mode: null
+DynamicMediaSections.tsx:499 ✅ MODAL SELECTION PATH - Processing asset
+DynamicMediaSections.tsx:521 🚀 CALLING onAssetSelect with: /uploads/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4.mp4 video
+QworshipHome.tsx:6562 🎬 VIDEO DEBUG: Background asset selected from dashboard Browse Media
+QworshipHome.tsx:6563 📽️ Asset URL: /uploads/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4.mp4
+QworshipHome.tsx:6564 🎯 Asset Type received: video
+QworshipHome.tsx:6565 🔍 Is video check: true
+QworshipHome.tsx:6566 🔍 AssetType toLowerCase: video
+QworshipHome.tsx:6567 🔍 Includes video check: true
+QworshipHome.tsx:574 getCurrentItemId called with: Object
+QworshipHome.tsx:593 Using currentSlide parent item: song-1755519096791
+QworshipHome.tsx:6571 📋 Current item ID: song-1755519096791
+QworshipHome.tsx:6580 🎨 Final background data for application: Object
+QworshipHome.tsx:574 getCurrentItemId called with: Object
+QworshipHome.tsx:593 Using currentSlide parent item: song-1755519096791
+QworshipHome.tsx:620 🎬 APPLY BACKGROUND FUNCTION CALLED
+QworshipHome.tsx:621 📋 Background data: Object
+QworshipHome.tsx:622 🎯 Target item ID: song-1755519096791
+QworshipHome.tsx:623 📊 Selected slide: null
+QworshipHome.tsx:624 📈 Current slide: 1
+QworshipHome.tsx:625 📝 Service items count: 1
+QworshipHome.tsx:633 💾 UPDATED ITEM BACKGROUNDS STATE:
+QworshipHome.tsx:634 Old state: Object
+QworshipHome.tsx:635 New state: Object
+QworshipHome.tsx:636 🔍 Background for item song-1755519096791: Object
+DynamicMediaSections.tsx:523 ✅ onAssetSelect callback completed
+QworshipHome.tsx:1256 QworshipHome - songsData: Object
+QworshipHome.tsx:1257 QworshipHome - savedSongs: Object
+QworshipHome.tsx:574 getCurrentItemId called with: Object
+QworshipHome.tsx:593 Using currentSlide parent item: song-1755519096791
+QworshipHome.tsx:611 🔍 getItemBackground called for item: song-1755519096791
+QworshipHome.tsx:612 🗂️ Current itemBackgrounds state: {
+  "song-1755519096791": {
+    "type": "video",
+    "value": "/uploads/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4.mp4",
+    "name": "Selected Asset"
+  }
+}
+QworshipHome.tsx:613 🎨 Returning background: {
+  "type": "video",
+  "value": "/uploads/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4.mp4",
+  "name": "Selected Asset"
+}
+QworshipHome.tsx:5153 🎯 Build mode preview - editing content ID: song-1755519096791
+QworshipHome.tsx:5154 🎨 Build mode preview - retrieved background: Object
+QworshipHome.tsx:611 🔍 getItemBackground called for item: song-1755519096791
+QworshipHome.tsx:612 🗂️ Current itemBackgrounds state: {
+  "song-1755519096791": {
+    "type": "video",
+    "value": "/uploads/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4.mp4",
+    "name": "Selected Asset"
+  }
+}
+QworshipHome.tsx:613 🎨 Returning background: {
+  "type": "video",
+  "value": "/uploads/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4.mp4",
+  "name": "Selected Asset"
+}
+QworshipHome.tsx:5716 Slide preview background for item song-1755519096791 : Object
+QworshipHome.tsx:5718 🎯 Slide thumbnail media background detected: /uploads/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4.mp4
+QworshipHome.tsx:5734 🎨 Applying slide thumbnail image background styles: Object
+QworshipHome.tsx:5735 🔗 Final thumbnail background URL: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/uploads/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4.mp4
+QworshipHome.tsx:611 🔍 getItemBackground called for item: song-1755519096791
+QworshipHome.tsx:612 🗂️ Current itemBackgrounds state: {
+  "song-1755519096791": {
+    "type": "video",
+    "value": "/uploads/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4.mp4",
+    "name": "Selected Asset"
+  }
+}
+QworshipHome.tsx:613 🎨 Returning background: {
+  "type": "video",
+  "value": "/uploads/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4.mp4",
+  "name": "Selected Asset"
+}
+QworshipHome.tsx:5716 Slide preview background for item song-1755519096791 : Object
+QworshipHome.tsx:5718 🎯 Slide thumbnail media background detected: /uploads/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4.mp4
+QworshipHome.tsx:5734 🎨 Applying slide thumbnail image background styles: Object
+QworshipHome.tsx:5735 🔗 Final thumbnail background URL: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/uploads/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4.mp4
+QworshipHome.tsx:611 🔍 getItemBackground called for item: song-1755519096791
+QworshipHome.tsx:612 🗂️ Current itemBackgrounds state: {
+  "song-1755519096791": {
+    "type": "video",
+    "value": "/uploads/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4.mp4",
+    "name": "Selected Asset"
+  }
+}
+QworshipHome.tsx:613 🎨 Returning background: {
+  "type": "video",
+  "value": "/uploads/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4.mp4",
+  "name": "Selected Asset"
+}
+QworshipHome.tsx:5716 Slide preview background for item song-1755519096791 : Object
+QworshipHome.tsx:5718 🎯 Slide thumbnail media background detected: /uploads/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4.mp4
+QworshipHome.tsx:5734 🎨 Applying slide thumbnail image background styles: Object
+QworshipHome.tsx:5735 🔗 Final thumbnail background URL: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/uploads/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4.mp4
+QworshipHome.tsx:611 🔍 getItemBackground called for item: song-1755519096791
+QworshipHome.tsx:612 🗂️ Current itemBackgrounds state: {
+  "song-1755519096791": {
+    "type": "video",
+    "value": "/uploads/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4.mp4",
+    "name": "Selected Asset"
+  }
+}
+QworshipHome.tsx:613 🎨 Returning background: {
+  "type": "video",
+  "value": "/uploads/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4.mp4",
+  "name": "Selected Asset"
+}
+QworshipHome.tsx:5716 Slide preview background for item song-1755519096791 : Object
+QworshipHome.tsx:5718 🎯 Slide thumbnail media background detected: /uploads/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4.mp4
+QworshipHome.tsx:5734 🎨 Applying slide thumbnail image background styles: Object
+QworshipHome.tsx:5735 🔗 Final thumbnail background URL: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/uploads/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4.mp4
+QworshipHome.tsx:611 🔍 getItemBackground called for item: song-1755519096791
+QworshipHome.tsx:612 🗂️ Current itemBackgrounds state: {
+  "song-1755519096791": {
+    "type": "video",
+    "value": "/uploads/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4.mp4",
+    "name": "Selected Asset"
+  }
+}
+QworshipHome.tsx:613 🎨 Returning background: {
+  "type": "video",
+  "value": "/uploads/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4.mp4",
+  "name": "Selected Asset"
+}
+QworshipHome.tsx:5716 Slide preview background for item song-1755519096791 : Object
+QworshipHome.tsx:5718 🎯 Slide thumbnail media background detected: /uploads/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4.mp4
+QworshipHome.tsx:5734 🎨 Applying slide thumbnail image background styles: Object
+QworshipHome.tsx:5735 🔗 Final thumbnail background URL: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/uploads/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4.mp4
+QworshipHome.tsx:611 🔍 getItemBackground called for item: song-1755519096791
+QworshipHome.tsx:612 🗂️ Current itemBackgrounds state: {
+  "song-1755519096791": {
+    "type": "video",
+    "value": "/uploads/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4.mp4",
+    "name": "Selected Asset"
+  }
+}
+QworshipHome.tsx:613 🎨 Returning background: {
+  "type": "video",
+  "value": "/uploads/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4.mp4",
+  "name": "Selected Asset"
+}
+QworshipHome.tsx:5716 Slide preview background for item song-1755519096791 : Object
+QworshipHome.tsx:5718 🎯 Slide thumbnail media background detected: /uploads/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4.mp4
+QworshipHome.tsx:5734 🎨 Applying slide thumbnail image background styles: Object
+QworshipHome.tsx:5735 🔗 Final thumbnail background URL: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/uploads/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4.mp4
+SongbookModal.tsx:172 SongbookModal received savedSongs: Object
+QworshipHome.tsx:1256 QworshipHome - songsData: Object
+QworshipHome.tsx:1257 QworshipHome - savedSongs: Object
+QworshipHome.tsx:574 getCurrentItemId called with: Object
+QworshipHome.tsx:593 Using currentSlide parent item: song-1755519096791
+QworshipHome.tsx:611 🔍 getItemBackground called for item: song-1755519096791
+QworshipHome.tsx:612 🗂️ Current itemBackgrounds state: {
+  "song-1755519096791": {
+    "type": "video",
+    "value": "/uploads/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4.mp4",
+    "name": "Selected Asset"
+  }
+}
+QworshipHome.tsx:613 🎨 Returning background: {
+  "type": "video",
+  "value": "/uploads/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4.mp4",
+  "name": "Selected Asset"
+}
+QworshipHome.tsx:5153 🎯 Build mode preview - editing content ID: song-1755519096791
+QworshipHome.tsx:5154 🎨 Build mode preview - retrieved background: Object
+QworshipHome.tsx:611 🔍 getItemBackground called for item: song-1755519096791
+QworshipHome.tsx:612 🗂️ Current itemBackgrounds state: {
+  "song-1755519096791": {
+    "type": "video",
+    "value": "/uploads/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4.mp4",
+    "name": "Selected Asset"
+  }
+}
+QworshipHome.tsx:613 🎨 Returning background: {
+  "type": "video",
+  "value": "/uploads/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4.mp4",
+  "name": "Selected Asset"
+}
+QworshipHome.tsx:5716 Slide preview background for item song-1755519096791 : Object
+QworshipHome.tsx:5718 🎯 Slide thumbnail media background detected: /uploads/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4.mp4
+QworshipHome.tsx:5734 🎨 Applying slide thumbnail image background styles: Object
+QworshipHome.tsx:5735 🔗 Final thumbnail background URL: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/uploads/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4.mp4
+QworshipHome.tsx:611 🔍 getItemBackground called for item: song-1755519096791
+QworshipHome.tsx:612 🗂️ Current itemBackgrounds state: {
+  "song-1755519096791": {
+    "type": "video",
+    "value": "/uploads/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4.mp4",
+    "name": "Selected Asset"
+  }
+}
+QworshipHome.tsx:613 🎨 Returning background: {
+  "type": "video",
+  "value": "/uploads/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4.mp4",
+  "name": "Selected Asset"
+}
+QworshipHome.tsx:5716 Slide preview background for item song-1755519096791 : Object
+QworshipHome.tsx:5718 🎯 Slide thumbnail media background detected: /uploads/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4.mp4
+QworshipHome.tsx:5734 🎨 Applying slide thumbnail image background styles: Object
+QworshipHome.tsx:5735 🔗 Final thumbnail background URL: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/uploads/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4.mp4
+QworshipHome.tsx:611 🔍 getItemBackground called for item: song-1755519096791
+QworshipHome.tsx:612 🗂️ Current itemBackgrounds state: {
+  "song-1755519096791": {
+    "type": "video",
+    "value": "/uploads/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4.mp4",
+    "name": "Selected Asset"
+  }
+}
+QworshipHome.tsx:613 🎨 Returning background: {
+  "type": "video",
+  "value": "/uploads/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4.mp4",
+  "name": "Selected Asset"
+}
+QworshipHome.tsx:5716 Slide preview background for item song-1755519096791 : Object
+QworshipHome.tsx:5718 🎯 Slide thumbnail media background detected: /uploads/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4.mp4
+QworshipHome.tsx:5734 🎨 Applying slide thumbnail image background styles: Object
+QworshipHome.tsx:5735 🔗 Final thumbnail background URL: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/uploads/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4.mp4
+QworshipHome.tsx:611 🔍 getItemBackground called for item: song-1755519096791
+QworshipHome.tsx:612 🗂️ Current itemBackgrounds state: {
+  "song-1755519096791": {
+    "type": "video",
+    "value": "/uploads/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4.mp4",
+    "name": "Selected Asset"
+  }
+}
+QworshipHome.tsx:613 🎨 Returning background: {
+  "type": "video",
+  "value": "/uploads/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4.mp4",
+  "name": "Selected Asset"
+}
+QworshipHome.tsx:5716 Slide preview background for item song-1755519096791 : Object
+QworshipHome.tsx:5718 🎯 Slide thumbnail media background detected: /uploads/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4.mp4
+QworshipHome.tsx:5734 🎨 Applying slide thumbnail image background styles: Object
+QworshipHome.tsx:5735 🔗 Final thumbnail background URL: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/uploads/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4.mp4
+QworshipHome.tsx:611 🔍 getItemBackground called for item: song-1755519096791
+QworshipHome.tsx:612 🗂️ Current itemBackgrounds state: {
+  "song-1755519096791": {
+    "type": "video",
+    "value": "/uploads/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4.mp4",
+    "name": "Selected Asset"
+  }
+}
+QworshipHome.tsx:613 🎨 Returning background: {
+  "type": "video",
+  "value": "/uploads/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4.mp4",
+  "name": "Selected Asset"
+}
+QworshipHome.tsx:5716 Slide preview background for item song-1755519096791 : Object
+QworshipHome.tsx:5718 🎯 Slide thumbnail media background detected: /uploads/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4.mp4
+QworshipHome.tsx:5734 🎨 Applying slide thumbnail image background styles: Object
+QworshipHome.tsx:5735 🔗 Final thumbnail background URL: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/uploads/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4.mp4
+QworshipHome.tsx:611 🔍 getItemBackground called for item: song-1755519096791
+QworshipHome.tsx:612 🗂️ Current itemBackgrounds state: {
+  "song-1755519096791": {
+    "type": "video",
+    "value": "/uploads/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4.mp4",
+    "name": "Selected Asset"
+  }
+}
+QworshipHome.tsx:613 🎨 Returning background: {
+  "type": "video",
+  "value": "/uploads/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4.mp4",
+  "name": "Selected Asset"
+}
+QworshipHome.tsx:5716 Slide preview background for item song-1755519096791 : Object
+QworshipHome.tsx:5718 🎯 Slide thumbnail media background detected: /uploads/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4.mp4
+QworshipHome.tsx:5734 🎨 Applying slide thumbnail image background styles: Object
+QworshipHome.tsx:5735 🔗 Final thumbnail background URL: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/uploads/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4.mp4
+SongbookModal.tsx:172 SongbookModal received savedSongs: Object
+QworshipHome.tsx:1256 QworshipHome - songsData: Object
+QworshipHome.tsx:1257 QworshipHome - savedSongs: Object
+QworshipHome.tsx:574 getCurrentItemId called with: Object
+QworshipHome.tsx:593 Using currentSlide parent item: song-1755519096791
+QworshipHome.tsx:611 🔍 getItemBackground called for item: song-1755519096791
+QworshipHome.tsx:612 🗂️ Current itemBackgrounds state: {
+  "song-1755519096791": {
+    "type": "video",
+    "value": "/uploads/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4.mp4",
+    "name": "Selected Asset"
+  }
+}
+QworshipHome.tsx:613 🎨 Returning background: {
+  "type": "video",
+  "value": "/uploads/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4.mp4",
+  "name": "Selected Asset"
+}
+QworshipHome.tsx:5153 🎯 Build mode preview - editing content ID: song-1755519096791
+QworshipHome.tsx:5154 🎨 Build mode preview - retrieved background: Object
+QworshipHome.tsx:611 🔍 getItemBackground called for item: song-1755519096791
+QworshipHome.tsx:612 🗂️ Current itemBackgrounds state: {
+  "song-1755519096791": {
+    "type": "video",
+    "value": "/uploads/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4.mp4",
+    "name": "Selected Asset"
+  }
+}
+QworshipHome.tsx:613 🎨 Returning background: {
+  "type": "video",
+  "value": "/uploads/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4.mp4",
+  "name": "Selected Asset"
+}
+QworshipHome.tsx:5716 Slide preview background for item song-1755519096791 : Object
+QworshipHome.tsx:5718 🎯 Slide thumbnail media background detected: /uploads/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4.mp4
+QworshipHome.tsx:5734 🎨 Applying slide thumbnail image background styles: Object
+QworshipHome.tsx:5735 🔗 Final thumbnail background URL: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/uploads/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4.mp4
+QworshipHome.tsx:611 🔍 getItemBackground called for item: song-1755519096791
+QworshipHome.tsx:612 🗂️ Current itemBackgrounds state: {
+  "song-1755519096791": {
+    "type": "video",
+    "value": "/uploads/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4.mp4",
+    "name": "Selected Asset"
+  }
+}
+QworshipHome.tsx:613 🎨 Returning background: {
+  "type": "video",
+  "value": "/uploads/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4.mp4",
+  "name": "Selected Asset"
+}
+QworshipHome.tsx:5716 Slide preview background for item song-1755519096791 : Object
+QworshipHome.tsx:5718 🎯 Slide thumbnail media background detected: /uploads/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4.mp4
+QworshipHome.tsx:5734 🎨 Applying slide thumbnail image background styles: Object
+QworshipHome.tsx:5735 🔗 Final thumbnail background URL: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/uploads/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4.mp4
+QworshipHome.tsx:611 🔍 getItemBackground called for item: song-1755519096791
+QworshipHome.tsx:612 🗂️ Current itemBackgrounds state: {
+  "song-1755519096791": {
+    "type": "video",
+    "value": "/uploads/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4.mp4",
+    "name": "Selected Asset"
+  }
+}
+QworshipHome.tsx:613 🎨 Returning background: {
+  "type": "video",
+  "value": "/uploads/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4.mp4",
+  "name": "Selected Asset"
+}
+QworshipHome.tsx:5716 Slide preview background for item song-1755519096791 : Object
+QworshipHome.tsx:5718 🎯 Slide thumbnail media background detected: /uploads/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4.mp4
+QworshipHome.tsx:5734 🎨 Applying slide thumbnail image background styles: Object
+QworshipHome.tsx:5735 🔗 Final thumbnail background URL: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/uploads/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4.mp4
+QworshipHome.tsx:611 🔍 getItemBackground called for item: song-1755519096791
+QworshipHome.tsx:612 🗂️ Current itemBackgrounds state: {
+  "song-1755519096791": {
+    "type": "video",
+    "value": "/uploads/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4.mp4",
+    "name": "Selected Asset"
+  }
+}
+QworshipHome.tsx:613 🎨 Returning background: {
+  "type": "video",
+  "value": "/uploads/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4.mp4",
+  "name": "Selected Asset"
+}
+QworshipHome.tsx:5716 Slide preview background for item song-1755519096791 : Object
+QworshipHome.tsx:5718 🎯 Slide thumbnail media background detected: /uploads/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4.mp4
+QworshipHome.tsx:5734 🎨 Applying slide thumbnail image background styles: Object
+QworshipHome.tsx:5735 🔗 Final thumbnail background URL: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/uploads/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4.mp4
+QworshipHome.tsx:611 🔍 getItemBackground called for item: song-1755519096791
+QworshipHome.tsx:612 🗂️ Current itemBackgrounds state: {
+  "song-1755519096791": {
+    "type": "video",
+    "value": "/uploads/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4.mp4",
+    "name": "Selected Asset"
+  }
+}
+QworshipHome.tsx:613 🎨 Returning background: {
+  "type": "video",
+  "value": "/uploads/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4.mp4",
+  "name": "Selected Asset"
+}
+QworshipHome.tsx:5716 Slide preview background for item song-1755519096791 : Object
+QworshipHome.tsx:5718 🎯 Slide thumbnail media background detected: /uploads/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4.mp4
+QworshipHome.tsx:5734 🎨 Applying slide thumbnail image background styles: Object
+QworshipHome.tsx:5735 🔗 Final thumbnail background URL: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/uploads/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4.mp4
+QworshipHome.tsx:611 🔍 getItemBackground called for item: song-1755519096791
+QworshipHome.tsx:612 🗂️ Current itemBackgrounds state: {
+  "song-1755519096791": {
+    "type": "video",
+    "value": "/uploads/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4.mp4",
+    "name": "Selected Asset"
+  }
+}
+QworshipHome.tsx:613 🎨 Returning background: {
+  "type": "video",
+  "value": "/uploads/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4.mp4",
+  "name": "Selected Asset"
+}
+QworshipHome.tsx:5716 Slide preview background for item song-1755519096791 : Object
+QworshipHome.tsx:5718 🎯 Slide thumbnail media background detected: /uploads/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4.mp4
+QworshipHome.tsx:5734 🎨 Applying slide thumbnail image background styles: Object
+QworshipHome.tsx:5735 🔗 Final thumbnail background URL: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/uploads/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4.mp4
+SongbookModal.tsx:172 SongbookModal received savedSongs: Object
+QworshipHome.tsx:1256 QworshipHome - songsData: Object
+QworshipHome.tsx:1257 QworshipHome - savedSongs: Object
+QworshipHome.tsx:574 getCurrentItemId called with: Object
+QworshipHome.tsx:593 Using currentSlide parent item: song-1755519096791
+QworshipHome.tsx:611 🔍 getItemBackground called for item: song-1755519096791
+QworshipHome.tsx:612 🗂️ Current itemBackgrounds state: {
+  "song-1755519096791": {
+    "type": "video",
+    "value": "/uploads/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4.mp4",
+    "name": "Selected Asset"
+  }
+}
+QworshipHome.tsx:613 🎨 Returning background: {
+  "type": "video",
+  "value": "/uploads/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4.mp4",
+  "name": "Selected Asset"
+}
+QworshipHome.tsx:5153 🎯 Build mode preview - editing content ID: song-1755519096791
+QworshipHome.tsx:5154 🎨 Build mode preview - retrieved background: Object
+QworshipHome.tsx:611 🔍 getItemBackground called for item: song-1755519096791
+QworshipHome.tsx:612 🗂️ Current itemBackgrounds state: {
+  "song-1755519096791": {
+    "type": "video",
+    "value": "/uploads/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4.mp4",
+    "name": "Selected Asset"
+  }
+}
+QworshipHome.tsx:613 🎨 Returning background: {
+  "type": "video",
+  "value": "/uploads/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4.mp4",
+  "name": "Selected Asset"
+}
+QworshipHome.tsx:5716 Slide preview background for item song-1755519096791 : Object
+QworshipHome.tsx:5718 🎯 Slide thumbnail media background detected: /uploads/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4.mp4
+QworshipHome.tsx:5734 🎨 Applying slide thumbnail image background styles: Object
+QworshipHome.tsx:5735 🔗 Final thumbnail background URL: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/uploads/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4.mp4
+QworshipHome.tsx:611 🔍 getItemBackground called for item: song-1755519096791
+QworshipHome.tsx:612 🗂️ Current itemBackgrounds state: {
+  "song-1755519096791": {
+    "type": "video",
+    "value": "/uploads/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4.mp4",
+    "name": "Selected Asset"
+  }
+}
+QworshipHome.tsx:613 🎨 Returning background: {
+  "type": "video",
+  "value": "/uploads/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4.mp4",
+  "name": "Selected Asset"
+}
+QworshipHome.tsx:5716 Slide preview background for item song-1755519096791 : Object
+QworshipHome.tsx:5718 🎯 Slide thumbnail media background detected: /uploads/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4.mp4
+QworshipHome.tsx:5734 🎨 Applying slide thumbnail image background styles: Object
+QworshipHome.tsx:5735 🔗 Final thumbnail background URL: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/uploads/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4.mp4
+QworshipHome.tsx:611 🔍 getItemBackground called for item: song-1755519096791
+QworshipHome.tsx:612 🗂️ Current itemBackgrounds state: {
+  "song-1755519096791": {
+    "type": "video",
+    "value": "/uploads/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4.mp4",
+    "name": "Selected Asset"
+  }
+}
+QworshipHome.tsx:613 🎨 Returning background: {
+  "type": "video",
+  "value": "/uploads/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4.mp4",
+  "name": "Selected Asset"
+}
+QworshipHome.tsx:5716 Slide preview background for item song-1755519096791 : Object
+QworshipHome.tsx:5718 🎯 Slide thumbnail media background detected: /uploads/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4.mp4
+QworshipHome.tsx:5734 🎨 Applying slide thumbnail image background styles: Object
+QworshipHome.tsx:5735 🔗 Final thumbnail background URL: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/uploads/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4.mp4
+QworshipHome.tsx:611 🔍 getItemBackground called for item: song-1755519096791
+QworshipHome.tsx:612 🗂️ Current itemBackgrounds state: {
+  "song-1755519096791": {
+    "type": "video",
+    "value": "/uploads/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4.mp4",
+    "name": "Selected Asset"
+  }
+}
+QworshipHome.tsx:613 🎨 Returning background: {
+  "type": "video",
+  "value": "/uploads/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4.mp4",
+  "name": "Selected Asset"
+}
+QworshipHome.tsx:5716 Slide preview background for item song-1755519096791 : Object
+QworshipHome.tsx:5718 🎯 Slide thumbnail media background detected: /uploads/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4.mp4
+QworshipHome.tsx:5734 🎨 Applying slide thumbnail image background styles: Object
+QworshipHome.tsx:5735 🔗 Final thumbnail background URL: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/uploads/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4.mp4
+QworshipHome.tsx:611 🔍 getItemBackground called for item: song-1755519096791
+QworshipHome.tsx:612 🗂️ Current itemBackgrounds state: {
+  "song-1755519096791": {
+    "type": "video",
+    "value": "/uploads/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4.mp4",
+    "name": "Selected Asset"
+  }
+}
+QworshipHome.tsx:613 🎨 Returning background: {
+  "type": "video",
+  "value": "/uploads/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4.mp4",
+  "name": "Selected Asset"
+}
+QworshipHome.tsx:5716 Slide preview background for item song-1755519096791 : Object
+QworshipHome.tsx:5718 🎯 Slide thumbnail media background detected: /uploads/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4.mp4
+QworshipHome.tsx:5734 🎨 Applying slide thumbnail image background styles: Object
+QworshipHome.tsx:5735 🔗 Final thumbnail background URL: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/uploads/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4.mp4
+QworshipHome.tsx:611 🔍 getItemBackground called for item: song-1755519096791
+QworshipHome.tsx:612 🗂️ Current itemBackgrounds state: {
+  "song-1755519096791": {
+    "type": "video",
+    "value": "/uploads/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4.mp4",
+    "name": "Selected Asset"
+  }
+}
+QworshipHome.tsx:613 🎨 Returning background: {
+  "type": "video",
+  "value": "/uploads/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4.mp4",
+  "name": "Selected Asset"
+}
+QworshipHome.tsx:5716 Slide preview background for item song-1755519096791 : Object
+QworshipHome.tsx:5718 🎯 Slide thumbnail media background detected: /uploads/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4.mp4
+QworshipHome.tsx:5734 🎨 Applying slide thumbnail image background styles: Object
+QworshipHome.tsx:5735 🔗 Final thumbnail background URL: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/uploads/33f12dd1-b338-4c98-9f89-9ddf1bc15bb4.mp4
+SongbookModal.tsx:172 SongbookModal received savedSongs: Object

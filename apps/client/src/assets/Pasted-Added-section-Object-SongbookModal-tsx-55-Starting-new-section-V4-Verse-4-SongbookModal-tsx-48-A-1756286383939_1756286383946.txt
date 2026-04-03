@@ -1,0 +1,511 @@
+Added section: Object
+SongbookModal.tsx:55 Starting new section: V4 (Verse 4)
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: C1 (Chorus 1)
+SongbookModal.tsx:82 Added final section: Object
+SongbookModal.tsx:86 Final parsed sections: Array(5)
+SongbookModal.tsx:186 Song "Abide with Me" structure: Array(4)
+SongbookModal.tsx:187 Song "Abide with Me" verseOrder: V1, V2, V3, C1
+SongbookModal.tsx:190 Transforming song "Abide with Me": Object
+SongbookModal.tsx:21 Starting lyrics parsing for: [V1]
+Wonderful grace of Jesus,
+Greater than all my sin;
+How shall my tongue describe it,
+Where shall...
+SongbookModal.tsx:55 Starting new section: V1
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: C
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V2
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V3
+SongbookModal.tsx:82 Added final section: Object
+SongbookModal.tsx:86 Final parsed sections: Array(4)
+SongbookModal.tsx:186 Song "Wonderful Grace of Jesus" structure: Array(4)
+SongbookModal.tsx:187 Song "Wonderful Grace of Jesus" verseOrder: V1, C, V2, V3
+SongbookModal.tsx:190 Transforming song "Wonderful Grace of Jesus": Object
+SongbookModal.tsx:21 Starting lyrics parsing for: [V1]
+Wonderful grace of Jesus,
+Greater than all my sin;
+How shall my tongue describe it,
+Where shall...
+SongbookModal.tsx:55 Starting new section: V1
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: C
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V2
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V3
+SongbookModal.tsx:82 Added final section: Object
+SongbookModal.tsx:86 Final parsed sections: Array(4)
+SongbookModal.tsx:186 Song "Wonderful Grace of Jesus" structure: Array(4)
+SongbookModal.tsx:187 Song "Wonderful Grace of Jesus" verseOrder: V1, C, V2, V3
+SongbookModal.tsx:190 Transforming song "Wonderful Grace of Jesus": Object
+QworshipHome.tsx:4625 💾 Workspace state saved to localStorage
+QworshipHome.tsx:800 getCurrentItemId called with: Object
+QworshipHome.tsx:819 Using currentSlide parent item: song-1755913928828
+QworshipHome.tsx:837 🔍 getItemBackground called for item: onscreen-bible-1756286198794
+QworshipHome.tsx:838 🗂️ Current itemBackgrounds state: {
+  "song-1755909909271": {
+    "type": "image",
+    "value": "/uploads/5af2b53f-fc7e-4dec-b41d-38de0c4f7916.jpg",
+    "name": "Selected Asset"
+  },
+  "song-1755913928828": {
+    "type": "image",
+    "value": "/uploads/b78615a4-edfc-409f-9875-52045a2e0613.jpg",
+    "name": "Selected Asset"
+  },
+  "song-1755923032781": {
+    "type": "image",
+    "value": "/uploads/b78615a4-edfc-409f-9875-52045a2e0613.jpg",
+    "name": "Selected Asset"
+  }
+}
+QworshipHome.tsx:839 🎨 Returning background: {
+  "type": "fill",
+  "value": "#000000"
+}
+QworshipHome.tsx:8160 🎯 Build mode preview - editing content ID: onscreen-bible-1756286198794
+QworshipHome.tsx:8161 🎨 Build mode preview - retrieved background: Object
+QworshipHome.tsx:837 🔍 getItemBackground called for item: song-1755913928828
+QworshipHome.tsx:838 🗂️ Current itemBackgrounds state: {
+  "song-1755909909271": {
+    "type": "image",
+    "value": "/uploads/5af2b53f-fc7e-4dec-b41d-38de0c4f7916.jpg",
+    "name": "Selected Asset"
+  },
+  "song-1755913928828": {
+    "type": "image",
+    "value": "/uploads/b78615a4-edfc-409f-9875-52045a2e0613.jpg",
+    "name": "Selected Asset"
+  },
+  "song-1755923032781": {
+    "type": "image",
+    "value": "/uploads/b78615a4-edfc-409f-9875-52045a2e0613.jpg",
+    "name": "Selected Asset"
+  }
+}
+QworshipHome.tsx:839 🎨 Returning background: {
+  "type": "image",
+  "value": "/uploads/b78615a4-edfc-409f-9875-52045a2e0613.jpg",
+  "name": "Selected Asset"
+}
+QworshipHome.tsx:8816 Slide preview background for item song-1755913928828 : Object
+QworshipHome.tsx:8818 🎯 Slide thumbnail media background detected: /uploads/b78615a4-edfc-409f-9875-52045a2e0613.jpg
+QworshipHome.tsx:8834 🎨 Applying slide thumbnail image background styles: Object
+QworshipHome.tsx:8835 🔗 Final thumbnail background URL: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/uploads/b78615a4-edfc-409f-9875-52045a2e0613.jpg
+QworshipHome.tsx:837 🔍 getItemBackground called for item: song-1755913928828
+QworshipHome.tsx:838 🗂️ Current itemBackgrounds state: {
+  "song-1755909909271": {
+    "type": "image",
+    "value": "/uploads/5af2b53f-fc7e-4dec-b41d-38de0c4f7916.jpg",
+    "name": "Selected Asset"
+  },
+  "song-1755913928828": {
+    "type": "image",
+    "value": "/uploads/b78615a4-edfc-409f-9875-52045a2e0613.jpg",
+    "name": "Selected Asset"
+  },
+  "song-1755923032781": {
+    "type": "image",
+    "value": "/uploads/b78615a4-edfc-409f-9875-52045a2e0613.jpg",
+    "name": "Selected Asset"
+  }
+}
+QworshipHome.tsx:839 🎨 Returning background: {
+  "type": "image",
+  "value": "/uploads/b78615a4-edfc-409f-9875-52045a2e0613.jpg",
+  "name": "Selected Asset"
+}
+QworshipHome.tsx:8816 Slide preview background for item song-1755913928828 : Object
+QworshipHome.tsx:8818 🎯 Slide thumbnail media background detected: /uploads/b78615a4-edfc-409f-9875-52045a2e0613.jpg
+QworshipHome.tsx:8834 🎨 Applying slide thumbnail image background styles: Object
+QworshipHome.tsx:8835 🔗 Final thumbnail background URL: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/uploads/b78615a4-edfc-409f-9875-52045a2e0613.jpg
+QworshipHome.tsx:837 🔍 getItemBackground called for item: song-1755913928828
+QworshipHome.tsx:838 🗂️ Current itemBackgrounds state: {
+  "song-1755909909271": {
+    "type": "image",
+    "value": "/uploads/5af2b53f-fc7e-4dec-b41d-38de0c4f7916.jpg",
+    "name": "Selected Asset"
+  },
+  "song-1755913928828": {
+    "type": "image",
+    "value": "/uploads/b78615a4-edfc-409f-9875-52045a2e0613.jpg",
+    "name": "Selected Asset"
+  },
+  "song-1755923032781": {
+    "type": "image",
+    "value": "/uploads/b78615a4-edfc-409f-9875-52045a2e0613.jpg",
+    "name": "Selected Asset"
+  }
+}
+QworshipHome.tsx:839 🎨 Returning background: {
+  "type": "image",
+  "value": "/uploads/b78615a4-edfc-409f-9875-52045a2e0613.jpg",
+  "name": "Selected Asset"
+}
+QworshipHome.tsx:8816 Slide preview background for item song-1755913928828 : Object
+QworshipHome.tsx:8818 🎯 Slide thumbnail media background detected: /uploads/b78615a4-edfc-409f-9875-52045a2e0613.jpg
+QworshipHome.tsx:8834 🎨 Applying slide thumbnail image background styles: Object
+QworshipHome.tsx:8835 🔗 Final thumbnail background URL: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/uploads/b78615a4-edfc-409f-9875-52045a2e0613.jpg
+QworshipHome.tsx:837 🔍 getItemBackground called for item: song-1755913928828
+QworshipHome.tsx:838 🗂️ Current itemBackgrounds state: {
+  "song-1755909909271": {
+    "type": "image",
+    "value": "/uploads/5af2b53f-fc7e-4dec-b41d-38de0c4f7916.jpg",
+    "name": "Selected Asset"
+  },
+  "song-1755913928828": {
+    "type": "image",
+    "value": "/uploads/b78615a4-edfc-409f-9875-52045a2e0613.jpg",
+    "name": "Selected Asset"
+  },
+  "song-1755923032781": {
+    "type": "image",
+    "value": "/uploads/b78615a4-edfc-409f-9875-52045a2e0613.jpg",
+    "name": "Selected Asset"
+  }
+}
+QworshipHome.tsx:839 🎨 Returning background: {
+  "type": "image",
+  "value": "/uploads/b78615a4-edfc-409f-9875-52045a2e0613.jpg",
+  "name": "Selected Asset"
+}
+QworshipHome.tsx:8816 Slide preview background for item song-1755913928828 : Object
+QworshipHome.tsx:8818 🎯 Slide thumbnail media background detected: /uploads/b78615a4-edfc-409f-9875-52045a2e0613.jpg
+QworshipHome.tsx:8834 🎨 Applying slide thumbnail image background styles: Object
+QworshipHome.tsx:8835 🔗 Final thumbnail background URL: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/uploads/b78615a4-edfc-409f-9875-52045a2e0613.jpg
+QworshipHome.tsx:837 🔍 getItemBackground called for item: song-1755913928828
+QworshipHome.tsx:838 🗂️ Current itemBackgrounds state: {
+  "song-1755909909271": {
+    "type": "image",
+    "value": "/uploads/5af2b53f-fc7e-4dec-b41d-38de0c4f7916.jpg",
+    "name": "Selected Asset"
+  },
+  "song-1755913928828": {
+    "type": "image",
+    "value": "/uploads/b78615a4-edfc-409f-9875-52045a2e0613.jpg",
+    "name": "Selected Asset"
+  },
+  "song-1755923032781": {
+    "type": "image",
+    "value": "/uploads/b78615a4-edfc-409f-9875-52045a2e0613.jpg",
+    "name": "Selected Asset"
+  }
+}
+QworshipHome.tsx:839 🎨 Returning background: {
+  "type": "image",
+  "value": "/uploads/b78615a4-edfc-409f-9875-52045a2e0613.jpg",
+  "name": "Selected Asset"
+}
+QworshipHome.tsx:8816 Slide preview background for item song-1755913928828 : Object
+QworshipHome.tsx:8818 🎯 Slide thumbnail media background detected: /uploads/b78615a4-edfc-409f-9875-52045a2e0613.jpg
+QworshipHome.tsx:8834 🎨 Applying slide thumbnail image background styles: Object
+QworshipHome.tsx:8835 🔗 Final thumbnail background URL: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/uploads/b78615a4-edfc-409f-9875-52045a2e0613.jpg
+QworshipHome.tsx:837 🔍 getItemBackground called for item: song-1755913928828
+QworshipHome.tsx:838 🗂️ Current itemBackgrounds state: {
+  "song-1755909909271": {
+    "type": "image",
+    "value": "/uploads/5af2b53f-fc7e-4dec-b41d-38de0c4f7916.jpg",
+    "name": "Selected Asset"
+  },
+  "song-1755913928828": {
+    "type": "image",
+    "value": "/uploads/b78615a4-edfc-409f-9875-52045a2e0613.jpg",
+    "name": "Selected Asset"
+  },
+  "song-1755923032781": {
+    "type": "image",
+    "value": "/uploads/b78615a4-edfc-409f-9875-52045a2e0613.jpg",
+    "name": "Selected Asset"
+  }
+}
+QworshipHome.tsx:839 🎨 Returning background: {
+  "type": "image",
+  "value": "/uploads/b78615a4-edfc-409f-9875-52045a2e0613.jpg",
+  "name": "Selected Asset"
+}
+QworshipHome.tsx:8816 Slide preview background for item song-1755913928828 : Object
+QworshipHome.tsx:8818 🎯 Slide thumbnail media background detected: /uploads/b78615a4-edfc-409f-9875-52045a2e0613.jpg
+QworshipHome.tsx:8834 🎨 Applying slide thumbnail image background styles: Object
+QworshipHome.tsx:8835 🔗 Final thumbnail background URL: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/uploads/b78615a4-edfc-409f-9875-52045a2e0613.jpg
+QworshipHome.tsx:837 🔍 getItemBackground called for item: song-1755923032781
+QworshipHome.tsx:838 🗂️ Current itemBackgrounds state: {
+  "song-1755909909271": {
+    "type": "image",
+    "value": "/uploads/5af2b53f-fc7e-4dec-b41d-38de0c4f7916.jpg",
+    "name": "Selected Asset"
+  },
+  "song-1755913928828": {
+    "type": "image",
+    "value": "/uploads/b78615a4-edfc-409f-9875-52045a2e0613.jpg",
+    "name": "Selected Asset"
+  },
+  "song-1755923032781": {
+    "type": "image",
+    "value": "/uploads/b78615a4-edfc-409f-9875-52045a2e0613.jpg",
+    "name": "Selected Asset"
+  }
+}
+QworshipHome.tsx:839 🎨 Returning background: {
+  "type": "image",
+  "value": "/uploads/b78615a4-edfc-409f-9875-52045a2e0613.jpg",
+  "name": "Selected Asset"
+}
+QworshipHome.tsx:8816 Slide preview background for item song-1755923032781 : Object
+QworshipHome.tsx:8818 🎯 Slide thumbnail media background detected: /uploads/b78615a4-edfc-409f-9875-52045a2e0613.jpg
+QworshipHome.tsx:8834 🎨 Applying slide thumbnail image background styles: Object
+QworshipHome.tsx:8835 🔗 Final thumbnail background URL: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/uploads/b78615a4-edfc-409f-9875-52045a2e0613.jpg
+QworshipHome.tsx:837 🔍 getItemBackground called for item: song-1755923032781
+QworshipHome.tsx:838 🗂️ Current itemBackgrounds state: {
+  "song-1755909909271": {
+    "type": "image",
+    "value": "/uploads/5af2b53f-fc7e-4dec-b41d-38de0c4f7916.jpg",
+    "name": "Selected Asset"
+  },
+  "song-1755913928828": {
+    "type": "image",
+    "value": "/uploads/b78615a4-edfc-409f-9875-52045a2e0613.jpg",
+    "name": "Selected Asset"
+  },
+  "song-1755923032781": {
+    "type": "image",
+    "value": "/uploads/b78615a4-edfc-409f-9875-52045a2e0613.jpg",
+    "name": "Selected Asset"
+  }
+}
+QworshipHome.tsx:839 🎨 Returning background: {
+  "type": "image",
+  "value": "/uploads/b78615a4-edfc-409f-9875-52045a2e0613.jpg",
+  "name": "Selected Asset"
+}
+QworshipHome.tsx:8816 Slide preview background for item song-1755923032781 : Object
+QworshipHome.tsx:8818 🎯 Slide thumbnail media background detected: /uploads/b78615a4-edfc-409f-9875-52045a2e0613.jpg
+QworshipHome.tsx:8834 🎨 Applying slide thumbnail image background styles: Object
+QworshipHome.tsx:8835 🔗 Final thumbnail background URL: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/uploads/b78615a4-edfc-409f-9875-52045a2e0613.jpg
+QworshipHome.tsx:837 🔍 getItemBackground called for item: song-1755923032781
+QworshipHome.tsx:838 🗂️ Current itemBackgrounds state: {
+  "song-1755909909271": {
+    "type": "image",
+    "value": "/uploads/5af2b53f-fc7e-4dec-b41d-38de0c4f7916.jpg",
+    "name": "Selected Asset"
+  },
+  "song-1755913928828": {
+    "type": "image",
+    "value": "/uploads/b78615a4-edfc-409f-9875-52045a2e0613.jpg",
+    "name": "Selected Asset"
+  },
+  "song-1755923032781": {
+    "type": "image",
+    "value": "/uploads/b78615a4-edfc-409f-9875-52045a2e0613.jpg",
+    "name": "Selected Asset"
+  }
+}
+QworshipHome.tsx:839 🎨 Returning background: {
+  "type": "image",
+  "value": "/uploads/b78615a4-edfc-409f-9875-52045a2e0613.jpg",
+  "name": "Selected Asset"
+}
+QworshipHome.tsx:8816 Slide preview background for item song-1755923032781 : Object
+QworshipHome.tsx:8818 🎯 Slide thumbnail media background detected: /uploads/b78615a4-edfc-409f-9875-52045a2e0613.jpg
+QworshipHome.tsx:8834 🎨 Applying slide thumbnail image background styles: Object
+QworshipHome.tsx:8835 🔗 Final thumbnail background URL: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/uploads/b78615a4-edfc-409f-9875-52045a2e0613.jpg
+QworshipHome.tsx:837 🔍 getItemBackground called for item: song-1755923032781
+QworshipHome.tsx:838 🗂️ Current itemBackgrounds state: {
+  "song-1755909909271": {
+    "type": "image",
+    "value": "/uploads/5af2b53f-fc7e-4dec-b41d-38de0c4f7916.jpg",
+    "name": "Selected Asset"
+  },
+  "song-1755913928828": {
+    "type": "image",
+    "value": "/uploads/b78615a4-edfc-409f-9875-52045a2e0613.jpg",
+    "name": "Selected Asset"
+  },
+  "song-1755923032781": {
+    "type": "image",
+    "value": "/uploads/b78615a4-edfc-409f-9875-52045a2e0613.jpg",
+    "name": "Selected Asset"
+  }
+}
+QworshipHome.tsx:839 🎨 Returning background: {
+  "type": "image",
+  "value": "/uploads/b78615a4-edfc-409f-9875-52045a2e0613.jpg",
+  "name": "Selected Asset"
+}
+QworshipHome.tsx:8816 Slide preview background for item song-1755923032781 : Object
+QworshipHome.tsx:8818 🎯 Slide thumbnail media background detected: /uploads/b78615a4-edfc-409f-9875-52045a2e0613.jpg
+QworshipHome.tsx:8834 🎨 Applying slide thumbnail image background styles: Object
+QworshipHome.tsx:8835 🔗 Final thumbnail background URL: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/uploads/b78615a4-edfc-409f-9875-52045a2e0613.jpg
+QworshipHome.tsx:837 🔍 getItemBackground called for item: song-1755923032781
+QworshipHome.tsx:838 🗂️ Current itemBackgrounds state: {
+  "song-1755909909271": {
+    "type": "image",
+    "value": "/uploads/5af2b53f-fc7e-4dec-b41d-38de0c4f7916.jpg",
+    "name": "Selected Asset"
+  },
+  "song-1755913928828": {
+    "type": "image",
+    "value": "/uploads/b78615a4-edfc-409f-9875-52045a2e0613.jpg",
+    "name": "Selected Asset"
+  },
+  "song-1755923032781": {
+    "type": "image",
+    "value": "/uploads/b78615a4-edfc-409f-9875-52045a2e0613.jpg",
+    "name": "Selected Asset"
+  }
+}
+QworshipHome.tsx:839 🎨 Returning background: {
+  "type": "image",
+  "value": "/uploads/b78615a4-edfc-409f-9875-52045a2e0613.jpg",
+  "name": "Selected Asset"
+}
+QworshipHome.tsx:8816 Slide preview background for item song-1755923032781 : Object
+QworshipHome.tsx:8818 🎯 Slide thumbnail media background detected: /uploads/b78615a4-edfc-409f-9875-52045a2e0613.jpg
+QworshipHome.tsx:8834 🎨 Applying slide thumbnail image background styles: Object
+QworshipHome.tsx:8835 🔗 Final thumbnail background URL: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/uploads/b78615a4-edfc-409f-9875-52045a2e0613.jpg
+QworshipHome.tsx:837 🔍 getItemBackground called for item: song-1755923032781
+QworshipHome.tsx:838 🗂️ Current itemBackgrounds state: {
+  "song-1755909909271": {
+    "type": "image",
+    "value": "/uploads/5af2b53f-fc7e-4dec-b41d-38de0c4f7916.jpg",
+    "name": "Selected Asset"
+  },
+  "song-1755913928828": {
+    "type": "image",
+    "value": "/uploads/b78615a4-edfc-409f-9875-52045a2e0613.jpg",
+    "name": "Selected Asset"
+  },
+  "song-1755923032781": {
+    "type": "image",
+    "value": "/uploads/b78615a4-edfc-409f-9875-52045a2e0613.jpg",
+    "name": "Selected Asset"
+  }
+}
+QworshipHome.tsx:839 🎨 Returning background: {
+  "type": "image",
+  "value": "/uploads/b78615a4-edfc-409f-9875-52045a2e0613.jpg",
+  "name": "Selected Asset"
+}
+QworshipHome.tsx:8816 Slide preview background for item song-1755923032781 : Object
+QworshipHome.tsx:8818 🎯 Slide thumbnail media background detected: /uploads/b78615a4-edfc-409f-9875-52045a2e0613.jpg
+QworshipHome.tsx:8834 🎨 Applying slide thumbnail image background styles: Object
+QworshipHome.tsx:8835 🔗 Final thumbnail background URL: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/uploads/b78615a4-edfc-409f-9875-52045a2e0613.jpg
+QworshipHome.tsx:837 🔍 getItemBackground called for item: song-1755926338264
+QworshipHome.tsx:838 🗂️ Current itemBackgrounds state: {
+  "song-1755909909271": {
+    "type": "image",
+    "value": "/uploads/5af2b53f-fc7e-4dec-b41d-38de0c4f7916.jpg",
+    "name": "Selected Asset"
+  },
+  "song-1755913928828": {
+    "type": "image",
+    "value": "/uploads/b78615a4-edfc-409f-9875-52045a2e0613.jpg",
+    "name": "Selected Asset"
+  },
+  "song-1755923032781": {
+    "type": "image",
+    "value": "/uploads/b78615a4-edfc-409f-9875-52045a2e0613.jpg",
+    "name": "Selected Asset"
+  }
+}
+QworshipHome.tsx:839 🎨 Returning background: {
+  "type": "fill",
+  "value": "#000000"
+}
+QworshipHome.tsx:8816 Slide preview background for item song-1755926338264 : Object
+QworshipHome.tsx:837 🔍 getItemBackground called for item: onscreen-bible-1756285009817
+QworshipHome.tsx:838 🗂️ Current itemBackgrounds state: {
+  "song-1755909909271": {
+    "type": "image",
+    "value": "/uploads/5af2b53f-fc7e-4dec-b41d-38de0c4f7916.jpg",
+    "name": "Selected Asset"
+  },
+  "song-1755913928828": {
+    "type": "image",
+    "value": "/uploads/b78615a4-edfc-409f-9875-52045a2e0613.jpg",
+    "name": "Selected Asset"
+  },
+  "song-1755923032781": {
+    "type": "image",
+    "value": "/uploads/b78615a4-edfc-409f-9875-52045a2e0613.jpg",
+    "name": "Selected Asset"
+  }
+}
+QworshipHome.tsx:839 🎨 Returning background: {
+  "type": "fill",
+  "value": "#000000"
+}
+QworshipHome.tsx:8816 Slide preview background for item onscreen-bible-1756285009817 : Object
+QworshipHome.tsx:837 🔍 getItemBackground called for item: onscreen-bible-1756286198794
+QworshipHome.tsx:838 🗂️ Current itemBackgrounds state: {
+  "song-1755909909271": {
+    "type": "image",
+    "value": "/uploads/5af2b53f-fc7e-4dec-b41d-38de0c4f7916.jpg",
+    "name": "Selected Asset"
+  },
+  "song-1755913928828": {
+    "type": "image",
+    "value": "/uploads/b78615a4-edfc-409f-9875-52045a2e0613.jpg",
+    "name": "Selected Asset"
+  },
+  "song-1755923032781": {
+    "type": "image",
+    "value": "/uploads/b78615a4-edfc-409f-9875-52045a2e0613.jpg",
+    "name": "Selected Asset"
+  }
+}
+QworshipHome.tsx:839 🎨 Returning background: {
+  "type": "fill",
+  "value": "#000000"
+}
+QworshipHome.tsx:8816 Slide preview background for item onscreen-bible-1756286198794 : Object
+SongbookModal.tsx:172 SongbookModal received savedSongs: Array(28)
+SongbookModal.tsx:21 Starting lyrics parsing for: This is an example song for demonstration purposes.
+
+[Verse 1]
+This is a sample verse
+To show how so...
+SongbookModal.tsx:55 Starting new section: Verse 1
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: Verse 2
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: Chorus
+SongbookModal.tsx:82 Added final section: Object
+SongbookModal.tsx:86 Final parsed sections: Array(3)
+SongbookModal.tsx:186 Song "Example Song" structure: Array(3)
+SongbookModal.tsx:187 Song "Example Song" verseOrder: verse1, verse2, chorus
+SongbookModal.tsx:190 Transforming song "Example Song": Object
+SongbookModal.tsx:21 Starting lyrics parsing for: [V1]
+I love You LordOh Your mercy never fails meAll my daysI've been held in Your handsFrom the mome...
+SongbookModal.tsx:55 Starting new section: V1
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: C1
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V2
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: C2
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V3
+SongbookModal.tsx:82 Added final section: Object
+SongbookModal.tsx:86 Final parsed sections: Array(5)
+SongbookModal.tsx:186 Song "Goodness of God" structure: Array(5)
+SongbookModal.tsx:187 Song "Goodness of God" verseOrder: V1, C1, V2, C2, V3
+SongbookModal.tsx:190 Transforming song "Goodness of God": Object
+SongbookModal.tsx:21 Starting lyrics parsing for: [V1]
+I love You LordOh Your mercy never fails meAll my daysI've been held in Your handsFrom the mome...
+SongbookModal.tsx:55 Starting new section: V1
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: C1
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V2
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: C2
+SongbookModal.tsx:48 Added section: Object
+SongbookModal.tsx:55 Starting new section: V3
+SongbookModal.tsx:82 Added final section: Object
+SongbookModal.tsx:86 Final parsed sections: Array(5)
+SongbookModal.tsx:186 Song "Goodness of God" structure: Array(5)
+SongbookModal.tsx:187 Song "Goodness of God" verseOrder: V1, C1, V2, C2, V3
+SongbookModal.tsx:190 Transforming song "Goodness of God": Object

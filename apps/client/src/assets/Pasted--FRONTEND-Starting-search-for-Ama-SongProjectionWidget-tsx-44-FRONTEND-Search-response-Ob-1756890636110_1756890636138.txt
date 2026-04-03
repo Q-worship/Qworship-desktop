@@ -1,0 +1,83 @@
+🎵 FRONTEND - Starting search for: Ama
+SongProjectionWidget.tsx:44 🎵 FRONTEND - Search response: Object
+SongProjectionWidget.tsx:47 🎵 FRONTEND - Search results: Array(1)
+SongProjectionWidget.tsx:163 🎵 FRONTEND - Clicked on song: Amazing Grace ID: 18
+SongProjectionWidget.tsx:64 🎵 FRONTEND - Loading song with ID: 18
+api/songs/18:1  Failed to load resource: the server responded with a status of 500 (Internal Server Error)Understand this error
+SongProjectionWidget.tsx:82 🎵 FRONTEND - Song load error: Error: 500: {"success":false,"error":"Failed to fetch song"}
+    at throwIfResNotOk (queryClient.ts:6:11)
+    at async apiRequest (queryClient.ts:22:3)
+    at async loadSong (SongProjectionWidget.tsx:67:24)
+loadSong @ SongProjectionWidget.tsx:82Understand this error
+SongProjectionWidget.tsx:163 🎵 FRONTEND - Clicked on song: Amazing Grace ID: 18
+SongProjectionWidget.tsx:64 🎵 FRONTEND - Loading song with ID: 18
+api/songs/18:1  Failed to load resource: the server responded with a status of 500 (Internal Server Error)Understand this error
+SongProjectionWidget.tsx:82 🎵 FRONTEND - Song load error: Error: 500: {"success":false,"error":"Failed to fetch song"}
+    at throwIfResNotOk (queryClient.ts:6:11)
+    at async apiRequest (queryClient.ts:22:3)
+    at async loadSong (SongProjectionWidget.tsx:67:24)
+loadSong @ SongProjectionWidget.tsx:82Understand this error
+SongProjectionWidget.tsx:163 🎵 FRONTEND - Clicked on song: Amazing Grace ID: 18
+SongProjectionWidget.tsx:64 🎵 FRONTEND - Loading song with ID: 18
+api/songs/18:1  Failed to load resource: the server responded with a status of 500 (Internal Server Error)Understand this error
+SongProjectionWidget.tsx:82 🎵 FRONTEND - Song load error: Error: 500: {"success":false,"error":"Failed to fetch song"}
+    at throwIfResNotOk (queryClient.ts:6:11)
+    at async apiRequest (queryClient.ts:22:3)
+    at async loadSong (SongProjectionWidget.tsx:67:24)
+loadSong @ SongProjectionWidget.tsx:82Understand this error
+SongProjectionWidget.tsx:163 🎵 FRONTEND - Clicked on song: Amazing Grace ID: 18
+SongProjectionWidget.tsx:64 🎵 FRONTEND - Loading song with ID: 18
+SongProjectionWidget.tsx:163 🎵 FRONTEND - Clicked on song: Amazing Grace ID: 18
+SongProjectionWidget.tsx:64 🎵 FRONTEND - Loading song with ID: 18
+api/songs/18:1  Failed to load resource: the server responded with a status of 500 (Internal Server Error)Understand this error
+SongProjectionWidget.tsx:82 🎵 FRONTEND - Song load error: Error: 500: {"success":false,"error":"Failed to fetch song"}
+    at throwIfResNotOk (queryClient.ts:6:11)
+    at async apiRequest (queryClient.ts:22:3)
+    at async loadSong (SongProjectionWidget.tsx:67:24)
+loadSong @ SongProjectionWidget.tsx:82Understand this error
+api/songs/18:1  Failed to load resource: the server responded with a status of 500 (Internal Server Error)Understand this error
+SongProjectionWidget.tsx:82 🎵 FRONTEND - Song load error: Error: 500: {"success":false,"error":"Failed to fetch song"}
+    at throwIfResNotOk (queryClient.ts:6:11)
+    at async apiRequest (queryClient.ts:22:3)
+    at async loadSong (SongProjectionWidget.tsx:67:24)
+loadSong @ SongProjectionWidget.tsx:82Understand this error
+SongProjectionWidget.tsx:163 🎵 FRONTEND - Clicked on song: Amazing Grace ID: 18
+SongProjectionWidget.tsx:64 🎵 FRONTEND - Loading song with ID: 18
+SongProjectionWidget.tsx:163 🎵 FRONTEND - Clicked on song: Amazing Grace ID: 18
+SongProjectionWidget.tsx:64 🎵 FRONTEND - Loading song with ID: 18
+api/songs/18:1  Failed to load resource: the server responded with a status of 500 (Internal Server Error)Understand this error
+SongProjectionWidget.tsx:82 🎵 FRONTEND - Song load error: Error: 500: {"success":false,"error":"Failed to fetch song"}
+    at throwIfResNotOk (queryClient.ts:6:11)
+    at async apiRequest (queryClient.ts:22:3)
+    at async loadSong (SongProjectionWidget.tsx:67:24)
+loadSong @ SongProjectionWidget.tsx:82Understand this error
+SongProjectionWidget.tsx:163 🎵 FRONTEND - Clicked on song: Amazing Grace ID: 18
+SongProjectionWidget.tsx:64 🎵 FRONTEND - Loading song with ID: 18
+api/songs/18:1  Failed to load resource: the server responded with a status of 500 (Internal Server Error)Understand this error
+SongProjectionWidget.tsx:82 🎵 FRONTEND - Song load error: Error: 500: {"success":false,"error":"Failed to fetch song"}
+    at throwIfResNotOk (queryClient.ts:6:11)
+    at async apiRequest (queryClient.ts:22:3)
+    at async loadSong (SongProjectionWidget.tsx:67:24)
+loadSong @ SongProjectionWidget.tsx:82Understand this error
+api/songs/18:1  Failed to load resource: the server responded with a status of 500 (Internal Server Error)Understand this error
+SongProjectionWidget.tsx:82 🎵 FRONTEND - Song load error: Error: 500: {"success":false,"error":"Failed to fetch song"}
+    at throwIfResNotOk (queryClient.ts:6:11)
+    at async apiRequest (queryClient.ts:22:3)
+    at async loadSong (SongProjectionWidget.tsx:67:24)
+loadSong @ SongProjectionWidget.tsx:82Understand this error
+SongProjectionWidget.tsx:163 🎵 FRONTEND - Clicked on song: Amazing Grace ID: 18
+SongProjectionWidget.tsx:64 🎵 FRONTEND - Loading song with ID: 18
+api/songs/18:1  Failed to load resource: the server responded with a status of 500 (Internal Server Error)Understand this error
+SongProjectionWidget.tsx:82 🎵 FRONTEND - Song load error: Error: 500: {"success":false,"error":"Failed to fetch song"}
+    at throwIfResNotOk (queryClient.ts:6:11)
+    at async apiRequest (queryClient.ts:22:3)
+    at async loadSong (SongProjectionWidget.tsx:67:24)
+loadSong @ SongProjectionWidget.tsx:82Understand this error
+SongProjectionWidget.tsx:163 🎵 FRONTEND - Clicked on song: Amazing Grace ID: 18
+SongProjectionWidget.tsx:64 🎵 FRONTEND - Loading song with ID: 18
+api/songs/18:1  Failed to load resource: the server responded with a status of 500 (Internal Server Error)Understand this error
+SongProjectionWidget.tsx:82 🎵 FRONTEND - Song load error: Error: 500: {"success":false,"error":"Failed to fetch song"}
+    at throwIfResNotOk (queryClient.ts:6:11)
+    at async apiRequest (queryClient.ts:22:3)
+    at async loadSong (SongProjectionWidget.tsx:67:24)
+loadSong @ SongProjectionWidget.tsx:82Understand this error

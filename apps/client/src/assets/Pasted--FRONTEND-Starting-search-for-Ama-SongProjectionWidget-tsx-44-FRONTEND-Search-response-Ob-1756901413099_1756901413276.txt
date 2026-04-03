@@ -1,0 +1,60 @@
+🎵 FRONTEND - Starting search for: Ama
+SongProjectionWidget.tsx:44 🎵 FRONTEND - Search response: Object
+SongProjectionWidget.tsx:47 🎵 FRONTEND - Search results: Array(1)
+SongProjectionWidget.tsx:233 🎵 FRONTEND - Clicked on song: Amazing Grace ID: 18
+SongProjectionWidget.tsx:234 🎵 FRONTEND - Song object full: Object
+SongProjectionWidget.tsx:236 🎵 FRONTEND - About to call loadSong
+SongProjectionWidget.tsx:67 🎵 FRONTEND - Loading song with ID: 18
+SongProjectionWidget.tsx:73 🎵 FRONTEND - Requesting song data from parent window
+SongProjectionWidget.tsx:74 🎵 FRONTEND - Parent window exists: true
+SongProjectionWidget.tsx:75 🎵 FRONTEND - Song ID to load: 18
+SongProjectionWidget.tsx:76 🎵 FRONTEND - Origin: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev
+SongProjectionWidget.tsx:85 🎵 FRONTEND - Sending message: Object
+SongProjectionWidget.tsx:238 🎵 FRONTEND - loadSong completed successfully
+SongProjectionWidget.tsx:92 🎵 FRONTEND - Received message from parent: Object
+SongProjectionWidget.tsx:92 🎵 FRONTEND - Received message from parent: Object
+SongProjectionWidget.tsx:92 🎵 FRONTEND - Received message from parent: Object
+SongProjectionWidget.tsx:95 🎵 FRONTEND - Processing song data response
+SongProjectionWidget.tsx:96 🎵 FRONTEND - Success: false
+SongProjectionWidget.tsx:97 🎵 FRONTEND - Song data: undefined
+SongProjectionWidget.tsx:108 🎵 FRONTEND - Failed to load song from parent: Failed to fetch song data
+handleMessage @ SongProjectionWidget.tsx:108Understand this error
+SongProjectionWidget.tsx:117 🎵 FRONTEND - Cleared timeout - song loaded successfully
+SongProjectionWidget.tsx:233 🎵 FRONTEND - Clicked on song: Amazing Grace ID: 18
+SongProjectionWidget.tsx:234 🎵 FRONTEND - Song object full: Object
+SongProjectionWidget.tsx:236 🎵 FRONTEND - About to call loadSong
+SongProjectionWidget.tsx:67 🎵 FRONTEND - Loading song with ID: 18
+SongProjectionWidget.tsx:73 🎵 FRONTEND - Requesting song data from parent window
+SongProjectionWidget.tsx:74 🎵 FRONTEND - Parent window exists: true
+SongProjectionWidget.tsx:75 🎵 FRONTEND - Song ID to load: 18
+SongProjectionWidget.tsx:76 🎵 FRONTEND - Origin: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev
+SongProjectionWidget.tsx:85 🎵 FRONTEND - Sending message: Object
+SongProjectionWidget.tsx:238 🎵 FRONTEND - loadSong completed successfully
+SongProjectionWidget.tsx:92 🎵 FRONTEND - Received message from parent: Object
+SongProjectionWidget.tsx:92 🎵 FRONTEND - Received message from parent: Object
+SongProjectionWidget.tsx:92 🎵 FRONTEND - Received message from parent: Object
+SongProjectionWidget.tsx:95 🎵 FRONTEND - Processing song data response
+SongProjectionWidget.tsx:96 🎵 FRONTEND - Success: false
+SongProjectionWidget.tsx:97 🎵 FRONTEND - Song data: undefined
+SongProjectionWidget.tsx:108 🎵 FRONTEND - Failed to load song from parent: Failed to fetch song data
+handleMessage @ SongProjectionWidget.tsx:108Understand this error
+SongProjectionWidget.tsx:117 🎵 FRONTEND - Cleared timeout - song loaded successfully
+SongProjectionWidget.tsx:233 🎵 FRONTEND - Clicked on song: Amazing Grace ID: 18
+SongProjectionWidget.tsx:234 🎵 FRONTEND - Song object full: Object
+SongProjectionWidget.tsx:236 🎵 FRONTEND - About to call loadSong
+SongProjectionWidget.tsx:67 🎵 FRONTEND - Loading song with ID: 18
+SongProjectionWidget.tsx:73 🎵 FRONTEND - Requesting song data from parent window
+SongProjectionWidget.tsx:74 🎵 FRONTEND - Parent window exists: true
+SongProjectionWidget.tsx:75 🎵 FRONTEND - Song ID to load: 18
+SongProjectionWidget.tsx:76 🎵 FRONTEND - Origin: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev
+SongProjectionWidget.tsx:85 🎵 FRONTEND - Sending message: Object
+SongProjectionWidget.tsx:238 🎵 FRONTEND - loadSong completed successfully
+SongProjectionWidget.tsx:92 🎵 FRONTEND - Received message from parent: Object
+SongProjectionWidget.tsx:92 🎵 FRONTEND - Received message from parent: Object
+SongProjectionWidget.tsx:92 🎵 FRONTEND - Received message from parent: Object
+SongProjectionWidget.tsx:95 🎵 FRONTEND - Processing song data response
+SongProjectionWidget.tsx:96 🎵 FRONTEND - Success: false
+SongProjectionWidget.tsx:97 🎵 FRONTEND - Song data: undefined
+SongProjectionWidget.tsx:108 🎵 FRONTEND - Failed to load song from parent: Failed to fetch song data
+handleMessage @ SongProjectionWidget.tsx:108Understand this error
+SongProjectionWidget.tsx:117 🎵 FRONTEND - Cleared timeout - song loaded successfully

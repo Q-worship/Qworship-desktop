@@ -1,0 +1,11 @@
+{
+  "name": "@qworship/shared",
+  "version": "1.0.0",
+  "main": "src/index.ts",
+  "scripts": {
+    "lint": "eslint src/"
+  },
+  "dependencies": {
+    "zod": "^3.25.76"
+  }
+}

@@ -1,0 +1,53 @@
+Extracted - Book: "first somewhat chapter", Chapter: 1, Verse: 2
+No book found for: "first somewhat chapter"
+Pattern 5 match: null
+No patterns matched for: "first somewhat chapter 1 verse 2"
+No Bible reference found in: "first somewhat chapter 1 verse 2"
+=== PARSING RESULT (OPTIMIZED) ===
+Command type: verse_change
+Confidence: 0.8
+Parsed reference: { book: '', chapter: 1, verseStart: 2, version: 'kjv' }
+Searching for:  1:2
+Book not found: 
+3:20:35 PM [express] POST /api/bible/voice-command 200 in 137ms :: {"success":false,"error":"Bible r…
+=== RAW VOICE TEXT RECEIVED ===
+Text: "Ethan go have a seat"
+Length: 20
+Type: string
+⚠️ Falling back to legacy parser after 15.31ms
+Attempting to parse Bible reference from: "ethan go have a seat"
+Parsing reference from: "ethan go have a seat"
+After number normalization: "ethan go have a seat"
+Pattern 1 match: null
+Pattern 2 match: null
+Pattern 3 match: null
+Pattern 4 match: null
+Pattern 5 match: null
+No patterns matched for: "ethan go have a seat"
+No Bible reference found in: "ethan go have a seat"
+No Bible reference parsed, checking if contains book name...
+Contains book: false
+=== PARSING RESULT (OPTIMIZED) ===
+Command type: lookup
+Confidence: 0.1
+Parsed reference: null
+3:20:55 PM [express] POST /api/bible/voice-command 200 in 56ms :: {"success":false,"commandType":"lo…
+=== RAW VOICE TEXT RECEIVED ===
+Text: "yourself because you're playing with Ethan"
+Length: 42
+Type: string
+⚠️ Falling back to legacy parser after 23.20ms
+Attempting to parse Bible reference from: "yourself because you're playing with ethan"
+Parsing reference from: "yourself because you're playing with ethan"
+After number normalization: "yourself because you're playing with ethan"
+Pattern 1 match: null
+Pattern 2 match: null
+Pattern 3 match: null
+Pattern 4 match: null
+Pattern 5 match: null
+No patterns matched for: "yourself because you're playing with ethan"
+No Bible reference found in: "yourself because you're playing with ethan"
+No Bible reference parsed, checking if contains book name...
+Contains book: false
+=== PARSING RESULT (OPTIMIZED) ===
+Command type: lookup

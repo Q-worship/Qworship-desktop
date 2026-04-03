@@ -1,0 +1,568 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Lower Third Render Page: suppress all backgrounds immediately ─────────
+   Applied via JS before React mounts so there is zero purple flash in OBS. */
+html.lower-third-render,
+html.lower-third-render body,
+html.lower-third-render #root {
+  background: transparent !important;
+  min-height: unset !important;
+}
+
+@layer components {
+  .all-\[unset\] {
+    all: unset;
+  }
+}
+
+:root {
+  --codelytemplatewebflowionero: rgba(255, 255, 255, 1);
+  --codelytemplatewebflowiowoodsmoke: rgba(18, 18, 19, 1);
+}
+
+@layer components {
+  .all-\[unset\] {
+    all: unset;
+  }
+}
+
+@layer components {
+  .all-\[unset\] {
+    all: unset;
+  }
+}
+
+/* Globe transparent background - attempt to blend white areas with background */
+.globe-transparent {
+  background: transparent;
+  /* Use multiply blend mode to make white areas transparent */
+  mix-blend-mode: multiply;
+  /* Slight opacity to reduce the white background effect */
+  opacity: 0.95;
+}
+
+/* Custom Scrollbar Styles for Media Browser */
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #8356f3 #1a0f2e;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #1a0f2e;
+  border-radius: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #8356f3;
+  border-radius: 4px;
+  border: 1px solid #2a1f3d;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #9c70f5;
+}
+
+/* Custom Scrollbar Styles for Bible Editor */
+.bible-editor-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.bible-editor-scroll::-webkit-scrollbar-track {
+  background: #4a3a6b;
+  border-radius: 3px;
+}
+
+.bible-editor-scroll::-webkit-scrollbar-thumb {
+  background: #8356f3;
+  border-radius: 3px;
+}
+
+.bible-editor-scroll::-webkit-scrollbar-thumb:hover {
+  background: #7145e6;
+}
+
+/* Custom Scrollbar Styles for Bible Content Display */
+.bible-content-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.bible-content-scroll::-webkit-scrollbar-track {
+  background: #4a3564;
+  border-radius: 3px;
+}
+
+.bible-content-scroll::-webkit-scrollbar-thumb {
+  background: #8356f3;
+  border-radius: 3px;
+}
+
+.bible-content-scroll::-webkit-scrollbar-thumb:hover {
+  background: #7145e6;
+}
+
+/* Hide scrollbar for slides container while keeping functionality */
+#slides-container::-webkit-scrollbar {
+  display: none;
+}
+
+#slides-container {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+/* Hide scrollbar for preview scroller while keeping functionality */
+#preview-scroller::-webkit-scrollbar {
+  display: none;
+}
+
+#preview-scroller {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+/* Custom Scrollbar Styles for Display Settings Modal */
+.scrollbar-thin::-webkit-scrollbar {
+  width: 6px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: rgba(55, 65, 81, 0.3);
+  border-radius: 3px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: #8356f3;
+  border-radius: 3px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background: #9c70f5;
+}
+
+/* Q-worship themed tooltips */
+[title]:hover::before {
+  content: attr(title);
+  position: absolute;
+  z-index: 9999;
+  background: linear-gradient(135deg, #8356f3 0%, #7c4dff 100%);
+  color: white;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-bottom: 8px;
+  box-shadow: 0 4px 12px rgba(131, 86, 243, 0.3);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  pointer-events: none;
+  opacity: 0;
+  animation: tooltipFadeIn 0.2s ease-in-out forwards;
+}
+
+[title]:hover::after {
+  content: "";
+  position: absolute;
+  z-index: 9999;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-bottom: 2px;
+  border: 4px solid transparent;
+  border-top-color: #8356f3;
+  pointer-events: none;
+  opacity: 0;
+  animation: tooltipFadeIn 0.2s ease-in-out forwards;
+}
+
+@keyframes tooltipFadeIn {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+/* Slide Transition Effects */
+@keyframes slideUpEntry {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideDownEntry {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideLeftEntry {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideRightEntry {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes zoomInEntry {
+  from {
+    transform: scale(0.3);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes flipXEntry {
+  from {
+    transform: rotateY(-90deg);
+    opacity: 0;
+  }
+  to {
+    transform: rotateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes flipYEntry {
+  from {
+    transform: rotateX(-90deg);
+    opacity: 0;
+  }
+  to {
+    transform: rotateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes dissolveEntry {
+  from {
+    opacity: 0;
+    filter: blur(8px);
+    transform: scale(1.1);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+    transform: scale(1);
+  }
+}
+
+@keyframes wipeEntry {
+  from {
+    clip-path: inset(0 100% 0 0);
+    opacity: 0;
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+    opacity: 1;
+  }
+}
+
+/* Slide Transition Classes */
+.slide-up {
+  animation: slideUpEntry 0.6s ease-out;
+}
+
+.slide-down {
+  animation: slideDownEntry 0.6s ease-out;
+}
+
+.slide-left {
+  animation: slideLeftEntry 0.6s ease-out;
+}
+
+.slide-right {
+  animation: slideRightEntry 0.6s ease-out;
+}
+
+.zoom-transition {
+  animation: zoomInEntry 0.8s ease-in-out;
+}
+
+.flip-x {
+  animation: flipXEntry 0.7s ease-in-out;
+  transform-style: preserve-3d;
+}
+
+.flip-y {
+  animation: flipYEntry 0.7s ease-in-out;
+  transform-style: preserve-3d;
+}
+
+.dissolve-transition {
+  animation: dissolveEntry 0.9s ease-in-out;
+}
+
+.wipe-transition {
+  animation: wipeEntry 0.6s ease-in;
+}
+
+/* Hide scrollbar for slides container */
+#slides-container {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Project Selection List Custom Scrollbar */
+.project-list-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: #8356f3 transparent;
+}
+
+.project-list-scroll::-webkit-scrollbar {
+  width: 4px;
+}
+
+.project-list-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.project-list-scroll::-webkit-scrollbar-thumb {
+  background: #8356f3;
+  border-radius: 2px;
+}
+
+.project-list-scroll::-webkit-scrollbar-thumb:hover {
+  background: #9c70f5;
+}
+
+#slides-container::-webkit-scrollbar {
+  display: none;
+}
+
+/* Mobile-first responsive text scaling */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Ensure text doesn't get too small on mobile */
+  body {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    background: linear-gradient(135deg, #111827 0%, #7c3aed 50%, #111827 100%);
+    min-height: 100vh;
+  }
+
+  /* Improve touch targets for mobile - only applies on actual touch/pointer-coarse devices */
+  @media (hover: none) and (pointer: coarse) {
+    button,
+    a,
+    [role="button"] {
+      min-height: 44px;
+      min-width: 44px;
+    }
+  }
+
+  /* Better mobile spacing */
+  @media (max-width: 640px) {
+    .container {
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+
+    /* Prevent horizontal overflow */
+    body {
+      overflow-x: hidden;
+    }
+
+    /* Fix grid layouts on mobile */
+    .grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* Prevent any horizontal scrolling */
+  html,
+  body {
+    overflow-x: hidden;
+    width: 100%;
+    max-width: 100vw;
+    background: linear-gradient(135deg, #111827 0%, #7c3aed 50%, #111827 100%);
+    min-height: 100vh;
+  }
+
+  html {
+    background: linear-gradient(135deg, #111827 0%, #7c3aed 50%, #111827 100%);
+  }
+
+  /* Fix image scaling on mobile */
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* Ensure sections don't exceed viewport */
+  section,
+  div {
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  /* Mobile text improvements */
+  @media (max-width: 768px) {
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      line-height: 1.2;
+      word-wrap: break-word;
+    }
+
+    p {
+      line-height: 1.5;
+      word-wrap: break-word;
+    }
+  }
+}
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 47.4% 11.2%;
+
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 47.4% 11.2%;
+
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+
+    --card: transparent;
+    --card-foreground: 222.2 47.4% 11.2%;
+
+    --primary: 222.2 47.4% 11.2%;
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+
+    --destructive: 0 100% 50%;
+    --destructive-foreground: 210 40% 98%;
+
+    --ring: 215 20.2% 65.1%;
+
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 224 71% 4%;
+    --foreground: 213 31% 91%;
+
+    --muted: 223 47% 11%;
+    --muted-foreground: 215.4 16.3% 56.9%;
+
+    --accent: 216 34% 17%;
+    --accent-foreground: 210 40% 98%;
+
+    --popover: 224 71% 4%;
+    --popover-foreground: 215 20.2% 65.1%;
+
+    --border: 216 34% 17%;
+    --input: 216 34% 17%;
+
+    --card: transparent;
+    --card-foreground: 213 31% 91%;
+
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 1.2%;
+
+    --secondary: 222.2 47.4% 11.2%;
+    --secondary-foreground: 210 40% 98%;
+
+    --destructive: 0 63% 31%;
+    --destructive-foreground: 210 40% 98%;
+
+    --ring: 216 34% 17%;
+
+    --radius: 0.5rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings:
+      "rlig" 1,
+      "calt" 1;
+  }
+}
+
+/* Beeping animation for notifications */
+@keyframes beep {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.3;
+    transform: scale(0.8);
+  }
+}
+
+.animate-beep {
+  animation: beep 1.5s ease-in-out infinite;
+}
+
+/* Hide default scrollbars for custom scroller sections */
+#edit-preparation-scroller::-webkit-scrollbar,
+#preview-scroller::-webkit-scrollbar {
+  display: none;
+}
+
+#edit-preparation-scroller,
+#preview-scroller {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

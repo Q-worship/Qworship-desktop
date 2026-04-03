@@ -1,0 +1,751 @@
+react-dom.development.js:29895 Download the React DevTools for a better development experience: https://reactjs.org/link/react-devtools
+QworshipHome.tsx:1212 QworshipHome - songsData: undefined
+QworshipHome.tsx:1213 QworshipHome - savedSongs: Array(0)
+QworshipHome.tsx:530 getCurrentItemId called with: Object
+QworshipHome.tsx:560 Falling back to default
+SongbookModal.tsx:172 SongbookModal received savedSongs: Array(0)
+QworshipHome.tsx:1212 QworshipHome - songsData: undefined
+QworshipHome.tsx:1213 QworshipHome - savedSongs: Array(0)
+QworshipHome.tsx:530 getCurrentItemId called with: Object
+QworshipHome.tsx:560 Falling back to default
+SongbookModal.tsx:172 SongbookModal received savedSongs: Array(0)
+QworshipHome.tsx:1212 QworshipHome - songsData: Object
+QworshipHome.tsx:1213 QworshipHome - savedSongs: Object
+QworshipHome.tsx:530 getCurrentItemId called with: Object
+QworshipHome.tsx:560 Falling back to default
+SongbookModal.tsx:172 SongbookModal received savedSongs: Object
+QworshipHome.tsx:1212 QworshipHome - songsData: Object
+QworshipHome.tsx:1213 QworshipHome - savedSongs: Object
+QworshipHome.tsx:530 getCurrentItemId called with: Object
+QworshipHome.tsx:560 Falling back to default
+SongbookModal.tsx:172 SongbookModal received savedSongs: Object
+QworshipHome.tsx:1212 QworshipHome - songsData: Object
+QworshipHome.tsx:1213 QworshipHome - savedSongs: Object
+QworshipHome.tsx:530 getCurrentItemId called with: Object
+QworshipHome.tsx:560 Falling back to default
+SongbookModal.tsx:172 SongbookModal received savedSongs: Object
+QworshipHome.tsx:2511 Creating slides from item: Object
+QworshipHome.tsx:2512 Item type: song
+QworshipHome.tsx:2513 Item sections: Array(0)
+QworshipHome.tsx:2514 Item content: 
+QworshipHome.tsx:2524 Created generic song slide with song icon
+QworshipHome.tsx:2422 ✅ Added item to serviceItems for slide display: Object
+QworshipHome.tsx:2424 3-Action System completed for song in PRE-SERVICE ITEMS: Object
+QworshipHome.tsx:1212 QworshipHome - songsData: Object
+QworshipHome.tsx:1213 QworshipHome - savedSongs: Object
+QworshipHome.tsx:530 getCurrentItemId called with: Object
+QworshipHome.tsx:549 Using currentSlide parent item: song-1755170516823
+QworshipHome.tsx:567 🔍 getItemBackground called for item: song-1755170516823
+QworshipHome.tsx:568 🗂️ Current itemBackgrounds state: {}
+QworshipHome.tsx:569 🎨 Returning background: {
+  "type": "none",
+  "value": "#000000"
+}
+QworshipHome.tsx:5112 🎯 Build mode preview - editing content ID: song-1755170516823
+QworshipHome.tsx:5113 🎨 Build mode preview - retrieved background: Object
+QworshipHome.tsx:567 🔍 getItemBackground called for item: song-1755170516823
+QworshipHome.tsx:568 🗂️ Current itemBackgrounds state: {}
+QworshipHome.tsx:569 🎨 Returning background: {
+  "type": "none",
+  "value": "#000000"
+}
+QworshipHome.tsx:5676 Slide preview background for item song-1755170516823 : Object
+SongbookModal.tsx:172 SongbookModal received savedSongs: Object
+QworshipHome.tsx:1212 QworshipHome - songsData: Object
+QworshipHome.tsx:1213 QworshipHome - savedSongs: Object
+QworshipHome.tsx:530 getCurrentItemId called with: Object
+QworshipHome.tsx:549 Using currentSlide parent item: song-1755170516823
+QworshipHome.tsx:567 🔍 getItemBackground called for item: song-1755170516823
+QworshipHome.tsx:568 🗂️ Current itemBackgrounds state: {}
+QworshipHome.tsx:569 🎨 Returning background: {
+  "type": "none",
+  "value": "#000000"
+}
+QworshipHome.tsx:5112 🎯 Build mode preview - editing content ID: song-1755170516823
+QworshipHome.tsx:5113 🎨 Build mode preview - retrieved background: Object
+QworshipHome.tsx:567 🔍 getItemBackground called for item: song-1755170516823
+QworshipHome.tsx:568 🗂️ Current itemBackgrounds state: {}
+QworshipHome.tsx:569 🎨 Returning background: {
+  "type": "none",
+  "value": "#000000"
+}
+QworshipHome.tsx:5676 Slide preview background for item song-1755170516823 : Object
+QworshipHome.tsx:1212 QworshipHome - songsData: Object
+QworshipHome.tsx:1213 QworshipHome - savedSongs: Object
+QworshipHome.tsx:530 getCurrentItemId called with: Object
+QworshipHome.tsx:549 Using currentSlide parent item: song-1755170516823
+QworshipHome.tsx:567 🔍 getItemBackground called for item: song-1755170516823
+QworshipHome.tsx:568 🗂️ Current itemBackgrounds state: {}
+QworshipHome.tsx:569 🎨 Returning background: {
+  "type": "none",
+  "value": "#000000"
+}
+QworshipHome.tsx:5112 🎯 Build mode preview - editing content ID: song-1755170516823
+QworshipHome.tsx:5113 🎨 Build mode preview - retrieved background: Object
+QworshipHome.tsx:567 🔍 getItemBackground called for item: song-1755170516823
+QworshipHome.tsx:568 🗂️ Current itemBackgrounds state: {}
+QworshipHome.tsx:569 🎨 Returning background: {
+  "type": "none",
+  "value": "#000000"
+}
+QworshipHome.tsx:5676 Slide preview background for item song-1755170516823 : Object
+SongbookModal.tsx:172 SongbookModal received savedSongs: Object
+QworshipHome.tsx:1212 QworshipHome - songsData: Object
+QworshipHome.tsx:1213 QworshipHome - savedSongs: Object
+QworshipHome.tsx:530 getCurrentItemId called with: Object
+QworshipHome.tsx:549 Using currentSlide parent item: song-1755170516823
+QworshipHome.tsx:567 🔍 getItemBackground called for item: song-1755170516823
+QworshipHome.tsx:568 🗂️ Current itemBackgrounds state: {}
+QworshipHome.tsx:569 🎨 Returning background: {
+  "type": "none",
+  "value": "#000000"
+}
+QworshipHome.tsx:5112 🎯 Build mode preview - editing content ID: song-1755170516823
+QworshipHome.tsx:5113 🎨 Build mode preview - retrieved background: Object
+QworshipHome.tsx:567 🔍 getItemBackground called for item: song-1755170516823
+QworshipHome.tsx:568 🗂️ Current itemBackgrounds state: {}
+QworshipHome.tsx:569 🎨 Returning background: {
+  "type": "none",
+  "value": "#000000"
+}
+QworshipHome.tsx:5676 Slide preview background for item song-1755170516823 : Object
+SongbookModal.tsx:172 SongbookModal received savedSongs: Object
+QworshipHome.tsx:1212 QworshipHome - songsData: Object
+QworshipHome.tsx:1213 QworshipHome - savedSongs: Object
+QworshipHome.tsx:530 getCurrentItemId called with: Object
+QworshipHome.tsx:549 Using currentSlide parent item: song-1755170516823
+QworshipHome.tsx:567 🔍 getItemBackground called for item: song-1755170516823
+QworshipHome.tsx:568 🗂️ Current itemBackgrounds state: {}
+QworshipHome.tsx:569 🎨 Returning background: {
+  "type": "none",
+  "value": "#000000"
+}
+QworshipHome.tsx:5112 🎯 Build mode preview - editing content ID: song-1755170516823
+QworshipHome.tsx:5113 🎨 Build mode preview - retrieved background: Object
+QworshipHome.tsx:567 🔍 getItemBackground called for item: song-1755170516823
+QworshipHome.tsx:568 🗂️ Current itemBackgrounds state: {}
+QworshipHome.tsx:569 🎨 Returning background: {
+  "type": "none",
+  "value": "#000000"
+}
+QworshipHome.tsx:5676 Slide preview background for item song-1755170516823 : Object
+SongbookModal.tsx:172 SongbookModal received savedSongs: Object
+QworshipHome.tsx:1212 QworshipHome - songsData: Object
+QworshipHome.tsx:1213 QworshipHome - savedSongs: Object
+QworshipHome.tsx:530 getCurrentItemId called with: Object
+QworshipHome.tsx:549 Using currentSlide parent item: song-1755170516823
+QworshipHome.tsx:567 🔍 getItemBackground called for item: song-1755170516823
+QworshipHome.tsx:568 🗂️ Current itemBackgrounds state: {}
+QworshipHome.tsx:569 🎨 Returning background: {
+  "type": "none",
+  "value": "#000000"
+}
+QworshipHome.tsx:5112 🎯 Build mode preview - editing content ID: song-1755170516823
+QworshipHome.tsx:5113 🎨 Build mode preview - retrieved background: Object
+QworshipHome.tsx:567 🔍 getItemBackground called for item: song-1755170516823
+QworshipHome.tsx:568 🗂️ Current itemBackgrounds state: {}
+QworshipHome.tsx:569 🎨 Returning background: {
+  "type": "none",
+  "value": "#000000"
+}
+QworshipHome.tsx:5676 Slide preview background for item song-1755170516823 : Object
+SongbookModal.tsx:172 SongbookModal received savedSongs: Object
+QworshipHome.tsx:1212 QworshipHome - songsData: Object
+QworshipHome.tsx:1213 QworshipHome - savedSongs: Object
+QworshipHome.tsx:530 getCurrentItemId called with: Object
+QworshipHome.tsx:549 Using currentSlide parent item: song-1755170516823
+QworshipHome.tsx:567 🔍 getItemBackground called for item: song-1755170516823
+QworshipHome.tsx:568 🗂️ Current itemBackgrounds state: {}
+QworshipHome.tsx:569 🎨 Returning background: {
+  "type": "none",
+  "value": "#000000"
+}
+QworshipHome.tsx:5112 🎯 Build mode preview - editing content ID: song-1755170516823
+QworshipHome.tsx:5113 🎨 Build mode preview - retrieved background: Object
+QworshipHome.tsx:567 🔍 getItemBackground called for item: song-1755170516823
+QworshipHome.tsx:568 🗂️ Current itemBackgrounds state: {}
+QworshipHome.tsx:569 🎨 Returning background: {
+  "type": "none",
+  "value": "#000000"
+}
+QworshipHome.tsx:5676 Slide preview background for item song-1755170516823 : Object
+SongbookModal.tsx:172 SongbookModal received savedSongs: Object
+QworshipHome.tsx:1212 QworshipHome - songsData: Object
+QworshipHome.tsx:1213 QworshipHome - savedSongs: Object
+QworshipHome.tsx:530 getCurrentItemId called with: Object
+QworshipHome.tsx:549 Using currentSlide parent item: song-1755170516823
+QworshipHome.tsx:567 🔍 getItemBackground called for item: song-1755170516823
+QworshipHome.tsx:568 🗂️ Current itemBackgrounds state: {}
+QworshipHome.tsx:569 🎨 Returning background: {
+  "type": "none",
+  "value": "#000000"
+}
+QworshipHome.tsx:5112 🎯 Build mode preview - editing content ID: song-1755170516823
+QworshipHome.tsx:5113 🎨 Build mode preview - retrieved background: Object
+QworshipHome.tsx:567 🔍 getItemBackground called for item: song-1755170516823
+QworshipHome.tsx:568 🗂️ Current itemBackgrounds state: {}
+QworshipHome.tsx:569 🎨 Returning background: {
+  "type": "none",
+  "value": "#000000"
+}
+QworshipHome.tsx:5676 Slide preview background for item song-1755170516823 : Object
+SongbookModal.tsx:172 SongbookModal received savedSongs: Object
+QworshipHome.tsx:1212 QworshipHome - songsData: Object
+QworshipHome.tsx:1213 QworshipHome - savedSongs: Object
+QworshipHome.tsx:530 getCurrentItemId called with: Object
+QworshipHome.tsx:549 Using currentSlide parent item: song-1755170516823
+QworshipHome.tsx:567 🔍 getItemBackground called for item: song-1755170516823
+QworshipHome.tsx:568 🗂️ Current itemBackgrounds state: {}
+QworshipHome.tsx:569 🎨 Returning background: {
+  "type": "none",
+  "value": "#000000"
+}
+QworshipHome.tsx:5112 🎯 Build mode preview - editing content ID: song-1755170516823
+QworshipHome.tsx:5113 🎨 Build mode preview - retrieved background: Object
+QworshipHome.tsx:567 🔍 getItemBackground called for item: song-1755170516823
+QworshipHome.tsx:568 🗂️ Current itemBackgrounds state: {}
+QworshipHome.tsx:569 🎨 Returning background: {
+  "type": "none",
+  "value": "#000000"
+}
+QworshipHome.tsx:5676 Slide preview background for item song-1755170516823 : Object
+SongbookModal.tsx:172 SongbookModal received savedSongs: Object
+QworshipHome.tsx:1212 QworshipHome - songsData: Object
+QworshipHome.tsx:1213 QworshipHome - savedSongs: Object
+QworshipHome.tsx:530 getCurrentItemId called with: Object
+QworshipHome.tsx:549 Using currentSlide parent item: song-1755170516823
+QworshipHome.tsx:567 🔍 getItemBackground called for item: song-1755170516823
+QworshipHome.tsx:568 🗂️ Current itemBackgrounds state: {}
+QworshipHome.tsx:569 🎨 Returning background: {
+  "type": "none",
+  "value": "#000000"
+}
+QworshipHome.tsx:5112 🎯 Build mode preview - editing content ID: song-1755170516823
+QworshipHome.tsx:5113 🎨 Build mode preview - retrieved background: Object
+QworshipHome.tsx:567 🔍 getItemBackground called for item: song-1755170516823
+QworshipHome.tsx:568 🗂️ Current itemBackgrounds state: {}
+QworshipHome.tsx:569 🎨 Returning background: {
+  "type": "none",
+  "value": "#000000"
+}
+QworshipHome.tsx:5676 Slide preview background for item song-1755170516823 : Object
+SongbookModal.tsx:172 SongbookModal received savedSongs: Object
+QworshipHome.tsx:1212 QworshipHome - songsData: Object
+QworshipHome.tsx:1213 QworshipHome - savedSongs: Object
+QworshipHome.tsx:530 getCurrentItemId called with: Object
+QworshipHome.tsx:549 Using currentSlide parent item: song-1755170516823
+QworshipHome.tsx:567 🔍 getItemBackground called for item: song-1755170516823
+QworshipHome.tsx:568 🗂️ Current itemBackgrounds state: {}
+QworshipHome.tsx:569 🎨 Returning background: {
+  "type": "none",
+  "value": "#000000"
+}
+QworshipHome.tsx:5112 🎯 Build mode preview - editing content ID: song-1755170516823
+QworshipHome.tsx:5113 🎨 Build mode preview - retrieved background: Object
+QworshipHome.tsx:567 🔍 getItemBackground called for item: song-1755170516823
+QworshipHome.tsx:568 🗂️ Current itemBackgrounds state: {}
+QworshipHome.tsx:569 🎨 Returning background: {
+  "type": "none",
+  "value": "#000000"
+}
+QworshipHome.tsx:5676 Slide preview background for item song-1755170516823 : Object
+SongbookModal.tsx:172 SongbookModal received savedSongs: Object
+dialog.tsx:542  Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+(anonymous) @ dialog.tsx:542
+QworshipHome.tsx:2155 handleSelectSong called with: Object
+QworshipHome.tsx:2156 editingContent: Object
+QworshipHome.tsx:2105 Updating item content for: song-1755170516823 with title: Amazing Grace
+QworshipHome.tsx:2111 Updating service item title from Song to Amazing Grace
+QworshipHome.tsx:1212 QworshipHome - songsData: Object
+QworshipHome.tsx:1213 QworshipHome - savedSongs: Object
+QworshipHome.tsx:2130 Updating section item title in PRE-SERVICE ITEMS from Song to Amazing Grace
+QworshipHome.tsx:530 getCurrentItemId called with: Object
+QworshipHome.tsx:549 Using currentSlide parent item: song-1755170516823
+QworshipHome.tsx:567 🔍 getItemBackground called for item: song-1755170516823
+QworshipHome.tsx:568 🗂️ Current itemBackgrounds state: {}
+QworshipHome.tsx:569 🎨 Returning background: {
+  "type": "none",
+  "value": "#000000"
+}
+QworshipHome.tsx:5112 🎯 Build mode preview - editing content ID: song-1755170516823
+QworshipHome.tsx:5113 🎨 Build mode preview - retrieved background: Object
+QworshipHome.tsx:567 🔍 getItemBackground called for item: song-1755170516823
+QworshipHome.tsx:568 🗂️ Current itemBackgrounds state: {}
+QworshipHome.tsx:569 🎨 Returning background: {
+  "type": "none",
+  "value": "#000000"
+}
+QworshipHome.tsx:5676 Slide preview background for item song-1755170516823 : Object
+QworshipHome.tsx:567 🔍 getItemBackground called for item: song-1755170516823
+QworshipHome.tsx:568 🗂️ Current itemBackgrounds state: {}
+QworshipHome.tsx:569 🎨 Returning background: {
+  "type": "none",
+  "value": "#000000"
+}
+QworshipHome.tsx:5676 Slide preview background for item song-1755170516823 : Object
+QworshipHome.tsx:567 🔍 getItemBackground called for item: song-1755170516823
+QworshipHome.tsx:568 🗂️ Current itemBackgrounds state: {}
+QworshipHome.tsx:569 🎨 Returning background: {
+  "type": "none",
+  "value": "#000000"
+}
+QworshipHome.tsx:5676 Slide preview background for item song-1755170516823 : Object
+QworshipHome.tsx:567 🔍 getItemBackground called for item: song-1755170516823
+QworshipHome.tsx:568 🗂️ Current itemBackgrounds state: {}
+QworshipHome.tsx:569 🎨 Returning background: {
+  "type": "none",
+  "value": "#000000"
+}
+QworshipHome.tsx:5676 Slide preview background for item song-1755170516823 : Object
+QworshipHome.tsx:567 🔍 getItemBackground called for item: song-1755170516823
+QworshipHome.tsx:568 🗂️ Current itemBackgrounds state: {}
+QworshipHome.tsx:569 🎨 Returning background: {
+  "type": "none",
+  "value": "#000000"
+}
+QworshipHome.tsx:5676 Slide preview background for item song-1755170516823 : Object
+QworshipHome.tsx:567 🔍 getItemBackground called for item: song-1755170516823
+QworshipHome.tsx:568 🗂️ Current itemBackgrounds state: {}
+QworshipHome.tsx:569 🎨 Returning background: {
+  "type": "none",
+  "value": "#000000"
+}
+QworshipHome.tsx:5676 Slide preview background for item song-1755170516823 : Object
+SongbookModal.tsx:172 SongbookModal received savedSongs: Object
+QworshipHome.tsx:1212 QworshipHome - songsData: Object
+QworshipHome.tsx:1213 QworshipHome - savedSongs: Object
+QworshipHome.tsx:530 getCurrentItemId called with: Object
+QworshipHome.tsx:549 Using currentSlide parent item: song-1755170516823
+QworshipHome.tsx:567 🔍 getItemBackground called for item: song-1755170516823
+QworshipHome.tsx:568 🗂️ Current itemBackgrounds state: {}
+QworshipHome.tsx:569 🎨 Returning background: {
+  "type": "none",
+  "value": "#000000"
+}
+QworshipHome.tsx:5112 🎯 Build mode preview - editing content ID: song-1755170516823
+QworshipHome.tsx:5113 🎨 Build mode preview - retrieved background: Object
+QworshipHome.tsx:567 🔍 getItemBackground called for item: song-1755170516823
+QworshipHome.tsx:568 🗂️ Current itemBackgrounds state: {}
+QworshipHome.tsx:569 🎨 Returning background: {
+  "type": "none",
+  "value": "#000000"
+}
+QworshipHome.tsx:5676 Slide preview background for item song-1755170516823 : Object
+QworshipHome.tsx:567 🔍 getItemBackground called for item: song-1755170516823
+QworshipHome.tsx:568 🗂️ Current itemBackgrounds state: {}
+QworshipHome.tsx:569 🎨 Returning background: {
+  "type": "none",
+  "value": "#000000"
+}
+QworshipHome.tsx:5676 Slide preview background for item song-1755170516823 : Object
+QworshipHome.tsx:567 🔍 getItemBackground called for item: song-1755170516823
+QworshipHome.tsx:568 🗂️ Current itemBackgrounds state: {}
+QworshipHome.tsx:569 🎨 Returning background: {
+  "type": "none",
+  "value": "#000000"
+}
+QworshipHome.tsx:5676 Slide preview background for item song-1755170516823 : Object
+QworshipHome.tsx:567 🔍 getItemBackground called for item: song-1755170516823
+QworshipHome.tsx:568 🗂️ Current itemBackgrounds state: {}
+QworshipHome.tsx:569 🎨 Returning background: {
+  "type": "none",
+  "value": "#000000"
+}
+QworshipHome.tsx:5676 Slide preview background for item song-1755170516823 : Object
+QworshipHome.tsx:567 🔍 getItemBackground called for item: song-1755170516823
+QworshipHome.tsx:568 🗂️ Current itemBackgrounds state: {}
+QworshipHome.tsx:569 🎨 Returning background: {
+  "type": "none",
+  "value": "#000000"
+}
+QworshipHome.tsx:5676 Slide preview background for item song-1755170516823 : Object
+QworshipHome.tsx:567 🔍 getItemBackground called for item: song-1755170516823
+QworshipHome.tsx:568 🗂️ Current itemBackgrounds state: {}
+QworshipHome.tsx:569 🎨 Returning background: {
+  "type": "none",
+  "value": "#000000"
+}
+QworshipHome.tsx:5676 Slide preview background for item song-1755170516823 : Object
+SongbookModal.tsx:172 SongbookModal received savedSongs: Object
+QworshipHome.tsx:1212 QworshipHome - songsData: Object
+QworshipHome.tsx:1213 QworshipHome - savedSongs: Object
+QworshipHome.tsx:530 getCurrentItemId called with: Object
+QworshipHome.tsx:549 Using currentSlide parent item: song-1755170516823
+QworshipHome.tsx:567 🔍 getItemBackground called for item: song-1755170516823
+QworshipHome.tsx:568 🗂️ Current itemBackgrounds state: {}
+QworshipHome.tsx:569 🎨 Returning background: {
+  "type": "none",
+  "value": "#000000"
+}
+QworshipHome.tsx:5112 🎯 Build mode preview - editing content ID: song-1755170516823
+QworshipHome.tsx:5113 🎨 Build mode preview - retrieved background: Object
+QworshipHome.tsx:567 🔍 getItemBackground called for item: song-1755170516823
+QworshipHome.tsx:568 🗂️ Current itemBackgrounds state: {}
+QworshipHome.tsx:569 🎨 Returning background: {
+  "type": "none",
+  "value": "#000000"
+}
+QworshipHome.tsx:5676 Slide preview background for item song-1755170516823 : Object
+QworshipHome.tsx:567 🔍 getItemBackground called for item: song-1755170516823
+QworshipHome.tsx:568 🗂️ Current itemBackgrounds state: {}
+QworshipHome.tsx:569 🎨 Returning background: {
+  "type": "none",
+  "value": "#000000"
+}
+QworshipHome.tsx:5676 Slide preview background for item song-1755170516823 : Object
+QworshipHome.tsx:567 🔍 getItemBackground called for item: song-1755170516823
+QworshipHome.tsx:568 🗂️ Current itemBackgrounds state: {}
+QworshipHome.tsx:569 🎨 Returning background: {
+  "type": "none",
+  "value": "#000000"
+}
+QworshipHome.tsx:5676 Slide preview background for item song-1755170516823 : Object
+QworshipHome.tsx:567 🔍 getItemBackground called for item: song-1755170516823
+QworshipHome.tsx:568 🗂️ Current itemBackgrounds state: {}
+QworshipHome.tsx:569 🎨 Returning background: {
+  "type": "none",
+  "value": "#000000"
+}
+QworshipHome.tsx:5676 Slide preview background for item song-1755170516823 : Object
+QworshipHome.tsx:567 🔍 getItemBackground called for item: song-1755170516823
+QworshipHome.tsx:568 🗂️ Current itemBackgrounds state: {}
+QworshipHome.tsx:569 🎨 Returning background: {
+  "type": "none",
+  "value": "#000000"
+}
+QworshipHome.tsx:5676 Slide preview background for item song-1755170516823 : Object
+QworshipHome.tsx:567 🔍 getItemBackground called for item: song-1755170516823
+QworshipHome.tsx:568 🗂️ Current itemBackgrounds state: {}
+QworshipHome.tsx:569 🎨 Returning background: {
+  "type": "none",
+  "value": "#000000"
+}
+QworshipHome.tsx:5676 Slide preview background for item song-1755170516823 : Object
+SongbookModal.tsx:172 SongbookModal received savedSongs: Object
+QworshipHome.tsx:3450 Browse media clicked
+QworshipHome.tsx:1212 QworshipHome - songsData: Object
+QworshipHome.tsx:1213 QworshipHome - savedSongs: Object
+QworshipHome.tsx:530 getCurrentItemId called with: Object
+QworshipHome.tsx:549 Using currentSlide parent item: song-1755170516823
+QworshipHome.tsx:567 🔍 getItemBackground called for item: song-1755170516823
+QworshipHome.tsx:568 🗂️ Current itemBackgrounds state: {}
+QworshipHome.tsx:569 🎨 Returning background: {
+  "type": "none",
+  "value": "#000000"
+}
+QworshipHome.tsx:5112 🎯 Build mode preview - editing content ID: song-1755170516823
+QworshipHome.tsx:5113 🎨 Build mode preview - retrieved background: Object
+QworshipHome.tsx:567 🔍 getItemBackground called for item: song-1755170516823
+QworshipHome.tsx:568 🗂️ Current itemBackgrounds state: {}
+QworshipHome.tsx:569 🎨 Returning background: {
+  "type": "none",
+  "value": "#000000"
+}
+QworshipHome.tsx:5676 Slide preview background for item song-1755170516823 : Object
+QworshipHome.tsx:567 🔍 getItemBackground called for item: song-1755170516823
+QworshipHome.tsx:568 🗂️ Current itemBackgrounds state: {}
+QworshipHome.tsx:569 🎨 Returning background: {
+  "type": "none",
+  "value": "#000000"
+}
+QworshipHome.tsx:5676 Slide preview background for item song-1755170516823 : Object
+QworshipHome.tsx:567 🔍 getItemBackground called for item: song-1755170516823
+QworshipHome.tsx:568 🗂️ Current itemBackgrounds state: {}
+QworshipHome.tsx:569 🎨 Returning background: {
+  "type": "none",
+  "value": "#000000"
+}
+QworshipHome.tsx:5676 Slide preview background for item song-1755170516823 : Object
+QworshipHome.tsx:567 🔍 getItemBackground called for item: song-1755170516823
+QworshipHome.tsx:568 🗂️ Current itemBackgrounds state: {}
+QworshipHome.tsx:569 🎨 Returning background: {
+  "type": "none",
+  "value": "#000000"
+}
+QworshipHome.tsx:5676 Slide preview background for item song-1755170516823 : Object
+QworshipHome.tsx:567 🔍 getItemBackground called for item: song-1755170516823
+QworshipHome.tsx:568 🗂️ Current itemBackgrounds state: {}
+QworshipHome.tsx:569 🎨 Returning background: {
+  "type": "none",
+  "value": "#000000"
+}
+QworshipHome.tsx:5676 Slide preview background for item song-1755170516823 : Object
+QworshipHome.tsx:567 🔍 getItemBackground called for item: song-1755170516823
+QworshipHome.tsx:568 🗂️ Current itemBackgrounds state: {}
+QworshipHome.tsx:569 🎨 Returning background: {
+  "type": "none",
+  "value": "#000000"
+}
+QworshipHome.tsx:5676 Slide preview background for item song-1755170516823 : Object
+SongbookModal.tsx:172 SongbookModal received savedSongs: Object
+QworshipHome.tsx:170 🎯 CLOUD MEDIA CLICKED: 11 pexels-saulo-leite-1491182-17637316
+QworshipHome.tsx:6413 🌩️ CLOUD MEDIA SELECTED: Object
+QworshipHome.tsx:6415 ⚡ APPLYING CLOUD MEDIA BACKGROUND: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/api/cloud-media/11/file
+QworshipHome.tsx:6416 🎭 Background type: image
+QworshipHome.tsx:530 getCurrentItemId called with: Object
+QworshipHome.tsx:549 Using currentSlide parent item: song-1755170516823
+QworshipHome.tsx:6418 🎯 Current item ID before apply: song-1755170516823
+QworshipHome.tsx:6425 📦 Final cloud background data: Object
+QworshipHome.tsx:6426 🚀 About to call applyBackgroundToCurrentItem...
+QworshipHome.tsx:530 getCurrentItemId called with: Object
+QworshipHome.tsx:549 Using currentSlide parent item: song-1755170516823
+QworshipHome.tsx:576 🎬 APPLY BACKGROUND FUNCTION CALLED
+QworshipHome.tsx:577 📋 Background data: Object
+QworshipHome.tsx:578 🎯 Target item ID: song-1755170516823
+QworshipHome.tsx:579 📊 Selected slide: null
+QworshipHome.tsx:580 📈 Current slide: 1
+QworshipHome.tsx:581 📝 Service items count: 1
+QworshipHome.tsx:589 💾 UPDATED ITEM BACKGROUNDS STATE:
+QworshipHome.tsx:590 Old state: Object
+QworshipHome.tsx:591 New state: Object
+QworshipHome.tsx:592 🔍 Background for item song-1755170516823: Object
+QworshipHome.tsx:6429 ✅ applyBackgroundToCurrentItem completed!
+QworshipHome.tsx:1212 QworshipHome - songsData: Object
+QworshipHome.tsx:1213 QworshipHome - savedSongs: Object
+QworshipHome.tsx:530 getCurrentItemId called with: Object
+QworshipHome.tsx:549 Using currentSlide parent item: song-1755170516823
+QworshipHome.tsx:567 🔍 getItemBackground called for item: song-1755170516823
+QworshipHome.tsx:568 🗂️ Current itemBackgrounds state: {
+  "song-1755170516823": {
+    "type": "image",
+    "value": "https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/api/cloud-media/11/file",
+    "name": "pexels-saulo-leite-1491182-17637316"
+  }
+}
+QworshipHome.tsx:569 🎨 Returning background: {
+  "type": "image",
+  "value": "https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/api/cloud-media/11/file",
+  "name": "pexels-saulo-leite-1491182-17637316"
+}
+QworshipHome.tsx:5112 🎯 Build mode preview - editing content ID: song-1755170516823
+QworshipHome.tsx:5113 🎨 Build mode preview - retrieved background: Object
+QworshipHome.tsx:567 🔍 getItemBackground called for item: song-1755170516823
+QworshipHome.tsx:568 🗂️ Current itemBackgrounds state: {
+  "song-1755170516823": {
+    "type": "image",
+    "value": "https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/api/cloud-media/11/file",
+    "name": "pexels-saulo-leite-1491182-17637316"
+  }
+}
+QworshipHome.tsx:569 🎨 Returning background: {
+  "type": "image",
+  "value": "https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/api/cloud-media/11/file",
+  "name": "pexels-saulo-leite-1491182-17637316"
+}
+QworshipHome.tsx:5676 Slide preview background for item song-1755170516823 : Object
+QworshipHome.tsx:5678 🎯 Slide thumbnail media background detected: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/api/cloud-media/11/file
+QworshipHome.tsx:5694 🎨 Applying slide thumbnail image background styles: Object
+QworshipHome.tsx:5695 🔗 Final thumbnail background URL: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/api/cloud-media/11/file
+QworshipHome.tsx:567 🔍 getItemBackground called for item: song-1755170516823
+QworshipHome.tsx:568 🗂️ Current itemBackgrounds state: {
+  "song-1755170516823": {
+    "type": "image",
+    "value": "https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/api/cloud-media/11/file",
+    "name": "pexels-saulo-leite-1491182-17637316"
+  }
+}
+QworshipHome.tsx:569 🎨 Returning background: {
+  "type": "image",
+  "value": "https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/api/cloud-media/11/file",
+  "name": "pexels-saulo-leite-1491182-17637316"
+}
+QworshipHome.tsx:5676 Slide preview background for item song-1755170516823 : Object
+QworshipHome.tsx:5678 🎯 Slide thumbnail media background detected: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/api/cloud-media/11/file
+QworshipHome.tsx:5694 🎨 Applying slide thumbnail image background styles: Object
+QworshipHome.tsx:5695 🔗 Final thumbnail background URL: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/api/cloud-media/11/file
+QworshipHome.tsx:567 🔍 getItemBackground called for item: song-1755170516823
+QworshipHome.tsx:568 🗂️ Current itemBackgrounds state: {
+  "song-1755170516823": {
+    "type": "image",
+    "value": "https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/api/cloud-media/11/file",
+    "name": "pexels-saulo-leite-1491182-17637316"
+  }
+}
+QworshipHome.tsx:569 🎨 Returning background: {
+  "type": "image",
+  "value": "https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/api/cloud-media/11/file",
+  "name": "pexels-saulo-leite-1491182-17637316"
+}
+QworshipHome.tsx:5676 Slide preview background for item song-1755170516823 : Object
+QworshipHome.tsx:5678 🎯 Slide thumbnail media background detected: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/api/cloud-media/11/file
+QworshipHome.tsx:5694 🎨 Applying slide thumbnail image background styles: Object
+QworshipHome.tsx:5695 🔗 Final thumbnail background URL: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/api/cloud-media/11/file
+QworshipHome.tsx:567 🔍 getItemBackground called for item: song-1755170516823
+QworshipHome.tsx:568 🗂️ Current itemBackgrounds state: {
+  "song-1755170516823": {
+    "type": "image",
+    "value": "https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/api/cloud-media/11/file",
+    "name": "pexels-saulo-leite-1491182-17637316"
+  }
+}
+QworshipHome.tsx:569 🎨 Returning background: {
+  "type": "image",
+  "value": "https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/api/cloud-media/11/file",
+  "name": "pexels-saulo-leite-1491182-17637316"
+}
+QworshipHome.tsx:5676 Slide preview background for item song-1755170516823 : Object
+QworshipHome.tsx:5678 🎯 Slide thumbnail media background detected: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/api/cloud-media/11/file
+QworshipHome.tsx:5694 🎨 Applying slide thumbnail image background styles: Object
+QworshipHome.tsx:5695 🔗 Final thumbnail background URL: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/api/cloud-media/11/file
+QworshipHome.tsx:567 🔍 getItemBackground called for item: song-1755170516823
+QworshipHome.tsx:568 🗂️ Current itemBackgrounds state: {
+  "song-1755170516823": {
+    "type": "image",
+    "value": "https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/api/cloud-media/11/file",
+    "name": "pexels-saulo-leite-1491182-17637316"
+  }
+}
+QworshipHome.tsx:569 🎨 Returning background: {
+  "type": "image",
+  "value": "https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/api/cloud-media/11/file",
+  "name": "pexels-saulo-leite-1491182-17637316"
+}
+QworshipHome.tsx:5676 Slide preview background for item song-1755170516823 : Object
+QworshipHome.tsx:5678 🎯 Slide thumbnail media background detected: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/api/cloud-media/11/file
+QworshipHome.tsx:5694 🎨 Applying slide thumbnail image background styles: Object
+QworshipHome.tsx:5695 🔗 Final thumbnail background URL: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/api/cloud-media/11/file
+QworshipHome.tsx:567 🔍 getItemBackground called for item: song-1755170516823
+QworshipHome.tsx:568 🗂️ Current itemBackgrounds state: {
+  "song-1755170516823": {
+    "type": "image",
+    "value": "https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/api/cloud-media/11/file",
+    "name": "pexels-saulo-leite-1491182-17637316"
+  }
+}
+QworshipHome.tsx:569 🎨 Returning background: {
+  "type": "image",
+  "value": "https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/api/cloud-media/11/file",
+  "name": "pexels-saulo-leite-1491182-17637316"
+}
+QworshipHome.tsx:5676 Slide preview background for item song-1755170516823 : Object
+QworshipHome.tsx:5678 🎯 Slide thumbnail media background detected: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/api/cloud-media/11/file
+QworshipHome.tsx:5694 🎨 Applying slide thumbnail image background styles: Object
+QworshipHome.tsx:5695 🔗 Final thumbnail background URL: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/api/cloud-media/11/file
+SongbookModal.tsx:172 SongbookModal received savedSongs: Object
+QworshipHome.tsx:1212 QworshipHome - songsData: Object
+QworshipHome.tsx:1213 QworshipHome - savedSongs: Object
+QworshipHome.tsx:530 getCurrentItemId called with: Object
+QworshipHome.tsx:549 Using currentSlide parent item: song-1755170516823
+QworshipHome.tsx:567 🔍 getItemBackground called for item: song-1755170516823
+QworshipHome.tsx:568 🗂️ Current itemBackgrounds state: {
+  "song-1755170516823": {
+    "type": "image",
+    "value": "https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/api/cloud-media/11/file",
+    "name": "pexels-saulo-leite-1491182-17637316"
+  }
+}
+QworshipHome.tsx:569 🎨 Returning background: {
+  "type": "image",
+  "value": "https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/api/cloud-media/11/file",
+  "name": "pexels-saulo-leite-1491182-17637316"
+}
+QworshipHome.tsx:5112 🎯 Build mode preview - editing content ID: song-1755170516823
+QworshipHome.tsx:5113 🎨 Build mode preview - retrieved background: Object
+QworshipHome.tsx:567 🔍 getItemBackground called for item: song-1755170516823
+QworshipHome.tsx:568 🗂️ Current itemBackgrounds state: {
+  "song-1755170516823": {
+    "type": "image",
+    "value": "https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/api/cloud-media/11/file",
+    "name": "pexels-saulo-leite-1491182-17637316"
+  }
+}
+QworshipHome.tsx:569 🎨 Returning background: {
+  "type": "image",
+  "value": "https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/api/cloud-media/11/file",
+  "name": "pexels-saulo-leite-1491182-17637316"
+}
+QworshipHome.tsx:5676 Slide preview background for item song-1755170516823 : Object
+QworshipHome.tsx:5678 🎯 Slide thumbnail media background detected: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/api/cloud-media/11/file
+QworshipHome.tsx:5694 🎨 Applying slide thumbnail image background styles: Object
+QworshipHome.tsx:5695 🔗 Final thumbnail background URL: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/api/cloud-media/11/file
+QworshipHome.tsx:567 🔍 getItemBackground called for item: song-1755170516823
+QworshipHome.tsx:568 🗂️ Current itemBackgrounds state: {
+  "song-1755170516823": {
+    "type": "image",
+    "value": "https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/api/cloud-media/11/file",
+    "name": "pexels-saulo-leite-1491182-17637316"
+  }
+}
+QworshipHome.tsx:569 🎨 Returning background: {
+  "type": "image",
+  "value": "https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/api/cloud-media/11/file",
+  "name": "pexels-saulo-leite-1491182-17637316"
+}
+QworshipHome.tsx:5676 Slide preview background for item song-1755170516823 : Object
+QworshipHome.tsx:5678 🎯 Slide thumbnail media background detected: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/api/cloud-media/11/file
+QworshipHome.tsx:5694 🎨 Applying slide thumbnail image background styles: Object
+QworshipHome.tsx:5695 🔗 Final thumbnail background URL: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/api/cloud-media/11/file
+QworshipHome.tsx:567 🔍 getItemBackground called for item: song-1755170516823
+QworshipHome.tsx:568 🗂️ Current itemBackgrounds state: {
+  "song-1755170516823": {
+    "type": "image",
+    "value": "https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/api/cloud-media/11/file",
+    "name": "pexels-saulo-leite-1491182-17637316"
+  }
+}
+QworshipHome.tsx:569 🎨 Returning background: {
+  "type": "image",
+  "value": "https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/api/cloud-media/11/file",
+  "name": "pexels-saulo-leite-1491182-17637316"
+}
+QworshipHome.tsx:5676 Slide preview background for item song-1755170516823 : Object
+QworshipHome.tsx:5678 🎯 Slide thumbnail media background detected: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/api/cloud-media/11/file
+QworshipHome.tsx:5694 🎨 Applying slide thumbnail image background styles: Object
+QworshipHome.tsx:5695 🔗 Final thumbnail background URL: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/api/cloud-media/11/file
+QworshipHome.tsx:567 🔍 getItemBackground called for item: song-1755170516823
+QworshipHome.tsx:568 🗂️ Current itemBackgrounds state: {
+  "song-1755170516823": {
+    "type": "image",
+    "value": "https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/api/cloud-media/11/file",
+    "name": "pexels-saulo-leite-1491182-17637316"
+  }
+}
+QworshipHome.tsx:569 🎨 Returning background: {
+  "type": "image",
+  "value": "https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/api/cloud-media/11/file",
+  "name": "pexels-saulo-leite-1491182-17637316"
+}
+QworshipHome.tsx:5676 Slide preview background for item song-1755170516823 : Object
+QworshipHome.tsx:5678 🎯 Slide thumbnail media background detected: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/api/cloud-media/11/file
+QworshipHome.tsx:5694 🎨 Applying slide thumbnail image background styles: Object
+QworshipHome.tsx:5695 🔗 Final thumbnail background URL: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/api/cloud-media/11/file
+QworshipHome.tsx:567 🔍 getItemBackground called for item: song-1755170516823
+QworshipHome.tsx:568 🗂️ Current itemBackgrounds state: {
+  "song-1755170516823": {
+    "type": "image",
+    "value": "https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/api/cloud-media/11/file",
+    "name": "pexels-saulo-leite-1491182-17637316"
+  }
+}
+QworshipHome.tsx:569 🎨 Returning background: {
+  "type": "image",
+  "value": "https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/api/cloud-media/11/file",
+  "name": "pexels-saulo-leite-1491182-17637316"
+}
+QworshipHome.tsx:5676 Slide preview background for item song-1755170516823 : Object
+QworshipHome.tsx:5678 🎯 Slide thumbnail media background detected: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/api/cloud-media/11/file
+QworshipHome.tsx:5694 🎨 Applying slide thumbnail image background styles: Object
+QworshipHome.tsx:5695 🔗 Final thumbnail background URL: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/api/cloud-media/11/file
+QworshipHome.tsx:567 🔍 getItemBackground called for item: song-1755170516823
+QworshipHome.tsx:568 🗂️ Current itemBackgrounds state: {
+  "song-1755170516823": {
+    "type": "image",
+    "value": "https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/api/cloud-media/11/file",
+    "name": "pexels-saulo-leite-1491182-17637316"
+  }
+}
+QworshipHome.tsx:569 🎨 Returning background: {
+  "type": "image",
+  "value": "https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/api/cloud-media/11/file",
+  "name": "pexels-saulo-leite-1491182-17637316"
+}
+QworshipHome.tsx:5676 Slide preview background for item song-1755170516823 : Object
+QworshipHome.tsx:5678 🎯 Slide thumbnail media background detected: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/api/cloud-media/11/file
+QworshipHome.tsx:5694 🎨 Applying slide thumbnail image background styles: Object
+QworshipHome.tsx:5695 🔗 Final thumbnail background URL: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/api/cloud-media/11/file
+SongbookModal.tsx:172 SongbookModal received savedSongs: Object
+[NEW] Explain Console errors by using Copilot in Edge: click
+         
+         to explain an error. 
+        Learn more
+        Don't show again

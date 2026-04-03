@@ -1,0 +1,13 @@
+{
+  "name": "qworship-v2-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "pnpm --parallel --filter \"./apps/*\" run dev",
+    "build": "pnpm --filter \"./apps/*\" run build",
+    "lint": "pnpm --filter \"*\" run lint"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.3"
+  }
+}

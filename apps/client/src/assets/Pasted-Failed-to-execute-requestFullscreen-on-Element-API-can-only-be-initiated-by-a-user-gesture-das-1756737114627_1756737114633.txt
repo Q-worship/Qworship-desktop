@@ -1,0 +1,1306 @@
+Failed to execute 'requestFullscreen' on 'Element': API can only be initiated by a user gesture.
+dashboard-live:1  Failed to execute 'requestFullscreen' on 'Element': API can only be initiated by a user gesture.
+api/songs/search:1   Failed to load resource: the server responded with a status of 500 (Internal Server Error)
+api/songs/search:1   Failed to load resource: the server responded with a status of 500 (Internal Server Error)
+api/songs/search:1   Failed to load resource: the server responded with a status of 500 (Internal Server Error)
+api/songs/search:1   Failed to load resource: the server responded with a status of 500 (Internal Server Error)
+api/songs/search:1   Failed to load resource: the server responded with a status of 500 (Internal Server Error)
+api/songs/search:1   Failed to load resource: the server responded with a status of 500 (Internal Server Error)
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+SongProjectionWidget.tsx:36 🎵 FRONTEND - Starting search for: goodness of god 
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+api/songs/search:1   Failed to load resource: the server responded with a status of 500 (Internal Server Error)
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+SongProjectionWidget.tsx:52  🎵 FRONTEND - Song search error: Error: 500: {"success":false,"error":"Failed to search songs"}
+    at throwIfResNotOk (queryClient.ts:6:11)
+    at async apiRequest (queryClient.ts:22:3)
+    at async searchSongs (SongProjectionWidget.tsx:39:26)
+searchSongs @ SongProjectionWidget.tsx:52
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+SongProjectionWidget.tsx:36 🎵 FRONTEND - Starting search for: goodness of god
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+api/songs/search:1   Failed to load resource: the server responded with a status of 500 (Internal Server Error)
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+SongProjectionWidget.tsx:52  🎵 FRONTEND - Song search error: Error: 500: {"success":false,"error":"Failed to search songs"}
+    at throwIfResNotOk (queryClient.ts:6:11)
+    at async apiRequest (queryClient.ts:22:3)
+    at async searchSongs (SongProjectionWidget.tsx:39:26)
+searchSongs @ SongProjectionWidget.tsx:52
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+SongProjectionWidget.tsx:36 🎵 FRONTEND - Starting search for: Goodness 
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+api/songs/search:1   Failed to load resource: the server responded with a status of 500 (Internal Server Error)
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+SongProjectionWidget.tsx:52  🎵 FRONTEND - Song search error: Error: 500: {"success":false,"error":"Failed to search songs"}
+    at throwIfResNotOk (queryClient.ts:6:11)
+    at async apiRequest (queryClient.ts:22:3)
+    at async searchSongs (SongProjectionWidget.tsx:39:26)
+searchSongs @ SongProjectionWidget.tsx:52
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+SongProjectionWidget.tsx:36 🎵 FRONTEND - Starting search for: Goodness of 
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+api/songs/search:1   Failed to load resource: the server responded with a status of 500 (Internal Server Error)
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+SongProjectionWidget.tsx:52  🎵 FRONTEND - Song search error: Error: 500: {"success":false,"error":"Failed to search songs"}
+    at throwIfResNotOk (queryClient.ts:6:11)
+    at async apiRequest (queryClient.ts:22:3)
+    at async searchSongs (SongProjectionWidget.tsx:39:26)
+searchSongs @ SongProjectionWidget.tsx:52
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+SongProjectionWidget.tsx:36 🎵 FRONTEND - Starting search for: Goodness of G
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+api/songs/search:1   Failed to load resource: the server responded with a status of 500 (Internal Server Error)
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+SongProjectionWidget.tsx:52  🎵 FRONTEND - Song search error: Error: 500: {"success":false,"error":"Failed to search songs"}
+    at throwIfResNotOk (queryClient.ts:6:11)
+    at async apiRequest (queryClient.ts:22:3)
+    at async searchSongs (SongProjectionWidget.tsx:39:26)
+searchSongs @ SongProjectionWidget.tsx:52
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+SongProjectionWidget.tsx:36 🎵 FRONTEND - Starting search for: Goodness of God 
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+api/songs/search:1   Failed to load resource: the server responded with a status of 500 (Internal Server Error)
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+SongProjectionWidget.tsx:52  🎵 FRONTEND - Song search error: Error: 500: {"success":false,"error":"Failed to search songs"}
+    at throwIfResNotOk (queryClient.ts:6:11)
+    at async apiRequest (queryClient.ts:22:3)
+    at async searchSongs (SongProjectionWidget.tsx:39:26)
+searchSongs @ SongProjectionWidget.tsx:52
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:881 Fullscreen state changed: false
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:881 Fullscreen state changed: true
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:881 Fullscreen state changed: false
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:1223  Failed to execute 'requestFullscreen' on 'Element': API can only be initiated by a user gesture.
+requestFullscreen @ LivePresentation.tsx:1223
+LivePresentation.tsx:1235 Fullscreen request failed: TypeError: Permissions check failed
+    at requestFullscreen (LivePresentation.tsx:1223:25)
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message Object
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:590 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}

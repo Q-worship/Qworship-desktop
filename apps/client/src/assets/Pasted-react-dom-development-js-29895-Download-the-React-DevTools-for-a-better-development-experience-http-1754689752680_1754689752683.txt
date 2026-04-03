@@ -1,0 +1,102 @@
+react-dom.development.js:29895 Download the React DevTools for a better development experience: https://reactjs.org/link/react-devtools
+QworshipHome.tsx:495 QworshipHome - songsData: undefined
+QworshipHome.tsx:496 QworshipHome - savedSongs: Array(0)
+SongbookModal.tsx:172 SongbookModal received savedSongs: Array(0)
+QworshipHome.tsx:495 QworshipHome - songsData: undefined
+QworshipHome.tsx:496 QworshipHome - savedSongs: Array(0)
+SongbookModal.tsx:172 SongbookModal received savedSongs: Array(0)
+QworshipHome.tsx:495 QworshipHome - songsData: Object
+QworshipHome.tsx:496 QworshipHome - savedSongs: Object
+SongbookModal.tsx:172 SongbookModal received savedSongs: Object
+QworshipHome.tsx:495 QworshipHome - songsData: Object
+QworshipHome.tsx:496 QworshipHome - savedSongs: Object
+SongbookModal.tsx:172 SongbookModal received savedSongs: Object
+QworshipHome.tsx:495 QworshipHome - songsData: Object
+QworshipHome.tsx:496 QworshipHome - savedSongs: Object
+SongbookModal.tsx:172 SongbookModal received savedSongs: Object
+QworshipHome.tsx:495 QworshipHome - songsData: Object
+QworshipHome.tsx:496 QworshipHome - savedSongs: Object
+SongbookModal.tsx:172 SongbookModal received savedSongs: Object
+QworshipHome.tsx:495 QworshipHome - songsData: Object
+QworshipHome.tsx:496 QworshipHome - savedSongs: Object
+SongbookModal.tsx:172 SongbookModal received savedSongs: Object
+QworshipHome.tsx:1634 Creating slides from item: Object
+QworshipHome.tsx:1635 Item type: song
+QworshipHome.tsx:1636 Item sections: Array(0)
+QworshipHome.tsx:1637 Item content: 
+QworshipHome.tsx:1647 Created generic song slide with song icon
+QworshipHome.tsx:1545 ✅ Added item to serviceItems for slide display: Object
+QworshipHome.tsx:1547 3-Action System completed for song in PRE-SERVICE ITEMS: Object
+QworshipHome.tsx:495 QworshipHome - songsData: Object
+QworshipHome.tsx:496 QworshipHome - savedSongs: Object
+SongbookModal.tsx:172 SongbookModal received savedSongs: Object
+QworshipHome.tsx:495 QworshipHome - songsData: Object
+QworshipHome.tsx:496 QworshipHome - savedSongs: Object
+QworshipHome.tsx:495 QworshipHome - songsData: Object
+QworshipHome.tsx:496 QworshipHome - savedSongs: Object
+SongbookModal.tsx:172 SongbookModal received savedSongs: Object
+QworshipHome.tsx:495 QworshipHome - songsData: Object
+QworshipHome.tsx:496 QworshipHome - savedSongs: Object
+SongbookModal.tsx:172 SongbookModal received savedSongs: Object
+QworshipHome.tsx:495 QworshipHome - songsData: Object
+QworshipHome.tsx:496 QworshipHome - savedSongs: Object
+SongbookModal.tsx:172 SongbookModal received savedSongs: Object
+QworshipHome.tsx:495 QworshipHome - songsData: Object
+QworshipHome.tsx:496 QworshipHome - savedSongs: Object
+SongbookModal.tsx:172 SongbookModal received savedSongs: Object
+QworshipHome.tsx:495 QworshipHome - songsData: Object
+QworshipHome.tsx:496 QworshipHome - savedSongs: Object
+SongbookModal.tsx:172 SongbookModal received savedSongs: Object
+QworshipHome.tsx:495 QworshipHome - songsData: Object
+QworshipHome.tsx:496 QworshipHome - savedSongs: Object
+SongbookModal.tsx:172 SongbookModal received savedSongs: Object
+QworshipHome.tsx:495 QworshipHome - songsData: Object
+QworshipHome.tsx:496 QworshipHome - savedSongs: Object
+SongbookModal.tsx:172 SongbookModal received savedSongs: Object
+QworshipHome.tsx:495 QworshipHome - songsData: Object
+QworshipHome.tsx:496 QworshipHome - savedSongs: Object
+SongbookModal.tsx:172 SongbookModal received savedSongs: Object
+QworshipHome.tsx:495 QworshipHome - songsData: Object
+QworshipHome.tsx:496 QworshipHome - savedSongs: Object
+SongbookModal.tsx:172 SongbookModal received savedSongs: Object
+QworshipHome.tsx:495 QworshipHome - songsData: Object
+QworshipHome.tsx:496 QworshipHome - savedSongs: Object
+SongbookModal.tsx:172 SongbookModal received savedSongs: Object
+QworshipHome.tsx:495 QworshipHome - songsData: Object
+QworshipHome.tsx:496 QworshipHome - savedSongs: Object
+SongbookModal.tsx:172 SongbookModal received savedSongs: Object
+QworshipHome.tsx:495 QworshipHome - songsData: Object
+QworshipHome.tsx:496 QworshipHome - savedSongs: Object
+SongbookModal.tsx:172 SongbookModal received savedSongs: Object
+QworshipHome.tsx:495 QworshipHome - songsData: Object
+QworshipHome.tsx:496 QworshipHome - savedSongs: Object
+SongbookModal.tsx:172 SongbookModal received savedSongs: Object
+QworshipHome.tsx:495 QworshipHome - songsData: Object
+QworshipHome.tsx:496 QworshipHome - savedSongs: Object
+SongbookModal.tsx:172 SongbookModal received savedSongs: Object
+QworshipHome.tsx:495 QworshipHome - songsData: Object
+QworshipHome.tsx:496 QworshipHome - savedSongs: Object
+SongbookModal.tsx:172 SongbookModal received savedSongs: Object
+QworshipHome.tsx:495 QworshipHome - songsData: Object
+QworshipHome.tsx:496 QworshipHome - savedSongs: Object
+SongbookModal.tsx:172 SongbookModal received savedSongs: Object
+QworshipHome.tsx:495 QworshipHome - songsData: Object
+QworshipHome.tsx:496 QworshipHome - savedSongs: Object
+SongbookModal.tsx:172 SongbookModal received savedSongs: Object
+dialog.tsx:542  Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+(anonymous) @ dialog.tsx:542
+QworshipHome.tsx:1304 handleSelectSong called with: Object
+QworshipHome.tsx:1305 editingContent: Object
+QworshipHome.tsx:1312 Updating service item title from Song to Amazing Grace
+QworshipHome.tsx:1322 Updated service items: Array(1)
+QworshipHome.tsx:495 QworshipHome - songsData: Object
+QworshipHome.tsx:496 QworshipHome - savedSongs: Object
+SongbookModal.tsx:172 SongbookModal received savedSongs: Object
+QworshipHome.tsx:495 QworshipHome - songsData: Object
+QworshipHome.tsx:496 QworshipHome - savedSongs: Object
+SongbookModal.tsx:172 SongbookModal received savedSongs: Object
+[NEW] Explain Console errors by using Copilot in Edge: click
+         
+         to explain an error. 
+        Learn more
+        Don't show again

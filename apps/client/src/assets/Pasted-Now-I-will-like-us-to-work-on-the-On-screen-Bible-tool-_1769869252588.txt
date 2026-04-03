@@ -1,0 +1,24 @@
+Now I will like us to work on the On-screen Bible tool in the Live Console. 
+The On-screen Bible is meant to be a fast and reliable backup for users who prefer to search Bible scripture manually. Its UI/UX and funtionality is meant to provide speed and accuracy allowing them search scripture fast  whilst in Live Mode or on the Live screen and project directly to the Live screen. We will make these enhancements in 2 phases: i) Enhancing the UI/UX for an easy experience and ii) Optimising the search criteria for fast and reliable results. 
+
+1) UI Enhancements 
+My first step will involve replacing the current UI for the Onscreen Bible with the one attached.  The new UI attached maintain certain UI and functionality elements of the current one such as : 
+- The version change bar at the top, allowing users to change Bible version content directly in the on screen Bible modal and on the Live screens ( Live (audience) view and Mini display screen in the Live console )
+-The Scripture search input field where users can enter thier desired scriptural reference and search. 
+
+New changes 
+The new UI (attached) features a preview section contains or provides users with the following : 
+i) Bible Version : The Selected Bible Version which reflects the  version selected in the version bar at the top and
+ii) Clear screen : Which clears the scripture from the live screen and also clears the searched scripture in the 'Search field' and results display 
+iii) Verse display : Depending on the scripture reference given and range of the verses requested, individual verses are displayed in blocks or buttons as seen in the UI attached. Given that the Live screen can only show one verse at a time, by default, the first verse number is selected denoted by the purple colour and the green circle to show LIVE ( The Green circle signifies that the current verse is being projected on the live screen) 
+
+Clicking on the verse numbers allows the content to replace the live projection with the verse selected. 
+
+Use case : As seen in the UI attached 
+
+- A user enters Genesis 4:1-7 ( The user is asking to search and populate all 7 verses of Genesis chapter 4 from verse 1) 
+- As soon as the user enters Genesis 4:1-7 in the search bar and clicks the search button, The results are fetched and projected to the Live (audience) screen and Mini preview screen in Live Console immediately showing one verse at a time starting with the first verse in the query (in this case verse 1) 
+-The individual verse numbers are also pupulated in the preview section below with the first verse preseleted to coinside what is in being projected to the live screens. 
+-Clicking on the individual verse numbers changes the content on the live screens according to the verses selected by the user 
+
+iv) Verse content preview: This gives the user the verse content selected and coincides to what is being shown on the Live screen.

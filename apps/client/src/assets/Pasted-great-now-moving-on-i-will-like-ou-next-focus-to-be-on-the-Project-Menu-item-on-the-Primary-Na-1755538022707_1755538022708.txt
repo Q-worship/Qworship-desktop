@@ -1,0 +1,19 @@
+great now moving on, i will like ou next focus to be on the 'Project Menu'  item on  the  Primary Navigation (A2 - Primary Navigation) bar on the Main Dashboard (/dashboard) of the application. Screenshot attached 
+
+
+Much like Microsoft Powerpoint, every new church service deck with scripture, songs, Bible, announcements, slides, backgrounds and all the other items in the 'Add item' menu are build into a new project or presentation. The Project menu throug its drop- down allows users to the following drop down menu : 
+
+Without changing the design, We will begin building the functionality and working nature of  the first item in the Project dropdown which is 'New' 
+
+New  :  Leads users to the new sub-menu which contains the following items 
+
+1} New Presentation : Instantly  Starts  a fresh blank  project or presentation. This allows users to create  a new project by specifying the project or presentation name prior to being led to the default (main)  dashboard (/dashboard) where they can start to build thier project by adding items to the various service items and making customizations. 
+
+Please note that a project in the case of Q-worship refers to a church service presentation. By default, once a user clicks on New in the Prject drop down, they are led to themed pop-up where they can provide a name and date for thier new project / presention. 
+
+Once this is done, the use is lead back to the main dashbaord where they can start to create thier project. The project or presentation name entered by the user is displayed in the Main menu bar next to the Q-worship logo in this manner ( - Sunday Service) and the project is deemed as open. 
+
+2)Resources 
+Leads new users to the Articles section of the  /dashboard-help page where they can browse articles on each of the topics listed in the resources section of the sub-menu 
+
+Please create these articles in the 'Articles' tab of the /dashboard-help page and ensure that they are each linked to the items in the resources section of the sub-menu. 

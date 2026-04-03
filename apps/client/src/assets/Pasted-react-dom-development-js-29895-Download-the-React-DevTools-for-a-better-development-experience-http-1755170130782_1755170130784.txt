@@ -1,0 +1,629 @@
+react-dom.development.js:29895 Download the React DevTools for a better development experience: https://reactjs.org/link/react-devtools
+QworshipHome.tsx:1206 QworshipHome - songsData: undefined
+QworshipHome.tsx:1207 QworshipHome - savedSongs: Array(0)
+QworshipHome.tsx:524 getCurrentItemId called with: Object
+QworshipHome.tsx:554 Falling back to default
+SongbookModal.tsx:172 SongbookModal received savedSongs: Array(0)
+QworshipHome.tsx:1206 QworshipHome - songsData: undefined
+QworshipHome.tsx:1207 QworshipHome - savedSongs: Array(0)
+QworshipHome.tsx:524 getCurrentItemId called with: Object
+QworshipHome.tsx:554 Falling back to default
+SongbookModal.tsx:172 SongbookModal received savedSongs: Array(0)
+QworshipHome.tsx:1206 QworshipHome - songsData: undefined
+QworshipHome.tsx:1207 QworshipHome - savedSongs: Array(0)
+QworshipHome.tsx:524 getCurrentItemId called with: Object
+QworshipHome.tsx:554 Falling back to default
+SongbookModal.tsx:172 SongbookModal received savedSongs: Array(0)
+QworshipHome.tsx:1206 QworshipHome - songsData: Object
+QworshipHome.tsx:1207 QworshipHome - savedSongs: Object
+QworshipHome.tsx:524 getCurrentItemId called with: Object
+QworshipHome.tsx:554 Falling back to default
+SongbookModal.tsx:172 SongbookModal received savedSongs: Object
+QworshipHome.tsx:1206 QworshipHome - songsData: Object
+QworshipHome.tsx:1207 QworshipHome - savedSongs: Object
+QworshipHome.tsx:524 getCurrentItemId called with: Object
+QworshipHome.tsx:554 Falling back to default
+SongbookModal.tsx:172 SongbookModal received savedSongs: Object
+QworshipHome.tsx:1206 QworshipHome - songsData: Object
+QworshipHome.tsx:1207 QworshipHome - savedSongs: Object
+QworshipHome.tsx:524 getCurrentItemId called with: Object
+QworshipHome.tsx:554 Falling back to default
+SongbookModal.tsx:172 SongbookModal received savedSongs: Object
+QworshipHome.tsx:1206 QworshipHome - songsData: Object
+QworshipHome.tsx:1207 QworshipHome - savedSongs: Object
+QworshipHome.tsx:524 getCurrentItemId called with: Object
+QworshipHome.tsx:554 Falling back to default
+SongbookModal.tsx:172 SongbookModal received savedSongs: Object
+QworshipHome.tsx:1206 QworshipHome - songsData: Object
+QworshipHome.tsx:1207 QworshipHome - savedSongs: Object
+QworshipHome.tsx:524 getCurrentItemId called with: Object
+QworshipHome.tsx:554 Falling back to default
+SongbookModal.tsx:172 SongbookModal received savedSongs: Object
+QworshipHome.tsx:1206 QworshipHome - songsData: Object
+QworshipHome.tsx:1207 QworshipHome - savedSongs: Object
+QworshipHome.tsx:524 getCurrentItemId called with: Object
+QworshipHome.tsx:554 Falling back to default
+SongbookModal.tsx:172 SongbookModal received savedSongs: Object
+QworshipHome.tsx:1206 QworshipHome - songsData: Object
+QworshipHome.tsx:1207 QworshipHome - savedSongs: Object
+QworshipHome.tsx:524 getCurrentItemId called with: Object
+QworshipHome.tsx:554 Falling back to default
+SongbookModal.tsx:172 SongbookModal received savedSongs: Object
+QworshipHome.tsx:1206 QworshipHome - songsData: Object
+QworshipHome.tsx:1207 QworshipHome - savedSongs: Object
+QworshipHome.tsx:524 getCurrentItemId called with: Object
+QworshipHome.tsx:554 Falling back to default
+SongbookModal.tsx:172 SongbookModal received savedSongs: Object
+QworshipHome.tsx:1206 QworshipHome - songsData: Object
+QworshipHome.tsx:1207 QworshipHome - savedSongs: Object
+QworshipHome.tsx:524 getCurrentItemId called with: Object
+QworshipHome.tsx:554 Falling back to default
+SongbookModal.tsx:172 SongbookModal received savedSongs: Object
+QworshipHome.tsx:1206 QworshipHome - songsData: Object
+QworshipHome.tsx:1207 QworshipHome - savedSongs: Object
+QworshipHome.tsx:524 getCurrentItemId called with: Object
+QworshipHome.tsx:554 Falling back to default
+SongbookModal.tsx:172 SongbookModal received savedSongs: Object
+QworshipHome.tsx:1206 QworshipHome - songsData: Object
+QworshipHome.tsx:1207 QworshipHome - savedSongs: Object
+QworshipHome.tsx:524 getCurrentItemId called with: Object
+QworshipHome.tsx:554 Falling back to default
+SongbookModal.tsx:172 SongbookModal received savedSongs: Object
+QworshipHome.tsx:1206 QworshipHome - songsData: Object
+QworshipHome.tsx:1207 QworshipHome - savedSongs: Object
+QworshipHome.tsx:524 getCurrentItemId called with: Object
+QworshipHome.tsx:554 Falling back to default
+SongbookModal.tsx:172 SongbookModal received savedSongs: Object
+QworshipHome.tsx:1206 QworshipHome - songsData: Object
+QworshipHome.tsx:1207 QworshipHome - savedSongs: Object
+QworshipHome.tsx:524 getCurrentItemId called with: Object
+QworshipHome.tsx:554 Falling back to default
+SongbookModal.tsx:172 SongbookModal received savedSongs: Object
+QworshipHome.tsx:2505 Creating slides from item: Object
+QworshipHome.tsx:2506 Item type: song
+QworshipHome.tsx:2507 Item sections: Array(0)
+QworshipHome.tsx:2508 Item content: 
+QworshipHome.tsx:2518 Created generic song slide with song icon
+QworshipHome.tsx:2416 ✅ Added item to serviceItems for slide display: Object
+QworshipHome.tsx:2418 3-Action System completed for song in PRE-SERVICE ITEMS: Object
+QworshipHome.tsx:1206 QworshipHome - songsData: Object
+QworshipHome.tsx:1207 QworshipHome - savedSongs: Object
+QworshipHome.tsx:524 getCurrentItemId called with: Object
+QworshipHome.tsx:543 Using currentSlide parent item: song-1755169946436
+QworshipHome.tsx:561 🔍 getItemBackground called for item: song-1755169946436
+QworshipHome.tsx:562 🗂️ Current itemBackgrounds state: Object
+QworshipHome.tsx:563 🎨 Returning background: Object
+QworshipHome.tsx:5106 🎯 Build mode preview - editing content ID: song-1755169946436
+QworshipHome.tsx:5107 🎨 Build mode preview - retrieved background: Object
+QworshipHome.tsx:561 🔍 getItemBackground called for item: song-1755169946436
+QworshipHome.tsx:562 🗂️ Current itemBackgrounds state: Object
+QworshipHome.tsx:563 🎨 Returning background: Object
+QworshipHome.tsx:5670 Slide preview background for item song-1755169946436 : Object
+SongbookModal.tsx:172 SongbookModal received savedSongs: Object
+QworshipHome.tsx:1206 QworshipHome - songsData: Object
+QworshipHome.tsx:1207 QworshipHome - savedSongs: Object
+QworshipHome.tsx:524 getCurrentItemId called with: Object
+QworshipHome.tsx:543 Using currentSlide parent item: song-1755169946436
+QworshipHome.tsx:561 🔍 getItemBackground called for item: song-1755169946436
+QworshipHome.tsx:562 🗂️ Current itemBackgrounds state: Object
+QworshipHome.tsx:563 🎨 Returning background: Object
+QworshipHome.tsx:5106 🎯 Build mode preview - editing content ID: song-1755169946436
+QworshipHome.tsx:5107 🎨 Build mode preview - retrieved background: Object
+QworshipHome.tsx:561 🔍 getItemBackground called for item: song-1755169946436
+QworshipHome.tsx:562 🗂️ Current itemBackgrounds state: Object
+QworshipHome.tsx:563 🎨 Returning background: Object
+QworshipHome.tsx:5670 Slide preview background for item song-1755169946436 : Object
+QworshipHome.tsx:1206 QworshipHome - songsData: Object
+QworshipHome.tsx:1207 QworshipHome - savedSongs: Object
+QworshipHome.tsx:524 getCurrentItemId called with: Object
+QworshipHome.tsx:543 Using currentSlide parent item: song-1755169946436
+QworshipHome.tsx:561 🔍 getItemBackground called for item: song-1755169946436
+QworshipHome.tsx:562 🗂️ Current itemBackgrounds state: Object
+QworshipHome.tsx:563 🎨 Returning background: Object
+QworshipHome.tsx:5106 🎯 Build mode preview - editing content ID: song-1755169946436
+QworshipHome.tsx:5107 🎨 Build mode preview - retrieved background: Object
+QworshipHome.tsx:561 🔍 getItemBackground called for item: song-1755169946436
+QworshipHome.tsx:562 🗂️ Current itemBackgrounds state: Object
+QworshipHome.tsx:563 🎨 Returning background: Object
+QworshipHome.tsx:5670 Slide preview background for item song-1755169946436 : Object
+SongbookModal.tsx:172 SongbookModal received savedSongs: Object
+QworshipHome.tsx:1206 QworshipHome - songsData: Object
+QworshipHome.tsx:1207 QworshipHome - savedSongs: Object
+QworshipHome.tsx:524 getCurrentItemId called with: Object
+QworshipHome.tsx:543 Using currentSlide parent item: song-1755169946436
+QworshipHome.tsx:561 🔍 getItemBackground called for item: song-1755169946436
+QworshipHome.tsx:562 🗂️ Current itemBackgrounds state: Object
+QworshipHome.tsx:563 🎨 Returning background: Object
+QworshipHome.tsx:5106 🎯 Build mode preview - editing content ID: song-1755169946436
+QworshipHome.tsx:5107 🎨 Build mode preview - retrieved background: Object
+QworshipHome.tsx:561 🔍 getItemBackground called for item: song-1755169946436
+QworshipHome.tsx:562 🗂️ Current itemBackgrounds state: Object
+QworshipHome.tsx:563 🎨 Returning background: Object
+QworshipHome.tsx:5670 Slide preview background for item song-1755169946436 : Object
+SongbookModal.tsx:172 SongbookModal received savedSongs: Object
+QworshipHome.tsx:1206 QworshipHome - songsData: Object
+QworshipHome.tsx:1207 QworshipHome - savedSongs: Object
+QworshipHome.tsx:524 getCurrentItemId called with: Object
+QworshipHome.tsx:543 Using currentSlide parent item: song-1755169946436
+QworshipHome.tsx:561 🔍 getItemBackground called for item: song-1755169946436
+QworshipHome.tsx:562 🗂️ Current itemBackgrounds state: Object
+QworshipHome.tsx:563 🎨 Returning background: Object
+QworshipHome.tsx:5106 🎯 Build mode preview - editing content ID: song-1755169946436
+QworshipHome.tsx:5107 🎨 Build mode preview - retrieved background: Object
+QworshipHome.tsx:561 🔍 getItemBackground called for item: song-1755169946436
+QworshipHome.tsx:562 🗂️ Current itemBackgrounds state: Object
+QworshipHome.tsx:563 🎨 Returning background: Object
+QworshipHome.tsx:5670 Slide preview background for item song-1755169946436 : Object
+SongbookModal.tsx:172 SongbookModal received savedSongs: Object
+QworshipHome.tsx:1206 QworshipHome - songsData: Object
+QworshipHome.tsx:1207 QworshipHome - savedSongs: Object
+QworshipHome.tsx:524 getCurrentItemId called with: Object
+QworshipHome.tsx:543 Using currentSlide parent item: song-1755169946436
+QworshipHome.tsx:561 🔍 getItemBackground called for item: song-1755169946436
+QworshipHome.tsx:562 🗂️ Current itemBackgrounds state: Object
+QworshipHome.tsx:563 🎨 Returning background: Object
+QworshipHome.tsx:5106 🎯 Build mode preview - editing content ID: song-1755169946436
+QworshipHome.tsx:5107 🎨 Build mode preview - retrieved background: Object
+QworshipHome.tsx:561 🔍 getItemBackground called for item: song-1755169946436
+QworshipHome.tsx:562 🗂️ Current itemBackgrounds state: Object
+QworshipHome.tsx:563 🎨 Returning background: Object
+QworshipHome.tsx:5670 Slide preview background for item song-1755169946436 : Object
+SongbookModal.tsx:172 SongbookModal received savedSongs: Object
+QworshipHome.tsx:1206 QworshipHome - songsData: Object
+QworshipHome.tsx:1207 QworshipHome - savedSongs: Object
+QworshipHome.tsx:524 getCurrentItemId called with: Object
+QworshipHome.tsx:543 Using currentSlide parent item: song-1755169946436
+QworshipHome.tsx:561 🔍 getItemBackground called for item: song-1755169946436
+QworshipHome.tsx:562 🗂️ Current itemBackgrounds state: Object
+QworshipHome.tsx:563 🎨 Returning background: Object
+QworshipHome.tsx:5106 🎯 Build mode preview - editing content ID: song-1755169946436
+QworshipHome.tsx:5107 🎨 Build mode preview - retrieved background: Object
+QworshipHome.tsx:561 🔍 getItemBackground called for item: song-1755169946436
+QworshipHome.tsx:562 🗂️ Current itemBackgrounds state: Object
+QworshipHome.tsx:563 🎨 Returning background: Object
+QworshipHome.tsx:5670 Slide preview background for item song-1755169946436 : Object
+SongbookModal.tsx:172 SongbookModal received savedSongs: Object
+QworshipHome.tsx:1206 QworshipHome - songsData: Object
+QworshipHome.tsx:1207 QworshipHome - savedSongs: Object
+QworshipHome.tsx:524 getCurrentItemId called with: Object
+QworshipHome.tsx:543 Using currentSlide parent item: song-1755169946436
+QworshipHome.tsx:561 🔍 getItemBackground called for item: song-1755169946436
+QworshipHome.tsx:562 🗂️ Current itemBackgrounds state: Object
+QworshipHome.tsx:563 🎨 Returning background: Object
+QworshipHome.tsx:5106 🎯 Build mode preview - editing content ID: song-1755169946436
+QworshipHome.tsx:5107 🎨 Build mode preview - retrieved background: Object
+QworshipHome.tsx:561 🔍 getItemBackground called for item: song-1755169946436
+QworshipHome.tsx:562 🗂️ Current itemBackgrounds state: Object
+QworshipHome.tsx:563 🎨 Returning background: Object
+QworshipHome.tsx:5670 Slide preview background for item song-1755169946436 : Object
+SongbookModal.tsx:172 SongbookModal received savedSongs: Object
+QworshipHome.tsx:1206 QworshipHome - songsData: Object
+QworshipHome.tsx:1207 QworshipHome - savedSongs: Object
+QworshipHome.tsx:524 getCurrentItemId called with: Object
+QworshipHome.tsx:543 Using currentSlide parent item: song-1755169946436
+QworshipHome.tsx:561 🔍 getItemBackground called for item: song-1755169946436
+QworshipHome.tsx:562 🗂️ Current itemBackgrounds state: Object
+QworshipHome.tsx:563 🎨 Returning background: Object
+QworshipHome.tsx:5106 🎯 Build mode preview - editing content ID: song-1755169946436
+QworshipHome.tsx:5107 🎨 Build mode preview - retrieved background: Object
+QworshipHome.tsx:561 🔍 getItemBackground called for item: song-1755169946436
+QworshipHome.tsx:562 🗂️ Current itemBackgrounds state: Object
+QworshipHome.tsx:563 🎨 Returning background: Object
+QworshipHome.tsx:5670 Slide preview background for item song-1755169946436 : Object
+SongbookModal.tsx:172 SongbookModal received savedSongs: Object
+QworshipHome.tsx:1206 QworshipHome - songsData: Object
+QworshipHome.tsx:1207 QworshipHome - savedSongs: Object
+QworshipHome.tsx:524 getCurrentItemId called with: Object
+QworshipHome.tsx:543 Using currentSlide parent item: song-1755169946436
+QworshipHome.tsx:561 🔍 getItemBackground called for item: song-1755169946436
+QworshipHome.tsx:562 🗂️ Current itemBackgrounds state: Object
+QworshipHome.tsx:563 🎨 Returning background: Object
+QworshipHome.tsx:5106 🎯 Build mode preview - editing content ID: song-1755169946436
+QworshipHome.tsx:5107 🎨 Build mode preview - retrieved background: Object
+QworshipHome.tsx:561 🔍 getItemBackground called for item: song-1755169946436
+QworshipHome.tsx:562 🗂️ Current itemBackgrounds state: Object
+QworshipHome.tsx:563 🎨 Returning background: Object
+QworshipHome.tsx:5670 Slide preview background for item song-1755169946436 : Object
+SongbookModal.tsx:172 SongbookModal received savedSongs: Object
+QworshipHome.tsx:1206 QworshipHome - songsData: Object
+QworshipHome.tsx:1207 QworshipHome - savedSongs: Object
+QworshipHome.tsx:524 getCurrentItemId called with: Object
+QworshipHome.tsx:543 Using currentSlide parent item: song-1755169946436
+QworshipHome.tsx:561 🔍 getItemBackground called for item: song-1755169946436
+QworshipHome.tsx:562 🗂️ Current itemBackgrounds state: Object
+QworshipHome.tsx:563 🎨 Returning background: Object
+QworshipHome.tsx:5106 🎯 Build mode preview - editing content ID: song-1755169946436
+QworshipHome.tsx:5107 🎨 Build mode preview - retrieved background: Object
+QworshipHome.tsx:561 🔍 getItemBackground called for item: song-1755169946436
+QworshipHome.tsx:562 🗂️ Current itemBackgrounds state: Object
+QworshipHome.tsx:563 🎨 Returning background: Object
+QworshipHome.tsx:5670 Slide preview background for item song-1755169946436 : Object
+SongbookModal.tsx:172 SongbookModal received savedSongs: Object
+dialog.tsx:542  Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+(anonymous) @ dialog.tsx:542
+QworshipHome.tsx:2149 handleSelectSong called with: Object
+QworshipHome.tsx:2150 editingContent: Object
+QworshipHome.tsx:2099 Updating item content for: song-1755169946436 with title: Amazing Grace
+QworshipHome.tsx:2105 Updating service item title from Song to Amazing Grace
+QworshipHome.tsx:1206 QworshipHome - songsData: Object
+QworshipHome.tsx:1207 QworshipHome - savedSongs: Object
+QworshipHome.tsx:2124 Updating section item title in PRE-SERVICE ITEMS from Song to Amazing Grace
+QworshipHome.tsx:524 getCurrentItemId called with: Object
+QworshipHome.tsx:543 Using currentSlide parent item: song-1755169946436
+QworshipHome.tsx:561 🔍 getItemBackground called for item: song-1755169946436
+QworshipHome.tsx:562 🗂️ Current itemBackgrounds state: Object
+QworshipHome.tsx:563 🎨 Returning background: Object
+QworshipHome.tsx:5106 🎯 Build mode preview - editing content ID: song-1755169946436
+QworshipHome.tsx:5107 🎨 Build mode preview - retrieved background: Object
+QworshipHome.tsx:561 🔍 getItemBackground called for item: song-1755169946436
+QworshipHome.tsx:562 🗂️ Current itemBackgrounds state: Object
+QworshipHome.tsx:563 🎨 Returning background: Object
+QworshipHome.tsx:5670 Slide preview background for item song-1755169946436 : Object
+QworshipHome.tsx:561 🔍 getItemBackground called for item: song-1755169946436
+QworshipHome.tsx:562 🗂️ Current itemBackgrounds state: Object
+QworshipHome.tsx:563 🎨 Returning background: Object
+QworshipHome.tsx:5670 Slide preview background for item song-1755169946436 : Object
+QworshipHome.tsx:561 🔍 getItemBackground called for item: song-1755169946436
+QworshipHome.tsx:562 🗂️ Current itemBackgrounds state: Object
+QworshipHome.tsx:563 🎨 Returning background: Object
+QworshipHome.tsx:5670 Slide preview background for item song-1755169946436 : Object
+QworshipHome.tsx:561 🔍 getItemBackground called for item: song-1755169946436
+QworshipHome.tsx:562 🗂️ Current itemBackgrounds state: Object
+QworshipHome.tsx:563 🎨 Returning background: Object
+QworshipHome.tsx:5670 Slide preview background for item song-1755169946436 : Object
+QworshipHome.tsx:561 🔍 getItemBackground called for item: song-1755169946436
+QworshipHome.tsx:562 🗂️ Current itemBackgrounds state: Object
+QworshipHome.tsx:563 🎨 Returning background: Object
+QworshipHome.tsx:5670 Slide preview background for item song-1755169946436 : Object
+QworshipHome.tsx:561 🔍 getItemBackground called for item: song-1755169946436
+QworshipHome.tsx:562 🗂️ Current itemBackgrounds state: Object
+QworshipHome.tsx:563 🎨 Returning background: Object
+QworshipHome.tsx:5670 Slide preview background for item song-1755169946436 : Object
+SongbookModal.tsx:172 SongbookModal received savedSongs: Object
+QworshipHome.tsx:1206 QworshipHome - songsData: Object
+QworshipHome.tsx:1207 QworshipHome - savedSongs: Object
+QworshipHome.tsx:524 getCurrentItemId called with: Object
+QworshipHome.tsx:543 Using currentSlide parent item: song-1755169946436
+QworshipHome.tsx:561 🔍 getItemBackground called for item: song-1755169946436
+QworshipHome.tsx:562 🗂️ Current itemBackgrounds state: Object
+QworshipHome.tsx:563 🎨 Returning background: Object
+QworshipHome.tsx:5106 🎯 Build mode preview - editing content ID: song-1755169946436
+QworshipHome.tsx:5107 🎨 Build mode preview - retrieved background: Object
+QworshipHome.tsx:561 🔍 getItemBackground called for item: song-1755169946436
+QworshipHome.tsx:562 🗂️ Current itemBackgrounds state: Object
+QworshipHome.tsx:563 🎨 Returning background: Object
+QworshipHome.tsx:5670 Slide preview background for item song-1755169946436 : Object
+QworshipHome.tsx:561 🔍 getItemBackground called for item: song-1755169946436
+QworshipHome.tsx:562 🗂️ Current itemBackgrounds state: Object
+QworshipHome.tsx:563 🎨 Returning background: Object
+QworshipHome.tsx:5670 Slide preview background for item song-1755169946436 : Object
+QworshipHome.tsx:561 🔍 getItemBackground called for item: song-1755169946436
+QworshipHome.tsx:562 🗂️ Current itemBackgrounds state: Object
+QworshipHome.tsx:563 🎨 Returning background: Object
+QworshipHome.tsx:5670 Slide preview background for item song-1755169946436 : Object
+QworshipHome.tsx:561 🔍 getItemBackground called for item: song-1755169946436
+QworshipHome.tsx:562 🗂️ Current itemBackgrounds state: Object
+QworshipHome.tsx:563 🎨 Returning background: Object
+QworshipHome.tsx:5670 Slide preview background for item song-1755169946436 : Object
+QworshipHome.tsx:561 🔍 getItemBackground called for item: song-1755169946436
+QworshipHome.tsx:562 🗂️ Current itemBackgrounds state: Object
+QworshipHome.tsx:563 🎨 Returning background: Object
+QworshipHome.tsx:5670 Slide preview background for item song-1755169946436 : Object
+QworshipHome.tsx:561 🔍 getItemBackground called for item: song-1755169946436
+QworshipHome.tsx:562 🗂️ Current itemBackgrounds state: Object
+QworshipHome.tsx:563 🎨 Returning background: Object
+QworshipHome.tsx:5670 Slide preview background for item song-1755169946436 : Object
+SongbookModal.tsx:172 SongbookModal received savedSongs: Object
+QworshipHome.tsx:1206 QworshipHome - songsData: Object
+QworshipHome.tsx:1207 QworshipHome - savedSongs: Object
+QworshipHome.tsx:524 getCurrentItemId called with: Object
+QworshipHome.tsx:543 Using currentSlide parent item: song-1755169946436
+QworshipHome.tsx:561 🔍 getItemBackground called for item: song-1755169946436
+QworshipHome.tsx:562 🗂️ Current itemBackgrounds state: Object
+QworshipHome.tsx:563 🎨 Returning background: Object
+QworshipHome.tsx:5106 🎯 Build mode preview - editing content ID: song-1755169946436
+QworshipHome.tsx:5107 🎨 Build mode preview - retrieved background: Object
+QworshipHome.tsx:561 🔍 getItemBackground called for item: song-1755169946436
+QworshipHome.tsx:562 🗂️ Current itemBackgrounds state: Object
+QworshipHome.tsx:563 🎨 Returning background: Object
+QworshipHome.tsx:5670 Slide preview background for item song-1755169946436 : Object
+QworshipHome.tsx:561 🔍 getItemBackground called for item: song-1755169946436
+QworshipHome.tsx:562 🗂️ Current itemBackgrounds state: Object
+QworshipHome.tsx:563 🎨 Returning background: Object
+QworshipHome.tsx:5670 Slide preview background for item song-1755169946436 : Object
+QworshipHome.tsx:561 🔍 getItemBackground called for item: song-1755169946436
+QworshipHome.tsx:562 🗂️ Current itemBackgrounds state: Object
+QworshipHome.tsx:563 🎨 Returning background: Object
+QworshipHome.tsx:5670 Slide preview background for item song-1755169946436 : Object
+QworshipHome.tsx:561 🔍 getItemBackground called for item: song-1755169946436
+QworshipHome.tsx:562 🗂️ Current itemBackgrounds state: Object
+QworshipHome.tsx:563 🎨 Returning background: Object
+QworshipHome.tsx:5670 Slide preview background for item song-1755169946436 : Object
+QworshipHome.tsx:561 🔍 getItemBackground called for item: song-1755169946436
+QworshipHome.tsx:562 🗂️ Current itemBackgrounds state: Object
+QworshipHome.tsx:563 🎨 Returning background: Object
+QworshipHome.tsx:5670 Slide preview background for item song-1755169946436 : Object
+QworshipHome.tsx:561 🔍 getItemBackground called for item: song-1755169946436
+QworshipHome.tsx:562 🗂️ Current itemBackgrounds state: Object
+QworshipHome.tsx:563 🎨 Returning background: Object
+QworshipHome.tsx:5670 Slide preview background for item song-1755169946436 : Object
+SongbookModal.tsx:172 SongbookModal received savedSongs: Object
+QworshipHome.tsx:524 getCurrentItemId called with: Object
+QworshipHome.tsx:543 Using currentSlide parent item: song-1755169946436
+QworshipHome.tsx:570 🎬 APPLY BACKGROUND FUNCTION CALLED
+QworshipHome.tsx:571 📋 Background data: Object
+QworshipHome.tsx:572 🎯 Target item ID: song-1755169946436
+QworshipHome.tsx:573 📊 Selected slide: null
+QworshipHome.tsx:574 📈 Current slide: 1
+QworshipHome.tsx:575 📝 Service items count: 1
+QworshipHome.tsx:583 💾 UPDATED ITEM BACKGROUNDS STATE:
+QworshipHome.tsx:584 Old state: Object
+QworshipHome.tsx:585 New state: Object
+QworshipHome.tsx:586 🔍 Background for item song-1755169946436: Object
+QworshipHome.tsx:1206 QworshipHome - songsData: Object
+QworshipHome.tsx:1207 QworshipHome - savedSongs: Object
+QworshipHome.tsx:524 getCurrentItemId called with: Object
+QworshipHome.tsx:543 Using currentSlide parent item: song-1755169946436
+QworshipHome.tsx:561 🔍 getItemBackground called for item: song-1755169946436
+QworshipHome.tsx:562 🗂️ Current itemBackgrounds state: Object
+QworshipHome.tsx:563 🎨 Returning background: Object
+QworshipHome.tsx:5106 🎯 Build mode preview - editing content ID: song-1755169946436
+QworshipHome.tsx:5107 🎨 Build mode preview - retrieved background: Object
+QworshipHome.tsx:561 🔍 getItemBackground called for item: song-1755169946436
+QworshipHome.tsx:562 🗂️ Current itemBackgrounds state: Object
+QworshipHome.tsx:563 🎨 Returning background: Object
+QworshipHome.tsx:5670 Slide preview background for item song-1755169946436 : Object
+QworshipHome.tsx:561 🔍 getItemBackground called for item: song-1755169946436
+QworshipHome.tsx:562 🗂️ Current itemBackgrounds state: Object
+QworshipHome.tsx:563 🎨 Returning background: Object
+QworshipHome.tsx:5670 Slide preview background for item song-1755169946436 : Object
+QworshipHome.tsx:561 🔍 getItemBackground called for item: song-1755169946436
+QworshipHome.tsx:562 🗂️ Current itemBackgrounds state: Object
+QworshipHome.tsx:563 🎨 Returning background: Object
+QworshipHome.tsx:5670 Slide preview background for item song-1755169946436 : Object
+QworshipHome.tsx:561 🔍 getItemBackground called for item: song-1755169946436
+QworshipHome.tsx:562 🗂️ Current itemBackgrounds state: Object
+QworshipHome.tsx:563 🎨 Returning background: Object
+QworshipHome.tsx:5670 Slide preview background for item song-1755169946436 : Object
+QworshipHome.tsx:561 🔍 getItemBackground called for item: song-1755169946436
+QworshipHome.tsx:562 🗂️ Current itemBackgrounds state: Object
+QworshipHome.tsx:563 🎨 Returning background: Object
+QworshipHome.tsx:5670 Slide preview background for item song-1755169946436 : Object
+QworshipHome.tsx:561 🔍 getItemBackground called for item: song-1755169946436
+QworshipHome.tsx:562 🗂️ Current itemBackgrounds state: Object
+QworshipHome.tsx:563 🎨 Returning background: Object
+QworshipHome.tsx:5670 Slide preview background for item song-1755169946436 : Object
+SongbookModal.tsx:172 SongbookModal received savedSongs: Object
+QworshipHome.tsx:1206 QworshipHome - songsData: Object
+QworshipHome.tsx:1207 QworshipHome - savedSongs: Object
+QworshipHome.tsx:524 getCurrentItemId called with: Object
+QworshipHome.tsx:543 Using currentSlide parent item: song-1755169946436
+QworshipHome.tsx:561 🔍 getItemBackground called for item: song-1755169946436
+QworshipHome.tsx:562 🗂️ Current itemBackgrounds state: Object
+QworshipHome.tsx:563 🎨 Returning background: Object
+QworshipHome.tsx:5106 🎯 Build mode preview - editing content ID: song-1755169946436
+QworshipHome.tsx:5107 🎨 Build mode preview - retrieved background: Object
+QworshipHome.tsx:561 🔍 getItemBackground called for item: song-1755169946436
+QworshipHome.tsx:562 🗂️ Current itemBackgrounds state: Object
+QworshipHome.tsx:563 🎨 Returning background: Object
+QworshipHome.tsx:5670 Slide preview background for item song-1755169946436 : Object
+QworshipHome.tsx:561 🔍 getItemBackground called for item: song-1755169946436
+QworshipHome.tsx:562 🗂️ Current itemBackgrounds state: Object
+QworshipHome.tsx:563 🎨 Returning background: Object
+QworshipHome.tsx:5670 Slide preview background for item song-1755169946436 : Object
+QworshipHome.tsx:561 🔍 getItemBackground called for item: song-1755169946436
+QworshipHome.tsx:562 🗂️ Current itemBackgrounds state: Object
+QworshipHome.tsx:563 🎨 Returning background: Object
+QworshipHome.tsx:5670 Slide preview background for item song-1755169946436 : Object
+QworshipHome.tsx:561 🔍 getItemBackground called for item: song-1755169946436
+QworshipHome.tsx:562 🗂️ Current itemBackgrounds state: Object
+QworshipHome.tsx:563 🎨 Returning background: Object
+QworshipHome.tsx:5670 Slide preview background for item song-1755169946436 : Object
+QworshipHome.tsx:561 🔍 getItemBackground called for item: song-1755169946436
+QworshipHome.tsx:562 🗂️ Current itemBackgrounds state: Object
+QworshipHome.tsx:563 🎨 Returning background: Object
+QworshipHome.tsx:5670 Slide preview background for item song-1755169946436 : Object
+QworshipHome.tsx:561 🔍 getItemBackground called for item: song-1755169946436
+QworshipHome.tsx:562 🗂️ Current itemBackgrounds state: Object
+QworshipHome.tsx:563 🎨 Returning background: Object
+QworshipHome.tsx:5670 Slide preview background for item song-1755169946436 : Object
+SongbookModal.tsx:172 SongbookModal received savedSongs: Object
+QworshipHome.tsx:1206 QworshipHome - songsData: Object
+QworshipHome.tsx:1207 QworshipHome - savedSongs: Object
+QworshipHome.tsx:524 getCurrentItemId called with: Object
+QworshipHome.tsx:543 Using currentSlide parent item: song-1755169946436
+QworshipHome.tsx:561 🔍 getItemBackground called for item: song-1755169946436
+QworshipHome.tsx:562 🗂️ Current itemBackgrounds state: Object
+QworshipHome.tsx:563 🎨 Returning background: Object
+QworshipHome.tsx:5106 🎯 Build mode preview - editing content ID: song-1755169946436
+QworshipHome.tsx:5107 🎨 Build mode preview - retrieved background: Object
+QworshipHome.tsx:561 🔍 getItemBackground called for item: song-1755169946436
+QworshipHome.tsx:562 🗂️ Current itemBackgrounds state: Object
+QworshipHome.tsx:563 🎨 Returning background: Object
+QworshipHome.tsx:5670 Slide preview background for item song-1755169946436 : Object
+QworshipHome.tsx:561 🔍 getItemBackground called for item: song-1755169946436
+QworshipHome.tsx:562 🗂️ Current itemBackgrounds state: Object
+QworshipHome.tsx:563 🎨 Returning background: Object
+QworshipHome.tsx:5670 Slide preview background for item song-1755169946436 : Object
+QworshipHome.tsx:561 🔍 getItemBackground called for item: song-1755169946436
+QworshipHome.tsx:562 🗂️ Current itemBackgrounds state: Object
+QworshipHome.tsx:563 🎨 Returning background: Object
+QworshipHome.tsx:5670 Slide preview background for item song-1755169946436 : Object
+QworshipHome.tsx:561 🔍 getItemBackground called for item: song-1755169946436
+QworshipHome.tsx:562 🗂️ Current itemBackgrounds state: Object
+QworshipHome.tsx:563 🎨 Returning background: Object
+QworshipHome.tsx:5670 Slide preview background for item song-1755169946436 : Object
+QworshipHome.tsx:561 🔍 getItemBackground called for item: song-1755169946436
+QworshipHome.tsx:562 🗂️ Current itemBackgrounds state: Object
+QworshipHome.tsx:563 🎨 Returning background: Object
+QworshipHome.tsx:5670 Slide preview background for item song-1755169946436 : Object
+QworshipHome.tsx:561 🔍 getItemBackground called for item: song-1755169946436
+QworshipHome.tsx:562 🗂️ Current itemBackgrounds state: Object
+QworshipHome.tsx:563 🎨 Returning background: Object
+QworshipHome.tsx:5670 Slide preview background for item song-1755169946436 : Object
+SongbookModal.tsx:172 SongbookModal received savedSongs: Object
+QworshipHome.tsx:3444 Browse media clicked
+QworshipHome.tsx:1206 QworshipHome - songsData: Object
+QworshipHome.tsx:1207 QworshipHome - savedSongs: Object
+QworshipHome.tsx:524 getCurrentItemId called with: Object
+QworshipHome.tsx:543 Using currentSlide parent item: song-1755169946436
+QworshipHome.tsx:561 🔍 getItemBackground called for item: song-1755169946436
+QworshipHome.tsx:562 🗂️ Current itemBackgrounds state: Object
+QworshipHome.tsx:563 🎨 Returning background: Object
+QworshipHome.tsx:5106 🎯 Build mode preview - editing content ID: song-1755169946436
+QworshipHome.tsx:5107 🎨 Build mode preview - retrieved background: Object
+QworshipHome.tsx:561 🔍 getItemBackground called for item: song-1755169946436
+QworshipHome.tsx:562 🗂️ Current itemBackgrounds state: Object
+QworshipHome.tsx:563 🎨 Returning background: Object
+QworshipHome.tsx:5670 Slide preview background for item song-1755169946436 : Object
+QworshipHome.tsx:561 🔍 getItemBackground called for item: song-1755169946436
+QworshipHome.tsx:562 🗂️ Current itemBackgrounds state: Object
+QworshipHome.tsx:563 🎨 Returning background: Object
+QworshipHome.tsx:5670 Slide preview background for item song-1755169946436 : Object
+QworshipHome.tsx:561 🔍 getItemBackground called for item: song-1755169946436
+QworshipHome.tsx:562 🗂️ Current itemBackgrounds state: Object
+QworshipHome.tsx:563 🎨 Returning background: Object
+QworshipHome.tsx:5670 Slide preview background for item song-1755169946436 : Object
+QworshipHome.tsx:561 🔍 getItemBackground called for item: song-1755169946436
+QworshipHome.tsx:562 🗂️ Current itemBackgrounds state: Object
+QworshipHome.tsx:563 🎨 Returning background: Object
+QworshipHome.tsx:5670 Slide preview background for item song-1755169946436 : Object
+QworshipHome.tsx:561 🔍 getItemBackground called for item: song-1755169946436
+QworshipHome.tsx:562 🗂️ Current itemBackgrounds state: Object
+QworshipHome.tsx:563 🎨 Returning background: Object
+QworshipHome.tsx:5670 Slide preview background for item song-1755169946436 : Object
+QworshipHome.tsx:561 🔍 getItemBackground called for item: song-1755169946436
+QworshipHome.tsx:562 🗂️ Current itemBackgrounds state: Object
+QworshipHome.tsx:563 🎨 Returning background: Object
+QworshipHome.tsx:5670 Slide preview background for item song-1755169946436 : Object
+SongbookModal.tsx:172 SongbookModal received savedSongs: Object
+QworshipHome.tsx:6407 🌩️ CLOUD MEDIA SELECTED: Object
+QworshipHome.tsx:6409 ⚡ APPLYING CLOUD MEDIA BACKGROUND: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/api/cloud-media/6/file
+QworshipHome.tsx:6410 🎭 Background type: image
+QworshipHome.tsx:524 getCurrentItemId called with: Object
+QworshipHome.tsx:543 Using currentSlide parent item: song-1755169946436
+QworshipHome.tsx:6412 🎯 Current item ID before apply: song-1755169946436
+QworshipHome.tsx:6419 📦 Final cloud background data: Object
+QworshipHome.tsx:6420 🚀 About to call applyBackgroundToCurrentItem...
+QworshipHome.tsx:524 getCurrentItemId called with: Object
+QworshipHome.tsx:543 Using currentSlide parent item: song-1755169946436
+QworshipHome.tsx:570 🎬 APPLY BACKGROUND FUNCTION CALLED
+QworshipHome.tsx:571 📋 Background data: Object
+QworshipHome.tsx:572 🎯 Target item ID: song-1755169946436
+QworshipHome.tsx:573 📊 Selected slide: null
+QworshipHome.tsx:574 📈 Current slide: 1
+QworshipHome.tsx:575 📝 Service items count: 1
+QworshipHome.tsx:583 💾 UPDATED ITEM BACKGROUNDS STATE:
+QworshipHome.tsx:584 Old state: Object
+QworshipHome.tsx:585 New state: Object
+QworshipHome.tsx:586 🔍 Background for item song-1755169946436: Object
+QworshipHome.tsx:6423 ✅ applyBackgroundToCurrentItem completed!
+QworshipHome.tsx:1206 QworshipHome - songsData: Object
+QworshipHome.tsx:1207 QworshipHome - savedSongs: Object
+QworshipHome.tsx:524 getCurrentItemId called with: Object
+QworshipHome.tsx:543 Using currentSlide parent item: song-1755169946436
+QworshipHome.tsx:561 🔍 getItemBackground called for item: song-1755169946436
+QworshipHome.tsx:562 🗂️ Current itemBackgrounds state: Object
+QworshipHome.tsx:563 🎨 Returning background: Object
+QworshipHome.tsx:5106 🎯 Build mode preview - editing content ID: song-1755169946436
+QworshipHome.tsx:5107 🎨 Build mode preview - retrieved background: Object
+QworshipHome.tsx:561 🔍 getItemBackground called for item: song-1755169946436
+QworshipHome.tsx:562 🗂️ Current itemBackgrounds state: Object
+QworshipHome.tsx:563 🎨 Returning background: Object
+QworshipHome.tsx:5670 Slide preview background for item song-1755169946436 : Object
+QworshipHome.tsx:5672 🎯 Slide thumbnail media background detected: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/api/cloud-media/6/file
+QworshipHome.tsx:5688 🎨 Applying slide thumbnail image background styles: Object
+QworshipHome.tsx:5689 🔗 Final thumbnail background URL: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/api/cloud-media/6/file
+QworshipHome.tsx:561 🔍 getItemBackground called for item: song-1755169946436
+QworshipHome.tsx:562 🗂️ Current itemBackgrounds state: Object
+QworshipHome.tsx:563 🎨 Returning background: Object
+QworshipHome.tsx:5670 Slide preview background for item song-1755169946436 : Object
+QworshipHome.tsx:5672 🎯 Slide thumbnail media background detected: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/api/cloud-media/6/file
+QworshipHome.tsx:5688 🎨 Applying slide thumbnail image background styles: Object
+QworshipHome.tsx:5689 🔗 Final thumbnail background URL: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/api/cloud-media/6/file
+QworshipHome.tsx:561 🔍 getItemBackground called for item: song-1755169946436
+QworshipHome.tsx:562 🗂️ Current itemBackgrounds state: Object
+QworshipHome.tsx:563 🎨 Returning background: Object
+QworshipHome.tsx:5670 Slide preview background for item song-1755169946436 : Object
+QworshipHome.tsx:5672 🎯 Slide thumbnail media background detected: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/api/cloud-media/6/file
+QworshipHome.tsx:5688 🎨 Applying slide thumbnail image background styles: Object
+QworshipHome.tsx:5689 🔗 Final thumbnail background URL: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/api/cloud-media/6/file
+QworshipHome.tsx:561 🔍 getItemBackground called for item: song-1755169946436
+QworshipHome.tsx:562 🗂️ Current itemBackgrounds state: Object
+QworshipHome.tsx:563 🎨 Returning background: Object
+QworshipHome.tsx:5670 Slide preview background for item song-1755169946436 : Object
+QworshipHome.tsx:5672 🎯 Slide thumbnail media background detected: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/api/cloud-media/6/file
+QworshipHome.tsx:5688 🎨 Applying slide thumbnail image background styles: Object
+QworshipHome.tsx:5689 🔗 Final thumbnail background URL: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/api/cloud-media/6/file
+QworshipHome.tsx:561 🔍 getItemBackground called for item: song-1755169946436
+QworshipHome.tsx:562 🗂️ Current itemBackgrounds state: Object
+QworshipHome.tsx:563 🎨 Returning background: Object
+QworshipHome.tsx:5670 Slide preview background for item song-1755169946436 : Object
+QworshipHome.tsx:5672 🎯 Slide thumbnail media background detected: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/api/cloud-media/6/file
+QworshipHome.tsx:5688 🎨 Applying slide thumbnail image background styles: Object
+QworshipHome.tsx:5689 🔗 Final thumbnail background URL: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/api/cloud-media/6/file
+QworshipHome.tsx:561 🔍 getItemBackground called for item: song-1755169946436
+QworshipHome.tsx:562 🗂️ Current itemBackgrounds state: Object
+QworshipHome.tsx:563 🎨 Returning background: Object
+QworshipHome.tsx:5670 Slide preview background for item song-1755169946436 : Object
+QworshipHome.tsx:5672 🎯 Slide thumbnail media background detected: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/api/cloud-media/6/file
+QworshipHome.tsx:5688 🎨 Applying slide thumbnail image background styles: Object
+QworshipHome.tsx:5689 🔗 Final thumbnail background URL: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/api/cloud-media/6/file
+SongbookModal.tsx:172 SongbookModal received savedSongs: Object
+QworshipHome.tsx:1206 QworshipHome - songsData: Object
+QworshipHome.tsx:1207 QworshipHome - savedSongs: Object
+QworshipHome.tsx:524 getCurrentItemId called with: Object
+QworshipHome.tsx:543 Using currentSlide parent item: song-1755169946436
+QworshipHome.tsx:561 🔍 getItemBackground called for item: song-1755169946436
+QworshipHome.tsx:562 🗂️ Current itemBackgrounds state: Object
+QworshipHome.tsx:563 🎨 Returning background: Object
+QworshipHome.tsx:5106 🎯 Build mode preview - editing content ID: song-1755169946436
+QworshipHome.tsx:5107 🎨 Build mode preview - retrieved background: Object
+QworshipHome.tsx:561 🔍 getItemBackground called for item: song-1755169946436
+QworshipHome.tsx:562 🗂️ Current itemBackgrounds state: Object
+QworshipHome.tsx:563 🎨 Returning background: Object
+QworshipHome.tsx:5670 Slide preview background for item song-1755169946436 : Object
+QworshipHome.tsx:5672 🎯 Slide thumbnail media background detected: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/api/cloud-media/6/file
+QworshipHome.tsx:5688 🎨 Applying slide thumbnail image background styles: Object
+QworshipHome.tsx:5689 🔗 Final thumbnail background URL: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/api/cloud-media/6/file
+QworshipHome.tsx:561 🔍 getItemBackground called for item: song-1755169946436
+QworshipHome.tsx:562 🗂️ Current itemBackgrounds state: Object
+QworshipHome.tsx:563 🎨 Returning background: Object
+QworshipHome.tsx:5670 Slide preview background for item song-1755169946436 : Object
+QworshipHome.tsx:5672 🎯 Slide thumbnail media background detected: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/api/cloud-media/6/file
+QworshipHome.tsx:5688 🎨 Applying slide thumbnail image background styles: Object
+QworshipHome.tsx:5689 🔗 Final thumbnail background URL: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/api/cloud-media/6/file
+QworshipHome.tsx:561 🔍 getItemBackground called for item: song-1755169946436
+QworshipHome.tsx:562 🗂️ Current itemBackgrounds state: Object
+QworshipHome.tsx:563 🎨 Returning background: Object
+QworshipHome.tsx:5670 Slide preview background for item song-1755169946436 : Object
+QworshipHome.tsx:5672 🎯 Slide thumbnail media background detected: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/api/cloud-media/6/file
+QworshipHome.tsx:5688 🎨 Applying slide thumbnail image background styles: Object
+QworshipHome.tsx:5689 🔗 Final thumbnail background URL: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/api/cloud-media/6/file
+QworshipHome.tsx:561 🔍 getItemBackground called for item: song-1755169946436
+QworshipHome.tsx:562 🗂️ Current itemBackgrounds state: Object
+QworshipHome.tsx:563 🎨 Returning background: Object
+QworshipHome.tsx:5670 Slide preview background for item song-1755169946436 : Object
+QworshipHome.tsx:5672 🎯 Slide thumbnail media background detected: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/api/cloud-media/6/file
+QworshipHome.tsx:5688 🎨 Applying slide thumbnail image background styles: Object
+QworshipHome.tsx:5689 🔗 Final thumbnail background URL: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/api/cloud-media/6/file
+QworshipHome.tsx:561 🔍 getItemBackground called for item: song-1755169946436
+QworshipHome.tsx:562 🗂️ Current itemBackgrounds state: Object
+QworshipHome.tsx:563 🎨 Returning background: Object
+QworshipHome.tsx:5670 Slide preview background for item song-1755169946436 : Object
+QworshipHome.tsx:5672 🎯 Slide thumbnail media background detected: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/api/cloud-media/6/file
+QworshipHome.tsx:5688 🎨 Applying slide thumbnail image background styles: Object
+QworshipHome.tsx:5689 🔗 Final thumbnail background URL: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/api/cloud-media/6/file
+QworshipHome.tsx:561 🔍 getItemBackground called for item: song-1755169946436
+QworshipHome.tsx:562 🗂️ Current itemBackgrounds state: Object
+QworshipHome.tsx:563 🎨 Returning background: Object
+QworshipHome.tsx:5670 Slide preview background for item song-1755169946436 : Object
+QworshipHome.tsx:5672 🎯 Slide thumbnail media background detected: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/api/cloud-media/6/file
+QworshipHome.tsx:5688 🎨 Applying slide thumbnail image background styles: Object
+QworshipHome.tsx:5689 🔗 Final thumbnail background URL: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/api/cloud-media/6/file
+SongbookModal.tsx:172 SongbookModal received savedSongs: Object
+[NEW] Explain Console errors by using Copilot in Edge: click
+         
+         to explain an error. 
+        Learn more
+        Don't show again

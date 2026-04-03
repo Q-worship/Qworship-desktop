@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Church Livestream Overlay - John 3:16</title>
+<!-- BEGIN: External Scripts -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'church-blue': '#1e3a8a',
+            'church-violet': '#6d28d9',
+          },
+          backdropBlur: {
+            'xs': '2px',
+          }
+        }
+      }
+    }
+  </script>
+<!-- END: External Scripts -->
+<!-- BEGIN: Custom Styles -->
+<style data-purpose="glassmorphism">
+    /* Custom glassmorphism effect for the lower third */
+    .glass-panel {
+      background: rgba(15, 23, 42, 0.7);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    /* Subtle gradient overlay for the text container */
+    .accent-gradient {
+      background: linear-gradient(135deg, rgba(30, 58, 138, 0.8) 0%, rgba(109, 40, 217, 0.8) 100%);
+    }
+
+    /* Animation for smooth entrance */
+    @keyframes slideUp {
+      from { transform: translateY(100px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    .animate-slide-up {
+      animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+  </style>
+<style data-purpose="typography">
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+    
+    body {
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 0;
+      overflow: hidden; /* Prevent scrollbars on 1080p canvas */
+    }
+  </style>
+<!-- END: Custom Styles -->
+</head>
+<body class="bg-black">
+<!-- BEGIN: Livestream Container -->
+<!-- This main container represents the 1920x1080 video canvas -->
+<main class="relative w-[1920px] h-[1080px] overflow-hidden shadow-2xl mx-auto">
+<!-- BEGIN: Background Video Feed Placeholder -->
+<!-- Using a cinematic church stage image to represent the video feed -->
+<div class="absolute inset-0 z-0">
+<img alt="Church Stage Background" class="w-full h-full object-cover brightness-75" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAW92V70ZAYCo0RToXRL9oIM21_92xZ0x_uCC_JIgdqbABn2uPRAymC9UMYw5esRyoPyAV1HmxEvbWFb0rDBIeKII8HKHyJuhg2HvqjnsvjiqzGvvV3ViK8dyiqh9Y8EWNDpGL9uSB2VDavRMlWmr4CUZZajGbdycVkRRW7sYDg8_prFWp9-3tTsD2p8PO9HfjyplvgBE6r4cwwkF-QoPBi4yjA08EATg1Q3rBwhdGgSNIL-x0PBeJo98b53pFdYnBXZZUVFBfxjmj3"/>
+<!-- Subtle vignette to help the overlay pop -->
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20"></div>
+</div>
+<!-- END: Background Video Feed Placeholder -->
+<!-- BEGIN: Overlay Layer -->
+<section class="absolute bottom-16 left-0 right-0 px-24 z-10 animate-slide-up" data-purpose="scripture-overlay" id="lower-third">
+<div class="glass-panel rounded-3xl p-8 flex items-center gap-8 shadow-2xl max-w-7xl mx-auto">
+<!-- BEGIN: Church Logo Placeholder -->
+<div class="flex-shrink-0 w-24 h-24 rounded-2xl accent-gradient flex items-center justify-center border border-white/20" data-purpose="logo-container">
+<div class="text-white text-xs font-bold text-center opacity-80 uppercase tracking-tighter">
+            Church<br/>Logo
+          </div>
+</div>
+<!-- END: Church Logo Placeholder -->
+<!-- BEGIN: Vertical Divider -->
+<div class="w-px h-20 bg-white/20"></div>
+<!-- END: Vertical Divider -->
+<!-- BEGIN: Scripture Content -->
+<div class="flex-grow space-y-2">
+<!-- Reference and Version Label -->
+<div class="flex items-center gap-3">
+<span class="bg-blue-600/80 text-white px-3 py-1 rounded-md text-sm font-bold tracking-widest uppercase">
+              John 3:16
+            </span>
+<span class="text-white/60 text-sm font-semibold tracking-wider">
+              KJV
+            </span>
+</div>
+<!-- Main Scripture Text -->
+<p class="text-white text-3xl font-semibold leading-snug tracking-tight">
+            "For God so loved the world, that he gave his only begotten Son, that whosoever believeth in him should not perish, but have everlasting life."
+          </p>
+</div>
+<!-- END: Scripture Content -->
+</div>
+</section>
+<!-- END: Overlay Layer -->
+<!-- BEGIN: Branding Corner (Optional) -->
+<div class="absolute top-12 right-12 z-10">
+<div class="glass-panel px-4 py-2 rounded-full text-white/90 text-sm font-medium tracking-widest uppercase flex items-center gap-2">
+<span class="w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>
+        Live Stream
+      </div>
+</div>
+<!-- END: Branding Corner (Optional) -->
+</main>
+<!-- END: Livestream Container -->
+</body></html>

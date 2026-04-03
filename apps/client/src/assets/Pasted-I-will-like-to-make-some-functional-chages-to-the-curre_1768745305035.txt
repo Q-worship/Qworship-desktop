@@ -1,0 +1,18 @@
+I will like to make some functional chages to the current 'Go Live' or Live screen but for that to happen I will lay out the context and provide this step by step: 
+
+1) Context: 
+When the 'Go Live' button on the dashboard is clicked, a separate tab is opened leading users to the 'Live Screen'. At the moment, the Go-Live screen has 2 modes which includes : 
+1) The Editor View : The Editor view provides the user a number of controls and settings  in the tool bar to allow them to trigger the hands free Bible, change backgrounds, access slides , OBS, and access settings to make modifications to live screen in real time. 
+2) The Audience View : The audience view is void of the tool bar and only allow the audience to see content displayed. 
+
+2) The Problem 
+At the moment going between the Editor and Audience view is done usined the 'Esc' button on the keyboard or clicking on the live screen. This poses a huge issue because when switched to audience view, it reveals the tool  bar and controls to the live audience which they should not see all because it is controlled by a single screen. 
+
+3) The Proposed Solution : 
+My proposed solution is to create a seprate section / screen called 'Live Control Centre or Remote Control Centre ' and transfer all the controls in the current tool bar of the 'Editor  view' to this new screen. This way , the live screen will be exclusively for the audience view and void of controls. The newly created 'Live Control Centre or Remote Control' will provide the editor a place with tools to control the live screen in real time without the audience seeing these controls. 
+
+4) Implementation Idea: 
+In order to do this , I will propose the implementation in the following steps below : 
+Step 1: Keeping the design thesame, simply transfer the functionality and use of the 'Listening' button in Q5 of the Header & Navigation of the qworship dashboard which is the 'Hands-free Bible Quick Preferences' to the 'Settings' icon in Q8 of the Secondary Navigation & sidebar. This means that when a user clicks the 'Settings icon' in Q8 of Secondary navigation & sidebar,  they will be able to access the  Hands-free Bible Quick Preferences and choose thier preferred hands-free Bible ( Standard or Classic).
+Step 2: keeping the button rdesign unchanged, re-label the re-purposed 'Listening' button in Q5  to be the  'Live Control Centre or Remote Control Centre ' which will replace the editor view. Please use the UI attached to design the View for the new ''Live Control Centre or Remote Control Centre '. It  is important that when the button is clicked, it appears as a floating modal within directly below the button and provides users the ability to freely move this modal within the screen. It is also important that as seen on the UI attached, all the functional controls in the current tool bar are imported into this design and can control the Live screen in real time. 
+Step 3: Remove the 'Editor view' from the 'Live screen and make only exclusive for audience view given that the new 'Live Control Centre or Remote Control Centre ' will now provide a control centre for the live screen 

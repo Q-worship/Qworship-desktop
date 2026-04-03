@@ -1,0 +1,1731 @@
+Failed to execute 'requestFullscreen' on 'Element': API can only be initiated by a user gesture.
+dashboard-live:1  Failed to execute 'requestFullscreen' on 'Element': API can only be initiated by a user gesture.
+LivePresentation.tsx:507 🔍 HIERARCHY CHECK (BACKGROUND_UPDATE) - hasLiveSettingsBackground: false
+LivePresentation.tsx:508 🔍 HIERARCHY CHECK (BACKGROUND_UPDATE) - background: Object
+LivePresentation.tsx:512 ✅ APPLYING slide-specific background (no Live Settings background active): Object
+LivePresentation.tsx:529 Applying image background: /uploads/5ef2fc94-8bdb-46c4-baf4-a5c85f62d4bc.jpg
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:503 📨 BACKGROUND_UPDATE: Received background update from dashboard: Object
+LivePresentation.tsx:507 🔍 HIERARCHY CHECK (BACKGROUND_UPDATE) - hasLiveSettingsBackground: false
+LivePresentation.tsx:508 🔍 HIERARCHY CHECK (BACKGROUND_UPDATE) - background: Object
+LivePresentation.tsx:512 ✅ APPLYING slide-specific background (no Live Settings background active): Object
+LivePresentation.tsx:529 Applying image background: /uploads/5ef2fc94-8bdb-46c4-baf4-a5c85f62d4bc.jpg
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:503 📨 BACKGROUND_UPDATE: Received background update from dashboard: Object
+LivePresentation.tsx:507 🔍 HIERARCHY CHECK (BACKGROUND_UPDATE) - hasLiveSettingsBackground: false
+LivePresentation.tsx:508 🔍 HIERARCHY CHECK (BACKGROUND_UPDATE) - background: Object
+LivePresentation.tsx:512 ✅ APPLYING slide-specific background (no Live Settings background active): Object
+LivePresentation.tsx:529 Applying image background: /uploads/5af2b53f-fc7e-4dec-b41d-38de0c4f7916.jpg
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:503 📨 BACKGROUND_UPDATE: Received background update from dashboard: Object
+LivePresentation.tsx:507 🔍 HIERARCHY CHECK (BACKGROUND_UPDATE) - hasLiveSettingsBackground: false
+LivePresentation.tsx:508 🔍 HIERARCHY CHECK (BACKGROUND_UPDATE) - background: Object
+LivePresentation.tsx:512 ✅ APPLYING slide-specific background (no Live Settings background active): Object
+LivePresentation.tsx:529 Applying image background: /uploads/5af2b53f-fc7e-4dec-b41d-38de0c4f7916.jpg
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:503 📨 BACKGROUND_UPDATE: Received background update from dashboard: Object
+LivePresentation.tsx:507 🔍 HIERARCHY CHECK (BACKGROUND_UPDATE) - hasLiveSettingsBackground: false
+LivePresentation.tsx:508 🔍 HIERARCHY CHECK (BACKGROUND_UPDATE) - background: Object
+LivePresentation.tsx:512 ✅ APPLYING slide-specific background (no Live Settings background active): Object
+LivePresentation.tsx:529 Applying image background: /uploads/5af2b53f-fc7e-4dec-b41d-38de0c4f7916.jpg
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:503 📨 BACKGROUND_UPDATE: Received background update from dashboard: Object
+LivePresentation.tsx:507 🔍 HIERARCHY CHECK (BACKGROUND_UPDATE) - hasLiveSettingsBackground: false
+LivePresentation.tsx:508 🔍 HIERARCHY CHECK (BACKGROUND_UPDATE) - background: Object
+LivePresentation.tsx:512 ✅ APPLYING slide-specific background (no Live Settings background active): Object
+LivePresentation.tsx:529 Applying image background: /uploads/5af2b53f-fc7e-4dec-b41d-38de0c4f7916.jpg
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:503 📨 BACKGROUND_UPDATE: Received background update from dashboard: Object
+LivePresentation.tsx:507 🔍 HIERARCHY CHECK (BACKGROUND_UPDATE) - hasLiveSettingsBackground: false
+LivePresentation.tsx:508 🔍 HIERARCHY CHECK (BACKGROUND_UPDATE) - background: Object
+LivePresentation.tsx:512 ✅ APPLYING slide-specific background (no Live Settings background active): Object
+LivePresentation.tsx:529 Applying image background: /uploads/5af2b53f-fc7e-4dec-b41d-38de0c4f7916.jpg
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:503 📨 BACKGROUND_UPDATE: Received background update from dashboard: Object
+LivePresentation.tsx:507 🔍 HIERARCHY CHECK (BACKGROUND_UPDATE) - hasLiveSettingsBackground: false
+LivePresentation.tsx:508 🔍 HIERARCHY CHECK (BACKGROUND_UPDATE) - background: Object
+LivePresentation.tsx:512 ✅ APPLYING slide-specific background (no Live Settings background active): Object
+LivePresentation.tsx:529 Applying image background: /uploads/5af2b53f-fc7e-4dec-b41d-38de0c4f7916.jpg
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:503 📨 BACKGROUND_UPDATE: Received background update from dashboard: Object
+LivePresentation.tsx:507 🔍 HIERARCHY CHECK (BACKGROUND_UPDATE) - hasLiveSettingsBackground: false
+LivePresentation.tsx:508 🔍 HIERARCHY CHECK (BACKGROUND_UPDATE) - background: Object
+LivePresentation.tsx:512 ✅ APPLYING slide-specific background (no Live Settings background active): Object
+LivePresentation.tsx:529 Applying image background: /uploads/5af2b53f-fc7e-4dec-b41d-38de0c4f7916.jpg
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:503 📨 BACKGROUND_UPDATE: Received background update from dashboard: Object
+LivePresentation.tsx:507 🔍 HIERARCHY CHECK (BACKGROUND_UPDATE) - hasLiveSettingsBackground: false
+LivePresentation.tsx:508 🔍 HIERARCHY CHECK (BACKGROUND_UPDATE) - background: Object
+LivePresentation.tsx:512 ✅ APPLYING slide-specific background (no Live Settings background active): Object
+LivePresentation.tsx:529 Applying image background: /uploads/5af2b53f-fc7e-4dec-b41d-38de0c4f7916.jpg
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:503 📨 BACKGROUND_UPDATE: Received background update from dashboard: Object
+LivePresentation.tsx:507 🔍 HIERARCHY CHECK (BACKGROUND_UPDATE) - hasLiveSettingsBackground: false
+LivePresentation.tsx:508 🔍 HIERARCHY CHECK (BACKGROUND_UPDATE) - background: Object
+LivePresentation.tsx:512 ✅ APPLYING slide-specific background (no Live Settings background active): Object
+LivePresentation.tsx:529 Applying image background: /uploads/5af2b53f-fc7e-4dec-b41d-38de0c4f7916.jpg
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:503 📨 BACKGROUND_UPDATE: Received background update from dashboard: Object
+LivePresentation.tsx:507 🔍 HIERARCHY CHECK (BACKGROUND_UPDATE) - hasLiveSettingsBackground: false
+LivePresentation.tsx:508 🔍 HIERARCHY CHECK (BACKGROUND_UPDATE) - background: Object
+LivePresentation.tsx:512 ✅ APPLYING slide-specific background (no Live Settings background active): Object
+LivePresentation.tsx:529 Applying image background: /uploads/5ef2fc94-8bdb-46c4-baf4-a5c85f62d4bc.jpg
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:503 📨 BACKGROUND_UPDATE: Received background update from dashboard: Object
+LivePresentation.tsx:507 🔍 HIERARCHY CHECK (BACKGROUND_UPDATE) - hasLiveSettingsBackground: false
+LivePresentation.tsx:508 🔍 HIERARCHY CHECK (BACKGROUND_UPDATE) - background: Object
+LivePresentation.tsx:512 ✅ APPLYING slide-specific background (no Live Settings background active): Object
+LivePresentation.tsx:529 Applying image background: /uploads/5ef2fc94-8bdb-46c4-baf4-a5c85f62d4bc.jpg
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:503 📨 BACKGROUND_UPDATE: Received background update from dashboard: Object
+LivePresentation.tsx:507 🔍 HIERARCHY CHECK (BACKGROUND_UPDATE) - hasLiveSettingsBackground: false
+LivePresentation.tsx:508 🔍 HIERARCHY CHECK (BACKGROUND_UPDATE) - background: Object
+LivePresentation.tsx:512 ✅ APPLYING slide-specific background (no Live Settings background active): Object
+LivePresentation.tsx:529 Applying image background: /uploads/5ef2fc94-8bdb-46c4-baf4-a5c85f62d4bc.jpg
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:503 📨 BACKGROUND_UPDATE: Received background update from dashboard: Object
+LivePresentation.tsx:507 🔍 HIERARCHY CHECK (BACKGROUND_UPDATE) - hasLiveSettingsBackground: false
+LivePresentation.tsx:508 🔍 HIERARCHY CHECK (BACKGROUND_UPDATE) - background: Object
+LivePresentation.tsx:512 ✅ APPLYING slide-specific background (no Live Settings background active): Object
+LivePresentation.tsx:529 Applying image background: /uploads/5af2b53f-fc7e-4dec-b41d-38de0c4f7916.jpg
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:503 📨 BACKGROUND_UPDATE: Received background update from dashboard: Object
+LivePresentation.tsx:507 🔍 HIERARCHY CHECK (BACKGROUND_UPDATE) - hasLiveSettingsBackground: false
+LivePresentation.tsx:508 🔍 HIERARCHY CHECK (BACKGROUND_UPDATE) - background: Object
+LivePresentation.tsx:512 ✅ APPLYING slide-specific background (no Live Settings background active): Object
+LivePresentation.tsx:529 Applying image background: /uploads/5ef2fc94-8bdb-46c4-baf4-a5c85f62d4bc.jpg
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:503 📨 BACKGROUND_UPDATE: Received background update from dashboard: Object
+LivePresentation.tsx:507 🔍 HIERARCHY CHECK (BACKGROUND_UPDATE) - hasLiveSettingsBackground: false
+LivePresentation.tsx:508 🔍 HIERARCHY CHECK (BACKGROUND_UPDATE) - background: Object
+LivePresentation.tsx:512 ✅ APPLYING slide-specific background (no Live Settings background active): Object
+LivePresentation.tsx:529 Applying image background: /uploads/5ef2fc94-8bdb-46c4-baf4-a5c85f62d4bc.jpg
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:503 📨 BACKGROUND_UPDATE: Received background update from dashboard: Object
+LivePresentation.tsx:507 🔍 HIERARCHY CHECK (BACKGROUND_UPDATE) - hasLiveSettingsBackground: false
+LivePresentation.tsx:508 🔍 HIERARCHY CHECK (BACKGROUND_UPDATE) - background: Object
+LivePresentation.tsx:512 ✅ APPLYING slide-specific background (no Live Settings background active): Object
+LivePresentation.tsx:529 Applying image background: /uploads/5ef2fc94-8bdb-46c4-baf4-a5c85f62d4bc.jpg
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:503 📨 BACKGROUND_UPDATE: Received background update from dashboard: Object
+LivePresentation.tsx:507 🔍 HIERARCHY CHECK (BACKGROUND_UPDATE) - hasLiveSettingsBackground: false
+LivePresentation.tsx:508 🔍 HIERARCHY CHECK (BACKGROUND_UPDATE) - background: Object
+LivePresentation.tsx:512 ✅ APPLYING slide-specific background (no Live Settings background active): Object
+LivePresentation.tsx:529 Applying image background: /uploads/5af2b53f-fc7e-4dec-b41d-38de0c4f7916.jpg
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:503 📨 BACKGROUND_UPDATE: Received background update from dashboard: Object
+LivePresentation.tsx:507 🔍 HIERARCHY CHECK (BACKGROUND_UPDATE) - hasLiveSettingsBackground: false
+LivePresentation.tsx:508 🔍 HIERARCHY CHECK (BACKGROUND_UPDATE) - background: Object
+LivePresentation.tsx:512 ✅ APPLYING slide-specific background (no Live Settings background active): Object
+LivePresentation.tsx:529 Applying image background: /uploads/5ef2fc94-8bdb-46c4-baf4-a5c85f62d4bc.jpg
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:503 📨 BACKGROUND_UPDATE: Received background update from dashboard: Object
+LivePresentation.tsx:507 🔍 HIERARCHY CHECK (BACKGROUND_UPDATE) - hasLiveSettingsBackground: false
+LivePresentation.tsx:508 🔍 HIERARCHY CHECK (BACKGROUND_UPDATE) - background: Object
+LivePresentation.tsx:512 ✅ APPLYING slide-specific background (no Live Settings background active): Object
+LivePresentation.tsx:529 Applying image background: /uploads/5ef2fc94-8bdb-46c4-baf4-a5c85f62d4bc.jpg
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:503 📨 BACKGROUND_UPDATE: Received background update from dashboard: Object
+LivePresentation.tsx:507 🔍 HIERARCHY CHECK (BACKGROUND_UPDATE) - hasLiveSettingsBackground: false
+LivePresentation.tsx:508 🔍 HIERARCHY CHECK (BACKGROUND_UPDATE) - background: Object
+LivePresentation.tsx:512 ✅ APPLYING slide-specific background (no Live Settings background active): Object
+LivePresentation.tsx:529 Applying image background: /uploads/5ef2fc94-8bdb-46c4-baf4-a5c85f62d4bc.jpg
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:503 📨 BACKGROUND_UPDATE: Received background update from dashboard: Object
+LivePresentation.tsx:507 🔍 HIERARCHY CHECK (BACKGROUND_UPDATE) - hasLiveSettingsBackground: false
+LivePresentation.tsx:508 🔍 HIERARCHY CHECK (BACKGROUND_UPDATE) - background: Object
+LivePresentation.tsx:512 ✅ APPLYING slide-specific background (no Live Settings background active): Object
+LivePresentation.tsx:529 Applying image background: /uploads/5ef2fc94-8bdb-46c4-baf4-a5c85f62d4bc.jpg
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:503 📨 BACKGROUND_UPDATE: Received background update from dashboard: Object
+LivePresentation.tsx:507 🔍 HIERARCHY CHECK (BACKGROUND_UPDATE) - hasLiveSettingsBackground: false
+LivePresentation.tsx:508 🔍 HIERARCHY CHECK (BACKGROUND_UPDATE) - background: Object
+LivePresentation.tsx:512 ✅ APPLYING slide-specific background (no Live Settings background active): Object
+LivePresentation.tsx:529 Applying image background: /uploads/5ef2fc94-8bdb-46c4-baf4-a5c85f62d4bc.jpg
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:503 📨 BACKGROUND_UPDATE: Received background update from dashboard: Object
+LivePresentation.tsx:507 🔍 HIERARCHY CHECK (BACKGROUND_UPDATE) - hasLiveSettingsBackground: false
+LivePresentation.tsx:508 🔍 HIERARCHY CHECK (BACKGROUND_UPDATE) - background: Object
+LivePresentation.tsx:512 ✅ APPLYING slide-specific background (no Live Settings background active): Object
+LivePresentation.tsx:529 Applying image background: /uploads/5ef2fc94-8bdb-46c4-baf4-a5c85f62d4bc.jpg
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:503 📨 BACKGROUND_UPDATE: Received background update from dashboard: Object
+LivePresentation.tsx:507 🔍 HIERARCHY CHECK (BACKGROUND_UPDATE) - hasLiveSettingsBackground: false
+LivePresentation.tsx:508 🔍 HIERARCHY CHECK (BACKGROUND_UPDATE) - background: Object
+LivePresentation.tsx:512 ✅ APPLYING slide-specific background (no Live Settings background active): Object
+LivePresentation.tsx:529 Applying image background: /uploads/5ef2fc94-8bdb-46c4-baf4-a5c85f62d4bc.jpg
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:503 📨 BACKGROUND_UPDATE: Received background update from dashboard: Object
+LivePresentation.tsx:507 🔍 HIERARCHY CHECK (BACKGROUND_UPDATE) - hasLiveSettingsBackground: false
+LivePresentation.tsx:508 🔍 HIERARCHY CHECK (BACKGROUND_UPDATE) - background: Object
+LivePresentation.tsx:512 ✅ APPLYING slide-specific background (no Live Settings background active): Object
+LivePresentation.tsx:529 Applying image background: /uploads/5ef2fc94-8bdb-46c4-baf4-a5c85f62d4bc.jpg
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:503 📨 BACKGROUND_UPDATE: Received background update from dashboard: Object
+LivePresentation.tsx:507 🔍 HIERARCHY CHECK (BACKGROUND_UPDATE) - hasLiveSettingsBackground: false
+LivePresentation.tsx:508 🔍 HIERARCHY CHECK (BACKGROUND_UPDATE) - background: Object
+LivePresentation.tsx:512 ✅ APPLYING slide-specific background (no Live Settings background active): Object
+LivePresentation.tsx:529 Applying image background: /uploads/5ef2fc94-8bdb-46c4-baf4-a5c85f62d4bc.jpg
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:503 📨 BACKGROUND_UPDATE: Received background update from dashboard: Object
+LivePresentation.tsx:507 🔍 HIERARCHY CHECK (BACKGROUND_UPDATE) - hasLiveSettingsBackground: false
+LivePresentation.tsx:508 🔍 HIERARCHY CHECK (BACKGROUND_UPDATE) - background: Object
+LivePresentation.tsx:512 ✅ APPLYING slide-specific background (no Live Settings background active): Object
+LivePresentation.tsx:529 Applying image background: /uploads/5af2b53f-fc7e-4dec-b41d-38de0c4f7916.jpg
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:503 📨 BACKGROUND_UPDATE: Received background update from dashboard: Object
+LivePresentation.tsx:507 🔍 HIERARCHY CHECK (BACKGROUND_UPDATE) - hasLiveSettingsBackground: false
+LivePresentation.tsx:508 🔍 HIERARCHY CHECK (BACKGROUND_UPDATE) - background: Object
+LivePresentation.tsx:512 ✅ APPLYING slide-specific background (no Live Settings background active): Object
+LivePresentation.tsx:529 Applying image background: /uploads/5ef2fc94-8bdb-46c4-baf4-a5c85f62d4bc.jpg
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:503 📨 BACKGROUND_UPDATE: Received background update from dashboard: Object
+LivePresentation.tsx:507 🔍 HIERARCHY CHECK (BACKGROUND_UPDATE) - hasLiveSettingsBackground: false
+LivePresentation.tsx:508 🔍 HIERARCHY CHECK (BACKGROUND_UPDATE) - background: Object
+LivePresentation.tsx:512 ✅ APPLYING slide-specific background (no Live Settings background active): Object
+LivePresentation.tsx:529 Applying image background: /uploads/5af2b53f-fc7e-4dec-b41d-38de0c4f7916.jpg
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message Object
+LivePresentation.tsx:466 Live presentation received slides: Object
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: Array(10)
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10
+LivePresentation.tsx:468 Slides array: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:469 Total slides: 10
+LivePresentation.tsx:472 Live presentation: Setting slides data
+LivePresentation.tsx:378 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:466 Live presentation received slides: {slides: Array(10), totalSlides: 10, titleEditorState: {…}, editorState: {…}}
+LivePresentation.tsx:467 Slides array length: 10

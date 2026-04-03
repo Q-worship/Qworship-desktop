@@ -1,0 +1,30 @@
+react-dom.development.js:29895 Download the React DevTools for a better development experience: https://reactjs.org/link/react-devtools
+LivePresentation.tsx:122 Live presentation: Setting up message listener
+dashboard-live:1  Failed to execute 'requestFullscreen' on 'Element': API can only be initiated by a user gesture.
+LivePresentation.tsx:596 Fullscreen request failed: TypeError: Permissions check failed
+LivePresentation.tsx:127 Live presentation: Sending ready signal to dashboard
+dashboard-live:1  Failed to execute 'requestFullscreen' on 'Element': API can only be initiated by a user gesture.
+LivePresentation.tsx:596 Fullscreen request failed: TypeError: Permissions check failed
+LivePresentation.tsx:139 Live presentation: Received message {type: 'SLIDES_SYNC', data: {…}}
+LivePresentation.tsx:154 Live presentation received slides: {slides: Array(6), totalSlides: 6, titleEditorState: {…}}
+LivePresentation.tsx:155 Slides array length: 6
+LivePresentation.tsx:156 Slides array: (6) [{…}, {…}, {…}, {…}, {…}, {…}]
+LivePresentation.tsx:157 Total slides: 6
+LivePresentation.tsx:160 Live presentation: Setting slides data
+LivePresentation.tsx:139 Live presentation: Received message {type: 'SLIDE_CHANGE', data: {…}}
+LivePresentation.tsx:150 Live presentation: Changing slide to 6
+LivePresentation.tsx:1021 Purple button clicked - entering fullscreen
+LivePresentation.tsx:66 Entering fullscreen...
+LivePresentation.tsx:242 Fullscreen state changed: true
+LivePresentation.tsx:1035 Red button clicked - exiting fullscreen
+LivePresentation.tsx:53 Exiting fullscreen...
+LivePresentation.tsx:242 Fullscreen state changed: false
+LivePresentation.tsx:242 Fullscreen state changed: true
+LivePresentation.tsx:1035 Red button clicked - exiting fullscreen
+LivePresentation.tsx:53 Exiting fullscreen...
+LivePresentation.tsx:242 Fullscreen state changed: false
+LivePresentation.tsx:242 Fullscreen state changed: true
+LivePresentation.tsx:1035 Red button clicked - exiting fullscreen
+LivePresentation.tsx:53 Exiting fullscreen...
+LivePresentation.tsx:242 Fullscreen state changed: false
+LivePresentation.tsx:242 Fullscreen state changed: true

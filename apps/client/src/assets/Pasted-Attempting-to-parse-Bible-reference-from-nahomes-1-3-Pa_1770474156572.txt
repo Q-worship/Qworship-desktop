@@ -1,0 +1,113 @@
+Attempting to parse Bible reference from: "nahomes 1:3"
+Parsing reference from: "nahomes 1:3"
+After number normalization: "nahomes 1:3"
+Pattern 1 match: null
+Pattern 2 match: null
+Pattern 3 match: [
+  'nahomes 1:3',
+  'nahomes',
+  '1',
+  '3',
+  undefined,
+  index: 0,
+  input: 'nahomes 1:3',
+  groups: undefined
+]
+Extracted - Book: "nahomes", Chapter: 1, Verse: 3
+Found partial book match: nahomes -> Nahum (via nah)
+Chapter 1 is valid for Nahum (max: 3)
+Successfully parsed reference: {
+  book: 'Nahum',
+  chapter: 1,
+  verseStart: 3,
+  verseEnd: undefined,
+  version: 'kjv'
+}
+=== PARSING RESULT (OPTIMIZED) ===
+Command type: lookup
+Confidence: 0.95
+Parsed reference: {
+  book: 'Nahum',
+  chapter: 1,
+  verseStart: 3,
+  verseEnd: undefined,
+  version: 'kjv'
+}
+Searching for: Nahum 1:3
+Found 1 verses in 83.33ms
+📦 Cache STORE for Nahum|1|3|3 (size: 1)
+2:20:03 PM [express] POST /api/bible/voice-command 200 in 187ms :: {"success":true,"commandType":"lo…
+=== RAW VOICE TEXT RECEIVED ===
+Text: "1:1"
+Length: 3
+Type: string
+⚠️ Falling back to legacy parser after 7.30ms
+Attempting to parse Bible reference from: "1:1"
+Parsing reference from: "1:1"
+After number normalization: "1:1"
+Pattern 1 match: null
+Pattern 2 match: null
+Pattern 3 match: null
+Pattern 4 match: null
+Pattern 5 match: null
+No patterns matched for: "1:1"
+No Bible reference found in: "1:1"
+No Bible reference parsed, checking if contains book name...
+Contains book: false
+=== PARSING RESULT (OPTIMIZED) ===
+Command type: lookup
+Confidence: 0.1
+Parsed reference: null
+2:20:07 PM [express] POST /api/bible/voice-command 200 in 48ms :: {"success":false,"commandType":"lo…
+=== RAW VOICE TEXT RECEIVED ===
+Text: "now home chapter 1 verse 1"
+Length: 26
+Type: string
+⚠️ Falling back to legacy parser after 34.86ms
+Attempting to parse Bible reference from: "now home chapter 1 verse 1"
+Parsing reference from: "now home chapter 1 verse 1"
+After number normalization: "now home chapter 1 verse 1"
+Pattern 1 match: [
+  'now home chapter 1 verse 1',
+  'now home',
+  '1',
+  '1',
+  index: 0,
+  input: 'now home chapter 1 verse 1',
+  groups: undefined
+]
+Extracted - Book: "now home", Chapter: 1, Verse: 1
+No book found for: "now home"
+Pattern 2 match: [
+  'now home chapter 1 verse 1',
+  'now home',
+  '1',
+  '1',
+  index: 0,
+  input: 'now home chapter 1 verse 1',
+  groups: undefined
+]
+Extracted - Book: "now home", Chapter: 1, Verse: 1
+No book found for: "now home"
+Pattern 3 match: null
+Pattern 4 match: [
+  'now home chapter 1 verse 1',
+  'now home chapter',
+  '1',
+  '1',
+  undefined,
+  index: 0,
+  input: 'now home chapter 1 verse 1',
+  groups: undefined
+]
+Extracted - Book: "now home chapter", Chapter: 1, Verse: 1
+No book found for: "now home chapter"
+Pattern 5 match: null
+No patterns matched for: "now home chapter 1 verse 1"
+No Bible reference found in: "now home chapter 1 verse 1"
+=== PARSING RESULT (OPTIMIZED) ===
+Command type: verse_change
+Confidence: 0.8
+Parsed reference: { book: '', chapter: 1, verseStart: 1, version: 'kjv' }
+Searching for:  1:1
+Book not found: 

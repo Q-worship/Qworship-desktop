@@ -1,0 +1,47 @@
+react-dom.development.js:29895 Download the React DevTools for a better development experience: https://reactjs.org/link/react-devtools
+QworshipHome.tsx:1166 QworshipHome - songsData: undefined
+QworshipHome.tsx:1167 QworshipHome - savedSongs: Array(0)
+SongbookModal.tsx:172 SongbookModal received savedSongs: Array(0)
+QworshipHome.tsx:1166 QworshipHome - songsData: undefined
+QworshipHome.tsx:1167 QworshipHome - savedSongs: Array(0)
+SongbookModal.tsx:172 SongbookModal received savedSongs: Array(0)
+QworshipHome.tsx:1166 QworshipHome - songsData: Object
+QworshipHome.tsx:1167 QworshipHome - savedSongs: Object
+SongbookModal.tsx:172 SongbookModal received savedSongs: Object
+QworshipHome.tsx:1166 QworshipHome - songsData: Object
+QworshipHome.tsx:1167 QworshipHome - savedSongs: Object
+SongbookModal.tsx:172 SongbookModal received savedSongs: Object
+QworshipHome.tsx:3404 Browse media clicked
+QworshipHome.tsx:1166 QworshipHome - songsData: Object
+QworshipHome.tsx:1167 QworshipHome - savedSongs: Object
+SongbookModal.tsx:172 SongbookModal received savedSongs: Object
+QworshipHome.tsx:206 CLOUD MEDIA Thumbnail FAILED for: Pexels Photo by Antoni Shkraba Studio URL: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/api/cloud-media/9/thumbnail
+QworshipHome.tsx:206 CLOUD MEDIA Thumbnail FAILED for: pexels-iamluisao-12917343 URL: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/api/cloud-media/8/thumbnail
+QworshipHome.tsx:206 CLOUD MEDIA Thumbnail FAILED for: bible reading3 URL: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/api/cloud-media/10/thumbnail
+QworshipHome.tsx:206 CLOUD MEDIA Thumbnail FAILED for: pexels-henri-mathieu-8349233 URL: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/api/cloud-media/7/thumbnail
+QworshipHome.tsx:206 CLOUD MEDIA Thumbnail FAILED for: pexels-henri-mathieu-8349233 URL: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/api/cloud-media/4/thumbnail
+QworshipHome.tsx:206 CLOUD MEDIA Thumbnail FAILED for: pexels-henri-mathieu-8349233 URL: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/api/cloud-media/6/thumbnail
+QworshipHome.tsx:206 CLOUD MEDIA Thumbnail FAILED for: pexels-henri-mathieu-8349233 URL: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/api/cloud-media/3/thumbnail
+QworshipHome.tsx:1166 QworshipHome - songsData: Object
+QworshipHome.tsx:1167 QworshipHome - savedSongs: Object
+SongbookModal.tsx:172 SongbookModal received savedSongs: Object
+QworshipHome.tsx:345 USER MEDIA Thumbnail FAILED for: test URL: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/api/user-media-assets/1/thumbnail
+QworshipHome.tsx:345 USER MEDIA Thumbnail FAILED for: pexels-shelaghmurphy-1666816.jpg URL: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/api/user-media-assets/7/thumbnail
+QworshipHome.tsx:345 USER MEDIA Thumbnail FAILED for: pexels-rebrand-cities-581004-1367272 (1).jpg URL: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/api/user-media-assets/3/thumbnail
+QworshipHome.tsx:345 USER MEDIA Thumbnail FAILED for: video.mp4 URL: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/api/user-media-assets/9/thumbnail
+QworshipHome.tsx:345 USER MEDIA Thumbnail FAILED for: intence1.mp4 URL: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/api/user-media-assets/10/thumbnail
+QworshipHome.tsx:345 USER MEDIA Thumbnail FAILED for: video.mp4 URL: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/api/user-media-assets/8/thumbnail
+QworshipHome.tsx:345 USER MEDIA Thumbnail FAILED for: Company Photo.JPEG URL: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/api/user-media-assets/2/thumbnail
+QworshipHome.tsx:345 USER MEDIA Thumbnail FAILED for: pexels-ninthgrid-2149521550-30690398.jpg URL: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/api/user-media-assets/4/thumbnail
+QworshipHome.tsx:345 USER MEDIA Thumbnail FAILED for: pexels-mart-production-7679473.jpg URL: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/api/user-media-assets/5/thumbnail
+QworshipHome.tsx:345 USER MEDIA Thumbnail FAILED for: bible reading1.mp4 URL: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/api/user-media-assets/6/thumbnail
+QworshipHome.tsx:1166 QworshipHome - songsData: Object
+QworshipHome.tsx:1167 QworshipHome - savedSongs: Object
+SongbookModal.tsx:172 SongbookModal received savedSongs: Object
+QworshipHome.tsx:206 CLOUD MEDIA Thumbnail FAILED for: pexels-henri-mathieu-8349233 URL: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/api/cloud-media/4/thumbnail
+QworshipHome.tsx:206 CLOUD MEDIA Thumbnail FAILED for: Pexels Photo by Antoni Shkraba Studio URL: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/api/cloud-media/9/thumbnail
+QworshipHome.tsx:206 CLOUD MEDIA Thumbnail FAILED for: bible reading3 URL: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/api/cloud-media/10/thumbnail
+QworshipHome.tsx:206 CLOUD MEDIA Thumbnail FAILED for: pexels-henri-mathieu-8349233 URL: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/api/cloud-media/3/thumbnail
+QworshipHome.tsx:206 CLOUD MEDIA Thumbnail FAILED for: pexels-iamluisao-12917343 URL: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/api/cloud-media/8/thumbnail
+QworshipHome.tsx:206 CLOUD MEDIA Thumbnail FAILED for: pexels-henri-mathieu-8349233 URL: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/api/cloud-media/7/thumbnail
+QworshipHome.tsx:206 CLOUD MEDIA Thumbnail FAILED for: pexels-henri-mathieu-8349233 URL: https://d719f6d2-a08b-4c79-9894-cee3eae7c87a-00-10vmto6365tcm.janeway.replit.dev/api/cloud-media/6/thumbnail

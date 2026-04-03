@@ -1,0 +1,67 @@
+Code Integration for Qworship Assets Interface
+Objective
+I'm providing you with complete, production-ready React components for a Qworship Assets media management interface. This code has been pixel-perfectly designed and refined through multiple iterations to match Figma designs exactly. Please integrate these components into the existing /dashboard-assets page.
+
+What I'm Providing
+Complete React components with:
+
+Exact purple color scheme: #8356f3, #392a48, #1d0d46, #0d002e, #1a0b2e
+Perfect layout: Three-column design with Filter Sidebar | Media Gallery | Recent Media
+All styling: Custom CSS with Tailwind classes, scrollable areas, hover states
+Production-ready: All reference labels removed, optimized for real use
+Code Files to Integrate
+1. Main Page Component (MyMediaPatch.tsx)
+Replace your current dashboard-assets content with this exact implementation.
+
+2. Section Components
+MediaFilterSection.tsx - Left sidebar with scrollable filter categories and media grid
+MediaGallerySection.tsx - Top search bar with tabs (ALL MEDIA / MY MEDIA)
+RecentMediaSection.tsx - Right sidebar with large preview, tags, collections, description
+3. Styling Requirements
+index.css - Merge these exact CSS custom properties and classes
+tailwind.config.ts - Copy configuration for proper component styling
+figmaAssets/ - Copy entire folder to your public directory
+Critical Implementation Notes
+DO NOT CHANGE:
+Colors: Exact purple theme must be preserved (#8356f3, #392a48, #1d0d46, etc.)
+Layout: Three-column structure with specific widths and gaps
+Typography: Lufga font family with Helvetica fallback
+Spacing: All padding, margins, and gap measurements
+Scrollbar positioning: Specifically tuned for optimal UX
+Key Dependencies Needed:
+{
+  "@radix-ui/react-scroll-area": "^1.0.5",
+  "@radix-ui/react-select": "^2.0.0", 
+  "@radix-ui/react-tabs": "^1.0.4",
+  "@radix-ui/react-separator": "^1.0.3",
+  "@radix-ui/react-textarea": "^1.0.0",
+  "lucide-react": "^0.263.1"
+}
+Integration Steps
+1. Install Missing Dependencies
+Check and install any missing packages from the dependency list.
+
+2. Copy Components Exactly
+Place all 4 React components in your components/pages directory
+Import MyMediaPatch into your /dashboard-assets route
+Ensure all import paths work with your project structure
+3. Copy Assets
+Copy figmaAssets/ folder to your public directory
+Verify image paths are accessible (ellipse-3.svg, image-3.png, etc.)
+4. Merge Styling
+Add the CSS from index.css to your global styles
+Ensure Tailwind classes compile correctly
+Test that purple color scheme renders properly
+5. Verify Perfect Match
+Compare with original design - colors, spacing, layout must be identical
+Test scrollable areas in filter sidebar and recent media section
+Verify all hover states and interactions work
+Expected Result
+A pixel-perfect implementation of the Qworship Assets interface with:
+
+✅ Exact purple color scheme throughout
+✅ Three-column responsive layout
+✅ Scrollable filter categories and media grids
+✅ Professional search and tab functionality
+✅ Detailed media preview with tags and collections
+✅ Clean, production-ready appearance
