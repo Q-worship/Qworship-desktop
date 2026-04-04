@@ -224,18 +224,61 @@ export default function OBSPresentationView() {
               <>
                 {currentSlide.title && (
                   <h1
-                    className="font-bold mb-8"
+                    className="font-bold mb-4"
                     style={{
                       color: textColor,
                       fontFamily: fontFamily,
                       fontSize: `calc(${fontSize} * 0.8)`,
                       textShadow: '2px 2px 8px rgba(0, 0, 0, 0.9)',
-                      marginBottom: '2rem',
+                      marginBottom: '1rem',
                     }}
                     data-testid="slide-announcement-title"
                   >
                     {currentSlide.title}
                   </h1>
+                )}
+                {((currentSlide as any).eventDate || (currentSlide as any).eventTime || (currentSlide as any).location) && (
+                  <div
+                    className="flex items-center justify-center gap-6 mb-6 flex-wrap"
+                    style={{ marginBottom: '1.5rem' }}
+                  >
+                    {((currentSlide as any).eventDate || (currentSlide as any).eventTime) && (
+                      <span
+                        style={{
+                          color: '#fdba74',
+                          fontFamily: fontFamily,
+                          fontSize: `calc(${fontSize} * 0.45)`,
+                          textShadow: '2px 2px 6px rgba(0, 0, 0, 0.8)',
+                        }}
+                      >
+                        📅 {(currentSlide as any).eventDate || ""}{(currentSlide as any).eventDate && (currentSlide as any).eventTime ? " · " : ""}{(currentSlide as any).eventTime || ""}
+                      </span>
+                    )}
+                    {(currentSlide as any).location && (
+                      <span
+                        style={{
+                          color: '#c4b5fd',
+                          fontFamily: fontFamily,
+                          fontSize: `calc(${fontSize} * 0.45)`,
+                          textShadow: '2px 2px 6px rgba(0, 0, 0, 0.8)',
+                        }}
+                      >
+                        📍 {(currentSlide as any).location}
+                      </span>
+                    )}
+                    {(currentSlide as any).contact && (
+                      <span
+                        style={{
+                          color: '#93c5fd',
+                          fontFamily: fontFamily,
+                          fontSize: `calc(${fontSize} * 0.45)`,
+                          textShadow: '2px 2px 6px rgba(0, 0, 0, 0.8)',
+                        }}
+                      >
+                        📞 {(currentSlide as any).contact}
+                      </span>
+                    )}
+                  </div>
                 )}
                 <div
                   className="whitespace-pre-line leading-relaxed"

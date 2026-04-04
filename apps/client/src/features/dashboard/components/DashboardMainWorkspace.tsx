@@ -8,6 +8,7 @@ import { toast } from "@/hooks/use-toast";
 import qworshipLogoEdit from "@assets/Frame 2085662258_1754172975921.png";
 import qworshipLogo from "@assets/Group 1_1754122708985.png";
 import type { Slide } from "@/types";
+import type { EditorState } from "@/features/dashboard/hooks/useWysiwygEditor";
 import { useDashboardModals } from "@/features/dashboard/providers/DashboardModalProvider";
 import { useDashboardPresentation } from "@/features/dashboard/providers/DashboardPresentationProvider";
 import { Button } from "@/components/ui/button";
@@ -262,7 +263,7 @@ export const DashboardMainWorkspace = (props: any) => {
                                                 parentItem?.slides || [];
                                               const currentSlideIndex =
                                                 allSlides.findIndex(
-                                                  (s) =>
+                                                  (s: Slide) =>
                                                     s.id ===
                                                     selectedSlide.slide.id,
                                                 );
@@ -660,7 +661,7 @@ export const DashboardMainWorkspace = (props: any) => {
                                     value={editorState.selectedFont}
                                     onChange={(e) => {
                                       const newFont = e.target.value;
-                                      setEditorState((prev) => ({
+                                      setEditorState((prev: EditorState) => ({
                                         ...prev,
                                         selectedFont: newFont,
                                       }));
@@ -1144,7 +1145,7 @@ export const DashboardMainWorkspace = (props: any) => {
                                       }`}
                                       onClick={() => {
                                         applyFormatting("bulletList");
-                                        setEditorState((prev) => ({
+                                        setEditorState((prev: EditorState) => ({
                                           ...prev,
                                           listType:
                                             prev.listType === "bullet"
@@ -1164,7 +1165,7 @@ export const DashboardMainWorkspace = (props: any) => {
                                       }`}
                                       onClick={() => {
                                         applyFormatting("numberedList");
-                                        setEditorState((prev) => ({
+                                        setEditorState((prev: EditorState) => ({
                                           ...prev,
                                           listType:
                                             prev.listType === "numbered"
@@ -1562,7 +1563,7 @@ export const DashboardMainWorkspace = (props: any) => {
                                             </label>
                                             <div className="flex items-center space-x-2 bg-[#1a0f2e] rounded-lg p-3 border border-gray-600">
                                               {songArrangement.map(
-                                                (section, index) => (
+                                                (section: string, index: number) => (
                                                   <div
                                                     key={index}
                                                     className="flex items-center"
@@ -1749,9 +1750,9 @@ export const DashboardMainWorkspace = (props: any) => {
                                                             ) {
                                                               // Update both serviceItems and editingContent directly
                                                               setServiceItems(
-                                                                (prev) =>
+                                                                (prev: any[]) =>
                                                                   prev.map(
-                                                                    (item) =>
+                                                                    (item: any) =>
                                                                       item.id ===
                                                                       editingContent.id
                                                                         ? {
@@ -1815,7 +1816,7 @@ export const DashboardMainWorkspace = (props: any) => {
                                       {/* Individual Verse Sections - WYSIWYG Editing */}
                                       <div className="space-y-4">
                                         {songArrangement.map(
-                                          (arrangementSection, index) => {
+                                          (arrangementSection: any, index: number) => {
                                             // Find the corresponding lyrics for this arrangement section
                                             const lyricEntry = Object.entries(
                                               parsedLyrics,
@@ -1891,7 +1892,7 @@ export const DashboardMainWorkspace = (props: any) => {
                                                         ? textAreaRef
                                                         : undefined
                                                     }
-                                                    value={lyrics}
+                                                    value={lyrics as string}
                                                     onFocus={(e) => {
                                                       // Set this textarea as the active target for WYSIWYG formatting
                                                       const textarea =
@@ -1960,7 +1961,7 @@ export const DashboardMainWorkspace = (props: any) => {
 
                                                       // Update ONLY this specific section to prevent cross-contamination
                                                       setParsedLyrics(
-                                                        (prevLyrics) => {
+                                                        (prevLyrics: Record<string, string>) => {
                                                           const updatedSection =
                                                             {
                                                               [sectionName]:
@@ -2499,39 +2500,575 @@ import type { Slide } from "@/types";\n${text}`,
                                 )}
 
                                 {editingContent.type === "announcement" && (
-                                  <div className="space-y-4">
-                                    <div>
-                                      <label className="text-sm text-gray-300 block mb-2">
-                                        Announcement Title
-                                      </label>
-                                      <input
-                                        type="text"
-                                        value={editingContent.title || ""}
-                                        className="w-full bg-[#0f0624] border border-gray-600 rounded-lg px-3 py-2 text-white"
-                                        placeholder="Announcement title"
-                                      />
+                                  <div className="h-full flex flex-col">
+                                    {/* Announcement Editor: Rich Text Editor Toolbar - Matches Song Editor */}
+                                    <div className="bg-[#2d1f4a] rounded-t-lg border border-gray-600 mb-0">
+                                      {/* Top Row - Slides (Announcement) Tab */}
+                                      <div className="px-4 py-2 border-b border-gray-600">
+                                        <span className="text-white text-sm font-medium">
+                                          Slides (Announcement)
+                                        </span>
+                                      </div>
+
+                                      {/* Toolbar Row 1 - Font, Links, Heading, Styles */}
+                                      <div className="flex flex-wrap items-center gap-2 px-4 py-2 border-b border-gray-600 overflow-x-auto">
+                                        {/* Undo/Redo */}
+                                        <div className="flex items-center">
+                                          <button
+                                            className={`p-1.5 rounded transition-colors ${editorState.canUndo ? "text-white hover:bg-white/10" : "text-gray-500 cursor-not-allowed"}`}
+                                            disabled={!editorState.canUndo}
+                                            onClick={handleUndo}
+                                            title="Undo (Ctrl+Z)"
+                                          >
+                                            <UndoIcon className="w-4 h-4" />
+                                          </button>
+                                          <button
+                                            className={`p-1.5 rounded transition-colors ${editorState.canRedo ? "text-white hover:bg-white/10" : "text-gray-500 cursor-not-allowed"}`}
+                                            disabled={!editorState.canRedo}
+                                            onClick={handleRedo}
+                                            title="Redo (Ctrl+Y)"
+                                          >
+                                            <RedoIcon className="w-4 h-4" />
+                                          </button>
+                                        </div>
+
+                                        <div className="h-5 w-px bg-gray-500 hidden sm:block"></div>
+
+                                        {/* Font Dropdown */}
+                                        <select
+                                          className="bg-transparent text-white text-sm px-2 py-1 border border-gray-500 rounded focus:border-gray-400 outline-none min-w-0 flex-shrink-0"
+                                          value={editorState.selectedFont}
+                                          onChange={(e) => {
+                                            const newFont = e.target.value;
+                                            setEditorState((prev: any) => ({
+                                              ...prev,
+                                              selectedFont: newFont,
+                                            }));
+                                            applyFontFamily(newFont);
+                                          }}
+                                          title="Font Family"
+                                        >
+                                          <option className="bg-[#2d1f4a]" value="Lufgord">Lufgord</option>
+                                          <option className="bg-[#2d1f4a]" value="Arial">Arial</option>
+                                          <option className="bg-[#2d1f4a]" value="Helvetica">Helvetica</option>
+                                          <option className="bg-[#2d1f4a]" value="Times New Roman">Times New Roman</option>
+                                          <option className="bg-[#2d1f4a]" value="Georgia">Georgia</option>
+                                          <option className="bg-[#2d1f4a]" value="Roboto">Roboto</option>
+                                          <option className="bg-[#2d1f4a]" value="Open Sans">Open Sans</option>
+                                          <option className="bg-[#2d1f4a]" value="Montserrat">Montserrat</option>
+                                          <option className="bg-[#2d1f4a]" value="Poppins">Poppins</option>
+                                          <option className="bg-[#2d1f4a]" value="Inter">Inter</option>
+                                          <option className="bg-[#2d1f4a]" value="Playfair Display">Playfair Display</option>
+                                        </select>
+
+                                        {/* Chain Link Icons */}
+                                        <div className="flex items-center">
+                                          <button className="p-1.5 text-white hover:bg-white/10 rounded" title="Insert Link">
+                                            <LinkIcon className="w-4 h-4" />
+                                          </button>
+                                          <button className="p-1.5 text-white hover:bg-white/10 rounded" title="Link Options">
+                                            <span className="text-sm">🔗</span>
+                                          </button>
+                                          <button className="p-1.5 text-white hover:bg-white/10 rounded" title="Text Format">
+                                            <span className="text-sm font-bold">A</span>
+                                          </button>
+                                        </div>
+
+                                        <div className="h-5 w-px bg-gray-500 hidden sm:block"></div>
+
+                                        {/* Heading Dropdown */}
+                                        <div className="relative">
+                                          <select
+                                            className="bg-transparent text-white text-sm border border-gray-500 rounded focus:border-gray-400 outline-none w-[120px] flex-shrink-0 box-border appearance-none"
+                                            style={{
+                                              height: "26px",
+                                              paddingLeft: "8px",
+                                              paddingRight: "8px",
+                                              lineHeight: "26px",
+                                              fontSize: "14px",
+                                            }}
+                                            value={editorState.selectedHeading}
+                                            onChange={(e) => {
+                                              applyFormatting("heading", e.target.value);
+                                            }}
+                                            title="Text Hierarchy"
+                                          >
+                                            <option className="bg-[#2d1f4a]" value="Heading 1">Heading 1</option>
+                                            <option className="bg-[#2d1f4a]" value="Heading 2">Heading 2</option>
+                                            <option className="bg-[#2d1f4a]" value="Heading 3">Heading 3</option>
+                                            <option className="bg-[#2d1f4a]" value="Paragraph">Paragraph</option>
+                                          </select>
+                                          <ChevronDownIcon className="absolute right-2 top-1/2 transform -translate-y-1/2 w-3 h-3 text-gray-400 pointer-events-none" />
+                                        </div>
+
+                                        {/* Styles Dropdown */}
+                                        <div className="relative styles-dropdown">
+                                          <button
+                                            ref={stylesButtonRef}
+                                            onClick={handleStylesClick}
+                                            className="bg-transparent text-white text-sm border border-gray-500 rounded focus:border-gray-400 outline-none w-[120px] flex-shrink-0 box-border flex items-center justify-between"
+                                            style={{
+                                              height: "26px",
+                                              paddingLeft: "8px",
+                                              paddingRight: "8px",
+                                              lineHeight: "26px",
+                                              fontSize: "14px",
+                                            }}
+                                            title="Visual Style Presets"
+                                          >
+                                            <span>{editorState.selectedStyle || "Styles"}</span>
+                                            <ChevronDownIcon className="w-3 h-3" />
+                                          </button>
+                                        </div>
+                                      </div>
+
+                                      {/* Toolbar Row 2 - B/I/U/S, Font Size, Color, Lists, Alignment */}
+                                      <div className="flex flex-wrap items-center gap-2 px-4 py-2 overflow-x-auto">
+                                        {/* Text Formatting - B, I, U, S */}
+                                        <div className="flex items-center">
+                                          <button
+                                            className={`p-1.5 rounded font-bold text-sm transition-colors ${
+                                              editorState.isBold
+                                                ? "bg-white/20 text-white"
+                                                : "text-white hover:bg-white/10"
+                                            }`}
+                                            onClick={() => applyFormatting("bold")}
+                                            title="Bold (Ctrl+B)"
+                                          >
+                                            B
+                                          </button>
+                                          <button
+                                            className={`p-1.5 rounded italic text-sm transition-colors ${
+                                              editorState.isItalic
+                                                ? "bg-white/20 text-white"
+                                                : "text-white hover:bg-white/10"
+                                            }`}
+                                            onClick={() => applyFormatting("italic")}
+                                            title="Italic (Ctrl+I)"
+                                          >
+                                            I
+                                          </button>
+                                          <button
+                                            className={`p-1.5 rounded underline text-sm transition-colors ${
+                                              editorState.isUnderline
+                                                ? "bg-white/20 text-white"
+                                                : "text-white hover:bg-white/10"
+                                            }`}
+                                            onClick={() => applyFormatting("underline")}
+                                            title="Underline (Ctrl+U)"
+                                          >
+                                            U
+                                          </button>
+                                          <button
+                                            className={`p-1.5 rounded line-through text-sm transition-colors ${
+                                              editorState.isStrikethrough
+                                                ? "bg-white/20 text-white"
+                                                : "text-white hover:bg-white/10"
+                                            }`}
+                                            onClick={() => applyFormatting("strikethrough")}
+                                            title="Strikethrough"
+                                          >
+                                            S
+                                          </button>
+                                        </div>
+
+                                        <div className="h-5 w-px bg-gray-500 hidden sm:block"></div>
+
+                                        {/* Font Size */}
+                                        <select
+                                          className="bg-transparent text-white text-sm px-2 py-1 border border-gray-500 rounded focus:border-gray-400 outline-none min-w-0 flex-shrink-0"
+                                          value={editorState.fontSize}
+                                          onChange={(e) => {
+                                            applyFormatting("fontSize", e.target.value);
+                                          }}
+                                          title="Font Size"
+                                        >
+                                          <option className="bg-[#2d1f4a]" value="12px">12px</option>
+                                          <option className="bg-[#2d1f4a]" value="14px">14px</option>
+                                          <option className="bg-[#2d1f4a]" value="16px">16px</option>
+                                          <option className="bg-[#2d1f4a]" value="18px">18px</option>
+                                          <option className="bg-[#2d1f4a]" value="20px">20px</option>
+                                          <option className="bg-[#2d1f4a]" value="24px">24px</option>
+                                          <option className="bg-[#2d1f4a]" value="28px">28px</option>
+                                          <option className="bg-[#2d1f4a]" value="32px">32px</option>
+                                        </select>
+
+                                        {/* Color Picker */}
+                                        <input
+                                          type="color"
+                                          value={editorState.textColor}
+                                          onChange={(e) => {
+                                            applyFormatting("color", e.target.value);
+                                          }}
+                                          className="w-8 h-8 bg-transparent border border-gray-500 rounded cursor-pointer flex-shrink-0"
+                                          title="Text Color"
+                                        />
+
+                                        <div className="h-5 w-px bg-gray-500 hidden sm:block"></div>
+
+                                        {/* Lists */}
+                                        <div className="flex items-center">
+                                          <button
+                                            className={`p-1.5 rounded text-sm transition-colors ${
+                                              editorState.listType === "bullet"
+                                                ? "bg-white/20 text-white"
+                                                : "text-white hover:bg-white/10"
+                                            }`}
+                                            onClick={() => {
+                                              applyFormatting("bulletList");
+                                              setEditorState((prev: any) => ({
+                                                ...prev,
+                                                listType: prev.listType === "bullet" ? "none" : "bullet",
+                                              }));
+                                            }}
+                                            title="Bullet List"
+                                          >
+                                            •
+                                          </button>
+                                          <button
+                                            className={`p-1.5 rounded text-sm transition-colors ${
+                                              editorState.listType === "numbered"
+                                                ? "bg-white/20 text-white"
+                                                : "text-white hover:bg-white/10"
+                                            }`}
+                                            onClick={() => {
+                                              applyFormatting("numberedList");
+                                              setEditorState((prev: any) => ({
+                                                ...prev,
+                                                listType: prev.listType === "numbered" ? "none" : "numbered",
+                                              }));
+                                            }}
+                                            title="Numbered List"
+                                          >
+                                            1.
+                                          </button>
+
+                                          {/* Text Alignment */}
+                                          <button
+                                            className={`p-1.5 rounded text-sm transition-colors ${
+                                              editorState.textAlign === "left"
+                                                ? "bg-white/20 text-white"
+                                                : "text-white hover:bg-white/10"
+                                            }`}
+                                            onClick={() => applyFormatting("align-left")}
+                                            title="Align Left"
+                                          >
+                                            ≡
+                                          </button>
+                                          <button
+                                            className={`p-1.5 rounded text-sm transition-colors ${
+                                              editorState.textAlign === "center"
+                                                ? "bg-white/20 text-white"
+                                                : "text-white hover:bg-white/10"
+                                            }`}
+                                            onClick={() => applyFormatting("align-center")}
+                                            title="Align Center"
+                                          >
+                                            ⊞
+                                          </button>
+                                          <button
+                                            className={`p-1.5 rounded text-sm transition-colors ${
+                                              editorState.textAlign === "right"
+                                                ? "bg-white/20 text-white"
+                                                : "text-white hover:bg-white/10"
+                                            }`}
+                                            onClick={() => applyFormatting("align-right")}
+                                            title="Align Right"
+                                          >
+                                            ≣
+                                          </button>
+                                        </div>
+                                      </div>
                                     </div>
-                                    <div>
-                                      <label className="text-sm text-gray-300 block mb-2">
-                                        Message
-                                      </label>
-                                      <textarea
-                                        value={editingContent.content || ""}
-                                        rows={4}
-                                        className="w-full bg-[#0f0624] border border-gray-600 rounded-lg px-3 py-2 text-white resize-none"
-                                        placeholder="Enter announcement message..."
-                                      />
-                                    </div>
-                                    <div>
-                                      <label className="text-sm text-gray-300 block mb-2">
-                                        Display Duration
-                                      </label>
-                                      <select className="w-full bg-[#0f0624] border border-gray-600 rounded-lg px-3 py-2 text-white">
-                                        <option>30 seconds</option>
-                                        <option>1 minute</option>
-                                        <option>2 minutes</option>
-                                        <option>Manual advance</option>
-                                      </select>
+
+                                    {/* Announcement Content Area */}
+                                    <div className="flex-1 p-4 space-y-4 overflow-y-auto">
+                                      {/* Announcement Title - Editable */}
+                                      <div>
+                                        <label className="block text-white text-xs font-medium mb-1">
+                                          Announcement Title
+                                        </label>
+                                        <div className="bg-[#1a0f2e] border border-gray-600 rounded-lg focus-within:border-[#8356F3] transition-colors">
+                                          <input
+                                            type="text"
+                                            value={editingContent.title || ""}
+                                            onChange={(e) => {
+                                              const newTitle = e.target.value;
+                                              setEditingContent((prev: any) =>
+                                                prev ? { ...prev, title: newTitle } : null,
+                                              );
+                                              updateItemContent(
+                                                editingContent.id,
+                                                newTitle,
+                                                editingContent.content,
+                                                undefined,
+                                                { location: editingContent.location, eventDate: editingContent.eventDate, eventTime: editingContent.eventTime, contact: editingContent.contact, duration: editingContent.duration },
+                                              );
+                                            }}
+                                            className="w-full bg-transparent border-none outline-none px-3 py-2.5 text-white text-base"
+                                            style={{
+                                              fontFamily: editorState.selectedFont || "Lufgord",
+                                              fontWeight: editorState.isBold ? "bold" : "normal",
+                                              fontStyle: editorState.isItalic ? "italic" : "normal",
+                                              textDecoration:
+                                                `${editorState.isUnderline ? "underline" : ""} ${editorState.isStrikethrough ? "line-through" : ""}`.trim() ||
+                                                "none",
+                                            }}
+                                            placeholder="Enter announcement title..."
+                                          />
+                                        </div>
+                                      </div>
+
+                                      {/* Announcement Message - Editable with WYSIWYG styling */}
+                                      <div>
+                                        <label className="block text-white text-xs font-medium mb-1">
+                                          Message
+                                        </label>
+                                        <div className="bg-[#1a0f2e] border border-gray-600 rounded-lg focus-within:border-[#8356F3] transition-colors">
+                                          <textarea
+                                            ref={textAreaRef}
+                                            value={
+                                              typeof editingContent.content === "string"
+                                                ? editingContent.content
+                                                : ""
+                                            }
+                                            onFocus={(e) => {
+                                              const textarea = e.target as HTMLTextAreaElement;
+                                              setActiveTextarea(textarea);
+                                              applyStylesToTextarea(textarea, editorState);
+                                            }}
+                                            onChange={(e) => {
+                                              const newContent = e.target.value;
+                                              setEditingContent((prev: any) =>
+                                                prev ? { ...prev, content: newContent } : null,
+                                              );
+                                              updateItemContent(
+                                                editingContent.id,
+                                                editingContent.title,
+                                                newContent,
+                                                undefined,
+                                                { location: editingContent.location, eventDate: editingContent.eventDate, eventTime: editingContent.eventTime, contact: editingContent.contact, duration: editingContent.duration },
+                                              );
+                                            }}
+                                            rows={3}
+                                            className="w-full min-h-[80px] bg-transparent border-none outline-none resize-none px-3 py-2.5 text-white text-sm whitespace-pre-wrap leading-relaxed"
+                                            style={{
+                                              fontFamily: editorState.selectedFont || "Lufgord",
+                                              fontSize: editorState.fontSize || "14px",
+                                              color: editorState.textColor || "#ffffff",
+                                              textAlign: (editorState.textAlign as any) || "left",
+                                              fontWeight: editorState.isBold ? "bold" : "normal",
+                                              fontStyle: editorState.isItalic ? "italic" : "normal",
+                                              textDecoration:
+                                                `${editorState.isUnderline ? "underline" : ""} ${editorState.isStrikethrough ? "line-through" : ""}`.trim() ||
+                                                "none",
+                                            }}
+                                            placeholder="Enter announcement message..."
+                                          />
+                                        </div>
+                                      </div>
+
+                                      {/* Location */}
+                                      <div>
+                                        <label className="block text-white text-xs font-medium mb-1">
+                                          <span className="inline-flex items-center gap-1">📍 Location</span>
+                                        </label>
+                                        <div className="bg-[#1a0f2e] border border-gray-600 rounded-lg focus-within:border-[#8356F3] transition-colors">
+                                          <input
+                                            type="text"
+                                            value={editingContent.location || ""}
+                                            onChange={(e) => {
+                                              const newLocation = e.target.value;
+                                              setEditingContent((prev: any) =>
+                                                prev ? { ...prev, location: newLocation } : null,
+                                              );
+                                              // Propagate to service items & slides
+                                              updateItemContent(
+                                                editingContent.id,
+                                                editingContent.title,
+                                                editingContent.content,
+                                                undefined,
+                                                { location: newLocation, eventDate: editingContent.eventDate, eventTime: editingContent.eventTime, contact: editingContent.contact, duration: editingContent.duration },
+                                              );
+                                            }}
+                                            className="w-full bg-transparent border-none outline-none px-3 py-2.5 text-white text-sm"
+                                            placeholder="e.g. Main Sanctuary, Fellowship Hall..."
+                                          />
+                                        </div>
+                                      </div>
+
+                                      {/* Event Date & Time - Side by Side */}
+                                      <div>
+                                        <label className="block text-white text-xs font-medium mb-1">
+                                          <span className="inline-flex items-center gap-1">📅 Event Date & Time</span>
+                                        </label>
+                                        <div className="grid grid-cols-2 gap-3">
+                                          <div className="bg-[#1a0f2e] border border-gray-600 rounded-lg focus-within:border-[#8356F3] transition-colors">
+                                            <input
+                                              type="date"
+                                              value={editingContent.eventDate || ""}
+                                              onChange={(e) => {
+                                                const newDate = e.target.value;
+                                                setEditingContent((prev: any) =>
+                                                  prev ? { ...prev, eventDate: newDate } : null,
+                                                );
+                                                updateItemContent(
+                                                  editingContent.id,
+                                                  editingContent.title,
+                                                  editingContent.content,
+                                                  undefined,
+                                                  { location: editingContent.location, eventDate: newDate, eventTime: editingContent.eventTime, contact: editingContent.contact, duration: editingContent.duration },
+                                                );
+                                              }}
+                                              className="w-full bg-transparent border-none outline-none px-3 py-2.5 text-white text-sm [color-scheme:dark]"
+                                            />
+                                          </div>
+                                          <div className="bg-[#1a0f2e] border border-gray-600 rounded-lg focus-within:border-[#8356F3] transition-colors">
+                                            <input
+                                              type="time"
+                                              value={editingContent.eventTime || ""}
+                                              onChange={(e) => {
+                                                const newTime = e.target.value;
+                                                setEditingContent((prev: any) =>
+                                                  prev ? { ...prev, eventTime: newTime } : null,
+                                                );
+                                                updateItemContent(
+                                                  editingContent.id,
+                                                  editingContent.title,
+                                                  editingContent.content,
+                                                  undefined,
+                                                  { location: editingContent.location, eventDate: editingContent.eventDate, eventTime: newTime, contact: editingContent.contact, duration: editingContent.duration },
+                                                );
+                                              }}
+                                              className="w-full bg-transparent border-none outline-none px-3 py-2.5 text-white text-sm [color-scheme:dark]"
+                                            />
+                                          </div>
+                                        </div>
+                                      </div>
+
+                                      {/* Contact Info */}
+                                      <div>
+                                        <label className="block text-white text-xs font-medium mb-1">
+                                          <span className="inline-flex items-center gap-1">📞 Contact Info</span>
+                                        </label>
+                                        <div className="bg-[#1a0f2e] border border-gray-600 rounded-lg focus-within:border-[#8356F3] transition-colors">
+                                          <input
+                                            type="text"
+                                            value={editingContent.contact || ""}
+                                            onChange={(e) => {
+                                              const newContact = e.target.value;
+                                              setEditingContent((prev: any) =>
+                                                prev ? { ...prev, contact: newContact } : null,
+                                              );
+                                              // Propagate to service items & slides
+                                              updateItemContent(
+                                                editingContent.id,
+                                                editingContent.title,
+                                                editingContent.content,
+                                                undefined,
+                                                { location: editingContent.location, eventDate: editingContent.eventDate, eventTime: editingContent.eventTime, contact: newContact, duration: editingContent.duration },
+                                              );
+                                            }}
+                                            className="w-full bg-transparent border-none outline-none px-3 py-2.5 text-white text-sm"
+                                            placeholder="e.g. Call John 555-0123, email@church.com"
+                                          />
+                                        </div>
+                                      </div>
+
+                                      {/* Display Duration - Reactive */}
+                                      <div>
+                                        <label className="block text-white text-xs font-medium mb-1">
+                                          Display Duration
+                                        </label>
+                                        <select
+                                          className="w-full bg-[#1a0f2e] border border-gray-600 rounded-lg px-3 py-2.5 text-white text-sm focus:border-[#8356F3] outline-none transition-colors"
+                                          value={editingContent.duration || "manual"}
+                                          onChange={(e) => {
+                                            const newDuration = e.target.value;
+                                            setEditingContent((prev: any) =>
+                                              prev ? { ...prev, duration: newDuration } : null,
+                                            );
+                                            updateItemContent(
+                                              editingContent.id,
+                                              editingContent.title,
+                                              editingContent.content,
+                                              undefined,
+                                              { location: editingContent.location, eventDate: editingContent.eventDate, eventTime: editingContent.eventTime, contact: editingContent.contact, duration: newDuration },
+                                            );
+                                          }}
+                                        >
+                                          <option value="15">15 seconds</option>
+                                          <option value="30">30 seconds</option>
+                                          <option value="60">1 minute</option>
+                                          <option value="120">2 minutes</option>
+                                          <option value="300">5 minutes</option>
+                                          <option value="manual">Manual advance</option>
+                                        </select>
+                                      </div>
+
+                                      {/* Live Slide Preview */}
+                                      <div>
+                                        <label className="block text-white text-xs font-medium mb-1">
+                                          Slide Preview
+                                        </label>
+                                        <div className="w-full h-44 bg-black border border-gray-600 rounded-lg relative overflow-hidden">
+                                          <div className="absolute inset-0 bg-gradient-to-br from-purple-900/30 to-orange-900/20"></div>
+                                          <div className="relative h-full flex flex-col justify-center items-center p-4">
+                                            <h3
+                                              className="text-white font-bold mb-1 text-center"
+                                              style={{
+                                                fontFamily: editorState.selectedFont || "Lufgord",
+                                                fontSize: "1.1rem",
+                                                textShadow: "2px 2px 8px rgba(0, 0, 0, 0.9)",
+                                              }}
+                                            >
+                                              {editingContent.title || "Announcement Title"}
+                                            </h3>
+                                            {/* Date/Time & Location metadata bar */}
+                                            {(editingContent.eventDate || editingContent.eventTime || editingContent.location) && (
+                                              <div className="flex items-center gap-3 mb-2 flex-wrap justify-center">
+                                                {(editingContent.eventDate || editingContent.eventTime) && (
+                                                  <span className="text-orange-300/90 text-[11px] font-medium" style={{ textShadow: "1px 1px 4px rgba(0,0,0,0.9)" }}>
+                                                    📅 {editingContent.eventDate ? new Date(editingContent.eventDate + "T00:00").toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) : ""}
+                                                    {editingContent.eventDate && editingContent.eventTime ? " · " : ""}
+                                                    {editingContent.eventTime || ""}
+                                                  </span>
+                                                )}
+                                                {editingContent.location && (
+                                                  <span className="text-purple-300/90 text-[11px] font-medium" style={{ textShadow: "1px 1px 4px rgba(0,0,0,0.9)" }}>
+                                                    📍 {editingContent.location}
+                                                  </span>
+                                                )}
+                                                {editingContent.contact && (
+                                                  <span className="text-blue-300/90 text-[11px] font-medium" style={{ textShadow: "1px 1px 4px rgba(0,0,0,0.9)" }}>
+                                                    📞 {editingContent.contact}
+                                                  </span>
+                                                )}
+                                              </div>
+                                            )}
+                                            <p
+                                              className="text-center max-w-full overflow-hidden text-ellipsis"
+                                              style={{
+                                                fontFamily: editorState.selectedFont || "Lufgord",
+                                                fontSize: editorState.fontSize || "12px",
+                                                color: editorState.textColor || "#ffffff",
+                                                textAlign: (editorState.textAlign as any) || "center",
+                                                fontWeight: editorState.isBold ? "bold" : "normal",
+                                                fontStyle: editorState.isItalic ? "italic" : "normal",
+                                                textDecoration:
+                                                  `${editorState.isUnderline ? "underline" : ""} ${editorState.isStrikethrough ? "line-through" : ""}`.trim() ||
+                                                  "none",
+                                                textShadow: "2px 2px 8px rgba(0, 0, 0, 0.9)",
+                                                lineHeight: "1.5",
+                                              }}
+                                            >
+                                              {(typeof editingContent.content === "string"
+                                                ? editingContent.content
+                                                : "") || "Your announcement message will appear here..."}
+                                            </p>
+                                          </div>
+                                        </div>
+                                      </div>
                                     </div>
                                   </div>
                                 )}
@@ -2608,7 +3145,7 @@ import type { Slide } from "@/types";\n${text}`,
                           ) : insertedItems.length > 0 ? (
                             /* Content List */
                             <div className="p-4 space-y-3 overflow-y-auto h-full">
-                              {insertedItems.map((item, index) => (
+                              {insertedItems.map((item: any, index: number) => (
                                 <div
                                   key={item.id}
                                   onClick={() => {
@@ -3894,7 +4431,8 @@ import type { Slide } from "@/types";\n${text}`,
                                           ? "bg-purple-600"
                                           : slide.type === "bible"
                                             ? "bg-cyan-600"
-                                            : slide.title
+                                            : slide.type === "announcement" ||
+                                              slide.title
                                                   .toLowerCase()
                                                   .includes("announcement")
                                               ? "bg-orange-600"
@@ -4070,6 +4608,43 @@ import type { Slide } from "@/types";\n${text}`,
                                                 : "Scripture text will appear here",
                                             }}
                                           />
+                                        ) : slide.type === "announcement" ? (
+                                          <div className="space-y-0.5">
+                                            <div
+                                              className="text-[8px] font-bold text-orange-300 leading-tight"
+                                              style={{ textShadow: "0 1px 2px rgba(0,0,0,0.8)" }}
+                                            >
+                                              {slide.title || "Announcement"}
+                                            </div>
+                                            {(slide.eventDate || slide.eventTime || slide.location || slide.contact) && (
+                                              <div className="flex items-center gap-1 flex-wrap">
+                                                {(slide.eventDate || slide.eventTime) && (
+                                                  <span className="text-orange-200/60 text-[6px]">
+                                                    📅{slide.eventDate ? ` ${slide.eventDate}` : ""}{slide.eventTime ? ` ${slide.eventTime}` : ""}
+                                                  </span>
+                                                )}
+                                                {slide.location && (
+                                                  <span className="text-purple-200/60 text-[6px]">📍{slide.location}</span>
+                                                )}
+                                                {slide.contact && (
+                                                  <span className="text-blue-200/60 text-[6px]">📞{slide.contact}</span>
+                                                )}
+                                              </div>
+                                            )}
+                                            <div
+                                              className="text-[7px] leading-tight text-white/80"
+                                              style={{ textShadow: "0 1px 2px rgba(0,0,0,0.8)" }}
+                                              dangerouslySetInnerHTML={{
+                                                __html:
+                                                  typeof slide.content === "string"
+                                                    ? slide.content
+                                                        .split("\n")
+                                                        .slice(0, 3)
+                                                        .join("<br/>")
+                                                    : "Announcement content",
+                                              }}
+                                            />
+                                          </div>
                                         ) : slide.type === "custom" &&
                                           slide.title
                                             .toLowerCase()

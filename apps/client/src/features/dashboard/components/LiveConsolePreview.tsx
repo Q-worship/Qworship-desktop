@@ -188,6 +188,39 @@ export function LiveConsolePreview(props: LiveConsolePreviewProps) {
                     {currentSlideData.content}
                   </div>
                 </>
+              ) : currentSlideData.type === "announcement" ? (
+                <>
+                  <div className="text-orange-300 text-[8px] font-bold mb-0.5" style={{ textShadow: "0 2px 4px rgba(0,0,0,0.8)" }}>
+                    {currentSlideData.title || "Announcement"}
+                  </div>
+                  {(currentSlideData.eventDate || currentSlideData.eventTime || currentSlideData.location || currentSlideData.contact) && (
+                    <div className="flex items-center gap-1.5 mb-0.5 flex-wrap">
+                      {(currentSlideData.eventDate || currentSlideData.eventTime) && (
+                        <span className="text-orange-200/70 text-[6px]">
+                          📅 {currentSlideData.eventDate || ""}{currentSlideData.eventDate && currentSlideData.eventTime ? " · " : ""}{currentSlideData.eventTime || ""}
+                        </span>
+                      )}
+                      {currentSlideData.location && (
+                        <span className="text-purple-200/70 text-[6px]">
+                          📍 {currentSlideData.location}
+                        </span>
+                      )}
+                      {currentSlideData.contact && (
+                        <span className="text-blue-200/70 text-[6px]">
+                          📞 {currentSlideData.contact}
+                        </span>
+                      )}
+                    </div>
+                  )}
+                  <div
+                    className="text-white font-medium leading-relaxed text-[7px] whitespace-pre-line"
+                    style={{ textShadow: "0 2px 4px rgba(0,0,0,0.8)" }}
+                  >
+                    {typeof currentSlideData.content === "string"
+                      ? currentSlideData.content
+                      : ""}
+                  </div>
+                </>
               ) : (
                 <>
                   <div className="text-white text-[8px] font-semibold mb-1">

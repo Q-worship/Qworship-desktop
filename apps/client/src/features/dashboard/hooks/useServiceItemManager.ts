@@ -164,15 +164,40 @@ export function useServiceItemManager({
     newTitle: string,
     newContent: any,
     slides?: any[],
+    metadata?: Record<string, any>,
   ) => {
+    // For announcement items, auto-regenerate slides to reflect title/content changes
+    const resolveSlides = (existingItem: any) => {
+      if (slides) return slides;
+      if (existingItem?.type === "announcement") {
+        const merged = { ...existingItem, ...(metadata || {}) };
+        const contentStr = typeof newContent === "string" ? newContent : (typeof merged.content === "string" ? merged.content : "");
+        return [{
+          id: existingItem.slides?.[0]?.id || `slide-${itemId}-${Date.now()}`,
+          type: "announcement" as const,
+          title: newTitle,
+          content: contentStr,
+          location: merged.location || "",
+          eventDate: merged.eventDate || "",
+          eventTime: merged.eventTime || "",
+          contact: merged.contact || "",
+          sectionLabel: "Announcement",
+        }];
+      }
+      return existingItem?.slides;
+    };
+
+    const extra = metadata || {};
+
     setServiceItems((prev) =>
       prev.map((item) =>
         item.id === itemId
           ? {
               ...item,
+              ...extra,
               title: newTitle,
               content: newContent,
-              slides: slides || item.slides,
+              slides: resolveSlides(item),
             }
           : item,
       ),
@@ -186,11 +211,13 @@ export function useServiceItemManager({
         );
         if (idx !== -1) {
           newSectionItems[section] = [...newSectionItems[section]];
+          const existingItem = newSectionItems[section][idx];
           newSectionItems[section][idx] = {
-            ...newSectionItems[section][idx],
+            ...existingItem,
+            ...extra,
             title: newTitle,
             content: newContent,
-            slides: slides || newSectionItems[section][idx].slides,
+            slides: resolveSlides(existingItem),
           };
           break;
         }
@@ -202,9 +229,10 @@ export function useServiceItemManager({
       prev && prev.id === itemId
         ? {
             ...prev,
+            ...extra,
             title: newTitle,
             content: newContent,
-            slides: slides || prev.slides,
+            slides: resolveSlides(prev),
           }
         : prev,
     );
@@ -255,11 +283,11 @@ export function useServiceItemManager({
       slides: [
         {
           id: `slide-${item.id}-${Date.now()}`,
-          type: item.type === "song" ? ("song" as const) : ("custom" as const),
+          type: item.type === "song" ? ("song" as const) : item.type === "announcement" ? ("announcement" as const) : ("custom" as const),
           title: item.title,
           content:
-            item.type === "song" ? "Please select a song" : "Ready for content",
-          sectionLabel: item.type === "song" ? "Song" : "Content",
+            item.type === "song" ? "Please select a song" : (typeof item.content === "string" ? item.content : "Ready for content"),
+          sectionLabel: item.type === "song" ? "Song" : item.type === "announcement" ? "Announcement" : "Content",
         },
       ],
     };
@@ -280,6 +308,22 @@ export function useServiceItemManager({
         songId: item.songId,
         sectionLabel: section.label,
       }));
+    }
+
+    if (item.type === "announcement") {
+      return [
+        {
+          id: `item-${item.id}-${Date.now()}`,
+          type: "announcement" as const,
+          title: item.title || "Announcement",
+          content: typeof item.content === "string" ? item.content : (item.title || "Announcement"),
+          location: item.location || "",
+          eventDate: item.eventDate || "",
+          eventTime: item.eventTime || "",
+          contact: item.contact || "",
+          sectionLabel: "Announcement",
+        },
+      ];
     }
 
     return [
@@ -391,6 +435,11 @@ export function useServiceItemManager({
       title: "Welcome Announcement",
       content:
         "Welcome to our Sunday service! We're glad you're here with us today.",
+      location: "",
+      eventDate: "",
+      eventTime: "",
+      contact: "",
+      duration: "manual",
     });
   const createEventAnnouncement = () =>
     addItemToPreparation({
@@ -398,6 +447,11 @@ export function useServiceItemManager({
       type: "announcement",
       title: "Upcoming Event",
       content: "Join us next Sunday for our special guest speaker at 10:30 AM.",
+      location: "Main Sanctuary",
+      eventDate: "",
+      eventTime: "10:30",
+      contact: "",
+      duration: "manual",
     });
   const showAnnouncementTemplates = () =>
     console.log("Show announcement templates");
