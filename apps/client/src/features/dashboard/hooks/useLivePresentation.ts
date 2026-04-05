@@ -267,6 +267,10 @@ export const useLivePresentation = ({
           type: s.type,
           sectionLabel: s.sectionLabel,
           itemId: s.itemId,
+          location: s.location,
+          eventDate: s.eventDate,
+          eventTime: s.eventTime,
+          contact: s.contact,
         })),
         itemBackgrounds,
       });

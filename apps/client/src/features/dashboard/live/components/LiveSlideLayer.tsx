@@ -219,6 +219,66 @@ export const LiveSlideLayer: React.FC<ReturnType<typeof useLivePresentationState
                     {slides[currentSlide - 1].content}
                   </div>
                 </>
+              ) : slides[currentSlide - 1].type === "announcement" ? (
+                <>
+                  <h1
+                    className={`text-white font-bold mb-6 ${getTextSizeClass()}`}
+                    style={{ textAlign: slideAlignment }}>
+                    {slides[currentSlide - 1].title}
+                  </h1>
+                  
+                  {/* Announcement Metadata */}
+                  {(slides[currentSlide - 1].eventDate || slides[currentSlide - 1].eventTime || slides[currentSlide - 1].location || slides[currentSlide - 1].contact) && (
+                    <div className="flex items-center gap-6 mb-8 flex-wrap justify-center text-xl">
+                      {(slides[currentSlide - 1].eventDate || slides[currentSlide - 1].eventTime) && (
+                        <span className="text-orange-300 font-medium" style={{ textShadow: "2px 2px 6px rgba(0,0,0,0.8)" }}>
+                          📅 {slides[currentSlide - 1].eventDate ? new Date(slides[currentSlide - 1].eventDate + "T00:00").toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) : ""}
+                          {slides[currentSlide - 1].eventDate && slides[currentSlide - 1].eventTime ? " · " : ""}
+                          {slides[currentSlide - 1].eventTime || ""}
+                        </span>
+                      )}
+                      {slides[currentSlide - 1].location && (
+                        <span className="text-purple-300 font-medium" style={{ textShadow: "2px 2px 6px rgba(0,0,0,0.8)" }}>
+                          📍 {slides[currentSlide - 1].location}
+                        </span>
+                      )}
+                      {slides[currentSlide - 1].contact && (
+                        <span className="text-blue-300 font-medium" style={{ textShadow: "2px 2px 6px rgba(0,0,0,0.8)" }}>
+                          📞 {slides[currentSlide - 1].contact}
+                        </span>
+                      )}
+                    </div>
+                  )}
+
+                  <div
+                    className={`text-white whitespace-pre-line leading-relaxed font-light tracking-wide ${getTextSizeClass()}`}
+                    style={{
+                      fontFamily:
+                        editorState.styleFontFamily ||
+                        editorState.selectedFont ||
+                        "Lufgord",
+                      color:
+                        editorState.styleColor ||
+                        editorState.textColor ||
+                        "#ffffff",
+                      fontWeight: editorState.isBold ? "bold" : "normal",
+                      fontStyle: editorState.isItalic ? "italic" : "normal",
+                      textDecoration:
+                        `${editorState.isUnderline ? "underline" : ""} ${editorState.isStrikethrough ? "line-through" : ""} ${editorState.styleTextDecoration || ""}`.trim() ||
+                        "none",
+                      textShadow: editorState.styleTextShadow || "",
+                      letterSpacing: editorState.styleLetterSpacing || "",
+                      textTransform:
+                        (editorState.styleTextTransform as any) || "",
+                      textAlign: slideAlignment,
+                      ...(contentFixedArea && {
+                        maxHeight: "60vh",
+                        overflow: "hidden",
+                      }),
+                    }}>
+                    {slides[currentSlide - 1].content}
+                  </div>
+                </>
               ) : (
                 <>
                   <h1

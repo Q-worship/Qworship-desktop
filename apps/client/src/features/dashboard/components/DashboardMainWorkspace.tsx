@@ -3006,69 +3006,7 @@ import type { Slide } from "@/types";\n${text}`,
                                         </select>
                                       </div>
 
-                                      {/* Live Slide Preview */}
-                                      <div>
-                                        <label className="block text-white text-xs font-medium mb-1">
-                                          Slide Preview
-                                        </label>
-                                        <div className="w-full h-44 bg-black border border-gray-600 rounded-lg relative overflow-hidden">
-                                          <div className="absolute inset-0 bg-gradient-to-br from-purple-900/30 to-orange-900/20"></div>
-                                          <div className="relative h-full flex flex-col justify-center items-center p-4">
-                                            <h3
-                                              className="text-white font-bold mb-1 text-center"
-                                              style={{
-                                                fontFamily: editorState.selectedFont || "Lufgord",
-                                                fontSize: "1.1rem",
-                                                textShadow: "2px 2px 8px rgba(0, 0, 0, 0.9)",
-                                              }}
-                                            >
-                                              {editingContent.title || "Announcement Title"}
-                                            </h3>
-                                            {/* Date/Time & Location metadata bar */}
-                                            {(editingContent.eventDate || editingContent.eventTime || editingContent.location) && (
-                                              <div className="flex items-center gap-3 mb-2 flex-wrap justify-center">
-                                                {(editingContent.eventDate || editingContent.eventTime) && (
-                                                  <span className="text-orange-300/90 text-[11px] font-medium" style={{ textShadow: "1px 1px 4px rgba(0,0,0,0.9)" }}>
-                                                    📅 {editingContent.eventDate ? new Date(editingContent.eventDate + "T00:00").toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) : ""}
-                                                    {editingContent.eventDate && editingContent.eventTime ? " · " : ""}
-                                                    {editingContent.eventTime || ""}
-                                                  </span>
-                                                )}
-                                                {editingContent.location && (
-                                                  <span className="text-purple-300/90 text-[11px] font-medium" style={{ textShadow: "1px 1px 4px rgba(0,0,0,0.9)" }}>
-                                                    📍 {editingContent.location}
-                                                  </span>
-                                                )}
-                                                {editingContent.contact && (
-                                                  <span className="text-blue-300/90 text-[11px] font-medium" style={{ textShadow: "1px 1px 4px rgba(0,0,0,0.9)" }}>
-                                                    📞 {editingContent.contact}
-                                                  </span>
-                                                )}
-                                              </div>
-                                            )}
-                                            <p
-                                              className="text-center max-w-full overflow-hidden text-ellipsis"
-                                              style={{
-                                                fontFamily: editorState.selectedFont || "Lufgord",
-                                                fontSize: editorState.fontSize || "12px",
-                                                color: editorState.textColor || "#ffffff",
-                                                textAlign: (editorState.textAlign as any) || "center",
-                                                fontWeight: editorState.isBold ? "bold" : "normal",
-                                                fontStyle: editorState.isItalic ? "italic" : "normal",
-                                                textDecoration:
-                                                  `${editorState.isUnderline ? "underline" : ""} ${editorState.isStrikethrough ? "line-through" : ""}`.trim() ||
-                                                  "none",
-                                                textShadow: "2px 2px 8px rgba(0, 0, 0, 0.9)",
-                                                lineHeight: "1.5",
-                                              }}
-                                            >
-                                              {(typeof editingContent.content === "string"
-                                                ? editingContent.content
-                                                : "") || "Your announcement message will appear here..."}
-                                            </p>
-                                          </div>
-                                        </div>
-                                      </div>
+
                                     </div>
                                   </div>
                                 )}
@@ -3861,6 +3799,64 @@ import type { Slide } from "@/types";\n${text}`,
                                 ></div>
                               </div>
                             </div>
+                          </div>
+                        </div>
+                      ) : editingContent?.type === "announcement" ? (
+                        /* Announcement Preview Screen */
+                        <div className="w-full h-full relative overflow-hidden flex flex-col justify-center items-center p-8 bg-black rounded border border-gray-600/30">
+                          <div className="relative z-10 w-full flex flex-col justify-center items-center">
+                            <h3
+                              className="text-white font-bold mb-4 text-center"
+                              style={{
+                                fontFamily: editorState.selectedFont || "Lufgord",
+                                fontSize: "3vw",
+                                textShadow: "4px 4px 12px rgba(0, 0, 0, 0.9)",
+                              }}
+                            >
+                              {editingContent.title || "Announcement Title"}
+                            </h3>
+                            {/* Date/Time & Location metadata bar */}
+                            {(editingContent.eventDate || editingContent.eventTime || editingContent.location || editingContent.contact) && (
+                              <div className="flex items-center gap-6 mb-6 flex-wrap justify-center">
+                                {(editingContent.eventDate || editingContent.eventTime) && (
+                                  <span className="text-orange-300 text-[1.2vw] font-medium" style={{ textShadow: "2px 2px 6px rgba(0,0,0,0.9)" }}>
+                                    📅 {editingContent.eventDate ? new Date(editingContent.eventDate + "T00:00").toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) : ""}
+                                    {editingContent.eventDate && editingContent.eventTime ? " · " : ""}
+                                    {editingContent.eventTime || ""}
+                                  </span>
+                                )}
+                                {editingContent.location && (
+                                  <span className="text-purple-300 text-[1.2vw] font-medium" style={{ textShadow: "2px 2px 6px rgba(0,0,0,0.9)" }}>
+                                    📍 {editingContent.location}
+                                  </span>
+                                )}
+                                {editingContent.contact && (
+                                  <span className="text-blue-300 text-[1.2vw] font-medium" style={{ textShadow: "2px 2px 6px rgba(0,0,0,0.9)" }}>
+                                    📞 {editingContent.contact}
+                                  </span>
+                                )}
+                              </div>
+                            )}
+                            <p
+                              className="text-center w-4/5 max-w-full"
+                              style={{
+                                fontFamily: editorState.selectedFont || "Lufgord",
+                                fontSize: "1.8vw",
+                                color: editorState.textColor || "#ffffff",
+                                textAlign: (editorState.textAlign as any) || "center",
+                                fontWeight: editorState.isBold ? "bold" : "normal",
+                                fontStyle: editorState.isItalic ? "italic" : "normal",
+                                textDecoration:
+                                  `${editorState.isUnderline ? "underline" : ""} ${editorState.isStrikethrough ? "line-through" : ""}`.trim() ||
+                                  "none",
+                                textShadow: "3px 3px 10px rgba(0, 0, 0, 0.9)",
+                                lineHeight: "1.6",
+                              }}
+                            >
+                              {(typeof editingContent.content === "string"
+                                ? editingContent.content
+                                : "") || "Your announcement message will appear here..."}
+                            </p>
                           </div>
                         </div>
                       ) : (
