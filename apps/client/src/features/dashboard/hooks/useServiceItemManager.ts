@@ -183,6 +183,16 @@ export function useServiceItemManager({
           contact: merged.contact || "",
           sectionLabel: "Announcement",
         }];
+      } else if (existingItem?.type === "media") {
+        const merged = { ...existingItem, ...(metadata || {}) };
+        return [{
+          id: existingItem.slides?.[0]?.id || `slide-${itemId}-${Date.now()}`,
+          type: "media" as const,
+          title: newTitle,
+          content: typeof newContent === "string" ? newContent : (typeof merged.content === "string" ? merged.content : ""),
+          subtype: merged.subtype || "image",
+          sectionLabel: "Media",
+        }];
       }
       return existingItem?.slides;
     };
@@ -287,16 +297,19 @@ export function useServiceItemManager({
       slides: [
         {
           id: `slide-${item.id}-${Date.now()}`,
-          type: item.type === "song" ? ("song" as const) : item.type === "announcement" ? ("announcement" as const) : ("custom" as const),
+          type: item.type === "song" ? ("song" as const) : item.type === "announcement" ? ("announcement" as const) : item.type === "media" ? ("media" as const) : ("custom" as const),
           title: item.title,
           content:
             item.type === "song" ? "Please select a song" : (typeof item.content === "string" ? item.content : "Ready for content"),
-          sectionLabel: item.type === "song" ? "Song" : item.type === "announcement" ? "Announcement" : "Content",
+          sectionLabel: item.type === "song" ? "Song" : item.type === "announcement" ? "Announcement" : item.type === "media" ? "Media" : "Content",
           ...(item.type === "announcement" ? {
             location: item.location || "",
             eventDate: item.eventDate || "",
             eventTime: item.eventTime || "",
             contact: item.contact || "",
+          } : {}),
+          ...(item.type === "media" ? {
+            subtype: item.subtype || "image",
           } : {}),
         },
       ],

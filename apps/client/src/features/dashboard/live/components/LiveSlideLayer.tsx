@@ -279,6 +279,31 @@ export const LiveSlideLayer: React.FC<ReturnType<typeof useLivePresentationState
                     {slides[currentSlide - 1].content}
                   </div>
                 </>
+              ) : slides[currentSlide - 1].type === "media" ? (
+                <>
+                  <h1
+                    className={`text-white font-bold mb-6 ${getTextSizeClass()}`}
+                    style={{ textAlign: slideAlignment, textShadow: "2px 2px 8px rgba(0,0,0,0.8)" }}>
+                    {slides[currentSlide - 1].title}
+                  </h1>
+                  <div className="w-full flex justify-center items-center rounded-xl overflow-hidden shadow-2xl" style={{ maxHeight: "60vh" }}>
+                    {(slides[currentSlide - 1] as any).subtype === "video" ? (
+                      <video 
+                        src={slides[currentSlide - 1].content && slides[currentSlide - 1].content !== "Inspirational worship video" ? slides[currentSlide - 1].content : undefined} 
+                        autoPlay 
+                        loop 
+                        muted 
+                        className="max-w-full max-h-[60vh] object-contain rounded-xl"
+                      />
+                    ) : (
+                      <img 
+                        src={slides[currentSlide - 1].content && slides[currentSlide - 1].content !== "Worship background image" && slides[currentSlide - 1].content !== "Inspirational worship video" ? slides[currentSlide - 1].content : "https://images.unsplash.com/photo-1438232992991-995b7058bbb3?q=80&w=2673&auto=format&fit=crop"} 
+                        alt={slides[currentSlide - 1].title || "Media slide"}
+                        className="max-w-full max-h-[60vh] object-contain rounded-xl bg-black"
+                      />
+                    )}
+                  </div>
+                </>
               ) : (
                 <>
                   <h1

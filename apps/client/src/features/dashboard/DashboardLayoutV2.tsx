@@ -669,6 +669,18 @@ export const QworshipHomeV2Base = (): JSX.Element => {
 
   // Get background for a specific item
   const getItemBackground = (itemId: string) => {
+    // If it is a media item, its content is effectively the background for the live window!
+    const item = serviceItems.find((i) => i.id === itemId);
+    if (item && item.type === "media") {
+      const mediaUrl = typeof item.content === "string" ? item.content : item.slides?.[0]?.content;
+      if (mediaUrl && typeof mediaUrl === "string") {
+        return {
+          type: item.subtype || "image",
+          value: mediaUrl,
+        };
+      }
+    }
+
     const background = itemBackgrounds[itemId] || {
       type: "fill",
       value: "#000000",
@@ -753,7 +765,7 @@ export const QworshipHomeV2Base = (): JSX.Element => {
   const handleSlideClick = (slide: Slide, slideIndex: number) => {
     // Find the service item that contains this slide
     const parentItem = serviceItems.find((item) =>
-      item.slides.some((s: any) => s.id === slide.id),
+      item.slides?.some((s: any) => slide.id && s.id === slide.id),
     );
 
     if (parentItem) {
@@ -2040,15 +2052,60 @@ export const QworshipHomeV2Base = (): JSX.Element => {
           contact: merged.contact || "",
           sectionLabel: "Announcement",
         }];
+      } else if (existingItem?.type === "media") {
+        const merged = { ...existingItem, ...(metadata || {}) };
+        return [{
+          id: existingItem.slides?.[0]?.id || `slide-${itemId}-${Date.now()}`,
+          type: "media" as const,
+          title: newTitle,
+          content: typeof newContent === "string" ? newContent : (typeof merged.content === "string" ? merged.content : ""),
+          subtype: merged.subtype || "image",
+          sectionLabel: "Media",
+        }];
       }
       return existingItem?.slides;
     };
 
     const extra = metadata || {};
 
-    // Update serviceItems
-    setServiceItems((prev) => {
-      const updated = prev.map((item) => {
+    const nextServiceItems = serviceItems.map((item) => {
+      if (item.id === itemId) {
+        return {
+          ...item,
+          ...extra,
+          title: newTitle,
+          content: newContent,
+          slides: resolveSlides(item),
+        };
+      }
+      return item;
+    });
+    setServiceItems(nextServiceItems);
+
+    // Update sectionItems for sidebar display
+    const nextSectionItems = { ...sectionItems };
+    for (const section in nextSectionItems) {
+      const sectionItemIndex = nextSectionItems[section].findIndex(
+        (item) => item.id === itemId,
+      );
+      if (sectionItemIndex !== -1) {
+        nextSectionItems[section] = [...nextSectionItems[section]];
+        const existingItem = nextSectionItems[section][sectionItemIndex];
+        nextSectionItems[section][sectionItemIndex] = {
+          ...existingItem,
+          ...extra,
+          title: newTitle,
+          content: newContent,
+          slides: resolveSlides(existingItem),
+        };
+        break;
+      }
+    }
+    setSectionItems(nextSectionItems);
+
+    // Update insertedItems for the upper section list display
+    setInsertedItems((prev) =>
+      prev.map((item) => {
         if (item.id === itemId) {
           return {
             ...item,
@@ -2059,32 +2116,8 @@ export const QworshipHomeV2Base = (): JSX.Element => {
           };
         }
         return item;
-      });
-      return updated;
-    });
-
-    // Update sectionItems for sidebar display
-    setSectionItems((prev) => {
-      const newSectionItems = { ...prev };
-      for (const section in newSectionItems) {
-        const sectionItemIndex = newSectionItems[section].findIndex(
-          (item) => item.id === itemId,
-        );
-        if (sectionItemIndex !== -1) {
-          newSectionItems[section] = [...newSectionItems[section]];
-          const existingItem = newSectionItems[section][sectionItemIndex];
-          newSectionItems[section][sectionItemIndex] = {
-            ...existingItem,
-            ...extra,
-            title: newTitle,
-            content: newContent,
-            slides: resolveSlides(existingItem),
-          };
-          break;
-        }
-      }
-      return newSectionItems;
-    });
+      })
+    );
 
     // Update editing content
     setEditingContent((prev: any) =>
@@ -2098,6 +2131,9 @@ export const QworshipHomeV2Base = (): JSX.Element => {
           }
         : prev,
     );
+
+    // Synchronously rebuild slides using the predictable explicit next states
+    rebuildSlidesFromServiceItems(nextServiceItems, nextSectionItems);
   };
 
   // Handle selecting a song from search results
@@ -2343,10 +2379,11 @@ export const QworshipHomeV2Base = (): JSX.Element => {
     });
 
     // ACTION 1: Create generic item in selected service section
-    setSectionItems((prev) => ({
-      ...prev,
-      [selectedServiceSection]: [...(prev[selectedServiceSection] || []), item],
-    }));
+    const nextSectionItems = {
+      ...sectionItems,
+      [selectedServiceSection]: [...(sectionItems[selectedServiceSection] || []), item],
+    };
+    setSectionItems(nextSectionItems);
 
     // Auto-expand the section to show the added item
     setExpandedSections((prev) => ({
@@ -2385,23 +2422,27 @@ export const QworshipHomeV2Base = (): JSX.Element => {
       slides: [
         {
           id: `slide-${item.id}-${Date.now()}`,
-          type: item.type === "song" ? ("song" as const) : item.type === "announcement" ? ("announcement" as const) : ("custom" as const),
+          type: item.type === "song" ? ("song" as const) : item.type === "announcement" ? ("announcement" as const) : item.type === "media" ? ("media" as const) : ("custom" as const),
           title: item.title,
           content:
             item.type === "song" ? "Please select a song" : (typeof item.content === "string" ? item.content : "Ready for content"),
-          sectionLabel: item.type === "song" ? "Song" : item.type === "announcement" ? "Announcement" : "Content",
+          sectionLabel: item.type === "song" ? "Song" : item.type === "announcement" ? "Announcement" : item.type === "media" ? "Media" : "Content",
           ...(item.type === "announcement" ? {
             location: item.location || "",
             eventDate: item.eventDate || "",
             eventTime: item.eventTime || "",
             contact: item.contact || "",
           } : {}),
+          ...(item.type === "media" ? {
+            subtype: item.subtype || "image",
+          } : {}),
         },
       ],
     };
 
     // Add to serviceItems for slide display
-    setServiceItems((prev) => [...prev, newServiceItem]);
+    const nextServiceItems = [...serviceItems, newServiceItem];
+    setServiceItems(nextServiceItems);
 
     console.log(
       `✅ Added item to serviceItems for slide display:`,
@@ -2412,6 +2453,9 @@ export const QworshipHomeV2Base = (): JSX.Element => {
       `3-Action System completed for ${item.type} in ${selectedServiceSection}:`,
       item,
     );
+
+    // Synchronously rebuild slides using the predictable explicit next states
+    rebuildSlidesFromServiceItems(nextServiceItems, nextSectionItems);
   };
 
   // Helper function to create slides for a single item without adding to state
@@ -2444,8 +2488,20 @@ export const QworshipHomeV2Base = (): JSX.Element => {
           sectionLabel: "Announcement",
         },
       ];
+    } else if (item.type === "media") {
+      // For media items, explicitly maintain media type so correct renderers are activated
+      return [
+        {
+          id: `item-${item.id}-${Date.now()}`,
+          type: "media" as const,
+          title: item.title || "Media",
+          content: typeof item.content === "string" ? item.content : "",
+          subtype: item.subtype || "image",
+          sectionLabel: "Media",
+        },
+      ];
     } else {
-      // For other non-song items, create a single slide
+      // For other non-song items, create a single custom slide
       return [
         {
           id: `item-${item.id}-${Date.now()}`,
@@ -2515,10 +2571,15 @@ export const QworshipHomeV2Base = (): JSX.Element => {
       canRedo: false,
     }));
 
-    // Rebuild slides to append new song slides
-    setTimeout(() => {
-      rebuildSlidesFromServiceItems();
-    }, 100);
+    // Manually compute next section items to pipeline into rebuild
+    const nextSectionItems = { ...sectionItems };
+    sectionIds.forEach((sectionId) => {
+      const itemWithUniqueId = { ...songItem, id: `song-${songItem.songId}-${sectionId}-${Date.now()}` };
+      nextSectionItems[sectionId] = [...(nextSectionItems[sectionId] || []), itemWithUniqueId];
+    });
+
+    // Rebuild slides to append new song slides using explicit state mapping
+    rebuildSlidesFromServiceItems(serviceItems, nextSectionItems);
   };
 
   const createSlideFromItem = (item: any) => {
@@ -2561,10 +2622,13 @@ export const QworshipHomeV2Base = (): JSX.Element => {
   ];
 
   // Function to rebuild all slides based on service section items order
-  const rebuildSlidesFromServiceItems = () => {
+  const rebuildSlidesFromServiceItems = (
+    currentServiceItems = serviceItems,
+    currentSectionItems = sectionItems
+  ) => {
     // Preserve existing slides from current serviceItems
     const existingSlides: any[] = [];
-    serviceItems.forEach((serviceItem) => {
+    currentServiceItems.forEach((serviceItem) => {
       if (serviceItem.slides && Array.isArray(serviceItem.slides)) {
         existingSlides.push(...serviceItem.slides);
       }
@@ -2574,13 +2638,15 @@ export const QworshipHomeV2Base = (): JSX.Element => {
 
     // Process service sections in order to add NEW slides
     serviceSections.forEach((sectionName) => {
-      const items = sectionItems[sectionName] || [];
+      const items = currentSectionItems[sectionName] || [];
 
       items.forEach((item, itemIndex) => {
         // Check if this item already has slides in the existing slides
+        // Guard against `undefined === undefined` match for items without a `songId`
         const itemAlreadyHasSlides = existingSlides.some(
           (slide) =>
-            slide.songId === item.songId || slide.id?.includes(item.id),
+            (item.songId && slide.songId === item.songId) || 
+            slide.id?.includes(item.id),
         );
 
         if (itemAlreadyHasSlides) {
@@ -2654,14 +2720,16 @@ export const QworshipHomeV2Base = (): JSX.Element => {
     const updatedServiceItems: any[] = [];
 
     serviceSections.forEach((sectionName) => {
-      const items = sectionItems[sectionName] || [];
+      const items = currentSectionItems[sectionName] || [];
       items.forEach((item) => {
         // Calculate how many slides this item has (from all slides)
+        // Guard against undefined matching here as well
         const itemSlides = allSlides.filter(
           (slide) =>
-            slide.songId === item.songId ||
-            slide.songId === item.id ||
-            slide.id?.includes(item.id),
+            (item.songId && slide.songId === item.songId) ||
+            (item.id && slide.songId === item.id) ||
+            slide.id?.includes(item.id) ||
+            slide.itemId === item.id
         );
 
         // Add slides property to the item
