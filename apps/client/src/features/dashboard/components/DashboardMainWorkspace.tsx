@@ -34,12 +34,47 @@ export const DashboardMainWorkspace = (props: any) => {
     createSlidesFromSong, songSearchTerm, setSongSearchTerm, showSearchResults, filteredSongs,
     setShowSearchResults, handleSelectSong, insertedItems, setActiveTab, togglePreview,
     currentlyDisplayedSlide, previousSlide, nextSlide, getCurrentItemId, setCurrentlyDisplayedSlide,
-    clearZustandProjection, liveWindow, itemBackgrounds, toggleHandsfreeBible, stylesButtonRef, handleStylesClick, setServiceItems, setHoveredArrangementButton, hoveredArrangementButton, textAreaRef,
+    clearZustandProjection, liveWindow, itemBackgrounds, toggleHandsfreeBible, stylesButtonRef, handleStylesClick, setHoveredArrangementButton, hoveredArrangementButton, textAreaRef,
   } = props;
   
   const { isLiveMode, activeTab, isSidebarCollapsed, setIsSidebarCollapsed } = useDashboardUI();
   const { isSlideEditorOpen, setIsSlideEditorOpen } = useDashboardModals();
-  const { serviceItems, slides, selectedSlide, setSelectedSlide, currentSlide, setCurrentSlide, totalSlides } = useDashboardPresentation();
+  const { serviceItems, setServiceItems, slides, selectedSlide, setSelectedSlide, currentSlide, setCurrentSlide, totalSlides } = useDashboardPresentation();
+
+  // Helper to update a field on the selected slide and the underlying serviceItems state
+  const updateSelectedSlideField = (field: string, value: string) => {
+    if (!selectedSlide) return;
+    // Update selectedSlide for immediate UI feedback
+    setSelectedSlide((prev: any) => ({
+      ...prev,
+      slide: { ...prev.slide, [field]: value },
+      ...(field === "title" ? { item: { ...prev.item, [field]: value } } : {}),
+    }));
+    // Update serviceItems so the derived slides array recomputes
+    setServiceItems((prevItems: any[]) =>
+      prevItems.map((item: any) => {
+        if (item.id === selectedSlide.itemId) {
+          const updatedItem = {
+            ...item,
+            // Also update item-level fields for title and announcement metadata
+            ...(field === "title" ? { title: value } : {}),
+            ...(field === "location" ? { location: value } : {}),
+            ...(field === "eventDate" ? { eventDate: value } : {}),
+            ...(field === "eventTime" ? { eventTime: value } : {}),
+            ...(field === "contact" ? { contact: value } : {}),
+            ...(field === "content" ? { content: value } : {}),
+            slides: item.slides.map((s: any) =>
+              s.id === selectedSlide.slide.id
+                ? { ...s, [field]: value }
+                : s
+            ),
+          };
+          return updatedItem;
+        }
+        return item;
+      })
+    );
+  };
   
   return (
             <main
@@ -114,7 +149,9 @@ export const DashboardMainWorkspace = (props: any) => {
                                               selectedSlide.slide.type ===
                                                 "chorus"
                                             ? "bg-blue-500/20 text-blue-300"
-                                            : "bg-gray-500/20 text-gray-300"
+                                            : selectedSlide.slide.type === "announcement"
+                                              ? "bg-orange-500/20 text-orange-300"
+                                              : "bg-gray-500/20 text-gray-300"
                                       }`}
                                     >
                                       {selectedSlide.slide.type === "bible"
@@ -124,7 +161,9 @@ export const DashboardMainWorkspace = (props: any) => {
                                             selectedSlide.slide.type ===
                                               "chorus"
                                           ? "🎵"
-                                          : "📄"}
+                                          : selectedSlide.slide.type === "announcement"
+                                            ? "📢"
+                                            : "📄"}
                                     </div>
                                     <div>
                                       <h4 className="text-white font-medium text-lg">
@@ -138,7 +177,9 @@ export const DashboardMainWorkspace = (props: any) => {
                                             : selectedSlide.slide.type ===
                                                 "chorus"
                                               ? "Song Chorus"
-                                              : "Custom Slide"}{" "}
+                                              : selectedSlide.slide.type === "announcement"
+                                                ? "Announcement"
+                                                : "Custom Slide"}{" "}
                                         • From: {selectedSlide.item.title}
                                       </p>
                                     </div>
@@ -490,8 +531,90 @@ export const DashboardMainWorkspace = (props: any) => {
                                         </div>
                                       </div>
                                     </>
+                                  ) : selectedSlide.slide.type === "announcement" ? (
+                                    /* Announcement Slide Editor - with metadata fields */
+                                    <>
+                                      <div>
+                                        <label className="text-white font-medium block mb-2">
+                                          Announcement Title
+                                        </label>
+                                        <Input
+                                          value={selectedSlide.slide.title}
+                                          onChange={(e) => updateSelectedSlideField("title", e.target.value)}
+                                          className="bg-[#2a1f3d] border-gray-600 text-white"
+                                          placeholder="Enter announcement title..."
+                                        />
+                                      </div>
+
+                                      <div>
+                                        <label className="text-white font-medium block mb-2">
+                                          Message
+                                        </label>
+                                        <textarea
+                                          value={typeof selectedSlide.slide.content === "string" ? selectedSlide.slide.content : ""}
+                                          onChange={(e) => updateSelectedSlideField("content", e.target.value)}
+                                          className="w-full h-32 p-3 bg-[#2a1f3d] border border-gray-600 rounded-lg text-white resize-none"
+                                          placeholder="Enter announcement message..."
+                                        />
+                                      </div>
+
+                                      {/* Metadata Fields */}
+                                      <div className="border-t border-gray-600 pt-4">
+                                        <h5 className="text-white font-medium mb-3 flex items-center gap-2">
+                                          <span className="text-orange-400">📋</span> Event Details
+                                        </h5>
+                                        <div className="space-y-3">
+                                          <div>
+                                            <label className="text-gray-300 text-sm block mb-1">
+                                              📍 Location
+                                            </label>
+                                            <Input
+                                              value={selectedSlide.slide.location || ""}
+                                              onChange={(e) => updateSelectedSlideField("location", e.target.value)}
+                                              className="bg-[#2a1f3d] border-gray-600 text-white"
+                                              placeholder="e.g., Main Sanctuary"
+                                            />
+                                          </div>
+                                          <div className="grid grid-cols-2 gap-3">
+                                            <div>
+                                              <label className="text-gray-300 text-sm block mb-1">
+                                                📅 Event Date
+                                              </label>
+                                              <Input
+                                                type="date"
+                                                value={selectedSlide.slide.eventDate || ""}
+                                                onChange={(e) => updateSelectedSlideField("eventDate", e.target.value)}
+                                                className="bg-[#2a1f3d] border-gray-600 text-white"
+                                              />
+                                            </div>
+                                            <div>
+                                              <label className="text-gray-300 text-sm block mb-1">
+                                                🕐 Event Time
+                                              </label>
+                                              <Input
+                                                type="time"
+                                                value={selectedSlide.slide.eventTime || ""}
+                                                onChange={(e) => updateSelectedSlideField("eventTime", e.target.value)}
+                                                className="bg-[#2a1f3d] border-gray-600 text-white"
+                                              />
+                                            </div>
+                                          </div>
+                                          <div>
+                                            <label className="text-gray-300 text-sm block mb-1">
+                                              📞 Contact
+                                            </label>
+                                            <Input
+                                              value={selectedSlide.slide.contact || ""}
+                                              onChange={(e) => updateSelectedSlideField("contact", e.target.value)}
+                                              className="bg-[#2a1f3d] border-gray-600 text-white"
+                                              placeholder="e.g., email or phone"
+                                            />
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </>
                                   ) : (
-                                    /* Non-Bible Slide Editor - Original functionality */
+                                    /* Generic Slide Editor */
                                     <>
                                       <div>
                                         <label className="text-white font-medium block mb-2">
@@ -499,13 +622,7 @@ export const DashboardMainWorkspace = (props: any) => {
                                         </label>
                                         <Input
                                           value={selectedSlide.slide.title}
-                                          onChange={(e) => {
-                                            // Update slide title functionality would go here
-                                            console.log(
-                                              "Update slide title:",
-                                              e.target.value,
-                                            );
-                                          }}
+                                          onChange={(e) => updateSelectedSlideField("title", e.target.value)}
                                           className="bg-[#2a1f3d] border-gray-600 text-white"
                                           placeholder="Enter slide title..."
                                         />
@@ -516,14 +633,8 @@ export const DashboardMainWorkspace = (props: any) => {
                                           Slide Content
                                         </label>
                                         <textarea
-                                          value={selectedSlide.slide.content}
-                                          onChange={(e) => {
-                                            // Update slide content functionality would go here
-                                            console.log(
-                                              "Update slide content:",
-                                              e.target.value,
-                                            );
-                                          }}
+                                          value={typeof selectedSlide.slide.content === "string" ? selectedSlide.slide.content : ""}
+                                          onChange={(e) => updateSelectedSlideField("content", e.target.value)}
                                           className="w-full h-64 p-3 bg-[#2a1f3d] border border-gray-600 rounded-lg text-white resize-none"
                                           placeholder="Enter slide content..."
                                         />
@@ -2502,7 +2613,7 @@ import type { Slide } from "@/types";\n${text}`,
                                 {editingContent.type === "announcement" && (
                                   <div className="h-full flex flex-col">
                                     {/* Announcement Editor: Rich Text Editor Toolbar - Matches Song Editor */}
-                                    <div className="bg-[#2d1f4a] rounded-t-lg border border-gray-600 mb-0">
+                                    <div className="bg-[#2d1f4a] rounded-t-lg border border-gray-600 mb-0" onMouseDown={(e) => { if ((e.target as HTMLElement).tagName !== 'SELECT' && (e.target as HTMLElement).tagName !== 'INPUT') e.preventDefault(); }}>
                                       {/* Top Row - Slides (Announcement) Tab */}
                                       <div className="px-4 py-2 border-b border-gray-600">
                                         <span className="text-white text-sm font-medium">
@@ -2792,6 +2903,10 @@ import type { Slide } from "@/types";\n${text}`,
                                           <input
                                             type="text"
                                             value={editingContent.title || ""}
+                                            onFocus={(e) => {
+                                              // Register title input as active for toolbar interaction
+                                              setActiveTextarea(e.target as any);
+                                            }}
                                             onChange={(e) => {
                                               const newTitle = e.target.value;
                                               setEditingContent((prev: any) =>
@@ -2808,6 +2923,9 @@ import type { Slide } from "@/types";\n${text}`,
                                             className="w-full bg-transparent border-none outline-none px-3 py-2.5 text-white text-base"
                                             style={{
                                               fontFamily: editorState.selectedFont || "Lufgord",
+                                              fontSize: editorState.fontSize || "16px",
+                                              color: editorState.styleColor || editorState.textColor || "#ffffff",
+                                              textAlign: (editorState.textAlign as any) || "left",
                                               fontWeight: editorState.isBold ? "bold" : "normal",
                                               fontStyle: editorState.isItalic ? "italic" : "normal",
                                               textDecoration:
@@ -3356,6 +3474,77 @@ import type { Slide } from "@/types";\n${text}`,
                                     dangerouslySetInnerHTML={{
                                       __html:
                                         selectedSlide.slide.content.replace(
+                                          /\n/g,
+                                          "<br/>",
+                                        ),
+                                    }}
+                                  />
+                                </div>
+                              </>
+                            ) : selectedSlide.slide.type === "announcement" ? (
+                              <>
+                                <h1 className="text-white text-4xl font-bold mb-4">
+                                  {selectedSlide.slide.title}
+                                </h1>
+                                {/* Announcement Metadata */}
+                                {(selectedSlide.slide.eventDate || selectedSlide.slide.eventTime || selectedSlide.slide.location || selectedSlide.slide.contact) && (
+                                  <div className="flex items-center gap-4 mb-6 flex-wrap justify-center text-base">
+                                    {(selectedSlide.slide.eventDate || selectedSlide.slide.eventTime) && (
+                                      <span className="text-orange-300 font-medium" style={{ textShadow: "2px 2px 6px rgba(0,0,0,0.8)" }}>
+                                        📅 {selectedSlide.slide.eventDate ? new Date(selectedSlide.slide.eventDate + "T00:00").toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) : ""}
+                                        {selectedSlide.slide.eventDate && selectedSlide.slide.eventTime ? " · " : ""}
+                                        {selectedSlide.slide.eventTime || ""}
+                                      </span>
+                                    )}
+                                    {selectedSlide.slide.location && (
+                                      <span className="text-purple-300 font-medium" style={{ textShadow: "2px 2px 6px rgba(0,0,0,0.8)" }}>
+                                        📍 {selectedSlide.slide.location}
+                                      </span>
+                                    )}
+                                    {selectedSlide.slide.contact && (
+                                      <span className="text-blue-300 font-medium" style={{ textShadow: "2px 2px 6px rgba(0,0,0,0.8)" }}>
+                                        📞 {selectedSlide.slide.contact}
+                                      </span>
+                                    )}
+                                  </div>
+                                )}
+                                <div
+                                  key={`preview-announcement-content-${JSON.stringify(editorState)}`}
+                                  className="text-gray-300 text-xl leading-relaxed space-y-2"
+                                  style={{
+                                    fontFamily:
+                                      editorState.styleFontFamily ||
+                                      editorState.selectedFont ||
+                                      "Lufgord",
+                                    fontSize: editorState.fontSize || "16px",
+                                    color:
+                                      editorState.styleColor ||
+                                      editorState.textColor ||
+                                      "#ffffff",
+                                    textAlign:
+                                      (editorState.textAlign as any) || "left",
+                                    fontWeight: editorState.isBold
+                                      ? "bold"
+                                      : "normal",
+                                    fontStyle: editorState.isItalic
+                                      ? "italic"
+                                      : "normal",
+                                    textDecoration:
+                                      `${editorState.isUnderline ? "underline" : ""} ${editorState.isStrikethrough ? "line-through" : ""} ${editorState.styleTextDecoration || ""}`.trim() ||
+                                      "none",
+                                    textShadow:
+                                      editorState.styleTextShadow || "",
+                                    letterSpacing:
+                                      editorState.styleLetterSpacing || "",
+                                    textTransform:
+                                      (editorState.styleTextTransform as any) ||
+                                      "",
+                                  }}
+                                >
+                                  <div
+                                    dangerouslySetInnerHTML={{
+                                      __html:
+                                        (typeof selectedSlide.slide.content === "string" ? selectedSlide.slide.content : "").replace(
                                           /\n/g,
                                           "<br/>",
                                         ),

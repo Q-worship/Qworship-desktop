@@ -280,6 +280,10 @@ export function useServiceItemManager({
       type: item.type,
       title: item.title,
       content: item.content || {},
+      location: item.location || "",
+      eventDate: item.eventDate || "",
+      eventTime: item.eventTime || "",
+      contact: item.contact || "",
       slides: [
         {
           id: `slide-${item.id}-${Date.now()}`,
@@ -288,6 +292,12 @@ export function useServiceItemManager({
           content:
             item.type === "song" ? "Please select a song" : (typeof item.content === "string" ? item.content : "Ready for content"),
           sectionLabel: item.type === "song" ? "Song" : item.type === "announcement" ? "Announcement" : "Content",
+          ...(item.type === "announcement" ? {
+            location: item.location || "",
+            eventDate: item.eventDate || "",
+            eventTime: item.eventTime || "",
+            contact: item.contact || "",
+          } : {}),
         },
       ],
     };

@@ -773,8 +773,17 @@ export const QworshipHomeV2Base = (): JSX.Element => {
         // Clear slide editor state
         setSelectedSlide(null);
         setIsSlideEditorOpen(false);
+      } else if (parentItem.type === "announcement") {
+        // For announcement items, route to the full Announcement Editor
+        // (with WYSIWYG toolbar and metadata fields)
+        setEditingContent(parentItem);
+        setSelectedContentType("announcement");
+
+        // Clear slide editor state so the announcement editor shows
+        setSelectedSlide(null);
+        setIsSlideEditorOpen(false);
       } else {
-        // For non-song items, use the existing slide editor modal
+        // For other items, use the existing slide editor modal
         setSelectedSlide({
           slideId: slide.id,
           itemId: parentItem.id,
@@ -2369,6 +2378,10 @@ export const QworshipHomeV2Base = (): JSX.Element => {
       type: item.type,
       title: item.title,
       content: item.content || {},
+      location: item.location || "",
+      eventDate: item.eventDate || "",
+      eventTime: item.eventTime || "",
+      contact: item.contact || "",
       slides: [
         {
           id: `slide-${item.id}-${Date.now()}`,
@@ -2377,6 +2390,12 @@ export const QworshipHomeV2Base = (): JSX.Element => {
           content:
             item.type === "song" ? "Please select a song" : (typeof item.content === "string" ? item.content : "Ready for content"),
           sectionLabel: item.type === "song" ? "Song" : item.type === "announcement" ? "Announcement" : "Content",
+          ...(item.type === "announcement" ? {
+            location: item.location || "",
+            eventDate: item.eventDate || "",
+            eventTime: item.eventTime || "",
+            contact: item.contact || "",
+          } : {}),
         },
       ],
     };
