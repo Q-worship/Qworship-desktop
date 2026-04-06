@@ -4,7 +4,7 @@ import { PreferencesModal } from "@/features/dashboard/components/modals/Prefere
 import { DisplaySettingsModal } from "@/features/dashboard/components/modals/DisplaySettingsModal";
 import { AccountSettingsModal } from "@/features/dashboard/components/modals/AccountSettingsModal";
 import { AudioSettingsModal } from "@/features/dashboard/components/modals/AudioSettingsModal";
-import { LiveConsole } from "@/features/dashboard/components/LiveControlCentre";
+import { LiveControlCentre } from "@/features/dashboard/components/LiveControlCentre";
 import { OpenProjectsModal } from "./modals/OpenProjectsModal";
 import { DeleteConfirmationModal } from "./modals/DeleteConfirmationModal";
 import { ProjectDeleteConfirmationModal } from "./modals/ProjectDeleteConfirmationModal";
@@ -196,7 +196,7 @@ export const ModalsContainer: React.FC<ModalsContainerProps> = (props) => {
         }}
       />
       {/* Live Console Modal */}
-      <LiveConsole
+      <LiveControlCentre
         isOpen={props.isLiveConsoleOpen}
         onClose={() => {
           props.setIsLiveConsoleOpen(false);

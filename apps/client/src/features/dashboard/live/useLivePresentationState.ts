@@ -109,6 +109,7 @@ export function useLivePresentationState() {
 
   // Track if Live Settings background is active (overrides slide backgrounds)
   // Initialize from localStorage - use saved hasLiveSettings flag, or infer from background content
+  const [pacingLineIdx, setPacingLineIdx] = useState(-1);
   const [hasLiveSettingsBackground, setHasLiveSettingsBackground] = useState(
     () => {
       try {
@@ -1469,7 +1470,13 @@ export function useLivePresentationState() {
           if (data.fullSongData) {
             setCurrentProjectedSong(data.fullSongData);
           }
+          if (typeof data.pacingLineIdx === 'number') {
+            setPacingLineIdx(data.pacingLineIdx);
+          } else {
+            setPacingLineIdx(-1);
+          }
           setProjectionType("song");
+          useDisplayModeStore.getState().setMode("song");
           // Send state update back to Live Console for preview sync
           if (window.opener && !window.opener.closed) {
             window.opener.postMessage(
@@ -1523,6 +1530,11 @@ export function useLivePresentationState() {
               },
               window.location.origin,
             );
+          }
+          break;
+        case "PACING_LINE_UPDATE":
+          if (typeof data?.lineIdx === "number") {
+            setPacingLineIdx(data.lineIdx);
           }
           break;
         case "CLEAR_PROJECTION":
@@ -2671,5 +2683,7 @@ export function useLivePresentationState() {
     setSocialHandlesColor,
     backgroundVideo,
     instagramHandle,
+    pacingLineIdx,
+    setPacingLineIdx,
   };
 }

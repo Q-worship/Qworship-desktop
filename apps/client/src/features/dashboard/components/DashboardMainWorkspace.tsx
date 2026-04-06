@@ -11,7 +11,7 @@ import type { Slide } from "@/types";
 import { useDashboardModals } from "@/features/dashboard/providers/DashboardModalProvider";
 import { useDashboardPresentation } from "@/features/dashboard/providers/DashboardPresentationProvider";
 import { Button } from "@/components/ui/button";
-import { LiveConsole } from "@/features/dashboard/components/LiveControlCentre";
+
 import { SlideEditorPanel } from "@/features/dashboard/components/SlideEditorPanel";
 import { SlideGridRenderer } from "@/features/dashboard/components/SlideGridRenderer";
 import { EditAndPreparationArea } from "@/features/dashboard/components/EditAndPreparationArea";

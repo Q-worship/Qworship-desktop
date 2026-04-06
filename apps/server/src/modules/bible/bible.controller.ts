@@ -52,7 +52,9 @@ export const searchBible = async (req: Request, res: Response) => {
       const passage = {
          reference: result.formattedReference,
          version: result.version || requestedVersion.toUpperCase(),
-         verses: mappedVerses
+         verses: mappedVerses,
+         book: result.book,
+         chapter: result.chapter
       };
 
       return res.json({ success: true, passage });
@@ -109,3 +111,37 @@ export const handleVoiceCommand = async (req: Request, res: Response) => {
     res.status(500).json({ success: false, message: 'Server Error' });
   }
 };
+
+export const structuredSearchBible = async (req: Request, res: Response) => {
+  try {
+    const { book, chapter, verseStart, verseEnd, version = 'kjv' } = req.body;
+
+    if (!book || !chapter || !verseStart) {
+      console.log('Structured search 400 error. req.body:', req.body);
+      return res.status(400).json({ 
+        success: false, 
+        message: `Book, chapter, and verseStart are required. Received: ${JSON.stringify(req.body)}`
+      });
+    }
+
+    const reference: BibleReference = {
+      book,
+      chapter: parseInt(chapter),
+      verseStart: parseInt(verseStart),
+      verseEnd: verseEnd ? parseInt(verseEnd) : undefined,
+      version: (version as any) || 'kjv'
+    };
+
+    const result = await BibleService.searchBible(reference);
+
+    if (result && result.verses.length > 0) {
+      return res.json({ success: true, result });
+    } else {
+      return res.status(404).json({ success: false, message: 'Bible reference not found' });
+    }
+  } catch (error) {
+    console.error('Bible Structured Search Error:', error);
+    return res.status(500).json({ success: false, message: 'Internal server error' });
+  }
+};
+
