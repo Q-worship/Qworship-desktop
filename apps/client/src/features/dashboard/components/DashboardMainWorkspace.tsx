@@ -5774,8 +5774,8 @@ import type { Slide } from "@/types";\n${text}`,
                                   <div className="absolute inset-0 flex items-center justify-center">
                                     {(slide as any).subtype === "video" ? (
                                       <video
-                                        src={typeof slide.content === 'string' && slide.content !== "Inspirational worship video" ? slide.content : undefined}
-                                        className="w-full h-full object-cover"
+                                        src={typeof slide.content === 'string' && slide.content !== "Inspirational worship video" ? slide.content : ((slide as any).videoSettings?.url || undefined)}
+                                        className={(slide as any).videoSettings?.displayMode === "center" ? "w-full h-full object-contain bg-black" : "w-full h-full object-cover"}
                                         preload="metadata"
                                         muted
                                         playsInline

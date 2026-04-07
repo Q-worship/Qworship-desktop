@@ -2232,6 +2232,16 @@ export const QworshipHomeV2Base = (): JSX.Element => {
 
     // Synchronously rebuild slides using the predictable explicit next states
     rebuildSlidesFromServiceItems(nextServiceItems, nextSectionItems);
+
+    setCurrentlyDisplayedSlide((prev: any) => {
+      if (prev && prev.id) {
+        const itemWithSlide = nextServiceItems.find(i => i.slides?.some((s: any) => s.id === prev.id));
+        if (itemWithSlide) {
+          return itemWithSlide.slides.find((s: any) => s.id === prev.id) || prev;
+        }
+      }
+      return prev;
+    });
   };
 
   // Handle selecting a song from search results
