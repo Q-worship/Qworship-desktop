@@ -1,5 +1,5 @@
 import React from "react";
-import { Switch, Route, Redirect } from "wouter";
+import { Switch, Route, Redirect, useLocation } from "wouter";
 import { queryClient } from "@/lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
@@ -28,6 +28,8 @@ import { BibleWorkspace } from "@/features/bible-reader/components/BibleWorkspac
 import AssetsPage from "@/features/dashboard/pages/AssetsPage";
 import HelpSupportPage from "@/features/dashboard/pages/HelpSupportPage";
 import GuidesPage from "@/features/web/pages/GuidesPage";
+import { LowerThirdEditorPage, LowerThirdSettingsPage } from "@/features/lowerThird";
+import { MainPresentationSettingsPage } from "@/features/mainPresentation";
 import SuperAdminSidebar from "@/features/super-admin/components/SuperAdminSidebar";
 
 const DashboardMock = () => (
@@ -66,6 +68,17 @@ const AdminGuard = ({ children }: { children: React.ReactNode }) => {
   
   return <>{children}</>;
 };
+
+// Thin wrapper so we can call useLocation() inside a component (hooks can't
+// be called in the outer AppRouter render directly via inline arrow fns).
+function LowerThirdSettingsRoute() {
+  const [, navigate] = useLocation();
+  return <LowerThirdSettingsPage onClose={() => navigate("/dashboard")} />;
+}
+function MainPresentationSettingsRoute() {
+  const [, navigate] = useLocation();
+  return <MainPresentationSettingsPage onClose={() => navigate("/dashboard")} />;
+}
 
 export const AppRouter = () => {
   return (
@@ -114,6 +127,9 @@ export const AppRouter = () => {
                   <Route path="/dashboard-assets" component={AssetsPage} />
                   <Route path="/dashboard-help" component={HelpSupportPage} />
                   <Route path="/guides" component={GuidesPage} />
+                  <Route path="/lower-third-settings" component={LowerThirdSettingsRoute} />
+                  <Route path="/lower-third-editor/:templateId" component={LowerThirdEditorPage} />
+                  <Route path="/main-presentation-settings" component={MainPresentationSettingsRoute} />
 
                   <Route>
                     <div className="text-center py-20 text-muted-foreground flex items-center justify-center font-bold text-2xl h-full">

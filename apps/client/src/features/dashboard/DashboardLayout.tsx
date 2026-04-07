@@ -1810,6 +1810,15 @@ export const QworshipHome = (): JSX.Element => {
         setActiveDropdown(null);
       },
     },
+    {
+      name: "Main Presentation Settings",
+      shortcut: "",
+      hasSubmenu: false,
+      action: () => {
+        setLocation("/main-presentation-settings");
+        setActiveDropdown(null);
+      },
+    },
   ];
 
   // Insert item functions

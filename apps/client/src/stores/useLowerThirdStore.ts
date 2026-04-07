@@ -1,14 +1,12 @@
 import { create } from "zustand";
-// Suppress type errors for features/lowerThird bindings if they are pending migration
-type LowerThirdTemplate = any;
-type LowerThirdBindingData = any;
+import type { LowerThirdTemplate, LowerThirdBindingData } from "@/features/lowerThird/types";
+import { DEFAULT_TEMPLATES } from "@/features/lowerThird/defaultTemplates";
 
 const STORAGE_KEY = "qworship-lower-third";
 const CUSTOM_TEMPLATES_KEY = "qworship-lower-third-custom-templates"; // write-through cache only
 const THUMBNAIL_OVERRIDES_KEY = "qworship-lower-third-thumbnails";
 const CHANNEL_NAME = "qworship-lower-third-sync";
 const MAX_CUSTOM_TEMPLATES = 10;
-const DEFAULT_TEMPLATES: any[] = [];
 
 interface LowerThirdState {
   enabled: boolean;
@@ -120,11 +118,20 @@ function persistCustomTemplates(templates: LowerThirdTemplate[]) {
 
 // ─── Server API helpers ────────────────────────────────────────────────────────
 
+function getAuthHeaders(): Record<string, string> {
+  const headers: Record<string, string> = { "Content-Type": "application/json" };
+  if (typeof window !== "undefined") {
+    const token = localStorage.getItem("token");
+    if (token) headers["Authorization"] = `Bearer ${token}`;
+  }
+  return headers;
+}
+
 async function apiSaveTemplate(template: LowerThirdTemplate): Promise<void> {
   const res = await fetch("/api/lower-third/templates", {
     method: "POST",
     credentials: "include",
-    headers: { "Content-Type": "application/json" },
+    headers: getAuthHeaders(),
     body: JSON.stringify({ template }),
   });
   if (!res.ok) {
@@ -137,7 +144,7 @@ async function apiUpdateTemplate(template: LowerThirdTemplate): Promise<void> {
   const res = await fetch(`/api/lower-third/templates/${template.id}`, {
     method: "PUT",
     credentials: "include",
-    headers: { "Content-Type": "application/json" },
+    headers: getAuthHeaders(),
     body: JSON.stringify({ template }),
   });
   if (!res.ok) {
@@ -147,20 +154,27 @@ async function apiUpdateTemplate(template: LowerThirdTemplate): Promise<void> {
 }
 
 async function apiDeleteTemplate(templateId: string): Promise<void> {
+  const headers = getAuthHeaders();
+  delete headers["Content-Type"];
   await fetch(`/api/lower-third/templates/${templateId}`, {
     method: "DELETE",
     credentials: "include",
+    headers,
   });
 }
 
 async function apiFetchTemplates(): Promise<LowerThirdTemplate[]> {
+  const headers = getAuthHeaders();
+  delete headers["Content-Type"];
   const res = await fetch("/api/lower-third/templates", {
     credentials: "include",
+    headers,
   });
   if (!res.ok) return [];
   const data = await res.json();
   return data.templates ?? [];
 }
+
 
 
 let broadcastChannel: BroadcastChannel | null = null;
