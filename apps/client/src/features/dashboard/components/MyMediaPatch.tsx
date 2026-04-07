@@ -11,7 +11,7 @@ import { useLocation } from "wouter";
 import { useToast } from "@/hooks/use-toast";
 
 interface MyMediaPatchProps {
-  onAssetSelect?: (assetUrl: string, assetType: string) => void;
+  onAssetSelect?: (assetUrl: string, assetType: string, assetTitle?: string) => void;
   isModal?: boolean;
   filterType?: 'all' | 'video';
   mode?: 'browse' | 'import';

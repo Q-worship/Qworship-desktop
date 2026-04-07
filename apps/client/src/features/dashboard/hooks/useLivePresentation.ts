@@ -267,6 +267,10 @@ export const useLivePresentation = ({
           type: s.type,
           sectionLabel: s.sectionLabel,
           itemId: s.itemId,
+          location: s.location,
+          eventDate: s.eventDate,
+          eventTime: s.eventTime,
+          contact: s.contact,
         })),
         itemBackgrounds,
       });
@@ -377,6 +381,23 @@ export const useLivePresentation = ({
           // dashboard so the lower-third watcher in QworshipHome fires.
           if (data.currentSlide !== undefined) {
             setCurrentSlide(data.currentSlide);
+          }
+          break;
+        }
+        case "VIDEO_ENDED_NEXT_SLIDE": {
+          if (currentSlide < slides.length) {
+            const nextSlideNum = currentSlide + 1;
+            setCurrentSlide(nextSlideNum);
+            
+            if (liveWindow && !liveWindow.closed) {
+              liveWindow.postMessage(
+                {
+                  type: "SLIDE_CHANGE",
+                  data: { slideNumber: nextSlideNum },
+                },
+                window.location.origin,
+              );
+            }
           }
           break;
         }

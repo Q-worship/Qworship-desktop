@@ -158,6 +158,36 @@ export function LiveConsolePreview(props: LiveConsolePreviewProps) {
             return null;
           }
 
+          // Media slides render OUTSIDE the text container to fill the entire preview
+          if (currentSlideData.type === "media") {
+            return (
+              <>
+                {(currentSlideData as any).subtype === "video" ? (
+                  <video
+                    src={currentSlideData.content && currentSlideData.content !== "Inspirational worship video" ? currentSlideData.content : undefined}
+                    autoPlay={(currentSlideData as any).videoSettings?.autoPlay ?? true}
+                    loop={(currentSlideData as any).videoSettings?.endAction !== "nothing"}
+                    muted
+                    playsInline
+                    className={(currentSlideData as any).videoSettings?.displayMode === "center" ? "absolute inset-0 w-full h-full object-contain z-10" : "absolute inset-0 w-full h-full object-cover z-10"}
+                    onEnded={() => {
+                        const endAction = (currentSlideData as any).videoSettings?.endAction;
+                        if (endAction === "advance") {
+                            window.postMessage({ type: 'VIDEO_ENDED_NEXT_SLIDE' }, window.location.origin);
+                        }
+                    }}
+                  />
+                ) : (
+                  <img
+                    src={currentSlideData.content && currentSlideData.content !== "Worship background image" && currentSlideData.content !== "Inspirational worship video" ? currentSlideData.content : "https://images.unsplash.com/photo-1438232992991-995b7058bbb3?q=80&w=2673&auto=format&fit=crop"}
+                    alt={currentSlideData.title || "Media slide"}
+                    className="absolute inset-0 w-full h-full object-cover z-10"
+                  />
+                )}
+              </>
+            );
+          }
+
           return (
             <div className="text-center w-full px-2 bg-black/40 rounded-lg p-2">
               {currentSlideData.type === "verse" || currentSlideData.type === "chorus" ? (
@@ -186,6 +216,39 @@ export function LiveConsolePreview(props: LiveConsolePreviewProps) {
                     style={{ textShadow: "0 2px 4px rgba(0,0,0,0.8)" }}
                   >
                     {currentSlideData.content}
+                  </div>
+                </>
+              ) : currentSlideData.type === "announcement" ? (
+                <>
+                  <div className="text-orange-300 text-[8px] font-bold mb-0.5" style={{ textShadow: "0 2px 4px rgba(0,0,0,0.8)" }}>
+                    {currentSlideData.title || "Announcement"}
+                  </div>
+                  {(currentSlideData.eventDate || currentSlideData.eventTime || currentSlideData.location || currentSlideData.contact) && (
+                    <div className="flex items-center gap-1.5 mb-0.5 flex-wrap">
+                      {(currentSlideData.eventDate || currentSlideData.eventTime) && (
+                        <span className="text-orange-200/70 text-[6px]">
+                          📅 {currentSlideData.eventDate || ""}{currentSlideData.eventDate && currentSlideData.eventTime ? " · " : ""}{currentSlideData.eventTime || ""}
+                        </span>
+                      )}
+                      {currentSlideData.location && (
+                        <span className="text-purple-200/70 text-[6px]">
+                          📍 {currentSlideData.location}
+                        </span>
+                      )}
+                      {currentSlideData.contact && (
+                        <span className="text-blue-200/70 text-[6px]">
+                          📞 {currentSlideData.contact}
+                        </span>
+                      )}
+                    </div>
+                  )}
+                  <div
+                    className="text-white font-medium leading-relaxed text-[7px] whitespace-pre-line"
+                    style={{ textShadow: "0 2px 4px rgba(0,0,0,0.8)" }}
+                  >
+                    {typeof currentSlideData.content === "string"
+                      ? currentSlideData.content
+                      : ""}
                   </div>
                 </>
               ) : (

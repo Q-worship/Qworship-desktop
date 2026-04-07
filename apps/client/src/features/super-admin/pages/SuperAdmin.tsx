@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
+import { useToast } from '@/hooks/use-toast';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -90,6 +91,14 @@ export default function SuperAdmin() {
   const [searchTerm, setSearchTerm] = useState('');
   const [isDarkMode, setIsDarkMode] = useState(true); // Default to dark mode
   const [activeSection, setActiveSection] = useState('dashboard'); // Sidebar navigation state
+
+  const [adminBroadcastForm, setAdminBroadcastForm] = useState({
+    type: 'admin_general',
+    title: '',
+    message: ''
+  });
+  const [isBroadcasting, setIsBroadcasting] = useState(false);
+  const { toast } = useToast();
 
   // Load theme preference from localStorage on mount
   useEffect(() => {
@@ -222,6 +231,38 @@ export default function SuperAdmin() {
     }
   };
 
+  const handleBroadcast = async () => {
+    if (!adminBroadcastForm.title || !adminBroadcastForm.message) {
+      toast({ title: "Error", description: "Title and message are required", variant: "destructive" });
+      return;
+    }
+    
+    setIsBroadcasting(true);
+    try {
+      const response = await fetch('/api/admin/notifications/broadcast', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${adminKey}` // assuming how we authenticate admin
+        },
+        body: JSON.stringify({
+          ...adminBroadcastForm,
+          adminKey
+        })
+      });
+      
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.message || 'Broadcast failed');
+      
+      toast({ title: "Success", description: data.message });
+      setAdminBroadcastForm({ type: 'admin_general', title: '', message: '' });
+    } catch (error: any) {
+      toast({ title: "Error", description: error.message, variant: "destructive" });
+    } finally {
+      setIsBroadcasting(false);
+    }
+  };
+
   const isLoading = trialLoading || userLoading || revenueLoading || systemLoading;
   const themeClasses = getThemeClasses();
 
@@ -324,6 +365,7 @@ export default function SuperAdmin() {
                 <TabsTrigger value="users" className={`data-[state=active]:bg-purple-600 data-[state=active]:text-white ${themeClasses.tabTrigger}`}>User Analytics</TabsTrigger>
                 <TabsTrigger value="revenue" className={`data-[state=active]:bg-pink-600 data-[state=active]:text-white ${themeClasses.tabTrigger}`}>Revenue Data</TabsTrigger>
                 <TabsTrigger value="system" className={`data-[state=active]:bg-indigo-600 data-[state=active]:text-white ${themeClasses.tabTrigger}`}>System Metrics</TabsTrigger>
+                <TabsTrigger value="broadcast" className={`data-[state=active]:bg-orange-600 data-[state=active]:text-white ${themeClasses.tabTrigger}`}>Broadcast</TabsTrigger>
                 <TabsTrigger value="reports" className={`data-[state=active]:bg-gradient-to-r data-[state=active]:from-pink-600 data-[state=active]:to-purple-600 data-[state=active]:text-white ${themeClasses.tabTrigger}`}>Custom Reports</TabsTrigger>
               </TabsList>
 
@@ -573,6 +615,74 @@ export default function SuperAdmin() {
                     </CardContent>
                   </Card>
                 </div>
+              </TabsContent>
+
+              {/* Broadcast Tab */}
+              <TabsContent value="broadcast" className="space-y-4">
+                <Card className={themeClasses.analyticsCard}>
+                  <CardHeader>
+                    <CardTitle className={`flex items-center gap-2 ${themeClasses.primaryText}`}>
+                      <Bell className="h-5 w-5 text-orange-500" />
+                      Send App-Wide Notification
+                    </CardTitle>
+                    <CardDescription className={themeClasses.secondaryText}>
+                      Broadcast system messages, new feature announcements, or promotions to all registered users.
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="space-y-2">
+                      <label className={`text-sm font-medium ${themeClasses.primaryText}`}>Notification Type</label>
+                      <Select 
+                        value={adminBroadcastForm.type} 
+                        onValueChange={(val) => setAdminBroadcastForm(prev => ({...prev, type: val}))}
+                      >
+                        <SelectTrigger className={`w-full ${themeClasses.selectBackground}`}>
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent className={themeClasses.selectContent}>
+                          <SelectItem value="admin_general" className={themeClasses.selectItem}>General Announcement</SelectItem>
+                          <SelectItem value="admin_feature" className={themeClasses.selectItem}>New Feature Launch</SelectItem>
+                          <SelectItem value="admin_bible" className={themeClasses.selectItem}>New Bible Version</SelectItem>
+                          <SelectItem value="admin_promotion" className={themeClasses.selectItem}>Promotion / Discount</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    <div className="space-y-2">
+                      <label className={`text-sm font-medium ${themeClasses.primaryText}`}>Title</label>
+                      <Input
+                        className={themeClasses.inputBackground}
+                        placeholder={adminBroadcastForm.type === 'admin_bible' ? "e.g., KJV (King James Version)" : "Notification Title"}
+                        value={adminBroadcastForm.title}
+                        onChange={(e) => setAdminBroadcastForm(prev => ({...prev, title: e.target.value}))}
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <label className={`text-sm font-medium ${themeClasses.primaryText}`}>Message Context (Skip for New Bible)</label>
+                      <textarea
+                        className={`w-full p-3 rounded-md border text-sm ${
+                          isDarkMode 
+                            ? 'bg-gray-800 border-gray-700 text-white placeholder-gray-400' 
+                            : 'bg-white border-gray-300 text-gray-900 placeholder-gray-500'
+                        }`}
+                        rows={4}
+                        placeholder="Type your broadcast message here..."
+                        value={adminBroadcastForm.message}
+                        onChange={(e) => setAdminBroadcastForm(prev => ({...prev, message: e.target.value}))}
+                      />
+                    </div>
+
+                    <Button 
+                      onClick={handleBroadcast}
+                      disabled={isBroadcasting}
+                      className="bg-orange-600 hover:bg-orange-700 text-white w-full md:w-auto mt-4 transition-colors duration-200"
+                    >
+                      <Bell className="h-4 w-4 mr-2" />
+                      {isBroadcasting ? 'Broadcasting...' : 'Broadcast to All Users'}
+                    </Button>
+                  </CardContent>
+                </Card>
               </TabsContent>
 
               {/* Custom Reports Tab */}
