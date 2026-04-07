@@ -63,6 +63,7 @@ import { OnScreenBibleEditor } from "@/features/dashboard/components/OnScreenBib
 import { useToast } from "@/hooks/use-toast";
 import { useAudioDevices } from "@/hooks/use-audio-devices";
 import { useRecordingManager } from "@/features/dashboard/hooks/useRecordingManager";
+import { useNotifications } from "@/hooks/useNotifications";
 import { useLivePresentation } from "@/features/dashboard/hooks/useLivePresentation";
 import { useProjectManager } from "@/features/dashboard/hooks/useProjectManager";
 import { useProjectMutations } from "@/features/dashboard/hooks/useProjectMutations";
@@ -1424,74 +1425,58 @@ export const QworshipHomeV2Base = (): JSX.Element => {
     });
   };
 
-  const [notifications, setNotifications] = useState([
-    {
-      id: "1",
-      type: "success",
-      title: "Recording Saved",
-      message:
-        "Your sermon recording has been successfully saved to your library",
-      timestamp: new Date(Date.now() - 5 * 60 * 1000),
-      read: false,
-    },
-    {
-      id: "2",
-      type: "info",
-      title: "New Bible Version Available",
-      message:
-        "ESV translation has been added to your Hands-Free Bible Companion",
-      timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000),
-      read: false,
-    },
-    {
-      id: "3",
-      type: "warning",
-      title: "Storage Almost Full",
-      message: "You are using 85% of your available storage space",
-      timestamp: new Date(Date.now() - 24 * 60 * 60 * 1000),
-      read: true,
-    },
-  ]);
-  const [unreadCount, setUnreadCount] = useState(2);
+  // ─── Real Notifications from API ─────────────────────────────────
+  const {
+    notifications: apiNotifications,
+    unreadCount,
+    markNotificationAsRead,
+    markAllAsRead,
+    formatTimestamp,
+  } = useNotifications();
+
+  // Map API shape to the format AppHeader expects
+  const notifications = apiNotifications.map((n) => ({
+    id: n._id,
+    type: n.type,
+    title: n.title,
+    message: n.message,
+    timestamp: n.createdAt,
+    read: n.isRead,
+  }));
+
+  // Notification icon helper (matches API notification types)
+  const getNotificationIcon = (type: string) => {
+    switch (type) {
+      case "welcome":
+        return <CheckCircle className="h-4 w-4 text-green-500" />;
+      case "password_change":
+        return <CheckCircle className="h-4 w-4 text-blue-500" />;
+      case "plan_subscription":
+      case "new_plan":
+        return <CheckCircle className="h-4 w-4 text-purple-500" />;
+      case "plan_expiry_reminder":
+        return <AlertTriangle className="h-4 w-4 text-yellow-500" />;
+      case "plan_expired":
+        return <AlertTriangle className="h-4 w-4 text-red-500" />;
+      case "payment_success":
+        return <CheckCircle className="h-4 w-4 text-green-500" />;
+      case "recording_saved":
+        return <CheckCircle className="h-4 w-4 text-teal-500" />;
+      case "admin_feature":
+      case "admin_bible":
+      case "admin_promotion":
+      case "admin_general":
+        return <Bell className="h-4 w-4 text-purple-400" />;
+      default:
+        return <Bell className="h-4 w-4 text-blue-500" />;
+    }
+  };
 
   // Unified listening state - syncs Button 1 and Hands-free Bible widget
   const toggleListening = (newState: boolean) => {
     if (newState !== isListeningMode) {
       toggleMicrophone();
     }
-  };
-
-  // Profile dropdown helper functions
-  const getNotificationIcon = (type: string) => {
-    switch (type) {
-      case "warning":
-        return <AlertTriangle className="h-4 w-4 text-yellow-500" />;
-      case "error":
-        return <AlertTriangle className="h-4 w-4 text-red-500" />;
-      case "success":
-        return <CheckCircle className="h-4 w-4 text-green-500" />;
-      default:
-        return <Bell className="h-4 w-4 text-blue-500" />;
-    }
-  };
-
-  const formatTimestamp = (date: Date) => {
-    const now = new Date();
-    const diffMinutes = Math.floor(
-      (now.getTime() - date.getTime()) / (1000 * 60),
-    );
-
-    if (diffMinutes < 1) return "Just now";
-    if (diffMinutes < 60) return `${diffMinutes}m ago`;
-    if (diffMinutes < 1440) return `${Math.floor(diffMinutes / 60)}h ago`;
-    return `${Math.floor(diffMinutes / 1440)}d ago`;
-  };
-
-  const markNotificationAsRead = (id: string) => {
-    setNotifications((prev) =>
-      prev.map((notif) => (notif.id === id ? { ...notif, read: true } : notif)),
-    );
-    setUnreadCount((prev) => Math.max(0, prev - 1));
   };
 
   // Slide navigation functions

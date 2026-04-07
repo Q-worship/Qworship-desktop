@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { protect } from '../auth/auth.middleware.js';
 import { User } from '../auth/auth.model.js';
+import { notifyPlanExpired, notifyPlanSubscription } from '../notifications/notification.service.js';
 
 export const subscriptionRouter = Router();
 
@@ -13,6 +14,9 @@ subscriptionRouter.post('/subscription/cancel', protect, async (req: any, res: a
 
     user.subscriptionStatus = 'cancelled';
     await user.save();
+
+    // Notification: plan cancelled / expired
+    notifyPlanExpired(userId, user.planType || 'current').catch(() => {});
 
     res.json({ success: true, message: 'Subscription cancelled successfully' });
   } catch (error) {
@@ -33,6 +37,9 @@ subscriptionRouter.post('/subscription/extend-trial', protect, async (req: any, 
     user.trialEndDate = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000);
     user.subscriptionStatus = 'trial';
     await user.save();
+
+    // Notification: new trial subscription
+    notifyPlanSubscription(userId, 'Trial (Extended 30 days)').catch(() => {});
 
     res.json({ success: true, message: 'Trial extended successfully' });
   } catch (error) {

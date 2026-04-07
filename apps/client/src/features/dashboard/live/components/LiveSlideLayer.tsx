@@ -152,13 +152,8 @@ export const LiveSlideLayer: React.FC<ReturnType<typeof useLivePresentationState
                   <div className="relative flex w-full h-full justify-center items-center bg-black overflow-hidden">
                     <img
                       src={slides[currentSlide - 1].content && slides[currentSlide - 1].content !== "Worship background image" && slides[currentSlide - 1].content !== "Inspirational worship video" ? slides[currentSlide - 1].content : "https://images.unsplash.com/photo-1438232992991-995b7058bbb3?q=80&w=2673&auto=format&fit=crop"}
-                      alt=""
-                      className="absolute inset-0 w-full h-full object-cover opacity-40 blur-3xl scale-110"
-                    />
-                    <img
-                      src={slides[currentSlide - 1].content && slides[currentSlide - 1].content !== "Worship background image" && slides[currentSlide - 1].content !== "Inspirational worship video" ? slides[currentSlide - 1].content : "https://images.unsplash.com/photo-1438232992991-995b7058bbb3?q=80&w=2673&auto=format&fit=crop"}
                       alt={slides[currentSlide - 1].title || "Media slide"}
-                      className="relative z-10 w-full h-full object-contain drop-shadow-2xl"
+                      className="relative z-10 w-full h-full object-contain drop-shadow-2xl bg-black"
                     />
                   </div>
                 )}

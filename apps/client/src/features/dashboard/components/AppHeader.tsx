@@ -945,10 +945,6 @@ export function AppHeader({
                       <HelpCircle className="h-4 w-4" />
                       <span className="text-sm">Help &amp; Support</span>
                     </button>
-                    <button className="w-full flex items-center space-x-3 px-3 py-2 text-left hover:bg-gray-700 rounded-lg transition-colors text-white">
-                      <SettingsIcon className="h-4 w-4" />
-                      <span className="text-sm">Settings</span>
-                    </button>
                   </div>
 
                   <Separator className="bg-gray-600" />

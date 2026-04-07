@@ -2930,8 +2930,7 @@ import type { Slide } from "@/types";\n${text}`,
                               <div className="flex flex-row overflow-x-auto gap-4 custom-scrollbar p-4 bg-[#0f0624] rounded-lg border border-gray-600 shadow-inner max-w-full">
                                 {editingContent.slides.map((slide: any, idx: number) => (
                                   <div key={slide.id} className="relative group bg-black border border-gray-600 shadow-md rounded-lg overflow-hidden flex flex-col flex-shrink-0 w-[240px] aspect-video hover:border-purple-500 transition-colors">
-                                    <img src={slide.content} alt="" className="absolute inset-0 w-full h-full object-cover opacity-30 blur-xl scale-110" />
-                                    <img src={slide.content} alt={slide.title || `Slide ${idx + 1}`} className="relative z-10 w-full h-full object-contain" />
+                                    <img src={slide.content} alt={slide.title || `Slide ${idx + 1}`} className="relative z-10 w-full h-full object-contain bg-black" />
                                     <div className="absolute top-0 right-0 left-0 bg-black/70 p-2 flex justify-between opacity-0 group-hover:opacity-100 transition-opacity backdrop-blur-sm">
                                       <div className="flex space-x-1">
                                         <button disabled={idx === 0} className="bg-gray-700/80 hover:bg-gray-500 text-white p-1 rounded disabled:opacity-30 disabled:cursor-not-allowed"
@@ -4839,13 +4838,8 @@ import type { Slide } from "@/types";\n${text}`,
                           <>
                             <img
                               src={displaySlide?.content}
-                              alt=""
-                              className="absolute inset-0 w-full h-full object-cover opacity-40 blur-3xl scale-110"
-                            />
-                            <img
-                              src={displaySlide?.content}
                               alt={displaySlide?.title || editingContent.title}
-                              className="relative z-10 w-full h-full object-contain drop-shadow-2xl"
+                              className="relative z-10 w-full h-full object-contain drop-shadow-2xl bg-black"
                             />
                             <div className="absolute bottom-3 right-3 bg-black/70 text-white text-xs px-2.5 py-1 rounded-md border border-gray-600 z-10 font-medium">
                               Slide {slideIdx + 1} / {editingContent.slides.length}
@@ -4866,13 +4860,8 @@ import type { Slide } from "@/types";\n${text}`,
                     <>
                       <img
                         src={typeof editingContent.content === 'string' && editingContent.content.length > 5 && editingContent.content !== "Worship background image" ? editingContent.content : "https://images.unsplash.com/photo-1438232992991-995b7058bbb3?q=80&w=2673&auto=format&fit=crop"}
-                        alt=""
-                        className="absolute inset-0 w-full h-full object-cover opacity-40 blur-3xl scale-110"
-                      />
-                      <img
-                        src={typeof editingContent.content === 'string' && editingContent.content.length > 5 && editingContent.content !== "Worship background image" ? editingContent.content : "https://images.unsplash.com/photo-1438232992991-995b7058bbb3?q=80&w=2673&auto=format&fit=crop"}
                         alt={editingContent.title}
-                        className="relative z-10 w-full h-full object-contain drop-shadow-2xl"
+                        className="relative z-10 w-full h-full object-contain drop-shadow-2xl bg-black"
                       />
                     </>
                   )}
@@ -5781,18 +5770,11 @@ import type { Slide } from "@/types";\n${text}`,
                                         playsInline
                                       />
                                     ) : (
-                                      <>
-                                        <img
-                                          src={typeof slide.content === 'string' && slide.content.length > 5 && slide.content !== "Worship background image" && slide.content !== "Inspirational worship video" ? slide.content : "https://images.unsplash.com/photo-1438232992991-995b7058bbb3?q=80&w=2673&auto=format&fit=crop"}
-                                          alt=""
-                                          className="absolute inset-0 w-full h-full object-cover opacity-40 blur-2xl scale-110"
-                                        />
                                         <img
                                           src={typeof slide.content === 'string' && slide.content.length > 5 && slide.content !== "Worship background image" && slide.content !== "Inspirational worship video" ? slide.content : "https://images.unsplash.com/photo-1438232992991-995b7058bbb3?q=80&w=2673&auto=format&fit=crop"}
                                           alt={slide.title}
-                                          className="relative z-10 w-full h-full object-contain"
+                                          className="relative z-10 w-full h-full object-contain bg-black"
                                         />
-                                      </>
                                     )}
                                   </div>
                                 ) : slide.type === "custom" &&

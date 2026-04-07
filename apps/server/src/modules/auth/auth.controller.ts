@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { User } from './auth.model.js';
+import { notifyWelcome, notifyPasswordChange } from '../notifications/notification.service.js';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'qworship-super-secret-key-123!';
 
@@ -47,6 +48,9 @@ export const signUp = async (req: Request, res: Response) => {
 
     // Generate JWT
     const token = jwt.sign({ id: newUser._id, role: newUser.role }, JWT_SECRET, { expiresIn: '7d' });
+
+    // Fire-and-forget: Welcome notification
+    notifyWelcome(newUser._id, newUser.firstName).catch(() => {});
 
     res.status(201).json({
       success: true,
@@ -177,6 +181,9 @@ export const updatePassword = async (req: Request, res: Response) => {
 
     user.password = hashedPassword;
     await user.save();
+
+    // Fire-and-forget: Password change notification
+    notifyPasswordChange(user._id).catch(() => {});
 
     return res.status(200).json({ success: true, message: 'Password updated successfully' });
   } catch (error) {

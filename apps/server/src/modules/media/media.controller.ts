@@ -92,7 +92,7 @@ export const listUserMedia = async (req: Request, res: Response) => {
   try {
     const assets = await Media.find({ 
       isCloud: { $ne: true },
-      uploadedBy: req.user._id 
+      uploadedBy: (req as any).user._id 
     }).sort({ createdAt: -1 });
     res.json({ assets });
   } catch (error) {

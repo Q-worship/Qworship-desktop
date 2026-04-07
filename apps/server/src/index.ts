@@ -36,6 +36,7 @@ import { presentationRouter } from "./modules/presentations/presentation.routes.
 import { mediaRouter } from "./modules/media/media.routes.js";
 import { bibleRouter } from "./modules/bible/bible.routes.js";
 import adminRouter from "./modules/admin/admin.routes.js";
+import { notificationRouter } from "./modules/notifications/notification.routes.js";
 
 // Main Routes
 app.use("/api/auth", authRouter);
@@ -49,6 +50,7 @@ app.use("/api", mediaRouter);
 app.use("/api/help", helpRouter);
 app.use("/api/bible", bibleRouter);
 app.use("/api/admin", adminRouter);
+app.use("/api", notificationRouter);
 
 // Database & Server Initialization
 const PORT = process.env.PORT || 5000;
