@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { BibleService } from './bible.service.js';
 import type { BibleReference } from './bible.service.js';
+import { BibleVerse } from './bible.model.js';
 
 export const searchBible = async (req: Request, res: Response) => {
   try {
@@ -145,3 +146,33 @@ export const structuredSearchBible = async (req: Request, res: Response) => {
   }
 };
 
+export const exportBibleVersion = async (req: Request, res: Response) => {
+  try {
+    const version = (req.params.version || 'kjv').toLowerCase();
+    const validVersions = ['kjv', 'nkjv', 'amp', 'msg', 'esv', 'niv'];
+
+    if (!validVersions.includes(version)) {
+      return res.status(400).json({ success: false, message: 'Invalid version specified' });
+    }
+
+    // Fetch all verses, projecting only the requested version
+    const verses = await BibleVerse.find(
+      {},
+      { bookName: 1, chapter: 1, verse: 1, [version]: 1, _id: 0 }
+    ).lean();
+
+    // Map into flat structure for Dexie bulk insertion
+    const payload = verses.map((v: any) => ({
+      book: v.bookName,
+      chapter: v.chapter,
+      verse: v.verse,
+      text: v[version] || '',
+      version: version
+    }));
+
+    return res.json({ success: true, version, total: payload.length, verses: payload });
+  } catch (error) {
+    console.error('Bible Export Error:', error);
+    return res.status(500).json({ success: false, message: 'Failed to export bible translation' });
+  }
+};

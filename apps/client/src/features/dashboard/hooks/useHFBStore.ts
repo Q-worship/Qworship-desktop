@@ -1,4 +1,7 @@
 import { create } from 'zustand';
+import { db } from '../../../lib/db';
+import { useBibleRAMCache } from './useBibleRAMCache';
+
 
 export interface HFBChapterVerse {
   number: number;
@@ -95,16 +98,57 @@ export const useHFBStore = create<HFBStore>((set) => ({
   fetchHFBChapter: async (book, chapter, version, highlightVerse) => {
     set({ hfbBookName: book, hfbChapter: chapter, hfbChapterLoading: true, hfbChapterVerses: [] });
     try {
+      const vKey = version.toLowerCase();
+
+      // 0. Try RAM Cache (0.00ms latency)
+      const memStartTime = performance.now();
+      const ramVerses = useBibleRAMCache.getState().getChapter(vKey, book, chapter);
+      const memEndTime = performance.now();
+      
+      if (ramVerses && ramVerses.length > 0) {
+        set({ hfbChapterVerses: ramVerses as any[], hfbChapterLoading: false });
+        if (highlightVerse !== undefined) {
+           set({ hfbActiveVerseNum: highlightVerse });
+        }
+        console.log(`🚀 [RAM CACHE HFB] Fetched ${book} ${chapter} (${vKey}) in ${(memEndTime - memStartTime).toFixed(2)}ms`);
+        return;
+      }
+
+      // 1. Try to fetch from Local IndexedDB
+      const startTime = performance.now();
+      const localVerses = await db.verses
+        .where({ version: vKey, book: book, chapter })
+        .toArray();
+      const endTime = performance.now();
+
+      if (localVerses && localVerses.length > 0) {
+        // Sort verses to ensure correct order
+        localVerses.sort((a: any, b: any) => a.verse - b.verse);
+        
+        const mappedVerses = localVerses.map((v: any) => ({
+          number: v.verse,
+          text: v.text || '',
+        }));
+
+        set({ hfbChapterVerses: mappedVerses, hfbChapterLoading: false });
+        if (highlightVerse !== undefined) {
+           set({ hfbActiveVerseNum: highlightVerse });
+        }
+        console.log(`🚀 [IndexedDB HFB] Fetched ${book} ${chapter} (${vKey}) locally in ${(endTime - startTime).toFixed(2)}ms`);
+        return; // Success, skip cloud fallback
+      }
+
+      console.warn(`[Local DB] Verses not found for ${book} ${chapter} (${vKey}). Falling back to Cloud API...`);
+      
+      // 2. Fallback to Cloud MongoDB API if local sync failed or isn't complete
       const resp = await fetch("/api/bible/search", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        // Hardcode verseEnd to 150 since the API will return whatever valid verses exist up to 150
-        body: JSON.stringify({ book, chapter, verseStart: 1, verseEnd: 150, version: version.toLowerCase() }),
+        body: JSON.stringify({ book, chapter, verseStart: 1, verseEnd: 150, version: vKey }),
       });
       if (resp.ok) {
         const data = await resp.json();
         if (data?.success && data?.result) {
-          const vKey = version.toLowerCase() as keyof any;
           const verses = (data.result.verses as any[]).map(v => ({
             number: v.verse,
             text: v[vKey] || v.kjv || "",
@@ -120,6 +164,7 @@ export const useHFBStore = create<HFBStore>((set) => ({
         set({ hfbChapterLoading: false });
       }
     } catch (e) {
+      console.error("[HFB Store] Fetch Error:", e);
       set({ hfbChapterLoading: false });
     }
   },

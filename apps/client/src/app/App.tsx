@@ -4,6 +4,9 @@ import { queryClient } from "@/lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { useBibleSync } from "@/hooks/useBibleSync";
+import { useSongSync } from "@/hooks/useSongSync";
+import { useBibleRAMCache } from "@/features/dashboard/hooks/useBibleRAMCache";
 
 import { Home } from "@/features/web/pages/Home";
 import About from "@/features/web/pages/About";
@@ -53,6 +56,18 @@ const PresentationsMock = () => (
 
 const AuthGuard = ({ children }: { children: React.ReactNode }) => {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  
+  // Hydrate the IndexedDB background caches once authenticated
+  useBibleSync();
+  useSongSync();
+
+  // Instantly dump the IndexedDB offline safehouse into the 0.00ms Memory dictionary
+  React.useEffect(() => {
+    if (isAuthenticated) {
+      useBibleRAMCache.getState().loadFromDisk();
+    }
+  }, [isAuthenticated]);
+
   if (!isAuthenticated) return <Redirect to="/login" />;
   return <>{children}</>;
 };

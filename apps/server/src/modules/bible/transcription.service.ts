@@ -40,7 +40,7 @@ export class TranscriptionService extends EventEmitter {
           session: {
             modalities: ["text"], // Only requesting text out from audio in
             instructions:
-              "You are a highly accurate transcription engine for a live church service. The user will dictate bible verses or commands. Just output exactly what they say in English. Do not act as a conversational assistant. Ignore non-English speech and background noise. Expected vocabulary includes: Bible, Jesus Christ, God, Holy Spirit, worship, Hallelujah, Amen, Genesis, Revelation, chapter, verse.",
+              "You are a raw audio-to-text phonetic correction engine. Your ONLY job is to output the transcript of the audio. NEVER act conversational. NEVER apologize. NEVER say 'I did not catch that' or 'Please repeat'. NEVER reply to the user. If the audio is empty, unclear, or you cannot understand it, simply output the exact word '[UNINTELLIGIBLE]' and nothing else. Fix phonetic errors into proper Bible books (Genesis, Exodus, Leviticus, Numbers, Deuteronomy, Joshua, Judges, Ruth, Samuel, Kings, Chronicles, Ezra, Nehemiah, Esther, Job, Psalms, Proverbs, Ecclesiastes, Song of Solomon, Isaiah, Jeremiah, Lamentations, Ezekiel, Daniel, Hosea, Joel, Amos, Obadiah, Jonah, Micah, Nahum, Habakkuk, Zephaniah, Haggai, Zechariah, Malachi, Matthew, Mark, Luke, John, Acts, Romans, Corinthians, Galatians, Ephesians, Philippians, Colossians, Thessalonians, Timothy, Titus, Philemon, Hebrews, James, Peter, Jude, Revelation). Output the pure transcript and absolutely nothing else.",
             input_audio_format: "pcm16",
             input_audio_transcription: {
               model: "whisper-1",
@@ -119,7 +119,17 @@ export class TranscriptionService extends EventEmitter {
 
   public disconnect() {
     if (this.openaiWs) {
-      this.openaiWs.close();
+      if (this.openaiWs.readyState === WebSocket.CONNECTING) {
+        // Prevent ws library from emitting unhandled 'error' event to old handlers when closing midway
+        this.openaiWs.on("error", () => {});
+      }
+      try {
+        if (this.openaiWs.readyState === WebSocket.OPEN || this.openaiWs.readyState === WebSocket.CONNECTING) {
+          this.openaiWs.close();
+        }
+      } catch (err) {
+        // Ignore "WebSocket was closed before the connection was established"
+      }
       this.openaiWs = null;
     }
     this.isConnected = false;
@@ -127,23 +137,29 @@ export class TranscriptionService extends EventEmitter {
 
   private handleOpenAIEvent(event: any) {
     switch (event.type) {
-      // Stream partial audio transcription output delta
-      case "response.audio_transcript.delta":
+      // 1. REAL-TIME UI FEEDBACK: Stream fast phonetic guesses from Whisper for instant visual typing effect
+      case "conversation.item.input_audio_transcription.delta":
         this.emit("partial", event.delta);
         break;
 
-      // Completed speech transcription chunk
+      // 2. IGNORE WHISPER'S FINAL TRANSCRIPT: Because it suffers from phonetic hallucinations ("JoJo666")
       case "conversation.item.input_audio_transcription.completed":
-        this.emit("final", event.transcript);
         break;
 
-      // Realtime API can sometimes respond in the text delta
-      case "response.text.delta":
-        this.emit("partial", event.delta);
-        break;
-
+      // 3. ACTUAL FINAL EXECUTION: Triggered ~500ms after the user stops speaking.
+      // GPT-4o processes the audio natively, fixing phonetic errors Whisper couldn't understand.
       case "response.text.done":
-        this.emit("final", event.text);
+        if (event.text && !event.text.includes("[UNINTELLIGIBLE]")) {
+          // If the model still tries to apologize due to LLM stubbornness, drop it.
+          const lowerText = event.text.toLowerCase();
+          if (!lowerText.includes("could you please repeat") && !lowerText.includes("i did not catch that") && !lowerText.includes("complete sentence")) {
+            this.emit("final", event.text);
+          }
+        }
+        break;
+
+      case "response.text.delta":
+      case "response.audio_transcript.delta":
         break;
     }
   }

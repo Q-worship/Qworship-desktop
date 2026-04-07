@@ -222,11 +222,27 @@ export const ModalsContainer: React.FC<ModalsContainerProps> = (props) => {
         serviceItems={props.serviceItems}
         itemBackgrounds={props.itemBackgrounds}
         onGoToSlide={(slideNumber) => {
-          // Only update local state - LiveControlCentre now sends GO_TO_SLIDE directly to liveWindow
-          // to avoid stale closure issues
           props.setCurrentSlide(slideNumber);
           // Clear Bible projection when navigating to slides
           props.clearZustandProjection();
+          if (props.liveWindow && !props.liveWindow.closed) {
+            const slideData = props.slides[slideNumber - 1];
+            const itemId =
+              slideData?.itemId || props.serviceItems[slideNumber - 1]?.id;
+            const background = itemId ? props.itemBackgrounds[itemId] : null;
+
+            props.liveWindow.postMessage(
+              {
+                type: "GO_TO_SLIDE",
+                data: {
+                  slideIndex: slideNumber - 1,
+                  background: background,
+                  itemId: itemId,
+                },
+              },
+              window.location.origin,
+            );
+          }
         }}
         onPrevSlide={() => {
           if (props.currentSlide > 1) {

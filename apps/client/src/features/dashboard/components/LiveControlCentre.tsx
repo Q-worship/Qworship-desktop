@@ -222,6 +222,7 @@ export function LiveControlCentre(props: LiveConsoleProps) {
            slides={props.slides} 
            currentSlide={props.currentSlide}
            totalSlides={props.totalSlides} 
+           serviceItems={props.serviceItems}
            onGoToSlide={props.onGoToSlide} 
            onOpenSlides={props.onOpenSlides} 
            onPrevSlide={props.onPrevSlide}

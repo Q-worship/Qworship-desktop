@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { apiRequest } from '../../../lib/queryClient';
+import { useSongRAMCache } from './useSongRAMCache';
 
 export interface SongSection { title: string; content: string }
 
@@ -61,20 +61,19 @@ export function useInlineSongBrowser({ onProjectSong }: UseInlineSongBrowserProp
     let fullSong = song;
     let sections: SongSection[] = [];
 
-    if (song.id) {
-      try {
-        const res = await apiRequest('GET', `/api/songs/${song.id}`);
-        const data = await res.json();
-        if (data?.success && data?.song) {
-          fullSong = data.song;
-          if (Array.isArray(data.song.sections) && data.song.sections.length > 0) {
-            sections = data.song.sections.map((s: any) => ({
+    if (song.id || song._id || song.songId) {
+      const sId = song.songId || song.id || song._id;
+      const cachedSong = useSongRAMCache.getState().dictionary[sId];
+      
+      if (cachedSong) {
+         fullSong = cachedSong;
+         if (Array.isArray(cachedSong.sections) && cachedSong.sections.length > 0) {
+            sections = cachedSong.sections.map((s: any) => ({
               title: s.title || s.type || 'Section',
               content: s.content || '',
             }));
           }
-        }
-      } catch { /* network error – fall back below */ }
+      }
     }
 
     if (sections.length === 0) {
@@ -116,32 +115,19 @@ export function useInlineSongBrowser({ onProjectSong }: UseInlineSongBrowserProp
   // Load all songs when song mode opens
   useEffect(() => {
     if (!isSongMode) return;
-    apiRequest('GET', '/api/songs')
-      .then(r => r.json())
-      .then((data: any) => {
-        const list = Array.isArray(data) ? data : (data?.songs ?? []);
-        setAllSongs(list);
-      })
-      .catch(() => {});
-  }, [isSongMode]);
+    setAllSongs(useSongRAMCache.getState().songList);
+  }, [isSongMode, useSongRAMCache.getState().songList]);
 
-  // Debounced search suggestions
+  // Instant 0ms RAM Cache Search
   useEffect(() => {
     if (!songSearch.trim()) {
       setSongSearchResults([]);
       setSongDropdownOpen(false);
       return;
     }
-    const timer = setTimeout(async () => {
-      try {
-        const res = await apiRequest('POST', '/api/songs/search', { query: songSearch });
-        const data = await res.json();
-        const list = Array.isArray(data) ? data : (data?.songs ?? data?.results ?? []);
-        setSongSearchResults(list);
-        setSongDropdownOpen(list.length > 0);
-      } catch { /* ignore */ }
-    }, 300);
-    return () => clearTimeout(timer);
+    const results = useSongRAMCache.getState().search(songSearch);
+    setSongSearchResults(results);
+    setSongDropdownOpen(results.length > 0);
   }, [songSearch]);
 
   return {

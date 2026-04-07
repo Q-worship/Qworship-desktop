@@ -350,12 +350,14 @@ export const useHandsfreeBible = ({
     if (isHandsfreeBibleOpen && !isConnected) {
       connect();
     }
+  }, [isHandsfreeBibleOpen, connect, isConnected]);
+
+  // Clean up socket on unmount ONLY
+  useEffect(() => {
     return () => {
-      if (!isHandsfreeBibleOpen) {
-        disconnect();
-      }
+      disconnect();
     };
-  }, [isHandsfreeBibleOpen, connect, disconnect, isConnected]);
+  }, [disconnect]);
 
   // Sync state to local storage and live window
   useEffect(() => {

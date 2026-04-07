@@ -2,20 +2,51 @@ import { useLiveConsoleStore } from "../../hooks/useLiveConsoleStore";
 import { ChevronRight, ChevronLeft, Maximize } from "lucide-react";
 import { useHFBStore } from "../../hooks/useHFBStore";
 
+import { useMemo } from "react";
+
 interface BottomStripProps {
   slides?: any[];
   currentSlide?: number;
   totalSlides?: number;
+  serviceItems?: any[];
   onGoToSlide?: (idx: number) => void;
   onOpenSlides?: () => void;
   onPrevSlide?: () => void;
   onNextSlide?: () => void;
 }
 
+// Distinct colors for service item grouping in slide strip
+const ITEM_COLORS = [
+  '#7c3aed', '#0ea5e9', '#16a34a', '#dc2626', '#d97706',
+  '#0891b2', '#7c2d12', '#1d4ed8', '#be185d', '#065f46',
+];
+
+function getItemColor(index: number): string {
+  return ITEM_COLORS[index % ITEM_COLORS.length];
+}
+
+const SECTION_LABELS: Record<string, string> = {
+  'pre-service': 'Pre-service Items',
+  'warm-up': 'Warm-up',
+  'service': 'Service Item',
+  'post-service': 'Post Service Loop',
+};
+
+function getSectionLabel(item: any): string {
+  if (item.section && SECTION_LABELS[item.section]) {
+    return SECTION_LABELS[item.section];
+  }
+  if (item.section) {
+    return item.section.replace(/-/g, ' ').replace(/\b\w/g, (c: string) => c.toUpperCase());
+  }
+  return item.title || 'Item';
+}
+
 export function LiveConsoleBottomStrip({
   slides = [],
   currentSlide = 0,
   totalSlides = 1,
+  serviceItems = [],
   onGoToSlide,
   onOpenSlides,
   onPrevSlide,
@@ -24,6 +55,42 @@ export function LiveConsoleBottomStrip({
 }: BottomStripProps & { liveWindow?: Window | null }) {
   const store = useLiveConsoleStore();
   const hfbStore = useHFBStore();
+
+  const itemColorMap = useMemo(() => {
+    const map: Record<string, string> = {};
+    let colorIdx = 0;
+    for (const slide of slides) {
+      if (slide.itemId && !(slide.itemId in map)) {
+        map[slide.itemId] = getItemColor(colorIdx++);
+      }
+    }
+    return map;
+  }, [slides]);
+
+  const itemLabelMap = useMemo(() => {
+    const map: Record<string, string> = {};
+    for (const item of serviceItems) {
+      map[item.id] = getSectionLabel(item);
+    }
+    return map;
+  }, [serviceItems]);
+
+  const slideGroups = useMemo(() => {
+    type SlideGroup = { itemId: string | null; color: string; label: string; slides: { slide: any; globalIndex: number }[] };
+    const groups: SlideGroup[] = [];
+    const seenItems = new Map<string | null, number>();
+    slides.forEach((slide, i) => {
+      const key = slide.itemId || null;
+      if (!seenItems.has(key)) {
+        seenItems.set(key, groups.length);
+        const color = key ? (itemColorMap[key] || '#7c3aed') : '#7c3aed';
+        const label = key ? (itemLabelMap[key] || 'Item') : 'Slides';
+        groups.push({ itemId: key, color, label, slides: [] });
+      }
+      groups[seenItems.get(key)!].slides.push({ slide, globalIndex: i });
+    });
+    return groups;
+  }, [slides, itemColorMap, itemLabelMap]);
 
   // Replit logic primarily showed a tape of slides in the bottom strip
   return store.leftPanelTab === 'hfb' ? (
@@ -102,50 +169,69 @@ export function LiveConsoleBottomStrip({
         </button>
       </div>
 
-      <div className="flex-1 overflow-x-auto overflow-y-hidden px-5 py-4 flex gap-4 min-w-0 slide-track-scroll items-center">
+      <div className="flex-1 overflow-x-auto overflow-y-hidden px-1 py-1 flex min-w-0 slide-track-scroll items-center gap-0">
         {slides.length === 0 ? (
           <div className="text-gray-600 text-sm italic w-full text-center">No active slides projected</div>
         ) : (
-          slides.map((slide, idx) => {
-            const isActive = currentSlide === idx;
+          slideGroups.map((group, groupIndex) => {
             return (
-              <div 
-                key={idx}
-                onClick={() => onGoToSlide?.(idx)}
-                className={`w-48 aspect-video rounded-lg flex-shrink-0 cursor-pointer overflow-hidden border-2 transition-all group relative ${
-                  isActive
-                    ? 'border-indigo-500 shadow-[0_0_15px_rgba(99,102,241,0.3)] ring-2 ring-indigo-500/50 scale-[1.02]'
-                    : 'border-gray-800 hover:border-gray-600'
-                }`}
-                style={{
-                  backgroundColor: store.appliedBackgroundType === 'color' ? store.appliedBackgroundColor : 'black',
-                  backgroundImage: store.appliedBackgroundType === 'image' && store.appliedBackgroundImage ? `url(${store.appliedBackgroundImage})` : 'none',
-                  backgroundSize: 'cover',
-                  backgroundPosition: 'center',
-                }}
-              >
-                {/* Overlay */}
-                <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors" />
-                {/* Text */}
-                <div className="absolute inset-0 flex items-center justify-center p-3 text-center pointer-events-none">
-                  {slide.type === 'image' ? (
-                    <span className="text-xs font-bold text-white uppercase tracking-widest">Image Slide</span>
-                  ) : slide.type === 'video' ? (
-                    <span className="text-xs font-bold text-white uppercase tracking-widest">Video Slide</span>
-                  ) : (
-                    <span className="text-white text-[11px] font-bold leading-tight line-clamp-4 font-serif text-shadow-lg">
-                      {slide.content?.text || slide.content}
-                    </span>
-                  )}
-                </div>
-                {/* Index Ribbon */}
-                <div className={`absolute top-0 left-0 px-2 py-0.5 rounded-br text-[9px] font-bold z-10 ${
-                  isActive ? 'bg-indigo-500 text-white' : 'bg-gray-800 text-gray-400 group-hover:text-gray-300'
-                }`}>
-                  {idx + 1}
+              <div key={group.itemId || groupIndex} className="flex flex-col shrink-0 h-full relative" style={{ borderRight: `1px solid rgba(255,255,255,0.04)` }}>
+                {group.itemId && (
+                  <div className="absolute bottom-0 h-[3px] w-full" style={{ backgroundColor: group.color }} />
+                )}
+                <div className="flex gap-3 px-3 pt-4 pb-4 flex-1 items-center">
+                  {group.slides.map(({ slide, globalIndex: idx }) => {
+                    const isActive = currentSlide === idx + 1;
+                    const slideLabel = slide.sectionLabel || slide.reference || slide.songTitle || slide.title || '';
+                    return (
+                      <div className="flex flex-col shrink-0" key={idx}>
+                        <div
+                          className="text-[9px] font-bold tracking-wider uppercase truncate mb-1.5 px-0.5"
+                          style={{ color: isActive ? group.color : '#9ca3af' }}
+                        >
+                          {slideLabel || `Slide ${idx + 1}`}
+                        </div>
+                        <div 
+                          onClick={() => onGoToSlide?.(idx + 1)}
+                          className={`w-48 aspect-video rounded-lg flex-shrink-0 cursor-pointer overflow-hidden border-2 transition-all group relative ${
+                            isActive
+                              ? `scale-[1.02]`
+                              : 'border-gray-800 hover:border-gray-600'
+                          }`}
+                          style={{
+                            borderColor: isActive ? group.color : undefined,
+                            boxShadow: isActive ? `0 0 15px ${group.color}4D` : undefined,
+                            backgroundColor: store.appliedBackgroundType === 'color' ? store.appliedBackgroundColor : 'black',
+                            backgroundImage: store.appliedBackgroundType === 'image' && store.appliedBackgroundImage ? `url(${store.appliedBackgroundImage})` : 'none',
+                            backgroundSize: 'cover',
+                            backgroundPosition: 'center',
+                          }}
+                        >
+                          {/* Overlay */}
+                          <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors" />
+                          {/* Text */}
+                          <div className="absolute inset-0 flex items-center justify-center p-3 text-center pointer-events-none">
+                            {slide.type === 'image' ? (
+                              <span className="text-xs font-bold text-white uppercase tracking-widest">Image Slide</span>
+                            ) : slide.type === 'video' ? (
+                              <span className="text-xs font-bold text-white uppercase tracking-widest">Video Slide</span>
+                            ) : (
+                              <span className="text-white text-[11px] font-bold leading-tight line-clamp-4 font-serif text-shadow-lg">
+                                {slide.content?.text || slide.content}
+                              </span>
+                            )}
+                          </div>
+                          {/* Index Ribbon */}
+                          <div className={`absolute top-0 left-0 px-2 py-0.5 rounded-br text-[9px] font-bold z-10 flex gap-1 items-center`} style={{ backgroundColor: isActive ? group.color : '#1f2937', color: isActive ? '#fff' : '#9ca3af' }}>
+                            {idx + 1}
+                          </div>
+                        </div>
+                      </div>
+                    )
+                  })}
                 </div>
               </div>
-            )
+            );
           })
         )}
         {slides.length > 0 && <div className="w-4 shrink-0" />} {/* Right Padding */}

@@ -1,5 +1,7 @@
 import { useState, useRef, useCallback, useEffect } from 'react';
 import { BIBLE_BOOKS_LCC, BIBLE_VERSIONS_LCC } from '../data/bibleBooks';
+import { db } from '../../../lib/db';
+import { useBibleRAMCache } from './useBibleRAMCache';
 
 export interface BibleVerse { number: number; text: string }
 export interface BiblePassage {
@@ -36,19 +38,63 @@ export function useInlineBibleBrowser({ onProjectVerse }: UseInlineBibleBrowserP
     try {
       const bookData = BIBLE_BOOKS_LCC.find(b => b.name === bookName);
       const verseEnd = bookData?.verses[chapter - 1] ?? 150;
+      const vKey = version.toLowerCase() as any;
+
+      // 0. Try RAM Cache Fetching (0.00ms latency)
+      const memStartTime = performance.now();
+      const ramVerses = useBibleRAMCache.getState().getChapter(vKey, bookName, chapter);
+      const memEndTime = performance.now();
+
+      if (ramVerses && ramVerses.length > 0) {
+        const p: BiblePassage = {
+          book: bookName, chapter, verses: ramVerses as BibleVerse[],
+          version: version.toUpperCase(),
+          reference: `${bookName} ${chapter}`,
+        };
+        setBiblePassage(p);
+        setBibleIsLoading(false);
+        console.log(`🚀 [RAM CACHE] Fetched ${bookName} ${chapter} (${vKey}) in ${(memEndTime - memStartTime).toFixed(2)}ms`);
+        return p;
+      }
+
+      // 1. Try Local IndexedDB fetching
+      const startTime = performance.now();
+      const localVerses = await db.verses
+        .where({ version: vKey, book: bookName, chapter })
+        .toArray();
+      const endTime = performance.now();
+
+      if (localVerses && localVerses.length > 0) {
+        localVerses.sort((a: any, b: any) => a.verse - b.verse);
+        const mappedVerses: BibleVerse[] = localVerses.map((v: any) => ({
+          number: v.verse,
+          text: v.text || '',
+        }));
+
+        const p: BiblePassage = {
+          book: bookName, chapter, verses: mappedVerses,
+          version: version.toUpperCase(),
+          reference: `${bookName} ${chapter}`,
+        };
+        setBiblePassage(p);
+        setBibleIsLoading(false);
+        console.log(`🚀 [IndexedDB] Fetched ${bookName} ${chapter} (${vKey}) locally in ${(endTime - startTime).toFixed(2)}ms`);
+        return p;
+      }
+
+      // 2. Fallback to Cloud API
       const resp = await fetch('/api/bible/search', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           book: bookName, chapter,
           verseStart: 1, verseEnd,
-          version: version.toLowerCase(),
+          version: vKey,
         }),
       });
       if (resp.ok) {
         const data = await resp.json();
         if (data?.success && data?.result) {
-          const vKey = version.toLowerCase() as any;
           const verses: BibleVerse[] = (data.result.verses || []).map((v: any) => ({
             number: v.verse,
             text: v[vKey] || v.kjv || '',
@@ -73,6 +119,7 @@ export function useInlineBibleBrowser({ onProjectVerse }: UseInlineBibleBrowserP
     }
     return null;
   }, []);
+
 
   // Project a verse from the current passage
   const projectVerse = useCallback((p: BiblePassage, idx: number) => {
