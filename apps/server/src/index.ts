@@ -3,7 +3,9 @@ import cors from "cors";
 import dotenv from "dotenv";
 import { connectDB } from "./core/db.js";
 import { authRouter } from "./modules/auth/auth.routes.js";
+import { subscriptionRouter } from "./modules/auth/subscription.routes.js";
 import { organizationRouter } from "./modules/organization/organization.routes.js";
+import { helpRouter } from "./modules/help/help.routes.js";
 import { createServer } from "http";
 import { setupAudioSocket } from "./modules/bible/audio.socket.js";
 
@@ -38,11 +40,13 @@ import adminRouter from "./modules/admin/admin.routes.js";
 // Main Routes
 app.use("/api/auth", authRouter);
 app.use("/api/user", authRouter); // Aliases for legacy pathways
+app.use("/api", subscriptionRouter);
 app.use("/api/songs", songsRouter);
 app.use("/api/presentations", presentationRouter);
 app.use("/api", organizationRouter);
 app.use("/api", serviceSectionsRouter);
 app.use("/api", mediaRouter);
+app.use("/api/help", helpRouter);
 app.use("/api/bible", bibleRouter);
 app.use("/api/admin", adminRouter);
 

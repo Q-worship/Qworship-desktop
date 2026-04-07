@@ -44,15 +44,37 @@ export const SubscriptionManagement: React.FC<SubscriptionManagementProps> = ({ 
   const [isYearly, setIsYearly] = useState(false);
 
   // Fetch current user subscription data
-  const { data: userData, isLoading } = useQuery({
+  const { data: userData, isLoading } = useQuery<{ success: boolean; user: any }>({
     queryKey: ['/api/user/current'],
     enabled: isOpen
   });
 
   // Fetch payment history
-  const { data: paymentHistory } = useQuery({
+  const { data: paymentHistory } = useQuery<any[]>({
     queryKey: ['/api/payments/history'],
     enabled: isOpen
+  });
+
+  // Extend Trial mutation
+  const extendTrialMutation = useMutation({
+    mutationFn: async () => {
+      const response = await apiRequest('POST', '/api/subscription/extend-trial');
+      return await response.json();
+    },
+    onSuccess: () => {
+      toast({
+        title: "Trial Extended",
+        description: "Your free trial has been extended for a further 30 days.",
+      });
+      queryClient.invalidateQueries({ queryKey: ['/api/user/current'] });
+    },
+    onError: () => {
+      toast({
+        title: "Extension Failed",
+        description: "Unable to extend trial. Please contact support.",
+        variant: "destructive",
+      });
+    },
   });
 
   // Cancel subscription mutation
@@ -117,25 +139,34 @@ export const SubscriptionManagement: React.FC<SubscriptionManagementProps> = ({ 
 
     const user = userData.user;
     const now = new Date();
-    const trialEnd = user.trialEndDate ? new Date(user.trialEndDate) : null;
     
-    let status: SubscriptionData['status'] = 'active';
+    // For legacy users missing trial fields, fallback to createdAt
+    let computedTrialStart = user.trialStartDate ? new Date(user.trialStartDate) : (user.createdAt ? new Date(user.createdAt) : now);
+    let computedTrialEnd = user.trialEndDate 
+      ? new Date(user.trialEndDate) 
+      : new Date(computedTrialStart.getTime() + 30 * 24 * 60 * 60 * 1000);
+      
+    let status: SubscriptionData['status'] = user.subscriptionStatus as any || 'active';
     
     // For testing: If user has a trial but we want to show cancel functionality,
     // we can temporarily simulate a paid subscription
     const hasTestPaidPlan = user.planType === 'premium' || user.planType === 'professional' || user.planType === 'enterprise';
     
-    if (user.planType === 'trial' && !hasTestPaidPlan) {
-      status = trialEnd && now > trialEnd ? 'expired' : 'trial';
+    const effectivePlanType = user.planType || 'trial';
+
+    if (effectivePlanType === 'trial' && !hasTestPaidPlan) {
+      if (status !== 'cancelled') {
+        status = now > computedTrialEnd ? 'expired' : 'trial';
+      }
     } else if (hasTestPaidPlan) {
-      status = 'active'; // Paid subscription is active
+      if (status !== 'cancelled') status = 'active'; // Paid subscription is active
     }
 
     return {
-      planType: user.planType || 'trial',
+      planType: effectivePlanType,
       accountType: user.accountType || 'free',
-      trialStartDate: user.trialStartDate,
-      trialEndDate: user.trialEndDate,
+      trialStartDate: computedTrialStart.toISOString(),
+      trialEndDate: computedTrialEnd.toISOString(),
       nextBillingDate: hasTestPaidPlan ? '2025-02-15' : undefined,
       amount: hasTestPaidPlan ? 29.00 : undefined,
       status
@@ -322,12 +353,25 @@ export const SubscriptionManagement: React.FC<SubscriptionManagementProps> = ({ 
                 {/* Action Buttons */}
                 <div className="flex gap-3 pt-4">
                   {(subscriptionData.status === 'trial' || subscriptionData.status === 'expired') && (
-                    <Button 
-                      onClick={() => setShowUpgradeDialog(true)}
-                      className="bg-purple-600 hover:bg-purple-700"
-                    >
-                      Upgrade Plan
-                    </Button>
+                    <>
+                      <Button 
+                        onClick={() => setShowUpgradeDialog(true)}
+                        className="bg-purple-600 hover:bg-purple-700"
+                      >
+                        Upgrade Plan
+                      </Button>
+                      
+                      {subscriptionData.status === 'expired' && (
+                        <Button 
+                          onClick={() => extendTrialMutation.mutate()}
+                          disabled={extendTrialMutation.isPending}
+                          variant="outline"
+                          className="border-blue-500 text-blue-400 hover:bg-blue-500/10"
+                        >
+                          {extendTrialMutation.isPending ? 'Extending...' : 'Extend Trial (30 Days)'}
+                        </Button>
+                      )}
+                    </>
                   )}
                   
                   {/* Show upgrade/cancel buttons for paid plans */}

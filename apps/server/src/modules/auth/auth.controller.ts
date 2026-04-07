@@ -114,3 +114,73 @@ export const signIn = async (req: Request, res: Response) => {
     res.status(500).json({ success: false, message: 'Server error during sign in' });
   }
 };
+
+export const updateProfile = async (req: Request, res: Response) => {
+  try {
+    const userId = (req as any).user?._id || (req as any).user?.id || req.body.userId;
+    if (!userId) return res.status(401).json({ success: false, message: 'Unauthorized' });
+
+    const { firstName, lastName, role, profilePicture, phone, bio, username } = req.body;
+    let updateObject: any = { firstName, lastName, role };
+    if (profilePicture !== undefined) updateObject.profilePicture = profilePicture;
+    if (phone !== undefined) updateObject.phoneNumber = phone;
+    if (bio !== undefined) updateObject.bio = bio;
+    if (username !== undefined) updateObject.username = username;
+
+    const updatedUser = await User.findByIdAndUpdate(userId, updateObject, { new: true });
+    
+    if (!updatedUser) {
+      return res.status(404).json({ success: false, message: 'User not found' });
+    }
+
+    return res.status(200).json({ 
+      success: true, 
+      user: {
+        id: updatedUser._id,
+        firstName: updatedUser.firstName,
+        lastName: updatedUser.lastName,
+        username: updatedUser.username,
+        role: updatedUser.role,
+        bio: updatedUser.bio,
+        phoneNumber: updatedUser.phoneNumber,
+        profilePicture: updatedUser.profilePicture
+      }
+    });
+  } catch (error) {
+    console.error('Update profile error:', error);
+    return res.status(500).json({ success: false, message: 'Server error updating profile' });
+  }
+};
+
+export const updatePassword = async (req: Request, res: Response) => {
+  try {
+    const userId = (req as any).user?._id || (req as any).user?.id || req.body.userId;
+    if (!userId) return res.status(401).json({ success: false, message: 'Unauthorized' });
+
+    const { currentPassword, newPassword } = req.body;
+    if (!currentPassword || !newPassword) {
+      return res.status(400).json({ success: false, message: 'Current and new password are required' });
+    }
+
+    const user = await User.findById(userId);
+    if (!user || !user.password) {
+      return res.status(404).json({ success: false, message: 'User not found' });
+    }
+
+    const isMatch = await bcrypt.compare(currentPassword, user.password);
+    if (!isMatch) {
+      return res.status(400).json({ success: false, message: 'Incorrect current password' });
+    }
+
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(newPassword, salt);
+
+    user.password = hashedPassword;
+    await user.save();
+
+    return res.status(200).json({ success: true, message: 'Password updated successfully' });
+  } catch (error) {
+    console.error('Update password error:', error);
+    return res.status(500).json({ success: false, message: 'Server error updating password' });
+  }
+};

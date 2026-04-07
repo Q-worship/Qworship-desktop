@@ -17,7 +17,7 @@ export const uploadMedia = async (req: Request, res: Response) => {
 
     for (let index = 0; index < files.length; index++) {
       const file = files[index];
-      const { originalname, mimetype, size, filename, path } = file;
+      const { originalname, mimetype, size, filename, path: uploadPath } = file;
 
       // Extract metadata from frontend mapping
       let metadata: any = {};
@@ -38,9 +38,9 @@ export const uploadMedia = async (req: Request, res: Response) => {
       if (type === 'image') {
         try {
           // Generate a safe temporary path with the original extension so sharp infers format
-          const tempPath = path.join(path.dirname(path), 'tmp-' + path.basename(path));
+          const tempPath = path.join(path.dirname(uploadPath), 'tmp-' + path.basename(uploadPath));
           
-          await sharp(path)
+          await sharp(uploadPath)
             .resize({ width: 1920, withoutEnlargement: true })
             .jpeg({ quality: 80, force: false })
             .webp({ quality: 80, force: false })
@@ -49,11 +49,11 @@ export const uploadMedia = async (req: Request, res: Response) => {
             .toFile(tempPath);
             
           // Replace the original with the compressed version
-          fs.unlinkSync(path);
-          fs.renameSync(tempPath, path);
+          fs.unlinkSync(uploadPath);
+          fs.renameSync(tempPath, uploadPath);
           
           // Re-measure file size
-          const stats = fs.statSync(path);
+          const stats = fs.statSync(uploadPath);
           finalFileSize = stats.size;
         } catch (err) {
           console.error(`Error compressing image ${filename}:`, err);
@@ -69,7 +69,7 @@ export const uploadMedia = async (req: Request, res: Response) => {
         type,
         fileType: mimetype,
         fileName: filename,
-        filePath: path,
+        filePath: uploadPath,
         fileSize: finalFileSize,
         uploadedBy: (req as any).user._id,
         usageCount: 0,

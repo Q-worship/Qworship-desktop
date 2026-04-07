@@ -799,14 +799,51 @@ export function AppHeader({
             </Button>
 
             {/* User Profile Dropdown */}
-            <Popover
-              open={isProfileMenuOpen}
-              onOpenChange={setIsProfileMenuOpen}>
+            {(() => {
+              const userObj = (currentUser as any)?.user || currentUser;
+              const getUserInitials = (u: any) => {
+                if (!u) return "U";
+                if (u.firstName || u.lastName) {
+                  return `${u.firstName?.[0] || ""}${u.lastName?.[0] || ""}`.toUpperCase();
+                }
+                if (u.username) return u.username[0].toUpperCase();
+                if (u.email) return u.email[0].toUpperCase();
+                return "U";
+              };
+              const getUserDisplayName = (u: any) => {
+                if (!u) return "User";
+                const fullName = `${u.firstName || ""} ${u.lastName || ""}`.trim();
+                if (fullName) return fullName;
+                if (u.username) return u.username;
+                if (u.email) return u.email.split('@')[0];
+                return "User";
+              };
+              
+              const initials = getUserInitials(userObj);
+              const displayName = getUserDisplayName(userObj);
+              const displayEmail = userObj?.email || "No email";
+              const rawProfilePic = userObj?.profilePicture;
+
+              const getProfilePictureSrc = (pic: string | null | undefined) => {
+                if (!pic) return undefined;
+                if (pic.startsWith('http') || pic.startsWith('/')) return pic;
+                return `/api/user-media-assets/${pic}/file`; // Map legacy DB string IDs directly dynamically.
+              };
+              
+              const profilePic = getProfilePictureSrc(rawProfilePic);
+              
+              return (
+                <Popover
+                  open={isProfileMenuOpen}
+                  onOpenChange={setIsProfileMenuOpen}>
               <PopoverTrigger asChild>
                 <button className="relative">
-                  <Avatar className="w-8 h-8 hover:ring-2 hover:ring-purple-400 transition-all">
+                  <Avatar className="w-8 h-8 hover:ring-2 hover:ring-purple-400 transition-all bg-gray-800">
+                    {profilePic && (
+                      <img src={profilePic} alt="Profile" className="object-cover h-full w-full rounded-full" />
+                    )}
                     <AvatarFallback className="bg-purple-300 text-purple-800">
-                      U
+                      {initials}
                     </AvatarFallback>
                   </Avatar>
                   {unreadCount > 0 && (
@@ -820,27 +857,20 @@ export function AppHeader({
                 <div className="space-y-4">
                   {/* Profile Header */}
                   <div className="flex items-center space-x-3 pb-3 border-b border-gray-600">
-                    <Avatar className="w-10 h-10">
+                    <Avatar className="w-10 h-10 bg-gray-800">
+                      {profilePic && (
+                        <img src={profilePic} alt="Profile" className="object-cover h-full w-full rounded-full" />
+                      )}
                       <AvatarFallback className="bg-purple-300 text-purple-800">
-                        {(currentUser as any)?.user
-                          ? `${(currentUser as any).user.firstName?.[0] || ""}${(currentUser as any).user.lastName?.[0] || ""}`.toUpperCase() ||
-                            (
-                              currentUser as any
-                            ).user.username?.[0]?.toUpperCase() ||
-                            "U"
-                          : "U"}
+                        {initials}
                       </AvatarFallback>
                     </Avatar>
                     <div>
                       <div className="text-white font-medium">
-                        {(currentUser as any)?.user
-                          ? `${(currentUser as any).user.firstName || ""} ${(currentUser as any).user.lastName || ""}`.trim() ||
-                            (currentUser as any).user.username ||
-                            "User"
-                          : "Loading..."}
+                        {displayName}
                       </div>
                       <div className="text-gray-400 text-sm">
-                        {(currentUser as any)?.user?.email || "Loading..."}
+                        {displayEmail}
                       </div>
                     </div>
                   </div>
@@ -933,6 +963,8 @@ export function AppHeader({
                 </div>
               </PopoverContent>
             </Popover>
+            );
+            })()}
           </div>
         </div>
       </nav>
