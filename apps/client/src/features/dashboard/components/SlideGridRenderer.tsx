@@ -19,7 +19,7 @@ export const SlideGridRenderer = (props: any) => {
                         {/* Slide Navigation */}
                         <div className="flex items-center space-x-3 flex-1">
                           {/* Slide Thumbnails with Content Previews */}
-                          {slides.map((slide, index) => (
+                          {slides.map((slide: any, index: number) => (
                             <div
                               key={slide.id}
                               className={`w-32 h-18 rounded-lg border-2 cursor-pointer transition-all relative overflow-hidden ${
@@ -231,7 +231,7 @@ export const SlideGridRenderer = (props: any) => {
                           }}
                         >
                           {/* Slide Thumbnails with uniform background and external titles */}
-                          {slides.map((slide, index) => {
+                          {slides.map((slide: any, index: number) => {
                             // Group slides by content type and item to calculate item slide numbers
                             let itemSlideNumber = 1;
                             let totalItemSlides = 1;
@@ -244,27 +244,27 @@ export const SlideGridRenderer = (props: any) => {
                               const songName =
                                 slide.songTitle || slide.title.split(" - ")[0];
                               const sameTypeSlides = slides.filter(
-                                (s) =>
+                                (s: any) =>
                                   (s.type === "verse" || s.type === "chorus") &&
                                   (s.songTitle || s.title.split(" - ")[0]) ===
                                     songName,
                               );
                               itemSlideNumber =
                                 sameTypeSlides.findIndex(
-                                  (s) => s.id === slide.id,
+                                  (s: any) => s.id === slide.id,
                                 ) + 1;
                               totalItemSlides = sameTypeSlides.length;
                             } else if (slide.type === "bible") {
                               // For Bible verses, group by chapter
                               const bibleRef = slide.title.split(":")[0];
                               const bibleSameChapterSlides = slides.filter(
-                                (s) =>
+                                (s: any) =>
                                   s.type === "bible" &&
                                   s.title.split(":")[0] === bibleRef,
                               );
                               itemSlideNumber =
                                 bibleSameChapterSlides.findIndex(
-                                  (s) => s.id === slide.id,
+                                  (s: any) => s.id === slide.id,
                                 ) + 1;
                               totalItemSlides = bibleSameChapterSlides.length;
                             }
@@ -287,23 +287,23 @@ export const SlideGridRenderer = (props: any) => {
                               const songName =
                                 slide.songTitle || slide.title.split(" - ")[0];
                               const sameItemSlides = slides.filter(
-                                (s) =>
+                                (s: any) =>
                                   (s.type === "verse" || s.type === "chorus") &&
                                   (s.songTitle || s.title.split(" - ")[0]) ===
                                     songName,
                               );
                               isItemSelected = sameItemSlides.some(
-                                (s) => slides.indexOf(s) + 1 === currentSlide,
+                                (s: any) => slides.indexOf(s) + 1 === currentSlide,
                               );
                             } else if (slide.type === "bible") {
                               const bibleRef = slide.title.split(":")[0];
                               const sameItemSlides = slides.filter(
-                                (s) =>
+                                (s: any) =>
                                   s.type === "bible" &&
                                   s.title.split(":")[0] === bibleRef,
                               );
                               isItemSelected = sameItemSlides.some(
-                                (s) => slides.indexOf(s) + 1 === currentSlide,
+                                (s: any) => slides.indexOf(s) + 1 === currentSlide,
                               );
                             } else {
                               isItemSelected = index + 1 === currentSlide;
@@ -374,14 +374,31 @@ export const SlideGridRenderer = (props: any) => {
                                       style={(() => {
                                         // Find the service item that contains this slide
                                         const parentItem = serviceItems.find(
-                                          (item) =>
+                                          (item: any) =>
                                             item.slides.some(
-                                              (s) => s.id === slide.id,
+                                              (s: any) => s.id === slide.id,
                                             ),
                                         );
                                         if (parentItem) {
                                           const itemBackground =
                                             getItemBackground(parentItem.id);
+                                          
+                                          if (slide.type === "media" && slide.content) {
+                                             let slideContentUrl = typeof slide.content === 'object' ? (slide.content as any).url : slide.content;
+                                             if (slideContentUrl && typeof slideContentUrl === 'string') {
+                                               if (!slideContentUrl.startsWith("http") && !slideContentUrl.startsWith("data:")) {
+                                                 slideContentUrl = `${window.location.origin}${slideContentUrl.startsWith("/") ? "" : "/"}${slideContentUrl}`;
+                                               }
+                                               return {
+                                                 backgroundImage: `url("${slideContentUrl}")`,
+                                                 backgroundSize: "cover",
+                                                 backgroundPosition: "center",
+                                                 backgroundRepeat: "no-repeat",
+                                                 backgroundColor: "#1a0f2e"
+                                               };
+                                             }
+                                          }
+
                                           if (
                                             itemBackground.type === "image" ||
                                             itemBackground.type === "video"
@@ -538,6 +555,12 @@ export const SlideGridRenderer = (props: any) => {
                                             </div>
                                             <div className="text-[10px] text-gray-300">
                                               Video Content
+                                            </div>
+                                          </div>
+                                        ) : (slide.type === "media" && (slide as any).subtype === "video") ? (
+                                          <div className="h-full flex flex-col justify-center items-center z-20">
+                                            <div className="text-2xl text-white/90 drop-shadow-lg mb-1">
+                                              ▶
                                             </div>
                                           </div>
                                         ) : (

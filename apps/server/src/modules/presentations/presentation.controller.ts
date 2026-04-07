@@ -17,7 +17,7 @@ export const getPresentations = async (req: Request, res: Response) => {
       presentationDate: p.date ? p.date.toISOString() : p.createdAt.toISOString(),
       createdAt: p.createdAt.toISOString(),
       updatedAt: p.updatedAt.toISOString(),
-      slideCount: p.sections.reduce((acc, sec) => acc + sec.items.length, 0),
+      slideCount: p.serviceData?.slides ? p.serviceData.slides.length : p.sections.reduce((acc, sec) => acc + sec.items.length, 0),
       serviceData: p.serviceData || p.sections,
       status: 'active'
     }));
@@ -85,7 +85,7 @@ export const getPresentationById = async (req: Request, res: Response) => {
         presentationDate: presentation.date ? presentation.date.toISOString() : presentation.createdAt.toISOString(),
         createdAt: presentation.createdAt.toISOString(),
         updatedAt: presentation.updatedAt.toISOString(),
-        slideCount: presentation.sections.reduce((acc, sec) => acc + sec.items.length, 0),
+        slideCount: presentation.serviceData?.slides ? presentation.serviceData.slides.length : presentation.sections.reduce((acc, sec) => acc + sec.items.length, 0),
         status: 'active',
         serviceData: presentation.serviceData || presentation.sections // payload used by dash
       }

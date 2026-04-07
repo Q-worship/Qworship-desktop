@@ -165,7 +165,7 @@ export function useLivePreviewSync({
             setPreviewSlides(newSlides);
             // Only update previewCurrentSlide if we're not in a debounce period from local navigation
             const now = Date.now();
-            const isDebouncing = now - navigationDebounceRef.current < 500; // 500ms debounce window
+            const isDebouncing = now - navigationDebounceRef.current < 150; // 150ms debounce window
             if (!isDebouncing) {
               // Clamp current slide to valid range when slides change
               if (data.currentSlide !== undefined) {
@@ -176,7 +176,7 @@ export function useLivePreviewSync({
                 setPreviewCurrentSlide(validSlide);
               } else {
                 // Data-only update: ensure we're in bounds without changing position
-                setPreviewCurrentSlide((prev) =>
+                setPreviewCurrentSlide((prev: number) =>
                   Math.max(1, Math.min(prev, newSlides.length || 1)),
                 );
               }
@@ -184,7 +184,7 @@ export function useLivePreviewSync({
           } else if (data.currentSlide !== undefined) {
             // Only update if not debouncing
             const now = Date.now();
-            const isDebouncing = now - navigationDebounceRef.current < 500;
+            const isDebouncing = now - navigationDebounceRef.current < 150;
             if (!isDebouncing) {
               setPreviewCurrentSlide(data.currentSlide);
             }
@@ -230,7 +230,7 @@ export function useLivePreviewSync({
           // Check debounce to prevent overriding locally-initiated changes
           const slideChangeNow = Date.now();
           const slideChangeIsDebouncing =
-            slideChangeNow - navigationDebounceRef.current < 500;
+            slideChangeNow - navigationDebounceRef.current < 150;
           if (data.slides !== undefined) {
             const newSlides = data.slides || [];
             setPreviewSlides(newSlides);

@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { apiRequest } from "@/lib/queryClient";
+import { useQueryClient } from "@tanstack/react-query";
 
 export const useRecordingManager = () => {
   const [isRecording, setIsRecording] = useState(false);
@@ -12,6 +14,7 @@ export const useRecordingManager = () => {
     null,
   );
   const [showRecordingControls, setShowRecordingControls] = useState(false);
+  const queryClient = useQueryClient();
 
   const startRecording = async () => {
     try {
@@ -46,6 +49,16 @@ export const useRecordingManager = () => {
           setRecordingTimer(null);
         }
         stream.getTracks().forEach((track) => track.stop());
+
+        // Notify backend that recording was saved
+        apiRequest("POST", "/api/notifications/trigger-recording-saved", {
+          recordingName: `Session ${new Date().toLocaleDateString()}`,
+        })
+          .then(() => {
+            queryClient.invalidateQueries({ queryKey: ["/api/notifications"] });
+            queryClient.invalidateQueries({ queryKey: ["/api/notifications/unread-count"] });
+          })
+          .catch((err) => console.error("Failed to notify recording saved:", err));
       };
 
       setMediaRecorder(recorder);

@@ -19,6 +19,7 @@ import {
   Palette,
   Play,
   Image,
+  Layers,
   Globe,
   LinkIcon,
   SidebarOpen,
@@ -62,6 +63,7 @@ import { OnScreenBibleEditor } from "@/features/dashboard/components/OnScreenBib
 import { useToast } from "@/hooks/use-toast";
 import { useAudioDevices } from "@/hooks/use-audio-devices";
 import { useRecordingManager } from "@/features/dashboard/hooks/useRecordingManager";
+import { useNotifications } from "@/hooks/useNotifications";
 import { useLivePresentation } from "@/features/dashboard/hooks/useLivePresentation";
 import { useProjectManager } from "@/features/dashboard/hooks/useProjectManager";
 import { useProjectMutations } from "@/features/dashboard/hooks/useProjectMutations";
@@ -669,6 +671,32 @@ export const QworshipHomeV2Base = (): JSX.Element => {
 
   // Get background for a specific item
   const getItemBackground = (itemId: string) => {
+    // If it is a media item, its content is effectively the background for the live window!
+    const item = serviceItems.find((i) => i.id === itemId);
+    if (item && item.type === "media") {
+      // For slideshow/image items with multiple slides, use the currently displayed slide's content
+      let mediaUrl: string | undefined;
+      if ((item.subtype === "slideshow" || item.subtype === "image") && item.slides?.length > 0) {
+        // Find which of this item's slides is currently being displayed
+        const currentSlideObj = currentlyDisplayedSlide;
+        if (currentSlideObj && item.slides.some((s: any) => s.id === currentSlideObj.id)) {
+          mediaUrl = typeof currentSlideObj.content === "string" ? currentSlideObj.content : undefined;
+        }
+        // Fallback to the first slide
+        if (!mediaUrl) {
+          mediaUrl = typeof item.slides[0].content === "string" ? item.slides[0].content : undefined;
+        }
+      } else {
+        mediaUrl = typeof item.content === "string" ? item.content : item.slides?.[0]?.content;
+      }
+      if (mediaUrl && typeof mediaUrl === "string") {
+        return {
+          type: item.subtype === "video" ? "video" : "image",
+          value: mediaUrl,
+        };
+      }
+    }
+
     const background = itemBackgrounds[itemId] || {
       type: "fill",
       value: "#000000",
@@ -753,7 +781,7 @@ export const QworshipHomeV2Base = (): JSX.Element => {
   const handleSlideClick = (slide: Slide, slideIndex: number) => {
     // Find the service item that contains this slide
     const parentItem = serviceItems.find((item) =>
-      item.slides.some((s: any) => s.id === slide.id),
+      item.slides?.some((s: any) => slide.id && s.id === slide.id),
     );
 
     if (parentItem) {
@@ -773,8 +801,22 @@ export const QworshipHomeV2Base = (): JSX.Element => {
         // Clear slide editor state
         setSelectedSlide(null);
         setIsSlideEditorOpen(false);
+      } else if (parentItem.type === "announcement") {
+        // For announcement items, route to the full Announcement Editor
+        // (with WYSIWYG toolbar and metadata fields)
+        setEditingContent(parentItem);
+        setSelectedContentType("announcement");
+
+        // Clear slide editor state so the announcement editor shows
+        setSelectedSlide(null);
+        setIsSlideEditorOpen(false);
+      } else if (parentItem.type === "media" && (parentItem.subtype === "slideshow" || parentItem.subtype === "image" || parentItem.subtype === "video")) {
+        setEditingContent(parentItem);
+        setSelectedContentType(parentItem.subtype === "slideshow" ? "slideshow" : parentItem.subtype === "video" ? "video" : "image");
+        setSelectedSlide(null);
+        setIsSlideEditorOpen(false);
       } else {
-        // For non-song items, use the existing slide editor modal
+        // For other items, use the existing slide editor modal
         setSelectedSlide({
           slideId: slide.id,
           itemId: parentItem.id,
@@ -791,7 +833,13 @@ export const QworshipHomeV2Base = (): JSX.Element => {
 
       // Notify live presentation of slide change with background information
       if (liveWindow && !liveWindow.closed) {
-        const slideItemBackground = getItemBackground(parentItem.id);
+        // For media items (image/slideshow), use the slide's content directly as background
+        let slideItemBackground: any = null;
+        if (parentItem.type === "media" && (parentItem.subtype === "image" || parentItem.subtype === "slideshow") && slide.content) {
+          slideItemBackground = { type: "image", value: slide.content };
+        } else {
+          slideItemBackground = getItemBackground(parentItem.id);
+        }
         console.log("📤 SENDING SLIDE CHANGE WITH BACKGROUND to Live Window");
         console.log("🎬 Slide number:", slideIndex + 1);
         console.log("🎯 Parent item ID:", parentItem.id);
@@ -1377,74 +1425,58 @@ export const QworshipHomeV2Base = (): JSX.Element => {
     });
   };
 
-  const [notifications, setNotifications] = useState([
-    {
-      id: "1",
-      type: "success",
-      title: "Recording Saved",
-      message:
-        "Your sermon recording has been successfully saved to your library",
-      timestamp: new Date(Date.now() - 5 * 60 * 1000),
-      read: false,
-    },
-    {
-      id: "2",
-      type: "info",
-      title: "New Bible Version Available",
-      message:
-        "ESV translation has been added to your Hands-Free Bible Companion",
-      timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000),
-      read: false,
-    },
-    {
-      id: "3",
-      type: "warning",
-      title: "Storage Almost Full",
-      message: "You are using 85% of your available storage space",
-      timestamp: new Date(Date.now() - 24 * 60 * 60 * 1000),
-      read: true,
-    },
-  ]);
-  const [unreadCount, setUnreadCount] = useState(2);
+  // ─── Real Notifications from API ─────────────────────────────────
+  const {
+    notifications: apiNotifications,
+    unreadCount,
+    markNotificationAsRead,
+    markAllAsRead,
+    formatTimestamp,
+  } = useNotifications();
+
+  // Map API shape to the format AppHeader expects
+  const notifications = apiNotifications.map((n) => ({
+    id: n._id,
+    type: n.type,
+    title: n.title,
+    message: n.message,
+    timestamp: n.createdAt,
+    read: n.isRead,
+  }));
+
+  // Notification icon helper (matches API notification types)
+  const getNotificationIcon = (type: string) => {
+    switch (type) {
+      case "welcome":
+        return <CheckCircle className="h-4 w-4 text-green-500" />;
+      case "password_change":
+        return <CheckCircle className="h-4 w-4 text-blue-500" />;
+      case "plan_subscription":
+      case "new_plan":
+        return <CheckCircle className="h-4 w-4 text-purple-500" />;
+      case "plan_expiry_reminder":
+        return <AlertTriangle className="h-4 w-4 text-yellow-500" />;
+      case "plan_expired":
+        return <AlertTriangle className="h-4 w-4 text-red-500" />;
+      case "payment_success":
+        return <CheckCircle className="h-4 w-4 text-green-500" />;
+      case "recording_saved":
+        return <CheckCircle className="h-4 w-4 text-teal-500" />;
+      case "admin_feature":
+      case "admin_bible":
+      case "admin_promotion":
+      case "admin_general":
+        return <Bell className="h-4 w-4 text-purple-400" />;
+      default:
+        return <Bell className="h-4 w-4 text-blue-500" />;
+    }
+  };
 
   // Unified listening state - syncs Button 1 and Hands-free Bible widget
   const toggleListening = (newState: boolean) => {
     if (newState !== isListeningMode) {
       toggleMicrophone();
     }
-  };
-
-  // Profile dropdown helper functions
-  const getNotificationIcon = (type: string) => {
-    switch (type) {
-      case "warning":
-        return <AlertTriangle className="h-4 w-4 text-yellow-500" />;
-      case "error":
-        return <AlertTriangle className="h-4 w-4 text-red-500" />;
-      case "success":
-        return <CheckCircle className="h-4 w-4 text-green-500" />;
-      default:
-        return <Bell className="h-4 w-4 text-blue-500" />;
-    }
-  };
-
-  const formatTimestamp = (date: Date) => {
-    const now = new Date();
-    const diffMinutes = Math.floor(
-      (now.getTime() - date.getTime()) / (1000 * 60),
-    );
-
-    if (diffMinutes < 1) return "Just now";
-    if (diffMinutes < 60) return `${diffMinutes}m ago`;
-    if (diffMinutes < 1440) return `${Math.floor(diffMinutes / 60)}h ago`;
-    return `${Math.floor(diffMinutes / 1440)}d ago`;
-  };
-
-  const markNotificationAsRead = (id: string) => {
-    setNotifications((prev) =>
-      prev.map((notif) => (notif.id === id ? { ...notif, read: true } : notif)),
-    );
-    setUnreadCount((prev) => Math.max(0, prev - 1));
   };
 
   // Slide navigation functions
@@ -1461,10 +1493,16 @@ export const QworshipHomeV2Base = (): JSX.Element => {
 
       // Send to live window with background data
       if (liveWindow && !liveWindow.closed) {
-        // Get the correct background data using getItemBackground function
-        const slideBackground = slideToDisplay?.itemId
-          ? getItemBackground(slideToDisplay.itemId)
-          : null;
+        // For media items (image/slideshow), use the slide's content directly as background
+        let slideBackground: any = null;
+        if (slideToDisplay?.itemId) {
+          const parentItem = serviceItems.find((i: any) => i.id === slideToDisplay.itemId);
+          if (parentItem && parentItem.type === "media" && (parentItem.subtype === "image" || parentItem.subtype === "slideshow") && slideToDisplay.content) {
+            slideBackground = { type: "image", value: slideToDisplay.content };
+          } else {
+            slideBackground = getItemBackground(slideToDisplay.itemId);
+          }
+        }
 
         liveWindow.postMessage(
           {
@@ -1494,10 +1532,16 @@ export const QworshipHomeV2Base = (): JSX.Element => {
 
       // Send to live window with background data
       if (liveWindow && !liveWindow.closed) {
-        // Get the correct background data using getItemBackground function
-        const slideBackground = slideToDisplay?.itemId
-          ? getItemBackground(slideToDisplay.itemId)
-          : null;
+        // For media items (image/slideshow), use the slide's content directly as background
+        let slideBackground: any = null;
+        if (slideToDisplay?.itemId) {
+          const parentItem = serviceItems.find((i: any) => i.id === slideToDisplay.itemId);
+          if (parentItem && parentItem.type === "media" && (parentItem.subtype === "image" || parentItem.subtype === "slideshow") && slideToDisplay.content) {
+            slideBackground = { type: "image", value: slideToDisplay.content };
+          } else {
+            slideBackground = getItemBackground(slideToDisplay.itemId);
+          }
+        }
 
         liveWindow.postMessage(
           {
@@ -1538,6 +1582,54 @@ export const QworshipHomeV2Base = (): JSX.Element => {
         document.removeEventListener("mousedown", handleClickOutside);
     }
   }, [isListeningDropdownOpen, isBiblePreferencesOpen]);
+
+  // Slideshow Auto-Advance Logic
+  useEffect(() => {
+    let timerId: NodeJS.Timeout;
+
+    if (isLive && currentlyDisplayedSlide?.itemId) {
+      const parentItem = serviceItems.find((item: any) => item.id === currentlyDisplayedSlide.itemId);
+      
+      if (parentItem && parentItem.type === "media" && (parentItem.subtype === "slideshow" || parentItem.subtype === "image")) {
+        const settings = typeof parentItem.content === "object" ? parentItem.content : {};
+        const isAutoAdvance = settings.autoAdvance ?? true;
+        const timerSeconds = settings.timer || 5;
+
+        if (isAutoAdvance && (parentItem.slides?.length > 1 || slides.length > 1)) {
+          timerId = setTimeout(() => {
+            if (currentSlide < totalSlides) {
+              const newSlide = currentSlide + 1;
+              setCurrentSlide(newSlide);
+              const slideToDisplay = slides[newSlide - 1];
+              if (slideToDisplay) {
+                setCurrentlyDisplayedSlide(slideToDisplay);
+                if (liveWindow && !liveWindow.closed) {
+                  const slideBackground = slideToDisplay?.itemId ? getItemBackground(slideToDisplay.itemId) : null;
+                  liveWindow.postMessage({ type: "SLIDE_CHANGE", data: { slideNumber: newSlide, slide: slideToDisplay, appliedBackground: slideBackground } }, "*");
+                }
+              }
+            } else {
+              // Loop back to the first slide of the slideshow
+              setCurrentSlide(1);
+              const slideToDisplay = slides[0];
+              if (slideToDisplay) {
+                setCurrentlyDisplayedSlide(slideToDisplay);
+                if (liveWindow && !liveWindow.closed) {
+                  const slideBackground = slideToDisplay?.itemId ? getItemBackground(slideToDisplay.itemId) : null;
+                  liveWindow.postMessage({ type: "SLIDE_CHANGE", data: { slideNumber: 1, slide: slideToDisplay, appliedBackground: slideBackground } }, "*");
+                }
+              }
+            }
+          }, timerSeconds * 1000);
+        }
+      }
+    }
+
+    return () => {
+      if (timerId) clearTimeout(timerId);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isLive, currentlyDisplayedSlide?.id, currentSlide]);
 
   const navItems = [
     { name: "Project", active: activeTab === "Project" },
@@ -1724,6 +1816,11 @@ export const QworshipHomeV2Base = (): JSX.Element => {
           title: "Welcome Announcement",
           content:
             "Welcome to our Sunday service! We're glad you're here with us today.",
+          location: "",
+          eventDate: "",
+          eventTime: "",
+          contact: "",
+          duration: "manual",
         }),
     },
     {
@@ -1751,9 +1848,10 @@ export const QworshipHomeV2Base = (): JSX.Element => {
           type: "media",
           subtype: "video",
           title: "Worship Video",
-          content: "Inspirational worship video",
+          content: "",
         }),
     },
+
     {
       name: "Image",
       shortcut: "Ctrl + Shift + I",
@@ -1765,7 +1863,7 @@ export const QworshipHomeV2Base = (): JSX.Element => {
           type: "media",
           subtype: "image",
           title: "Background Image",
-          content: "Worship background image",
+          content: "",
         }),
     },
     {
@@ -1891,6 +1989,11 @@ export const QworshipHomeV2Base = (): JSX.Element => {
       title: "Welcome Announcement",
       content:
         "Welcome to our Sunday service! We're glad you're here with us today.",
+      location: "",
+      eventDate: "",
+      eventTime: "",
+      contact: "",
+      duration: "manual",
     };
     addItemToPreparation(announcement);
   };
@@ -1901,6 +2004,11 @@ export const QworshipHomeV2Base = (): JSX.Element => {
       type: "announcement",
       title: "Upcoming Event",
       content: "Join us next Sunday for our special guest speaker at 10:30 AM.",
+      location: "Main Sanctuary",
+      eventDate: "",
+      eventTime: "10:30",
+      contact: "",
+      duration: "manual",
     };
     addItemToPreparation(eventAnnouncement);
   };
@@ -1995,71 +2103,130 @@ export const QworshipHomeV2Base = (): JSX.Element => {
     newTitle: string,
     newContent: any,
     slides?: any[],
+    metadata?: Record<string, any>,
   ) => {
     console.log("Updating item content for:", itemId, "with title:", newTitle);
 
-    // Update serviceItems
-    setServiceItems((prev) => {
-      const updated = prev.map((item) => {
+    // For announcement items, auto-regenerate slides to reflect title/content changes
+    const resolveSlides = (existingItem: any) => {
+      if (slides) return slides;
+      if (existingItem?.type === "announcement") {
+        const merged = { ...existingItem, ...(metadata || {}) };
+        const contentStr = typeof newContent === "string" ? newContent : (typeof merged.content === "string" ? merged.content : "");
+        return [{
+          id: existingItem.slides?.[0]?.id || `slide-${itemId}-${Date.now()}`,
+          type: "announcement" as const,
+          title: newTitle,
+          content: contentStr,
+          location: merged.location || "",
+          eventDate: merged.eventDate || "",
+          eventTime: merged.eventTime || "",
+          contact: merged.contact || "",
+          sectionLabel: "Announcement",
+        }];
+      } else if (existingItem?.type === "media") {
+        if (existingItem.slides && existingItem.slides.length > 0) {
+          // If we already have slides, preserve them and update titles.
+          return existingItem.slides.map((s: any) => ({ ...s, title: newTitle }));
+        }
+
+        const merged = { ...existingItem, ...(metadata || {}) };
+        const contentVal = typeof newContent === "string" ? newContent : 
+                           (typeof newContent === "object" && newContent !== null && newContent.url ? newContent.url :
+                           (typeof merged.content === "string" ? merged.content : 
+                           (typeof merged.content === "object" && merged.content !== null && merged.content.url ? merged.content.url : "")));
+                           
+        return [{
+          id: existingItem.slides?.[0]?.id || `slide-${itemId}-${Date.now()}`,
+          type: "media" as const,
+          title: newTitle,
+          content: contentVal,
+          videoSettings: merged.subtype === "video" ? (typeof newContent === 'object' ? newContent : typeof merged.content === 'object' ? merged.content : {}) : undefined,
+          subtype: merged.subtype || "image",
+          sectionLabel: "Media",
+        }];
+      }
+      return existingItem?.slides;
+    };
+
+    const extra = metadata || {};
+
+    const nextServiceItems = serviceItems.map((item) => {
+      if (item.id === itemId) {
+        return {
+          ...item,
+          ...extra,
+          title: newTitle,
+          content: newContent,
+          slides: resolveSlides(item),
+        };
+      }
+      return item;
+    });
+    setServiceItems(nextServiceItems);
+
+    // Update sectionItems for sidebar display
+    const nextSectionItems = { ...sectionItems };
+    for (const section in nextSectionItems) {
+      const sectionItemIndex = nextSectionItems[section].findIndex(
+        (item) => item.id === itemId,
+      );
+      if (sectionItemIndex !== -1) {
+        nextSectionItems[section] = [...nextSectionItems[section]];
+        const existingItem = nextSectionItems[section][sectionItemIndex];
+        nextSectionItems[section][sectionItemIndex] = {
+          ...existingItem,
+          ...extra,
+          title: newTitle,
+          content: newContent,
+          slides: resolveSlides(existingItem),
+        };
+        break;
+      }
+    }
+    setSectionItems(nextSectionItems);
+
+    // Update insertedItems for the upper section list display
+    setInsertedItems((prev) =>
+      prev.map((item) => {
         if (item.id === itemId) {
-          console.log(
-            "Updating service item title from",
-            item.title,
-            "to",
-            newTitle,
-          );
           return {
             ...item,
+            ...extra,
             title: newTitle,
             content: newContent,
-            slides: slides || item.slides,
+            slides: resolveSlides(item),
           };
         }
         return item;
-      });
-      return updated;
-    });
-
-    // Update sectionItems for sidebar display
-    setSectionItems((prev) => {
-      const newSectionItems = { ...prev };
-      for (const section in newSectionItems) {
-        const sectionItemIndex = newSectionItems[section].findIndex(
-          (item) => item.id === itemId,
-        );
-        if (sectionItemIndex !== -1) {
-          console.log(
-            "Updating section item title in",
-            section,
-            "from",
-            newSectionItems[section][sectionItemIndex].title,
-            "to",
-            newTitle,
-          );
-          newSectionItems[section] = [...newSectionItems[section]];
-          newSectionItems[section][sectionItemIndex] = {
-            ...newSectionItems[section][sectionItemIndex],
-            title: newTitle,
-            content: newContent,
-            slides: slides || newSectionItems[section][sectionItemIndex].slides,
-          };
-          break;
-        }
-      }
-      return newSectionItems;
-    });
+      })
+    );
 
     // Update editing content
     setEditingContent((prev: any) =>
       prev && prev.id === itemId
         ? {
             ...prev,
+            ...extra,
             title: newTitle,
             content: newContent,
-            slides: slides || prev.slides,
+            slides: resolveSlides(prev),
           }
         : prev,
     );
+
+    // Synchronously rebuild slides using the predictable explicit next states
+    rebuildSlidesFromServiceItems(nextServiceItems, nextSectionItems);
+
+    setCurrentlyDisplayedSlide((prev: any) => {
+      if (prev && prev.id) {
+        const itemWithSlide = nextServiceItems.find(i => i.slides?.some((s: any) => s.id === prev.id));
+        if (itemWithSlide) {
+          return itemWithSlide.slides.find((s: any) => s.id === prev.id) || prev;
+        }
+      }
+      return prev;
+    });
   };
 
   // Handle selecting a song from search results
@@ -2226,7 +2393,7 @@ export const QworshipHomeV2Base = (): JSX.Element => {
       type: "media",
       subtype: "image",
       title: "Background Image",
-      content: "Worship background image",
+      content: "",
     };
     addItemToPreparation(imageItem);
   };
@@ -2237,7 +2404,7 @@ export const QworshipHomeV2Base = (): JSX.Element => {
       type: "media",
       subtype: "video",
       title: "Worship Video",
-      content: "Inspirational worship video",
+      content: "",
     };
     addItemToPreparation(videoItem);
   };
@@ -2305,10 +2472,11 @@ export const QworshipHomeV2Base = (): JSX.Element => {
     });
 
     // ACTION 1: Create generic item in selected service section
-    setSectionItems((prev) => ({
-      ...prev,
-      [selectedServiceSection]: [...(prev[selectedServiceSection] || []), item],
-    }));
+    const nextSectionItems = {
+      ...sectionItems,
+      [selectedServiceSection]: [...(sectionItems[selectedServiceSection] || []), item],
+    };
+    setSectionItems(nextSectionItems);
 
     // Auto-expand the section to show the added item
     setExpandedSections((prev) => ({
@@ -2340,20 +2508,34 @@ export const QworshipHomeV2Base = (): JSX.Element => {
       type: item.type,
       title: item.title,
       content: item.content || {},
-      slides: [
+      location: item.location || "",
+      eventDate: item.eventDate || "",
+      eventTime: item.eventTime || "",
+      contact: item.contact || "",
+      slides: (item.subtype === "slideshow" || item.subtype === "image") ? (item.slides || []) : [
         {
           id: `slide-${item.id}-${Date.now()}`,
-          type: item.type === "song" ? ("song" as const) : ("custom" as const),
+          type: item.type === "song" ? ("song" as const) : item.type === "announcement" ? ("announcement" as const) : item.type === "media" ? ("media" as const) : ("custom" as const),
           title: item.title,
           content:
-            item.type === "song" ? "Please select a song" : "Ready for content",
-          sectionLabel: item.type === "song" ? "Song" : "Content",
+            item.type === "song" ? "Please select a song" : (typeof item.content === "string" ? item.content : "Ready for content"),
+          sectionLabel: item.type === "song" ? "Song" : item.type === "announcement" ? "Announcement" : item.type === "media" ? "Media" : "Content",
+          ...(item.type === "announcement" ? {
+            location: item.location || "",
+            eventDate: item.eventDate || "",
+            eventTime: item.eventTime || "",
+            contact: item.contact || "",
+          } : {}),
+          ...(item.type === "media" ? {
+            subtype: item.subtype || "image",
+          } : {}),
         },
       ],
     };
 
     // Add to serviceItems for slide display
-    setServiceItems((prev) => [...prev, newServiceItem]);
+    const nextServiceItems = [...serviceItems, newServiceItem];
+    setServiceItems(nextServiceItems);
 
     console.log(
       `✅ Added item to serviceItems for slide display:`,
@@ -2364,6 +2546,9 @@ export const QworshipHomeV2Base = (): JSX.Element => {
       `3-Action System completed for ${item.type} in ${selectedServiceSection}:`,
       item,
     );
+
+    // Synchronously rebuild slides using the predictable explicit next states
+    rebuildSlidesFromServiceItems(nextServiceItems, nextSectionItems);
   };
 
   // Helper function to create slides for a single item without adding to state
@@ -2381,8 +2566,35 @@ export const QworshipHomeV2Base = (): JSX.Element => {
         songId: item.songId,
         sectionLabel: section.label,
       }));
+    } else if (item.type === "announcement") {
+      // For announcement items, create a slide with announcement type
+      return [
+        {
+          id: `item-${item.id}-${Date.now()}`,
+          type: "announcement" as const,
+          title: item.title || "Announcement",
+          content: typeof item.content === "string" ? item.content : (item.title || "Announcement"),
+          location: item.location || "",
+          eventDate: item.eventDate || "",
+          eventTime: item.eventTime || "",
+          contact: item.contact || "",
+          sectionLabel: "Announcement",
+        },
+      ];
+    } else if (item.type === "media") {
+      // For media items, explicitly maintain media type so correct renderers are activated
+      return [
+        {
+          id: `item-${item.id}-${Date.now()}`,
+          type: "media" as const,
+          title: item.title || "Media",
+          content: typeof item.content === "string" ? item.content : "",
+          subtype: item.subtype || "image",
+          sectionLabel: "Media",
+        },
+      ];
     } else {
-      // For non-song items, create a single slide
+      // For other non-song items, create a single custom slide
       return [
         {
           id: `item-${item.id}-${Date.now()}`,
@@ -2452,10 +2664,15 @@ export const QworshipHomeV2Base = (): JSX.Element => {
       canRedo: false,
     }));
 
-    // Rebuild slides to append new song slides
-    setTimeout(() => {
-      rebuildSlidesFromServiceItems();
-    }, 100);
+    // Manually compute next section items to pipeline into rebuild
+    const nextSectionItems = { ...sectionItems };
+    sectionIds.forEach((sectionId) => {
+      const itemWithUniqueId = { ...songItem, id: `song-${songItem.songId}-${sectionId}-${Date.now()}` };
+      nextSectionItems[sectionId] = [...(nextSectionItems[sectionId] || []), itemWithUniqueId];
+    });
+
+    // Rebuild slides to append new song slides using explicit state mapping
+    rebuildSlidesFromServiceItems(serviceItems, nextSectionItems);
   };
 
   const createSlideFromItem = (item: any) => {
@@ -2498,10 +2715,13 @@ export const QworshipHomeV2Base = (): JSX.Element => {
   ];
 
   // Function to rebuild all slides based on service section items order
-  const rebuildSlidesFromServiceItems = () => {
+  const rebuildSlidesFromServiceItems = (
+    currentServiceItems = serviceItems,
+    currentSectionItems = sectionItems
+  ) => {
     // Preserve existing slides from current serviceItems
     const existingSlides: any[] = [];
-    serviceItems.forEach((serviceItem) => {
+    currentServiceItems.forEach((serviceItem) => {
       if (serviceItem.slides && Array.isArray(serviceItem.slides)) {
         existingSlides.push(...serviceItem.slides);
       }
@@ -2511,13 +2731,16 @@ export const QworshipHomeV2Base = (): JSX.Element => {
 
     // Process service sections in order to add NEW slides
     serviceSections.forEach((sectionName) => {
-      const items = sectionItems[sectionName] || [];
+      const items = currentSectionItems[sectionName] || [];
 
       items.forEach((item, itemIndex) => {
         // Check if this item already has slides in the existing slides
+        // Guard against `undefined === undefined` match for items without a `songId`
         const itemAlreadyHasSlides = existingSlides.some(
           (slide) =>
-            slide.songId === item.songId || slide.id?.includes(item.id),
+            (item.songId && slide.songId === item.songId) || 
+            slide.id?.includes(item.id) ||
+            slide.itemId === item.id,
         );
 
         if (itemAlreadyHasSlides) {
@@ -2560,8 +2783,22 @@ export const QworshipHomeV2Base = (): JSX.Element => {
             sectionLabel: "Song",
           };
           allSlides.push(genericSongSlide); // Append to existing slides
+        } else if (item.type === "announcement") {
+          // For announcement items, create a slide with announcement type
+          const announcementSlide = {
+            id: `item-${item.id}-${Date.now()}`,
+            type: "announcement" as const,
+            title: item.title || "Announcement",
+            content: typeof item.content === "string" ? item.content : (item.title || "Announcement"),
+            location: item.location || "",
+            eventDate: item.eventDate || "",
+            eventTime: item.eventTime || "",
+            contact: item.contact || "",
+            sectionLabel: "Announcement",
+          };
+          allSlides.push(announcementSlide);
         } else {
-          // For non-song items, create a single slide
+          // For other non-song items, create a single slide
           const singleSlide = {
             id: `item-${item.id}-${Date.now()}`,
             type: "custom" as const,
@@ -2577,14 +2814,16 @@ export const QworshipHomeV2Base = (): JSX.Element => {
     const updatedServiceItems: any[] = [];
 
     serviceSections.forEach((sectionName) => {
-      const items = sectionItems[sectionName] || [];
+      const items = currentSectionItems[sectionName] || [];
       items.forEach((item) => {
         // Calculate how many slides this item has (from all slides)
+        // Guard against undefined matching here as well
         const itemSlides = allSlides.filter(
           (slide) =>
-            slide.songId === item.songId ||
-            slide.songId === item.id ||
-            slide.id?.includes(item.id),
+            (item.songId && slide.songId === item.songId) ||
+            (item.id && slide.songId === item.id) ||
+            slide.id?.includes(item.id) ||
+            slide.itemId === item.id
         );
 
         // Add slides property to the item
@@ -3135,6 +3374,7 @@ export const QworshipHomeV2Base = (): JSX.Element => {
       "December",
     ];
 
+    if (!date) return "";
     return `${days[date.getDay()]}, ${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
   };
 
@@ -4326,6 +4566,11 @@ export const QworshipHomeV2Base = (): JSX.Element => {
               liveWindow={liveWindow}
               itemBackgrounds={itemBackgrounds}
               toggleHandsfreeBible={toggleHandsfreeBible}
+              setIsBackgroundAssetsModalOpen={setIsBackgroundAssetsModalOpen}
+              setBackgroundModalMode={setBackgroundModalMode}
+              setIsImportImageOpen={setIsImportImageOpen}
+              recentlyUploadedMediaId={recentlyUploadedMediaId}
+              setRecentlyUploadedMediaId={setRecentlyUploadedMediaId}
             />
           </div>
         </div>
@@ -4624,7 +4869,6 @@ export const QworshipHomeV2Base = (): JSX.Element => {
                 formattedReference={widgetFormattedReference}
                 volume={volume}
                 onNavigate={(dir) => executeNavigation("verse_change", dir)}
-                currentUser={currentUserResponse?.user || null}
               />
             </div>
           )}
