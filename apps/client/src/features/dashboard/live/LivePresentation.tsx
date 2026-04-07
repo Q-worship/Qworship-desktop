@@ -2574,7 +2574,7 @@ export const LivePresentation = (): JSX.Element => {
 
   return (
     <div
-      className="bg-black w-full h-screen flex flex-col relative overflow-hidden"
+      className="bg-black w-full h-screen flex flex-col relative overflow-hidden transition-all duration-1000 ease-in-out"
       style={{
         position: "fixed",
         top: 0,
@@ -2833,6 +2833,11 @@ export const LivePresentation = (): JSX.Element => {
                     }}>
                     {slides[currentSlide - 1].content}
                   </div>
+                </>
+              ) : slides[currentSlide - 1].type === "media" ? (
+                <>
+                  {/* Media content (the video/image) renders natively in the background via getBackgroundStyle()!
+                      No text or title overlay - images fill the entire screen. */}
                 </>
               ) : (
                 <>

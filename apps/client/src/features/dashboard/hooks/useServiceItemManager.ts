@@ -184,6 +184,12 @@ export function useServiceItemManager({
           sectionLabel: "Announcement",
         }];
       } else if (existingItem?.type === "media") {
+        if (existingItem.slides && existingItem.slides.length > 0) {
+          // If we already have slides (either real uploaded ones or a placeholder),
+          // preserve them but update their titles to match the new item title.
+          return existingItem.slides.map((s: any) => ({ ...s, title: newTitle }));
+        }
+        
         const merged = { ...existingItem, ...(metadata || {}) };
         return [{
           id: existingItem.slides?.[0]?.id || `slide-${itemId}-${Date.now()}`,

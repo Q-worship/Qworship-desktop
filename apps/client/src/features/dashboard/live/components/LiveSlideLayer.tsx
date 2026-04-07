@@ -123,6 +123,38 @@ export const LiveSlideLayer: React.FC<ReturnType<typeof useLivePresentationState
             slides[currentSlide - 1] &&
             activeMode === "slides" ? (
             /* Display Current Slide from Dashboard - only when activeMode is 'slides' */
+            /* MEDIA slides get full-screen treatment WITHOUT the text container */
+            slides[currentSlide - 1].type === "media" ? (
+              <div
+                key={`slide-media-${currentSlide}-${animationKey}`}
+                className={`${getSlideTransitionClass()}`}
+                style={{ position: 'fixed', inset: 0, zIndex: 10 }}
+              >
+                {(slides[currentSlide - 1] as any).subtype === "video" ? (
+                  <video
+                    src={slides[currentSlide - 1].content && slides[currentSlide - 1].content !== "Inspirational worship video" ? slides[currentSlide - 1].content : undefined}
+                    autoPlay
+                    loop
+                    muted
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <div className="relative flex w-full h-full justify-center items-center bg-black overflow-hidden">
+                    <img
+                      src={slides[currentSlide - 1].content && slides[currentSlide - 1].content !== "Worship background image" && slides[currentSlide - 1].content !== "Inspirational worship video" ? slides[currentSlide - 1].content : "https://images.unsplash.com/photo-1438232992991-995b7058bbb3?q=80&w=2673&auto=format&fit=crop"}
+                      alt=""
+                      className="absolute inset-0 w-full h-full object-cover opacity-40 blur-3xl scale-110"
+                    />
+                    <img
+                      src={slides[currentSlide - 1].content && slides[currentSlide - 1].content !== "Worship background image" && slides[currentSlide - 1].content !== "Inspirational worship video" ? slides[currentSlide - 1].content : "https://images.unsplash.com/photo-1438232992991-995b7058bbb3?q=80&w=2673&auto=format&fit=crop"}
+                      alt={slides[currentSlide - 1].title || "Media slide"}
+                      className="relative z-10 w-full h-full object-contain drop-shadow-2xl"
+                    />
+                  </div>
+                )}
+              </div>
+            ) : (
+            /* Non-media slides use the normal padded container */
             <div
               key={`slide-${currentSlide}-${animationKey}`}
               className={`${slidesTransparent ? "" : "bg-black/40 backdrop-blur-sm"} rounded-3xl p-16 ${slidesTransparent ? "" : "border border-white/20 shadow-2xl"} ${getSlideTransitionClass()} ${contentFixedArea ? "max-h-[75vh] overflow-hidden flex flex-col justify-center" : ""}`}>
@@ -279,31 +311,6 @@ export const LiveSlideLayer: React.FC<ReturnType<typeof useLivePresentationState
                     {slides[currentSlide - 1].content}
                   </div>
                 </>
-              ) : slides[currentSlide - 1].type === "media" ? (
-                <>
-                  <h1
-                    className={`text-white font-bold mb-6 ${getTextSizeClass()}`}
-                    style={{ textAlign: slideAlignment, textShadow: "2px 2px 8px rgba(0,0,0,0.8)" }}>
-                    {slides[currentSlide - 1].title}
-                  </h1>
-                  <div className="w-full flex justify-center items-center rounded-xl overflow-hidden shadow-2xl" style={{ maxHeight: "60vh" }}>
-                    {(slides[currentSlide - 1] as any).subtype === "video" ? (
-                      <video 
-                        src={slides[currentSlide - 1].content && slides[currentSlide - 1].content !== "Inspirational worship video" ? slides[currentSlide - 1].content : undefined} 
-                        autoPlay 
-                        loop 
-                        muted 
-                        className="max-w-full max-h-[60vh] object-contain rounded-xl"
-                      />
-                    ) : (
-                      <img 
-                        src={slides[currentSlide - 1].content && slides[currentSlide - 1].content !== "Worship background image" && slides[currentSlide - 1].content !== "Inspirational worship video" ? slides[currentSlide - 1].content : "https://images.unsplash.com/photo-1438232992991-995b7058bbb3?q=80&w=2673&auto=format&fit=crop"} 
-                        alt={slides[currentSlide - 1].title || "Media slide"}
-                        className="max-w-full max-h-[60vh] object-contain rounded-xl bg-black"
-                      />
-                    )}
-                  </div>
-                </>
               ) : (
                 <>
                   <h1
@@ -342,7 +349,7 @@ export const LiveSlideLayer: React.FC<ReturnType<typeof useLivePresentationState
                 </>
               )}
             </div>
-          ) : (
+            )) : (
             /* Default Live Service Display */
             <>
               <h1 className="text-white text-8xl font-bold mb-12">

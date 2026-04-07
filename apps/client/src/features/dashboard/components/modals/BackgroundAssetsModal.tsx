@@ -56,7 +56,7 @@ export function BackgroundAssetsModal({
         <AssetsPage
           mode={backgroundModalMode as any}
           recentlyUploadedMediaId={recentlyUploadedMediaId as any}
-          onAssetSelect={(assetUrl: string, assetType: string) => {
+          onAssetSelect={(assetUrl: string, assetType: string, assetTitle?: string) => {
             const currentItemId = getCurrentItemId();
             const backgroundData = {
               type:
@@ -64,7 +64,7 @@ export function BackgroundAssetsModal({
                   ? "video"
                   : ("image" as "video" | "image"),
               value: assetUrl,
-              name: "Selected Asset",
+              name: assetTitle || "Selected Asset",
             };
 
             applyBackgroundToCurrentItem(backgroundData);

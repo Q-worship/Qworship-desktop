@@ -158,6 +158,30 @@ export function LiveConsolePreview(props: LiveConsolePreviewProps) {
             return null;
           }
 
+          // Media slides render OUTSIDE the text container to fill the entire preview
+          if (currentSlideData.type === "media") {
+            return (
+              <>
+                {(currentSlideData as any).subtype === "video" ? (
+                  <video
+                    src={currentSlideData.content && currentSlideData.content !== "Inspirational worship video" ? currentSlideData.content : undefined}
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    className="absolute inset-0 w-full h-full object-cover z-10"
+                  />
+                ) : (
+                  <img
+                    src={currentSlideData.content && currentSlideData.content !== "Worship background image" && currentSlideData.content !== "Inspirational worship video" ? currentSlideData.content : "https://images.unsplash.com/photo-1438232992991-995b7058bbb3?q=80&w=2673&auto=format&fit=crop"}
+                    alt={currentSlideData.title || "Media slide"}
+                    className="absolute inset-0 w-full h-full object-cover z-10"
+                  />
+                )}
+              </>
+            );
+          }
+
           return (
             <div className="text-center w-full px-2 bg-black/40 rounded-lg p-2">
               {currentSlideData.type === "verse" || currentSlideData.type === "chorus" ? (

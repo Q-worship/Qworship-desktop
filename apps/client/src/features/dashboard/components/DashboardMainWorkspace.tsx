@@ -2,8 +2,10 @@ import React, { useRef, useState, useMemo, useEffect } from "react";
 import { useDashboardUI } from "@/features/dashboard/providers/DashboardUIProvider";
 
 import { Input } from "@/components/ui/input";
-import { XIcon, UndoIcon, RedoIcon, LinkIcon, ChevronDownIcon, ChevronRightIcon, Book, SearchIcon, Music, ChevronLeftIcon } from "lucide-react";
+import { XIcon, UndoIcon, RedoIcon, LinkIcon, ChevronDownIcon, ChevronRightIcon, Book, SearchIcon, Music, ChevronLeftIcon, ImageIcon, PlusIcon, ChevronRight, Image, Trash2, GripVertical, FolderOpen, Upload } from "lucide-react";
 import { OnScreenBibleEditor } from "@/features/dashboard/components/OnScreenBibleEditor";
+import { BackgroundAssetsModal } from "@/features/dashboard/components/modals/BackgroundAssetsModal";
+import { ImportFilesModal } from "@/features/dashboard/components/modals/ImportFilesModal";
 import { toast } from "@/hooks/use-toast";
 import qworshipLogoEdit from "@assets/Frame 2085662258_1754172975921.png";
 import qworshipLogo from "@assets/Group 1_1754122708985.png";
@@ -17,6 +19,7 @@ import { SlideEditorPanel } from "@/features/dashboard/components/SlideEditorPan
 import { SlideGridRenderer } from "@/features/dashboard/components/SlideGridRenderer";
 import { EditAndPreparationArea } from "@/features/dashboard/components/EditAndPreparationArea";
 import { SidebarOpen, SidebarClose } from "lucide-react";
+import { apiClient } from "@/lib/api";
 
 export const DashboardMainWorkspace = (props: any) => {
   const {
@@ -35,7 +38,13 @@ export const DashboardMainWorkspace = (props: any) => {
     setShowSearchResults, handleSelectSong, insertedItems, setActiveTab, togglePreview,
     currentlyDisplayedSlide, previousSlide, nextSlide, getCurrentItemId, setCurrentlyDisplayedSlide,
     clearZustandProjection, liveWindow, itemBackgrounds, toggleHandsfreeBible, stylesButtonRef, handleStylesClick, setHoveredArrangementButton, hoveredArrangementButton, textAreaRef,
+    setIsBackgroundAssetsModalOpen, setBackgroundModalMode, setIsImportImageOpen,
+    recentlyUploadedMediaId, setRecentlyUploadedMediaId,
   } = props;
+
+  // Local state for Image Editor Browse Media modal
+  const [isImageBrowseModalOpen, setIsImageBrowseModalOpen] = useState(false);
+  const [isImageImportModalOpen, setIsImageImportModalOpen] = useState(false);
 
   const { isLiveMode, activeTab, isSidebarCollapsed, setIsSidebarCollapsed } = useDashboardUI();
   const { isSlideEditorOpen, setIsSlideEditorOpen } = useDashboardModals();
@@ -63,6 +72,7 @@ export const DashboardMainWorkspace = (props: any) => {
             ...(field === "eventTime" ? { eventTime: value } : {}),
             ...(field === "contact" ? { contact: value } : {}),
             ...(field === "content" ? { content: value } : {}),
+            ...(field === "subtype" ? { subtype: value } : {}),
             slides: item.slides.map((s: any) =>
               s.id === selectedSlide.slide.id
                 ? { ...s, [field]: value }
@@ -624,6 +634,66 @@ export const DashboardMainWorkspace = (props: any) => {
                                       className="bg-[#2a1f3d] border-gray-600 text-white"
                                       placeholder="e.g., email or phone"
                                     />
+                                  </div>
+                                </div>
+                              </div>
+                            </>
+                          ) : selectedSlide.slide.type === "media" || selectedSlide.item?.type === "media" ? (
+                            /* Media Settings Editor */
+                            <>
+                              <div>
+                                <label className="text-white font-medium block mb-2">
+                                  Media Title
+                                </label>
+                                <Input
+                                  value={selectedSlide.slide.title}
+                                  onChange={(e) => updateSelectedSlideField("title", e.target.value)}
+                                  className="bg-[#2a1f3d] border-gray-600 text-white"
+                                  placeholder="Enter media title..."
+                                />
+                              </div>
+                              
+                              <div className="mt-4 border-t border-gray-600 pt-4">
+                                <label className="text-white font-medium block mb-3">
+                                  Media File Source
+                                </label>
+                                <div className="space-y-5">
+                                  <div className="flex flex-col space-y-2">
+                                    <label className="text-gray-300 text-sm font-medium">Target URL (External Source)</label>
+                                    <Input
+                                      value={typeof selectedSlide.slide.content === "string" && !selectedSlide.slide.content.startsWith("blob:") && !selectedSlide.slide.content.startsWith("data:") ? selectedSlide.slide.content : ""}
+                                      onChange={(e) => updateSelectedSlideField("content", e.target.value)}
+                                      className="bg-[#2a1f3d] border-gray-600 text-white"
+                                      placeholder="https://example.com/video.mp4"
+                                    />
+                                    <p className="text-xs text-purple-400 font-medium">Enter a direct link to an image or video file.</p>
+                                  </div>
+                                  
+                                  <div className="flex flex-col space-y-2">
+                                    <label className="text-gray-300 text-sm font-medium">Local Override (Upload from Device)</label>
+                                    <input
+                                      type="file"
+                                      accept="video/*,image/*"
+                                      onChange={(e) => {
+                                        const file = e.target.files?.[0];
+                                        if (file) {
+                                          if (file.type.startsWith("video/")) {
+                                            const url = URL.createObjectURL(file);
+                                            updateSelectedSlideField("content", url);
+                                            updateSelectedSlideField("subtype", "video");
+                                          } else {
+                                            const reader = new FileReader();
+                                            reader.onload = (event) => {
+                                              updateSelectedSlideField("content", event.target?.result as string);
+                                              updateSelectedSlideField("subtype", "image");
+                                            };
+                                            reader.readAsDataURL(file);
+                                          }
+                                        }
+                                      }}
+                                      className="w-full px-3 py-2 bg-[#2a1f3d] border border-gray-600 rounded text-white text-sm file:mr-3 file:py-1.5 file:px-4 file:rounded-md file:border-0 file:bg-gradient-to-r file:from-purple-600 file:to-purple-700 file:text-white file:cursor-pointer hover:border-purple-400 transition-all shadow-lg"
+                                    />
+                                    <p className="text-xs text-gray-400">If providing a local file, it overrides the external target URL.</p>
                                   </div>
                                 </div>
                               </div>
@@ -2504,6 +2574,431 @@ import type { Slide } from "@/types";\n${text}`,
                           </div>
                         )}
 
+                        {editingContent.type === "media" && editingContent.subtype === "slideshow" && (
+                          <div className="space-y-6">
+                            <div className="flex justify-between items-center bg-[#2a1f3d] p-4 rounded-lg border border-gray-600">
+                               <div>
+                                 <h3 className="text-white font-medium text-lg">Image Slideshow Configuration</h3>
+                                 <p className="text-sm text-gray-400">Upload multiple images to sequence dynamically</p>
+                               </div>
+                               <label className="bg-gradient-to-r from-purple-600 to-purple-700 hover:opacity-90 text-white px-5 py-2.5 rounded-lg border border-purple-500 shadow-lg cursor-pointer transition-all flex items-center space-x-2 font-medium">
+                                 <PlusIcon className="w-4 h-4"/>
+                                 <span>Add Images</span>
+                                 <input
+                                   type="file"
+                                   accept="image/*"
+                                   multiple
+                                   className="hidden"
+                                   onChange={(e) => {
+                                     if (e.target.files && e.target.files.length > 0) {
+                                       const files = Array.from(e.target.files);
+                                       const newSlides = files.map(file => ({
+                                         id: `slide-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+                                         type: "media",
+                                         subtype: "image",
+                                         title: file.name,
+                                         content: URL.createObjectURL(file),
+                                         itemId: editingContent.id
+                                       }));
+                                       const updatedSlides = [...(editingContent.slides || []), ...newSlides];
+                                       updateItemContent(editingContent.id, editingContent.title, editingContent.content, updatedSlides);
+                                       setEditingContent({...editingContent, slides: updatedSlides});
+                                     }
+                                   }}
+                                 />
+                               </label>
+                            </div>
+
+                            <div className="grid grid-cols-2 gap-4">
+                               <div className="bg-[#2a1f3d] p-4 rounded-lg border border-gray-600">
+                                 <label className="text-white font-medium mb-3 block">Playback Settings</label>
+                                 <div className="space-y-4 text-sm mt-3">
+                                   <label className="flex items-center space-x-3 text-white">
+                                     <input 
+                                       type="checkbox" 
+                                       className="rounded bg-[#0f0624] border-gray-600 text-purple-600 focus:ring-purple-500 w-4 h-4"
+                                       checked={editingContent.content?.autoAdvance ?? true}
+                                       onChange={(e) => {
+                                          const nextContent = { ...((typeof editingContent.content === 'object' && editingContent.content) ? editingContent.content : {}), autoAdvance: e.target.checked };
+                                          updateItemContent(editingContent.id, editingContent.title, nextContent, editingContent.slides);
+                                          setEditingContent({...editingContent, content: nextContent});
+                                       }}
+                                     />
+                                     <span>Advance to next slide automatically</span>
+                                   </label>
+                                   <div className="flex items-center justify-between text-gray-300 pl-7">
+                                     <span>Auto-advance timer (sec):</span>
+                                     <input 
+                                        type="number" 
+                                        className="bg-[#0f0624] border border-gray-600 w-16 text-center rounded py-1 px-2 text-white"
+                                        value={typeof editingContent.content?.timer === 'number' ? editingContent.content.timer : 5}
+                                        min={1}
+                                        onChange={(e) => {
+                                          const nextContent = { ...((typeof editingContent.content === 'object' && editingContent.content) ? editingContent.content : {}), timer: parseInt(e.target.value) || 5 };
+                                          updateItemContent(editingContent.id, editingContent.title, nextContent, editingContent.slides);
+                                          setEditingContent({...editingContent, content: nextContent});
+                                       }}
+                                     />
+                                   </div>
+                                   <div className="flex items-center justify-between text-gray-300">
+                                     <span>Transition Effect:</span>
+                                     <select 
+                                        className="bg-[#0f0624] border border-gray-600 rounded py-1 px-2 text-white outline-none w-32"
+                                        value={editingContent.content?.transition ?? "fade"}
+                                        onChange={(e) => {
+                                          const nextContent = { ...((typeof editingContent.content === 'object' && editingContent.content) ? editingContent.content : {}), transition: e.target.value };
+                                          updateItemContent(editingContent.id, editingContent.title, nextContent, editingContent.slides);
+                                          setEditingContent({...editingContent, content: nextContent});
+                                       }}
+                                     >
+                                       <option value="none">None</option>
+                                       <option value="fade">Fade In/Out</option>
+                                       <option value="slide">Slide Left</option>
+                                     </select>
+                                   </div>
+                                 </div>
+                               </div>
+                               
+                               <div className="bg-[#2a1f3d] p-4 rounded-lg border border-gray-600 flex flex-col justify-center items-center text-center">
+                                  <div className="w-12 h-12 bg-purple-500/20 text-purple-400 rounded-full flex items-center justify-center mb-3">
+                                     <ImageIcon className="w-6 h-6" />
+                                  </div>
+                                  <span className="text-white text-4xl font-bold">{editingContent.slides?.length || 0}</span>
+                                  <p className="text-gray-400 text-sm mt-1">Total Images In Sequence</p>
+                               </div>
+                            </div>
+                            
+                            <h4 className="text-white font-medium mt-8 border-b border-gray-600 pb-2">Image Sequence Map</h4>
+                            
+                            {/* Slide Grid Configuration */}
+                            {editingContent.slides?.length > 0 ? (
+                              <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 overflow-y-auto max-h-[500px] p-2 bg-[#0f0624] rounded-lg border border-gray-600 shadow-inner">
+                                 {editingContent.slides.map((slide: any, idx: number) => (
+                                   <div key={slide.id} 
+                                        className="relative group bg-[#1a0f2e] border border-gray-600 shadow-md rounded-lg overflow-hidden flex flex-col aspect-video hover:border-purple-500 transition-colors cursor-pointer"
+                                        onClick={() => {
+                                          if (setCurrentlyDisplayedSlide) {
+                                            setCurrentlyDisplayedSlide(slide);
+                                          }
+                                        }}>
+                                       <img src={slide.content} className="w-full h-full object-cover" />
+                                       <div className="absolute top-0 right-0 left-0 bg-black/70 p-2 flex justify-between opacity-0 group-hover:opacity-100 transition-opacity backdrop-blur-sm">
+                                          <div className="flex space-x-1">
+                                             <button disabled={idx === 0} className="bg-gray-700/80 hover:bg-gray-500 text-white p-1 rounded disabled:opacity-30 disabled:cursor-not-allowed"
+                                               onClick={(e) => {
+                                                  e.stopPropagation();
+                                                  const newSlides = [...editingContent.slides];
+                                                  [newSlides[idx-1], newSlides[idx]] = [newSlides[idx], newSlides[idx-1]];
+                                                  updateItemContent(editingContent.id, editingContent.title, editingContent.content, newSlides);
+                                                  setEditingContent({...editingContent, slides: newSlides});
+                                               }}>
+                                               <ChevronLeftIcon className="w-4 h-4"/>
+                                             </button>
+                                             <button disabled={idx === editingContent.slides.length - 1} className="bg-gray-700/80 hover:bg-gray-500 text-white p-1 rounded disabled:opacity-30 disabled:cursor-not-allowed"
+                                               onClick={(e) => {
+                                                  e.stopPropagation();
+                                                  const newSlides = [...editingContent.slides];
+                                                  [newSlides[idx+1], newSlides[idx]] = [newSlides[idx], newSlides[idx+1]];
+                                                  updateItemContent(editingContent.id, editingContent.title, editingContent.content, newSlides);
+                                                  setEditingContent({...editingContent, slides: newSlides});
+                                               }}>
+                                               <ChevronRightIcon className="w-4 h-4"/>
+                                             </button>
+                                          </div>
+                                          <button className="bg-red-600 hover:bg-red-500 text-white p-1 rounded"
+                                            onClick={(e) => {
+                                              e.stopPropagation();
+                                              const nextSlides = editingContent.slides.filter((s:any) => s.id !== slide.id);
+                                              updateItemContent(editingContent.id, editingContent.title, editingContent.content, nextSlides);
+                                              setEditingContent({...editingContent, slides: nextSlides});
+                                            }}>
+                                            <XIcon className="w-4 h-4" />
+                                          </button>
+                                        </div>
+                                       <div className="absolute bottom-2 left-2 bg-black/80 px-2 py-0.5 rounded text-xs text-white font-medium border border-gray-600">Slide {idx + 1}</div>
+                                   </div>
+                                 ))}
+                              </div>
+                            ) : (
+                               <div className="bg-[#1a0f2e] border-2 border-dashed border-gray-600 rounded-lg p-12 text-center text-gray-400">
+                                 No images uploaded. <br/>Click <span className="text-purple-400">"Add Images"</span> above to start building your slideshow sequence.
+                               </div>
+                            )}
+                          </div>
+                        )}
+
+                        {/* ========== IMAGE EDITOR ========== */}
+                        {editingContent.type === "media" && editingContent.subtype === "image" && (
+                          <div className="space-y-6">
+                            {/* Title Input */}
+                            <div>
+                              <label className="text-white font-medium block mb-2">Image Title</label>
+                              <Input
+                                value={editingContent.title}
+                                onChange={(e) => {
+                                  const newTitle = e.target.value;
+                                  updateItemContent(editingContent.id, newTitle, editingContent.content, editingContent.slides);
+                                  setEditingContent({...editingContent, title: newTitle});
+                                }}
+                                className="bg-[#2a1f3d] border-gray-600 text-white"
+                                placeholder="Enter image title..."
+                              />
+                            </div>
+
+                            {/* Browse Media / Import Media Buttons */}
+                            <div className="flex justify-between items-center bg-gradient-to-r from-[#2a1f3d] to-[#1a0f2e] p-4 rounded-lg border border-gray-600">
+                              <div>
+                                <h3 className="text-white font-medium text-lg">Add Images</h3>
+                                <p className="text-sm text-gray-400">Load images from cloud or import from your device</p>
+                              </div>
+                              <div className="flex space-x-3">
+                                <button
+                                  onClick={() => setIsImageBrowseModalOpen(true)}
+                                  className="bg-[#2a1f3d] hover:bg-[#3a2f4d] text-white px-4 py-2.5 rounded-lg border border-purple-500/30 shadow-lg transition-all flex items-center space-x-2 text-sm font-medium"
+                                >
+                                  <FolderOpen className="w-4 h-4 text-purple-400"/>
+                                  <span>Browse media</span>
+                                </button>
+                                <label className="bg-gradient-to-r from-purple-600 to-purple-700 hover:opacity-90 text-white px-4 py-2.5 rounded-lg border border-purple-500 shadow-lg cursor-pointer transition-all flex items-center space-x-2 text-sm font-medium">
+                                  <Upload className="w-4 h-4"/>
+                                  <span>Import Media</span>
+                                  <input
+                                    type="file"
+                                    accept="image/*"
+                                    multiple
+                                    className="hidden"
+                                    onChange={async (e) => {
+                                      if (e.target.files && e.target.files.length > 0) {
+                                        const files = Array.from(e.target.files);
+                                        
+                                        // Filter out placeholder slides that were auto-created
+                                        const existingRealSlides = (editingContent.slides || []).filter(
+                                          (s: any) => s.content && s.content !== "Worship background image" && s.content !== "Inspirational worship video" && s.content !== "Ready for content"
+                                        );
+                                        
+                                        // Upload to server API for persistent storage under "My Media"
+                                        const token = localStorage.getItem('token');
+                                        try {
+                                          const formData = new FormData();
+                                          files.forEach((file, index) => {
+                                            formData.append('files', file);
+                                            formData.append(`metadata_${index}`, JSON.stringify({
+                                              title: editingContent.title || file.name.replace(/\.[^/.]+$/, ''),
+                                              categories: ['Imported Media'],
+                                            }));
+                                          });
+                                          
+                                          const headers: Record<string, string> = {};
+                                          if (token) {
+                                            headers['Authorization'] = `Bearer ${token}`;
+                                          }
+                                          
+                                          const response = await fetch('/api/user-media-assets/upload', {
+                                            method: 'POST',
+                                            body: formData,
+                                            headers,
+                                            credentials: 'include',
+                                          });
+                                          
+                                          if (response.ok) {
+                                            const data = await response.json();
+                                            const uploadedAssets = data.assets || [];
+                                            
+                                            const newSlides = uploadedAssets.map((asset: any, idx: number) => ({
+                                              id: `slide-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+                                              type: "media" as const,
+                                              subtype: "image" as const,
+                                              title: editingContent.title || asset.title || asset.fileName,
+                                              content: `/api/user-media-assets/${asset._id}/file`,
+                                              itemId: editingContent.id
+                                            }));
+                                            
+                                            const updatedSlides = [...existingRealSlides, ...newSlides];
+                                            updateItemContent(editingContent.id, editingContent.title, editingContent.content, updatedSlides);
+                                            setEditingContent({...editingContent, slides: updatedSlides});
+                                            
+                                            // Set recently uploaded for "My Media" highlight
+                                            if (uploadedAssets.length > 0 && setRecentlyUploadedMediaId) {
+                                              setRecentlyUploadedMediaId(uploadedAssets[0]._id);
+                                            }
+                                            
+                                            toast({ title: "Media Uploaded", description: `${uploadedAssets.length} image(s) uploaded and saved to My Media`, className: "bg-gradient-to-r from-green-900/90 to-green-800/90 border-green-500/30 text-white" });
+                                          } else {
+                                            // Fallback to blob URLs if upload fails
+                                            const newSlides = files.map((file, idx) => ({
+                                              id: `slide-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+                                              type: "media" as const,
+                                              subtype: "image" as const,
+                                              title: editingContent.title || file.name.replace(/\.[^/.]+$/, ''),
+                                              content: URL.createObjectURL(file),
+                                              itemId: editingContent.id
+                                            }));
+                                            const updatedSlides = [...existingRealSlides, ...newSlides];
+                                            updateItemContent(editingContent.id, editingContent.title, editingContent.content, updatedSlides);
+                                            setEditingContent({...editingContent, slides: updatedSlides});
+                                            toast({ title: "Upload Warning", description: "Files added locally but could not be saved to cloud", className: "bg-gradient-to-r from-yellow-900/90 to-yellow-800/90 border-yellow-500/30 text-white" });
+                                          }
+                                        } catch (error) {
+                                          console.error('Media upload error:', error);
+                                          // Fallback to blob URLs
+                                          const newSlides = files.map((file, idx) => ({
+                                            id: `slide-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+                                            type: "media" as const,
+                                            subtype: "image" as const,
+                                            title: editingContent.title || file.name.replace(/\.[^/.]+$/, ''),
+                                            content: URL.createObjectURL(file),
+                                            itemId: editingContent.id
+                                          }));
+                                          const updatedSlides = [...existingRealSlides, ...newSlides];
+                                          updateItemContent(editingContent.id, editingContent.title, editingContent.content, updatedSlides);
+                                          setEditingContent({...editingContent, slides: updatedSlides});
+                                        }
+                                      }
+                                    }}
+                                  />
+                                </label>
+                              </div>
+                            </div>
+
+                            {/* Playback Settings + Stats */}
+                            <div className="grid grid-cols-2 gap-4">
+                              <div className="bg-[#2a1f3d] p-4 rounded-lg border border-gray-600">
+                                <label className="text-white font-medium mb-3 block">Playback Settings</label>
+                                <div className="space-y-4 text-sm mt-3">
+                                  <label className="flex items-center space-x-3 text-white cursor-pointer">
+                                    <input
+                                      type="checkbox"
+                                      className="rounded bg-[#0f0624] border-gray-600 text-purple-600 focus:ring-purple-500 w-4 h-4"
+                                      checked={editingContent.content?.autoAdvance ?? true}
+                                      onChange={(e) => {
+                                        const nextContent = { ...((typeof editingContent.content === 'object' && editingContent.content) ? editingContent.content : {}), autoAdvance: e.target.checked };
+                                        updateItemContent(editingContent.id, editingContent.title, nextContent, editingContent.slides);
+                                        setEditingContent({...editingContent, content: nextContent});
+                                      }}
+                                    />
+                                    <span>Advance to next slide automatically</span>
+                                  </label>
+                                  <div className="flex items-center justify-between text-gray-300 pl-7">
+                                    <span>Timer (sec):</span>
+                                    <input
+                                      type="number"
+                                      className="bg-[#0f0624] border border-gray-600 w-16 text-center rounded py-1 px-2 text-white"
+                                      value={typeof editingContent.content?.timer === 'number' ? editingContent.content.timer : 5}
+                                      min={1}
+                                      onChange={(e) => {
+                                        const nextContent = { ...((typeof editingContent.content === 'object' && editingContent.content) ? editingContent.content : {}), timer: parseInt(e.target.value) || 5 };
+                                        updateItemContent(editingContent.id, editingContent.title, nextContent, editingContent.slides);
+                                        setEditingContent({...editingContent, content: nextContent});
+                                      }}
+                                    />
+                                  </div>
+                                  <div className="flex items-center justify-between text-gray-300">
+                                    <span>Transition Effect:</span>
+                                    <select
+                                      className="bg-[#0f0624] border border-gray-600 rounded py-1 px-2 text-white outline-none w-32"
+                                      value={editingContent.content?.transition ?? "fade"}
+                                      onChange={(e) => {
+                                        const nextContent = { ...((typeof editingContent.content === 'object' && editingContent.content) ? editingContent.content : {}), transition: e.target.value };
+                                        updateItemContent(editingContent.id, editingContent.title, nextContent, editingContent.slides);
+                                        setEditingContent({...editingContent, content: nextContent});
+                                      }}
+                                    >
+                                      <option value="none">None</option>
+                                      <option value="fade">Fade In/Out</option>
+                                      <option value="slide">Slide Left</option>
+                                    </select>
+                                  </div>
+                                </div>
+                              </div>
+
+                              <div className="bg-[#2a1f3d] p-4 rounded-lg border border-gray-600 flex flex-col justify-center items-center text-center">
+                                <div className="w-12 h-12 bg-purple-500/20 text-purple-400 rounded-full flex items-center justify-center mb-3">
+                                  <ImageIcon className="w-6 h-6" />
+                                </div>
+                                <span className="text-white text-4xl font-bold">{editingContent.slides?.length || 0}</span>
+                                <p className="text-gray-400 text-sm mt-1">Total Slides</p>
+                              </div>
+                            </div>
+
+                            {/* Image Sequence Grid */}
+                            <h4 className="text-white font-medium mt-2 border-b border-gray-600 pb-2">Image Sequence</h4>
+
+                            {editingContent.slides?.length > 0 ? (
+                              <div className="flex flex-row overflow-x-auto gap-4 custom-scrollbar p-4 bg-[#0f0624] rounded-lg border border-gray-600 shadow-inner max-w-full">
+                                {editingContent.slides.map((slide: any, idx: number) => (
+                                  <div key={slide.id} className="relative group bg-black border border-gray-600 shadow-md rounded-lg overflow-hidden flex flex-col flex-shrink-0 w-[240px] aspect-video hover:border-purple-500 transition-colors">
+                                    <img src={slide.content} alt="" className="absolute inset-0 w-full h-full object-cover opacity-30 blur-xl scale-110" />
+                                    <img src={slide.content} alt={slide.title || `Slide ${idx + 1}`} className="relative z-10 w-full h-full object-contain" />
+                                    <div className="absolute top-0 right-0 left-0 bg-black/70 p-2 flex justify-between opacity-0 group-hover:opacity-100 transition-opacity backdrop-blur-sm">
+                                      <div className="flex space-x-1">
+                                        <button disabled={idx === 0} className="bg-gray-700/80 hover:bg-gray-500 text-white p-1 rounded disabled:opacity-30 disabled:cursor-not-allowed"
+                                          onClick={() => {
+                                            const newSlides = [...editingContent.slides];
+                                            [newSlides[idx-1], newSlides[idx]] = [newSlides[idx], newSlides[idx-1]];
+                                            updateItemContent(editingContent.id, editingContent.title, editingContent.content, newSlides);
+                                            setEditingContent({...editingContent, slides: newSlides});
+                                          }}>
+                                          <ChevronLeftIcon className="w-4 h-4"/>
+                                        </button>
+                                        <button disabled={idx === editingContent.slides.length - 1} className="bg-gray-700/80 hover:bg-gray-500 text-white p-1 rounded disabled:opacity-30 disabled:cursor-not-allowed"
+                                          onClick={() => {
+                                            const newSlides = [...editingContent.slides];
+                                            [newSlides[idx+1], newSlides[idx]] = [newSlides[idx], newSlides[idx+1]];
+                                            updateItemContent(editingContent.id, editingContent.title, editingContent.content, newSlides);
+                                            setEditingContent({...editingContent, slides: newSlides});
+                                          }}>
+                                          <ChevronRightIcon className="w-4 h-4"/>
+                                        </button>
+                                      </div>
+                                      <button className="bg-red-600 hover:bg-red-500 text-white p-1 rounded"
+                                        onClick={() => {
+                                          const nextSlides = editingContent.slides.filter((s:any) => s.id !== slide.id);
+                                          updateItemContent(editingContent.id, editingContent.title, editingContent.content, nextSlides);
+                                          setEditingContent({...editingContent, slides: nextSlides});
+                                        }}>
+                                        <XIcon className="w-4 h-4" />
+                                      </button>
+                                    </div>
+                                    <div className="absolute bottom-2 left-2 bg-black/80 px-2 py-0.5 rounded text-xs text-white font-medium border border-gray-600">Slide {idx + 1}</div>
+                                  </div>
+                                ))}
+                              </div>
+                            ) : (
+                              <div className="bg-[#1a0f2e] border-2 border-dashed border-gray-600 rounded-lg p-12 text-center text-gray-400">
+                                <ImageIcon className="w-10 h-10 mx-auto mb-3 text-gray-500"/>
+                                No images added yet.<br/>Use <span className="text-purple-400">"Browse media"</span> or <span className="text-purple-400">"Import Media"</span> above to start.
+                              </div>
+                            )}
+
+                            {/* Browse Media Modal for Image Editor */}
+                            <BackgroundAssetsModal
+                              isOpen={isImageBrowseModalOpen}
+                              onClose={() => setIsImageBrowseModalOpen(false)}
+                              backgroundModalMode={"browse"}
+                              recentlyUploadedMediaId={null}
+                              getCurrentItemId={() => editingContent?.id || null}
+                              applyBackgroundToCurrentItem={(bg: any) => {
+                                // Add the selected cloud asset as a new slide
+                                const newSlide = {
+                                  id: `slide-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+                                  type: "media" as const,
+                                  subtype: "image" as const,
+                                  title: editingContent.title || bg.name || "Cloud Image",
+                                  content: bg.value,
+                                  itemId: editingContent.id
+                                };
+                                const existingRealSlides = (editingContent.slides || []).filter(
+                                  (s: any) => s.content && s.content !== "Worship background image" && s.content !== "Inspirational worship video" && s.content !== "Ready for content"
+                                );
+                                const updatedSlides = [...existingRealSlides, newSlide];
+                                updateItemContent(editingContent.id, editingContent.title, editingContent.content, updatedSlides);
+                                setEditingContent({...editingContent, slides: updatedSlides});
+                                setIsImageBrowseModalOpen(false);
+                              }}
+                            />
+                          </div>
+                        )}
+
                         {editingContent.type === "bible" && (
                           <OnScreenBibleEditor
                             content={
@@ -3124,136 +3619,7 @@ import type { Slide } from "@/types";\n${text}`,
                           </div>
                         )}
 
-                        {editingContent.type === "media" && (
-                          <div className="space-y-4">
-                            <div>
-                              <label className="text-sm text-gray-300 block mb-2">
-                                Media Title
-                              </label>
-                              <input
-                                type="text"
-                                value={editingContent.title || ""}
-                                onChange={(e) => {
-                                  const newTitle = e.target.value;
-                                  setEditingContent((prev: any) =>
-                                    prev ? { ...prev, title: newTitle } : null,
-                                  );
-                                  updateItemContent(
-                                    editingContent.id,
-                                    newTitle,
-                                    editingContent.content,
-                                    undefined,
-                                    { location: editingContent.location, eventDate: editingContent.eventDate, eventTime: editingContent.eventTime, contact: editingContent.contact, duration: editingContent.duration, subtype: editingContent.subtype },
-                                  );
-                                }}
-                                className="w-full bg-[#0f0624] border border-gray-600 rounded-lg px-3 py-2 text-white"
-                                placeholder="Media title"
-                              />
-                            </div>
-                            <div>
-                              <label className="text-sm text-gray-300 block mb-2">
-                                Media Type
-                              </label>
-                              <select
-                                value={editingContent.subtype || "image"}
-                                onChange={(e) => {
-                                  const newSubtype = e.target.value;
-                                  setEditingContent((prev: any) =>
-                                    prev ? { ...prev, subtype: newSubtype } : null,
-                                  );
-                                  updateItemContent(
-                                    editingContent.id,
-                                    editingContent.title,
-                                    editingContent.content,
-                                    undefined,
-                                    { location: editingContent.location, eventDate: editingContent.eventDate, eventTime: editingContent.eventTime, contact: editingContent.contact, duration: editingContent.duration, subtype: newSubtype },
-                                  );
-                                }}
-                                className="w-full bg-[#0f0624] border border-gray-600 rounded-lg px-3 py-2 text-white"
-                              >
-                                <option value="image">Image</option>
-                                <option value="video">Video</option>
-                                <option value="audio">Audio</option>
-                              </select>
-                            </div>
-                            <div>
-                              <label className="text-sm text-gray-300 block mb-2">
-                                File Path/URL
-                              </label>
-                              <div className="flex space-x-2 relative">
-                                <input
-                                  type="file"
-                                  accept="image/*,video/*,audio/*"
-                                  id={`media-browse-${editingContent.id}`}
-                                  style={{ display: "none" }}
-                                  onChange={(e) => {
-                                    const file = e.target.files?.[0];
-                                    if (file) {
-                                      let newSubtype = editingContent.subtype || "image";
-                                      if (file.type.startsWith("video/")) newSubtype = "video";
-                                      else if (file.type.startsWith("audio/")) newSubtype = "audio";
-                                      else if (file.type.startsWith("image/")) newSubtype = "image";
-
-                                      const handleUpdateContent = (url: string) => {
-                                        setEditingContent((prev: any) =>
-                                          prev ? { ...prev, content: url, subtype: newSubtype } : null,
-                                        );
-                                        updateItemContent(
-                                          editingContent.id,
-                                          editingContent.title,
-                                          url,
-                                          undefined,
-                                          { location: editingContent.location, eventDate: editingContent.eventDate, eventTime: editingContent.eventTime, contact: editingContent.contact, duration: editingContent.duration, subtype: newSubtype },
-                                        );
-                                      };
-
-                                      if (newSubtype === "image") {
-                                        // Use DataURL for images so it passes safely to external live console window
-                                        const reader = new FileReader();
-                                        reader.onload = (event) => {
-                                          handleUpdateContent(event.target?.result as string);
-                                        };
-                                        reader.readAsDataURL(file);
-                                      } else {
-                                        // Videos/Audio use ObjectURLs due to payload size limits
-                                        handleUpdateContent(URL.createObjectURL(file));
-                                      }
-                                      e.target.value = ""; // clear input
-                                    }
-                                  }}
-                                />
-                                <input
-                                  type="text"
-                                  value={typeof editingContent.content === 'string' ? editingContent.content : ""}
-                                  onChange={(e) => {
-                                    const newContent = e.target.value;
-                                    setEditingContent((prev: any) =>
-                                      prev ? { ...prev, content: newContent } : null,
-                                    );
-                                    updateItemContent(
-                                      editingContent.id,
-                                      editingContent.title,
-                                      newContent,
-                                      undefined,
-                                      { location: editingContent.location, eventDate: editingContent.eventDate, eventTime: editingContent.eventTime, contact: editingContent.contact, duration: editingContent.duration, subtype: editingContent.subtype },
-                                    );
-                                  }}
-                                  className="flex-1 bg-[#0f0624] border border-gray-600 rounded-lg px-3 py-2 text-white"
-                                  placeholder="Enter media URL or path..."
-                                />
-                                <button
-                                  className="bg-[#8356F3] hover:bg-[#7145E6] text-white px-4 py-2 rounded-lg transition-colors"
-                                  onClick={() => {
-                                    const fileInput = document.getElementById(`media-browse-${editingContent.id}`);
-                                    if (fileInput) fileInput.click();
-                                  }}
-                                >
-                                  Browse
-                                </button>
-                              </div>
-                            </div>
-                          </div>
-                        )}
+                        {/* Duplicate generic media editor removed - specific image/slideshow editors above handle all media types */}
 
                         {editingContent.type === "liturgy" && (
                           <div className="space-y-4">
@@ -4156,27 +4522,59 @@ import type { Slide } from "@/types";\n${text}`,
                 </div>
               ) : editingContent?.type === "media" ? (
                 /* Media Preview Screen */
-                <div className="w-full h-full relative overflow-hidden flex flex-col justify-center items-center bg-black/60 rounded border border-gray-600/30">
-                  <h3 className="absolute top-6 w-full text-center text-white/80 font-bold text-xl z-20" style={{ textShadow: "2px 2px 4px rgba(0,0,0,0.8)" }}>
-                    {editingContent.title || "Media File"}
-                  </h3>
-                  <div className="w-full h-full p-12 flex justify-center items-center">
-                    {editingContent.subtype === "video" ? (
-                      <video
-                        src={typeof editingContent.content === 'string' ? editingContent.content : undefined}
-                        autoPlay
-                        loop
-                        muted
-                        className="max-w-full max-h-full object-contain rounded-lg shadow-2xl"
+                <div className="w-full h-full relative overflow-hidden flex flex-col justify-center items-center bg-black rounded border border-gray-600/30">
+                  {/* For image/slideshow items with slides, show slide image fullscreen */}
+                  {(editingContent.subtype === "image" || editingContent.subtype === "slideshow") && editingContent.slides?.length > 0 ? (
+                    <>
+                      {(() => {
+                        // Show the currently displayed slide's image, or the first slide
+                        const displaySlide = currentlyDisplayedSlide && editingContent.slides.some((s: any) => s.id === currentlyDisplayedSlide.id)
+                          ? currentlyDisplayedSlide
+                          : editingContent.slides[0];
+                        const slideIdx = editingContent.slides.findIndex((s: any) => s.id === displaySlide?.id);
+                        return (
+                          <>
+                            <img
+                              src={displaySlide?.content}
+                              alt=""
+                              className="absolute inset-0 w-full h-full object-cover opacity-40 blur-3xl scale-110"
+                            />
+                            <img
+                              src={displaySlide?.content}
+                              alt={displaySlide?.title || editingContent.title}
+                              className="relative z-10 w-full h-full object-contain drop-shadow-2xl"
+                            />
+                            <div className="absolute bottom-3 right-3 bg-black/70 text-white text-xs px-2.5 py-1 rounded-md border border-gray-600 z-10 font-medium">
+                              Slide {slideIdx + 1} / {editingContent.slides.length}
+                            </div>
+                          </>
+                        );
+                      })()}
+                    </>
+                  ) : editingContent.subtype === "video" ? (
+                    <video
+                      src={typeof editingContent.content === 'string' ? editingContent.content : undefined}
+                      autoPlay loop muted
+                      className="absolute inset-0 w-full h-full object-cover"
+                    />
+                  ) : (
+                    /* Single image fallback */
+                    <>
+                      <img
+                        src={typeof editingContent.content === 'string' && editingContent.content.length > 5 && editingContent.content !== "Worship background image" ? editingContent.content : "https://images.unsplash.com/photo-1438232992991-995b7058bbb3?q=80&w=2673&auto=format&fit=crop"}
+                        alt=""
+                        className="absolute inset-0 w-full h-full object-cover opacity-40 blur-3xl scale-110"
                       />
-                    ) : (
                       <img
                         src={typeof editingContent.content === 'string' && editingContent.content.length > 5 && editingContent.content !== "Worship background image" ? editingContent.content : "https://images.unsplash.com/photo-1438232992991-995b7058bbb3?q=80&w=2673&auto=format&fit=crop"}
                         alt={editingContent.title}
-                        className="max-w-full max-h-full object-contain rounded-lg shadow-2xl"
+                        className="relative z-10 w-full h-full object-contain drop-shadow-2xl"
                       />
-                    )}
-                  </div>
+                    </>
+                  )}
+                  <h3 className="absolute top-6 w-full text-center text-white/80 font-bold text-xl z-20" style={{ textShadow: "2px 2px 4px rgba(0,0,0,0.8)" }}>
+                    {editingContent.title || "Media File"}
+                  </h3>
                 </div>
               ) : (
                 /* Default Preview State */
@@ -5066,25 +5464,29 @@ import type { Slide } from "@/types";\n${text}`,
                                     />
                                   </div>
                                 ) : slide.type === "media" ? (
-                                  <div className="absolute inset-x-2 inset-y-2 top-6 flex flex-col justify-center items-center bg-black/60 rounded">
+                                  <div className="absolute inset-0 flex items-center justify-center">
                                     {(slide as any).subtype === "video" ? (
                                       <video
                                         src={typeof slide.content === 'string' && slide.content !== "Inspirational worship video" ? slide.content : undefined}
-                                        className="w-full h-full object-cover rounded opacity-80"
+                                        className="w-full h-full object-cover"
                                         preload="metadata"
                                         muted
                                         playsInline
                                       />
                                     ) : (
-                                      <img
-                                        src={typeof slide.content === 'string' && slide.content.length > 5 && slide.content !== "Worship background image" && slide.content !== "Inspirational worship video" ? slide.content : "https://images.unsplash.com/photo-1438232992991-995b7058bbb3?q=80&w=2673&auto=format&fit=crop"}
-                                        alt={slide.title}
-                                        className="w-full h-full object-cover rounded opacity-80 bg-gray-900"
-                                      />
+                                      <>
+                                        <img
+                                          src={typeof slide.content === 'string' && slide.content.length > 5 && slide.content !== "Worship background image" && slide.content !== "Inspirational worship video" ? slide.content : "https://images.unsplash.com/photo-1438232992991-995b7058bbb3?q=80&w=2673&auto=format&fit=crop"}
+                                          alt=""
+                                          className="absolute inset-0 w-full h-full object-cover opacity-40 blur-2xl scale-110"
+                                        />
+                                        <img
+                                          src={typeof slide.content === 'string' && slide.content.length > 5 && slide.content !== "Worship background image" && slide.content !== "Inspirational worship video" ? slide.content : "https://images.unsplash.com/photo-1438232992991-995b7058bbb3?q=80&w=2673&auto=format&fit=crop"}
+                                          alt={slide.title}
+                                          className="relative z-10 w-full h-full object-contain"
+                                        />
+                                      </>
                                     )}
-                                    <div className="absolute font-bold text-white z-10 text-[8px] bg-black/50 px-1 py-0.5 rounded shadow">
-                                      {slide.title}
-                                    </div>
                                   </div>
                                 ) : slide.type === "custom" &&
                                   slide.title
