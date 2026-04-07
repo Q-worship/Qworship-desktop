@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { User, Mail, Phone, Building, MapPin, Globe, Shield, Bell, CreditCard, Key, Monitor } from "lucide-react";
+import { User, Mail, Phone, Building, MapPin, Globe, Shield, Bell, CreditCard, Key, Monitor, Upload } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -13,7 +13,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } f
 import { useToast } from "@/hooks/use-toast";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
-import { OBSSettingsTab } from "@/features/dashboard/components/OBSSettingsTab";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 interface ProfileSettingsProps {
   isOpen: boolean;
@@ -25,7 +25,7 @@ export const ProfileSettings: React.FC<ProfileSettingsProps> = ({ isOpen, onClos
   const queryClient = useQueryClient();
   
   // Fetch current user data and organizations
-  const { data: userData, isLoading } = useQuery({
+  const { data: userData, isLoading } = useQuery<any>({
     queryKey: ['/api/user/current'],
     enabled: isOpen
   });
@@ -83,10 +83,10 @@ export const ProfileSettings: React.FC<ProfileSettingsProps> = ({ isOpen, onClos
         firstName: userData.user.firstName || "",
         lastName: userData.user.lastName || "",
         email: userData.user.email || "",
-        phone: "", // We'll need to add phone to user schema if needed
+        phone: userData.user.phoneNumber || "",
         role: userData.user.role || "member",
-        bio: "", // We'll need to add bio to user schema if needed
-        profilePicture: null
+        bio: userData.user.bio || "",
+        profilePicture: userData.user.profilePicture || null
       });
 
       setAccountSettings({
@@ -132,6 +132,16 @@ export const ProfileSettings: React.FC<ProfileSettingsProps> = ({ isOpen, onClos
     }
   };
 
+  const getProfilePictureSrc = (pic: File | string | null | undefined) => {
+    if (!pic) return undefined;
+    if (pic instanceof File) return URL.createObjectURL(pic);
+    if (typeof pic === 'string') {
+      if (pic.startsWith('http') || pic.startsWith('/')) return pic;
+      return `/api/user-media-assets/${pic}/file`; // Map legacy DB string IDs directly dynamically.
+    }
+    return undefined;
+  };
+
   const handlePersonalInfoChange = (field: string, value: string) => {
     setPersonalInfo(prev => ({ ...prev, [field]: value }));
   };
@@ -158,11 +168,51 @@ export const ProfileSettings: React.FC<ProfileSettingsProps> = ({ isOpen, onClos
   // Update Personal Information Mutation
   const updatePersonalInfoMutation = useMutation({
     mutationFn: async (data: typeof personalInfo) => {
+      let profilePictureUrl = undefined;
+      
+      // If there's a new profile picture to upload
+      if (data.profilePicture instanceof File) {
+        const formData = new FormData();
+        formData.append('files', data.profilePicture);
+        
+        const metadata = {
+          title: `Profile Picture - ${data.firstName} ${data.lastName}`,
+          tags: ['profile-picture'],
+          categories: ['Images'],
+          description: 'User profile picture'
+        };
+        formData.append(`metadata_0`, JSON.stringify(metadata));
+
+        const uploadResponse = await fetch('/api/user-media-assets/upload', {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+          },
+          body: formData,
+        });
+
+        if (uploadResponse.ok) {
+          const uploadResult = await uploadResponse.json();
+          if (uploadResult.assets && uploadResult.assets.length > 0) {
+            // we have the asset uploaded, map it back to the user
+            const assetId = uploadResult.assets[0]._id || uploadResult.assets[0].id;
+            profilePictureUrl = `/api/user-media-assets/${assetId}/file`;
+          }
+        } else {
+          console.error("Failed to upload profile picture", await uploadResponse.text());
+        }
+      } else if (typeof data.profilePicture === 'string') {
+        profilePictureUrl = data.profilePicture;
+      }
+
       const response = await apiRequest('PUT', `/api/user/profile`, {
         firstName: data.firstName,
         lastName: data.lastName,
         email: data.email,
-        role: data.role
+        role: data.role,
+        profilePicture: profilePictureUrl,
+        phone: data.phone,
+        bio: data.bio
       });
       return await response.json();
     },
@@ -187,14 +237,17 @@ export const ProfileSettings: React.FC<ProfileSettingsProps> = ({ isOpen, onClos
   const updateOrganizationMutation = useMutation({
     mutationFn: async (data: typeof organizationInfo) => {
       if (!userData || !('organizations' in userData) || !userData.organizations || userData.organizations.length === 0) {
-        throw new Error('No organization found');
+        // Create new organization if none exists
+        const payload = { ...data, userId: userData?.user?.id };
+        const response = await apiRequest('POST', `/api/organizations`, payload);
+        return await response.json();
       }
       const orgId = userData.organizations[0].id;
-      
       const response = await apiRequest('PUT', `/api/organization/${orgId}`, data);
       return await response.json();
     },
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/user/current'] });
       toast({
         title: "Organization Updated",
         description: "Your church information has been updated successfully.",
@@ -210,6 +263,32 @@ export const ProfileSettings: React.FC<ProfileSettingsProps> = ({ isOpen, onClos
     },
   });
 
+  // Update Account Information Mutation
+  const updateAccountMutation = useMutation({
+    mutationFn: async (data: typeof accountSettings) => {
+      // You can also pass username to /api/user/profile if we update the backend controller
+      const response = await apiRequest('PUT', `/api/user/profile`, {
+        username: data.username
+      });
+      return await response.json();
+    },
+    onSuccess: () => {
+      toast({
+        title: "Account Settings Updated",
+        description: "Your account preferences and username have been saved.",
+      });
+      queryClient.invalidateQueries({ queryKey: ['/api/user/current'] });
+    },
+    onError: (error) => {
+      toast({
+        title: "Update Failed",
+        description: "Failed to update account information. Username may be taken.",
+        variant: "destructive",
+      });
+      console.error('Account update error:', error);
+    },
+  });
+
   const handleSavePersonalInfo = () => {
     updatePersonalInfoMutation.mutate(personalInfo);
   };
@@ -219,12 +298,41 @@ export const ProfileSettings: React.FC<ProfileSettingsProps> = ({ isOpen, onClos
   };
 
   const handleSaveAccountSettings = () => {
-    // For now, just show success message as account settings are mostly UI preferences
-    toast({
-      title: "Account Settings Updated",
-      description: "Your preferences have been saved successfully.",
-    });
+    updateAccountMutation.mutate(accountSettings);
   };
+
+  // Update Password Mutation
+  const updatePasswordMutation = useMutation({
+    mutationFn: async (data: any) => {
+      const response = await apiRequest('PUT', `/api/user/update-password`, {
+        currentPassword: data.currentPassword,
+        newPassword: data.newPassword
+      });
+      const result = await response.json();
+      if (!result.success) throw new Error(result.message || 'Password update failed');
+      return result;
+    },
+    onSuccess: () => {
+      toast({
+        title: "Password Updated",
+        description: "Your password has been changed successfully.",
+      });
+      setSecuritySettings(prev => ({
+        ...prev,
+        currentPassword: "",
+        newPassword: "",
+        confirmPassword: ""
+      }));
+    },
+    onError: (error: any) => {
+      toast({
+        title: "Update Failed",
+        description: error.message || "Failed to update password. Please try again.",
+        variant: "destructive",
+      });
+      console.error('Password update error:', error);
+    },
+  });
 
   const handlePasswordChange = () => {
     if (securitySettings.newPassword !== securitySettings.confirmPassword) {
@@ -245,17 +353,19 @@ export const ProfileSettings: React.FC<ProfileSettingsProps> = ({ isOpen, onClos
       return;
     }
 
-    // TODO: Implement API call to change password
-    toast({
-      title: "Password Updated",
-      description: "Your password has been changed successfully.",
+    if (!securitySettings.currentPassword) {
+      toast({
+        title: "Current Password Required",
+        description: "Please enter your current password to set a new one.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    updatePasswordMutation.mutate({
+      currentPassword: securitySettings.currentPassword,
+      newPassword: securitySettings.newPassword
     });
-    setSecuritySettings(prev => ({
-      ...prev,
-      currentPassword: "",
-      newPassword: "",
-      confirmPassword: ""
-    }));
   };
 
   return (
@@ -303,13 +413,6 @@ export const ProfileSettings: React.FC<ProfileSettingsProps> = ({ isOpen, onClos
               >
                 Security
               </TabsTrigger>
-              <TabsTrigger 
-                value="obs" 
-                className="flex-1 data-[state=active]:bg-purple-600 data-[state=active]:text-white text-gray-300 hover:text-white transition-all duration-200 rounded-md mx-0.5 py-3 text-sm font-medium border-0"
-              >
-                <Monitor className="h-4 w-4 mr-1 inline" />
-                OBS
-              </TabsTrigger>
             </TabsList>
           </div>
 
@@ -351,8 +454,10 @@ export const ProfileSettings: React.FC<ProfileSettingsProps> = ({ isOpen, onClos
                     type="email"
                     value={personalInfo.email}
                     onChange={(e) => handlePersonalInfoChange("email", e.target.value)}
-                    className="bg-gray-700 border-gray-600 text-white"
+                    disabled
+                    className="bg-gray-700/50 border-gray-600 text-gray-400 cursor-not-allowed"
                   />
+                  <p className="text-xs text-gray-400">Email address cannot be changed.</p>
                 </div>
 
                 <div className="space-y-2">
@@ -392,15 +497,38 @@ export const ProfileSettings: React.FC<ProfileSettingsProps> = ({ isOpen, onClos
                   />
                 </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="profilePicture" className="text-white">Profile Picture</Label>
-                  <Input
-                    id="profilePicture"
-                    type="file"
-                    accept="image/*"
-                    onChange={handleProfilePictureChange}
-                    className="bg-gray-700 border-gray-600 text-white"
-                  />
+                <div>
+                  <Label className="text-white mb-4 block">Profile Picture</Label>
+                  <div className="flex flex-col items-center justify-center p-4 border border-dashed border-gray-600 rounded-lg bg-gray-700/30 hover:bg-gray-700/50 transition-colors cursor-pointer group"
+                       onClick={() => document.getElementById('profile-upload')?.click()}>
+                    <Avatar className="h-24 w-24 border-2 border-purple-500 relative bg-gray-800">
+                      {personalInfo.profilePicture ? (
+                        <img 
+                          src={getProfilePictureSrc(personalInfo.profilePicture)} 
+                          alt="Profile Preview" 
+                          className="h-full w-full object-cover rounded-full"
+                        />
+                      ) : (
+                        <AvatarFallback className="text-gray-300 text-2xl bg-gray-800 font-medium">
+                          {personalInfo.firstName?.[0] || 'U'}
+                        </AvatarFallback>
+                      )}
+                      <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 flex items-center justify-center rounded-full transition-opacity">
+                        <Upload className="h-6 w-6 text-white" />
+                      </div>
+                    </Avatar>
+                    <p className="mt-4 text-sm font-medium text-white group-hover:text-purple-400 transition-colors">
+                      {personalInfo.profilePicture ? "Change Picture" : "Upload Picture"}
+                    </p>
+                    <p className="mt-1 text-xs text-gray-400">Recommended: Square map 500x500px</p>
+                    <Input
+                      id="profile-upload"
+                      type="file"
+                      accept="image/*"
+                      onChange={handleProfilePictureChange}
+                      className="hidden"
+                    />
+                  </div>
                 </div>
 
                 <Button onClick={handleSavePersonalInfo} className="bg-purple-600 hover:bg-purple-700">
@@ -724,10 +852,6 @@ export const ProfileSettings: React.FC<ProfileSettingsProps> = ({ isOpen, onClos
             </Card>
           </TabsContent>
 
-          {/* OBS Settings Tab */}
-          <TabsContent value="obs" className="space-y-4">
-            <OBSSettingsTab />
-          </TabsContent>
         </Tabs>
         )}
       </DialogContent>

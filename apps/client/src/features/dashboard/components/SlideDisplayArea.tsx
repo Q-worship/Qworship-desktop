@@ -188,6 +188,22 @@ export const SlideDisplayArea: React.FC<SlideDisplayAreaProps> = ({
                       />
                     </div>
                   </>
+                ) : selectedSlide.slide.type === "media" ? (
+                  <div className="absolute inset-0 w-full h-full">
+                    {(selectedSlide.slide as any).subtype === "video" ? (
+                      <video
+                        src={selectedSlide.slide.content && selectedSlide.slide.content !== "Inspirational worship video" ? selectedSlide.slide.content : undefined}
+                        autoPlay loop muted playsInline
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <img
+                        src={typeof selectedSlide.slide.content === 'string' && selectedSlide.slide.content.length > 5 && selectedSlide.slide.content !== "Worship background image" ? selectedSlide.slide.content : "https://images.unsplash.com/photo-1438232992991-995b7058bbb3?q=80&w=2673&auto=format&fit=crop"}
+                        alt={selectedSlide.slide.title || "Media slide"}
+                        className="w-full h-full object-cover"
+                      />
+                    )}
+                  </div>
                 ) : (
                   <>
                     <h1 className="text-white text-4xl font-bold mb-4">
@@ -333,6 +349,23 @@ export const SlideDisplayArea: React.FC<SlideDisplayAreaProps> = ({
             <div className="w-full h-full flex items-center justify-center">
               <div className="text-center">
                 {currentlyDisplayedSlide ? (
+                  currentlyDisplayedSlide.type === "media" ? (
+                    <div className="absolute inset-0 w-full h-full">
+                      {(currentlyDisplayedSlide as any).subtype === "video" ? (
+                        <video
+                          src={currentlyDisplayedSlide.content && currentlyDisplayedSlide.content !== "Inspirational worship video" ? currentlyDisplayedSlide.content : undefined}
+                          autoPlay loop muted playsInline
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <img
+                          src={typeof currentlyDisplayedSlide.content === 'string' && currentlyDisplayedSlide.content.length > 5 && currentlyDisplayedSlide.content !== "Worship background image" ? currentlyDisplayedSlide.content : "https://images.unsplash.com/photo-1438232992991-995b7058bbb3?q=80&w=2673&auto=format&fit=crop"}
+                          alt={currentlyDisplayedSlide.title || "Media slide"}
+                          className="w-full h-full object-cover"
+                        />
+                      )}
+                    </div>
+                  ) : (
                   <div
                     className="text-white text-center max-w-4xl mx-auto px-8"
                     style={{
@@ -359,6 +392,7 @@ export const SlideDisplayArea: React.FC<SlideDisplayAreaProps> = ({
                     }}>
                     {currentlyDisplayedSlide.content || "No content available"}
                   </div>
+                  )
                 ) : (
                   <>
                     <h1 className="text-white text-6xl font-bold mb-8">

@@ -2,6 +2,37 @@ import { Request, Response } from 'express';
 import { Organization } from './organization.model.js';
 import { User } from '../auth/auth.model.js';
 
+export const getOrganization = async (req: Request, res: Response) => {
+  try {
+    const organization = await Organization.findById(req.params.id);
+    if (!organization) {
+      return res.status(404).json({ success: false, message: 'Organization not found' });
+    }
+    return res.status(200).json({ success: true, organization });
+  } catch (error) {
+    console.error('Error fetching organization:', error);
+    return res.status(500).json({ success: false, message: 'Server error' });
+  }
+};
+
+export const updateOrganization = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const updateData = req.body;
+    
+    const organization = await Organization.findByIdAndUpdate(id, updateData, { new: true });
+    
+    if (!organization) {
+      return res.status(404).json({ success: false, message: 'Organization not found' });
+    }
+    
+    return res.status(200).json({ success: true, organization });
+  } catch (error) {
+    console.error('Error updating organization:', error);
+    return res.status(500).json({ success: false, message: 'Server error' });
+  }
+};
+
 export const createOrganization = async (req: Request, res: Response) => {
   try {
     const { 

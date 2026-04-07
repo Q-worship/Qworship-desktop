@@ -75,7 +75,7 @@ interface DynamicMediaSectionsProps {
     liveScreen: string[];
   };
   isVideoOnly?: boolean;
-  onAssetSelect?: (assetUrl: string, assetType: string) => void;
+  onAssetSelect?: (assetUrl: string, assetType: string, assetTitle?: string) => void;
   isModal?: boolean;
   recentlyUploadedMediaId?: number | null;
 }
@@ -696,17 +696,17 @@ export const DynamicMediaSections: React.FC<DynamicMediaSectionsProps> = ({
             : cloudMediaAssets?.find((a) => a.id === asset.id);
 
         if (activeTab === "cloud-media") {
-          assetUrl = `/api/cloud-media/${asset.id}/download`;
+          assetUrl = `/api/cloud-media/${asset.id}/file`;
         } else if (activeTab === "my-media") {
-          assetUrl = `/api/user/media/${asset.id}/download`;
+          assetUrl = `/api/user-media-assets/${asset.id}/file`;
         } else {
           // Final fallback to thumbnail
           assetUrl = asset.thumbnail || "";
         }
 
-        // Call the callback with the asset URL and type
-        console.log("🚀 CALLING onAssetSelect with:", assetUrl, asset.type);
-        onAssetSelect(assetUrl, asset.type);
+        // Call the callback with the asset URL, type, and title
+        console.log("🚀 CALLING onAssetSelect with:", assetUrl, asset.type, asset.title);
+        onAssetSelect(assetUrl, asset.type, asset.title);
         console.log("✅ onAssetSelect callback completed");
         return; // Don't proceed with normal selection behavior
       }
@@ -723,9 +723,9 @@ export const DynamicMediaSections: React.FC<DynamicMediaSectionsProps> = ({
             : cloudMediaAssets?.find((a) => a.id === asset.id);
 
         if (activeTab === "cloud-media") {
-          assetUrl = `/api/cloud-media/${asset.id}/download`;
+          assetUrl = `/api/cloud-media/${asset.id}/file`;
         } else if (activeTab === "my-media") {
-          assetUrl = `/api/user/media/${asset.id}/download`;
+          assetUrl = `/api/user-media-assets/${asset.id}/file`;
         } else {
           // Final fallback to thumbnail
           assetUrl = asset.thumbnail || "";
