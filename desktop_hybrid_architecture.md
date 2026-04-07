@@ -1,66 +1,44 @@
 # Q-worship Hybrid Local-First Architecture
 
-# Overview
+## Overview
+Q-worship is transitioning from a traditional cloud-dependent web application into a high-performance Offline-First Desktop Application (via Electron/Tauri). 
 
-Q-worship is transitioning from a traditional cloud-dependent web application into a high-performance Offline-First Desktop Application (using a native desktop wrapper like Electron or Tauri).
+To ensure our signature features—like the **Hands-Free Bible**—achieve **0ms latency** and work seamlessly with the least possible network dependency, we are adopting a **Hybrid Local-First Data Architecture**. This document serves as the permanent reference guide for mapping this offline-first strategy.
 
-To ensure the "Hands-Free Bible" and media projection features have 0ms latency and work completely offline (e.g., during a Sunday service with no Wi-Fi), we are adopting a Hybrid Local-First Data Architecture. This document serves as the permanent reference for this offline-first strategy.
+## 1. The Architectural Data Split
+System data is strictly segregated into two layers based on latency constraints and mutability.
 
-## 1. The Architectural Split
+### A. The Cloud Data Layer (MongoDB Atlas)
+The centralized MongoDB server is reserved *only* for data that inherently requires network synchronization.
+- **Authentication & Licensing:** Login credentials, JWT generation, and billing checks.
+- **Dynamic Content Sync:** Background synchronization of user-generated content (e.g., custom lyrics, new song imports, saved media playlists).
+- **Telemetry:** Error logs and cross-device usage stats.
 
-System data is strictly segregated into two layers based on latency constraints and network dependency requirements.
+### B. The Local Data Layer (IndexedDB / Dexie.js)
+This is an ultra-fast, offline database running locally inside the user's browser (or Desktop wrapper). The React frontend queries this layer immediately, bypassing the MongoDB network requests to achieve 0ms search latency. Since IndexedDB mirrors MongoDB's NoSQL JSON document structure, the data mapping is a 1:1 match.
+- **Heavy Static Data:** The complete text of all supported Bible translations (approx. 4-5MB per version). Since the Bible is static, it never needs to be repeatedly fetched from the cloud.
+- **Local State & Caching:** Fast layout preferences and immediate media caching rules.
 
-### A. The Cloud Data Layer (Remote API / MongoDB Atlas)
+## 2. Technical Stack & Data Flow Workflow
 
-The centralized cloud server is only responsible for data that inherently requires internet access.
+To maintain a pure FSD (Feature-Sliced Design) architecture, we will execute the Local-First approach universally for both Web and Desktop platforms using **IndexedDB (via Dexie.js)**. 
 
-Authentication: Login credentials, JWT token generation, and role/permission checks.
-Billing & Licensing: Subscription management and feature gating.
-Telemetry: Error logging and usage statistics across platforms.
-Cloud Sync Backups: Background synchronization of the user's custom songs and saved media playlists. This ensures their creative data is safe if their local machine fails, allowing seamless cross-device login.
+### Phase 1: Hydration (Initial App Launch)
+1. **Initial Boot Check:** On login, the app checks IndexedDB using Dexie.js to see if core assets (e.g., `{ version: "kjv" }`) exist.
+2. **Bulk Download:** If missing, a single request is made to the MongoDB Cloud API. The web app downloads the full JSON translation chunk (~4MB) and writes it persistently into the local IndexedDB.
 
-### B. The Local Data Layer (Offline Desktop Database)
+### Phase 2: Zero-Latency Operation (The Engine)
+1. **The User Speaks:** The pastor says, *"Turn to John 3:16."*
+2. **Intent Chunking:** Using OpenAI's Voice Activity Detection (VAD), the audio is buffered until a natural human pause is detected, forming a clean sentence chunk.
+3. **Regex Extraction:** Our blazing-fast local Regex/Fuzzy parser (`fuzzyBibleMatcher`) scans the sentence chunk and deterministically extracts the reference `"John 3:16"` in `<2 milliseconds`. *(ChatGPT is only invoked as an emergency fallback if deterministic parsing absolutely fails).*
+4. **Local Retrieval:** The Frontend intercepts the `John 3:16` request and executes a Dexie.js query against the **local IndexedDB** instead of MongoDB.
+5. **Instant Projection:** The verse is retrieved from the local SSD and projected to the congregation in **<1ms**.
 
-This is a lightweight, ultra-fast database that physically resides on the user's hard drive inside the Desktop Application wrapper. The React FSD frontend interacts with this layer instantly, bypassing the network completely.
+### Phase 3: The Native Desktop Target
+Because frameworks like Electron and Tauri inherently bundle a Chromium/Webkit engine, **IndexedDB works natively out of the box**. 
+If we implement the IndexedDB synchronization logic for the Web platform today, the exact same React FSD code will compile into our native desktop wrapper and instantly provide offline projection support without needing to rewrite backend database drivers (like SQLite).
 
-Heavy Static Data: The complete texts of all supported Bible translations and deeply indexed reference maps.
-Real-time Projection: All caching and retrieval for Hands-Free Bible queries, ensuring speech-to-text resolution is visually instantaneous.
-User State: Local customized lists, immediate UI layout preferences, and locally cached background media files.
-
-## 2. Technical Stack Progression
-
-To maintain our FSD Modular architecture without bloat, we will phase the database engine in gradually:
-
-Phase 1: Browser Web App (The Current Transition phase)
-Before the Desktop wrapper is finalized, the browser deployment will heavily simulate the "Local Database" behavior using IndexedDB.
-
-# Engine: Dexie.js or standard localForage.
-
-Flow:
-On first login, the web app triggers an initial sync request from the Cloud MongoDB API, downloading the core Bible translation data in an optimized chunk.
-The data is parsed and stored persistently in the browser's IndexedDB.
-All subsequent queries (e.g., "John 3:16") are intercepted by the local UI data layer and retrieved from IndexedDB with 0ms network latency.
-Phase 2: Native Desktop App (Final Target System)
-Once packaged in Electron or Tauri, the local browser database is seamlessly swapped out for a fully native local database engine directly interacting with the host OS file system.
-
-Engine: Embedded SQLite database bundled tightly into the native Main Process wrapper.
-Flow:
-The React FSD UI (Renderer Process) dispatches an IPC (Inter-Process Communication) event to the internal native backend requesting a Bible verse.
-The internal native process executes a lightning-fast SELECT query against the local .sqlite file on the SSD.
-The result is returned instantly to the React UI via IPC overhead (typically <2ms).
-
-# 3. Data Synchronization Workflow
-
-The system guarantees that the user can run a 6-hour Sunday service completely offline, while guaranteeing their local structural changes are eventually backed up to the cloud without manual user intervention.
-
-# First-Time Setup (Online Required):
-
-A church media director authenticates via the Cloud API on a new computer.
-The Desktop application pulls down any missing Bible translations or licensed custom media and seamlessly populates the Local SQLite DB.
-Live Worship Service (Offline Operation):
-The church internet connection crashes or is purposely disabled to save bandwidth.
-The user opens Q-worship. The local app validates the unexpired, cached JWT token and grants immediate UI access.
-The Hands-Free Bible queries execute locally against the SSD SQLite database for zero-latency presentation projection.
-Background Syncing (Online Reconnection):
-When the internet is restored on Monday, a background sync worker process spins up. It detects locally created entities (newly arranged custom songs, modified service playlists).
-These structural changes are safely pushed directly to the Cloud MongoDB layer via REST API calls, ensuring the user's creative intellectual property is highly available across their other licensed machines.
+## 3. The OpenAI Speech-to-Text Limitation
+While the Local Data layer and Regex Intent Extraction will work entirely offline with sub-millisecond speeds, the **Voice Capture** component still heavily relies on the internet.
+- **Current Model:** We utilize the `gpt-4o-realtime-preview` model via WebSocket to transcribe and correct audio into perfect text. This *mandates* a stable internet connection.
+- **Future Offline Desktop Consideration:** To achieve 100% true offline operability (e.g., if Sunday Wi-Fi drops completely), the desktop wrapper will eventually need to embed a local STT engine binary (such as `Whisper.cpp` or `Vosk`). This local binary would replace the OpenAI WebSocket connection, passing offline transcriptions straight to the Local Regex + IndexedDB logic.

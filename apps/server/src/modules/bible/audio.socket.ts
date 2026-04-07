@@ -85,7 +85,11 @@ export function setupAudioSocket(server: Server) {
       if (!text || text.trim().length < 3) return;
 
       try {
-        const command = BibleService.parseVoiceCommandOptimized(text);
+        // SCALPEL: Slice the block down to STRICTLY the last 25 words
+        const words = text.trim().split(/\s+/);
+        const rollingContext = words.slice(-25).join(" ");
+
+        const command = BibleService.parseVoiceCommandOptimized(rollingContext);
 
         // For partials, only act on high confidence deterministic matches
         if (isPartial && command.confidence < 0.9) {
@@ -103,8 +107,10 @@ export function setupAudioSocket(server: Server) {
 
         if (command.commandType === "sleep") {
           ws.send(JSON.stringify({ type: "sleep_command" }));
+          transcriptBuffer = "";
         } else if (command.commandType === "wake") {
           ws.send(JSON.stringify({ type: "wake_command" }));
+          transcriptBuffer = "";
         } else if (
           command.commandType === "version_change" &&
           command.requestedVersion
@@ -115,6 +121,7 @@ export function setupAudioSocket(server: Server) {
               requestedVersion: command.requestedVersion,
             }),
           );
+          transcriptBuffer = "";
         } else if (
           command.commandType === "verse_change" ||
           command.commandType === "chapter_change" ||
@@ -131,6 +138,7 @@ export function setupAudioSocket(server: Server) {
               offset: command.offset,
             }),
           );
+          transcriptBuffer = "";
         } else if (command.parsedReference) {
           const result = await BibleService.searchBible(
             command.parsedReference,
@@ -143,6 +151,7 @@ export function setupAudioSocket(server: Server) {
                 commandType: command.commandType,
               }),
             );
+            transcriptBuffer = "";
           }
         } else if (!isPartial) {
           // AI Fallback only for final transcripts
