@@ -1025,21 +1025,6 @@ export function LowerThirdEditorPage() {
     }
   }, [params.templateId]);
 
-  // ── Live preview config (Inline scaled render) ─────────────────────────
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [scale, setScale] = useState(1);
-
-  useEffect(() => {
-    if (!containerRef.current) return;
-    const observer = new ResizeObserver((entries) => {
-      const { width } = entries[0].contentRect;
-      setScale(width / 1920);
-    });
-    observer.observe(containerRef.current);
-    return () => observer.disconnect();
-  }, []);
-
-
   // ── Element helpers ────────────────────────────────────────────────────────
   const updateElement = useCallback(
     (id: string, updates: Partial<LowerThirdElement>) => {
@@ -1331,42 +1316,28 @@ export function LowerThirdEditorPage() {
         </aside>
 
         {/* Centre: live inline preview */}
-        <main className="flex-1 flex flex-col items-center justify-center bg-[#1a1030] overflow-hidden p-0">
-          <p className="text-xs text-gray-500 py-3">
+        <main className="flex-1 flex flex-col bg-[#1a1030] overflow-hidden">
+          <p className="text-xs text-gray-500 text-center py-2 flex-shrink-0">
             Live Preview — updates every edit
           </p>
-          <div
-            ref={containerRef}
-            className="relative overflow-hidden border border-gray-700/40 shadow-2xl w-full flex-1"
-            style={{ minHeight: 0 }}>
-            
-            {/* Virtual 1920x1080 canvas scaled to fit the responsive container */}
-            <div 
-              style={{
-                width: 1920,
-                height: 1080,
-                transform: `scale(${scale})`,
-                transformOrigin: "top left",
-                position: "absolute",
-                top: 0,
-                left: 0,
-                pointerEvents: "none",
-                backgroundColor: "#000",
-              }}
+
+          {/* 16:9 canvas — renderer fills it exactly like the old iframe did */}
+          <div className="relative w-full flex-1 overflow-hidden" style={{ minHeight: 0 }}>
+            <div
+              className="absolute inset-0"
+              style={{ backgroundColor: template.backgroundColor || "#000000" }}
             >
               <LowerThirdRenderer
                 template={template}
                 data={getPlaceholderData(template)}
                 isVisible={true}
-                containerWidth={1920}
-                containerHeight={1080}
                 isPreview={true}
               />
             </div>
-            
           </div>
-          {/* Background color picker */}
-          <div className="flex items-center gap-3 mt-4">
+
+          {/* Background color + name strip */}
+          <div className="flex items-center gap-3 px-4 py-2 flex-shrink-0 border-t border-gray-700/30">
             <label className="text-xs text-gray-500">Canvas bg</label>
             <input
               type="color"
@@ -1390,6 +1361,7 @@ export function LowerThirdEditorPage() {
             />
           </div>
         </main>
+
 
         {/* Right: properties panel */}
         <aside className="w-64 flex-shrink-0 bg-[#0a0614] border-l border-gray-700/40 overflow-y-auto">

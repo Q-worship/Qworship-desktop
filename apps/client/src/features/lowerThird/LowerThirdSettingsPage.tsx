@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect, useRef } from "react";
+import { useState, useCallback, useEffect, useLayoutEffect, useRef } from "react";
 import { useLocation } from "wouter";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
@@ -68,50 +68,59 @@ function getPlaceholderData(template: LowerThirdTemplate): LowerThirdBindingData
   };
 }
 
-// ─── Template Card with inline LowerThirdRenderer preview ─────────────────────
-
-// ─── Template Card with inline LowerThirdRenderer preview ─────────────────────
+// ─── Template Card — 1920×1080 render scaled to card ─────────────────────────
+//
+// We render the lower third at its native 1920×1080 resolution so that ALL
+// pixel-based CSS properties (fontSize, blur, borderRadius, letterSpacing) are
+// computed correctly — identical to what the broadcast renderer shows.
+// Then we CSS-scale the virtual canvas down to fit the card.
+//
+// useLayoutEffect reads offsetWidth synchronously BEFORE the first paint
+// (after layout is committed), so scale is always correct from frame 1.
+// A ResizeObserver keeps it accurate on window resize.
 
 function TemplateCardPreview({ template }: { template: LowerThirdTemplate }) {
-  const placeholderData = getPlaceholderData(template);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [scale, setScale] = useState(0);
+  const outerRef = useRef<HTMLDivElement>(null);
+  const [zoom, setZoom] = useState(0);
 
+  // Sync read — runs after layout, before paint. offsetWidth is correct here.
+  useLayoutEffect(() => {
+    if (outerRef.current) {
+      setZoom(outerRef.current.offsetWidth / 1920);
+    }
+  }, []);
+
+  // Keep up-to-date on resize
   useEffect(() => {
-    if (!containerRef.current) return;
-    const observer = new ResizeObserver((entries) => {
-      const { width } = entries[0].contentRect;
-      setScale(width / 1920);
+    const el = outerRef.current;
+    if (!el) return;
+    const ro = new ResizeObserver(([entry]) => {
+      setZoom(entry.contentRect.width / 1920);
     });
-    observer.observe(containerRef.current);
-    return () => observer.disconnect();
+    ro.observe(el);
+    return () => ro.disconnect();
   }, []);
 
   return (
     <div
-      ref={containerRef}
-      className="relative overflow-hidden bg-black w-full"
+      ref={outerRef}
+      className="relative w-full overflow-hidden bg-black"
       style={{ aspectRatio: "16/9" }}
     >
-      {scale > 0 && (
+      {zoom > 0 && (
         <div
           style={{
             width: 1920,
             height: 1080,
-            transform: `scale(${scale})`,
-            transformOrigin: "top left",
-            position: "absolute",
-            top: 0,
-            left: 0,
+            zoom: zoom,
+            position: "relative",
             pointerEvents: "none",
           }}
         >
           <LowerThirdRenderer
             template={template}
-            data={placeholderData}
+            data={getPlaceholderData(template)}
             isVisible={true}
-            containerWidth={1920}
-            containerHeight={1080}
             isPreview={true}
           />
         </div>
