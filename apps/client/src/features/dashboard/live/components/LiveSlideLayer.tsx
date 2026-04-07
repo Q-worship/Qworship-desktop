@@ -133,10 +133,20 @@ export const LiveSlideLayer: React.FC<ReturnType<typeof useLivePresentationState
                 {(slides[currentSlide - 1] as any).subtype === "video" ? (
                   <video
                     src={slides[currentSlide - 1].content && slides[currentSlide - 1].content !== "Inspirational worship video" ? slides[currentSlide - 1].content : undefined}
-                    autoPlay
-                    loop
+                    autoPlay={(slides[currentSlide - 1] as any).videoSettings?.autoPlay ?? true}
+                    loop={(slides[currentSlide - 1] as any).videoSettings?.endAction !== "nothing"}
                     muted
-                    className="w-full h-full object-cover"
+                    className={(slides[currentSlide - 1] as any).videoSettings?.displayMode === "center" ? "w-full h-full object-contain bg-black" : "w-full h-full object-cover"}
+                    onEnded={() => {
+                        const endAction = (slides[currentSlide - 1] as any).videoSettings?.endAction;
+                        if (endAction === "advance") {
+                            if (window.opener && !window.opener.closed) {
+                                window.opener.postMessage({ type: 'VIDEO_ENDED_NEXT_SLIDE' }, window.location.origin);
+                            } else {
+                                window.postMessage({ type: 'VIDEO_ENDED_NEXT_SLIDE' }, window.location.origin);
+                            }
+                        }
+                    }}
                   />
                 ) : (
                   <div className="relative flex w-full h-full justify-center items-center bg-black overflow-hidden">

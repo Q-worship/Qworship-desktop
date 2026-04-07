@@ -384,6 +384,23 @@ export const useLivePresentation = ({
           }
           break;
         }
+        case "VIDEO_ENDED_NEXT_SLIDE": {
+          if (currentSlide < slides.length) {
+            const nextSlideNum = currentSlide + 1;
+            setCurrentSlide(nextSlideNum);
+            
+            if (liveWindow && !liveWindow.closed) {
+              liveWindow.postMessage(
+                {
+                  type: "SLIDE_CHANGE",
+                  data: { slideNumber: nextSlideNum },
+                },
+                window.location.origin,
+              );
+            }
+          }
+          break;
+        }
         case "LIVE_SETTINGS_UPDATE":
           break;
         case "LIVE_READY":

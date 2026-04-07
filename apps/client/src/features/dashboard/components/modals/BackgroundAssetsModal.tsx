@@ -10,6 +10,7 @@ interface BackgroundAssetsModalProps {
   recentlyUploadedMediaId: number | string | null;
   getCurrentItemId: () => number | string | null;
   applyBackgroundToCurrentItem: (backgroundData: any) => void;
+  filterType?: "all" | "video";
 }
 
 export function BackgroundAssetsModal({
@@ -19,6 +20,7 @@ export function BackgroundAssetsModal({
   recentlyUploadedMediaId,
   getCurrentItemId,
   applyBackgroundToCurrentItem,
+  filterType = "all",
 }: BackgroundAssetsModalProps) {
   if (!isOpen) return null;
 
@@ -57,6 +59,15 @@ export function BackgroundAssetsModal({
           mode={backgroundModalMode as any}
           recentlyUploadedMediaId={recentlyUploadedMediaId as any}
           onAssetSelect={(assetUrl: string, assetType: string, assetTitle?: string) => {
+            if (filterType !== "all" && assetType !== filterType && !(assetType.toLowerCase().includes(filterType))) {
+               toast({
+                 title: "Invalid Media Type",
+                 description: `Please select a ${filterType} file.`,
+                 variant: "destructive",
+               });
+               return;
+            }
+
             const currentItemId = getCurrentItemId();
             const backgroundData = {
               type:
@@ -71,13 +82,13 @@ export function BackgroundAssetsModal({
             onClose();
 
             toast({
-              title: "Background Selected",
-              description: `${backgroundData.type.toUpperCase()} background applied to current slide`,
+              title: "Media Selected",
+              description: `${backgroundData.type.toUpperCase()} file applied to workspace`,
               className: "bg-gradient-to-r from-purple-900/90 to-purple-800/90 border-purple-500/30 text-white",
             });
           }}
           isModal={true}
-          filterType="all"
+          filterType={filterType}
         />
       </div>
     </div>

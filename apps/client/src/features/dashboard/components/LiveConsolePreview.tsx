@@ -165,11 +165,17 @@ export function LiveConsolePreview(props: LiveConsolePreviewProps) {
                 {(currentSlideData as any).subtype === "video" ? (
                   <video
                     src={currentSlideData.content && currentSlideData.content !== "Inspirational worship video" ? currentSlideData.content : undefined}
-                    autoPlay
-                    loop
+                    autoPlay={(currentSlideData as any).videoSettings?.autoPlay ?? true}
+                    loop={(currentSlideData as any).videoSettings?.endAction !== "nothing"}
                     muted
                     playsInline
-                    className="absolute inset-0 w-full h-full object-cover z-10"
+                    className={(currentSlideData as any).videoSettings?.displayMode === "center" ? "absolute inset-0 w-full h-full object-contain z-10" : "absolute inset-0 w-full h-full object-cover z-10"}
+                    onEnded={() => {
+                        const endAction = (currentSlideData as any).videoSettings?.endAction;
+                        if (endAction === "advance") {
+                            window.postMessage({ type: 'VIDEO_ENDED_NEXT_SLIDE' }, window.location.origin);
+                        }
+                    }}
                   />
                 ) : (
                   <img

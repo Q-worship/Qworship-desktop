@@ -809,9 +809,9 @@ export const QworshipHomeV2Base = (): JSX.Element => {
         // Clear slide editor state so the announcement editor shows
         setSelectedSlide(null);
         setIsSlideEditorOpen(false);
-      } else if (parentItem.type === "media" && (parentItem.subtype === "slideshow" || parentItem.subtype === "image")) {
+      } else if (parentItem.type === "media" && (parentItem.subtype === "slideshow" || parentItem.subtype === "image" || parentItem.subtype === "video")) {
         setEditingContent(parentItem);
-        setSelectedContentType(parentItem.subtype === "slideshow" ? "slideshow" : "image");
+        setSelectedContentType(parentItem.subtype === "slideshow" ? "slideshow" : parentItem.subtype === "video" ? "video" : "image");
         setSelectedSlide(null);
         setIsSlideEditorOpen(false);
       } else {
@@ -1866,24 +1866,7 @@ export const QworshipHomeV2Base = (): JSX.Element => {
           content: "",
         }),
     },
-    {
-      name: "Slide Show",
-      shortcut: "Ctrl + Shift + S",
-      iconComponent: Layers,
-      hasSubmenu: false,
-      action: () =>
-        addItemToPreparation({
-          id: `slideshow-${Date.now()}`,
-          type: "media",
-          subtype: "slideshow",
-          title: "Image Slideshow",
-          content: "",
-          slides: [],
-          timer: 5,
-          transition: "fade",
-          autoAdvance: true
-        }),
-    },
+
     {
       name: "Image",
       shortcut: "Ctrl + Shift + I",
@@ -2163,11 +2146,17 @@ export const QworshipHomeV2Base = (): JSX.Element => {
         }
 
         const merged = { ...existingItem, ...(metadata || {}) };
+        const contentVal = typeof newContent === "string" ? newContent : 
+                           (typeof newContent === "object" && newContent !== null && newContent.url ? newContent.url :
+                           (typeof merged.content === "string" ? merged.content : 
+                           (typeof merged.content === "object" && merged.content !== null && merged.content.url ? merged.content.url : "")));
+                           
         return [{
           id: existingItem.slides?.[0]?.id || `slide-${itemId}-${Date.now()}`,
           type: "media" as const,
           title: newTitle,
-          content: typeof newContent === "string" ? newContent : (typeof merged.content === "string" ? merged.content : ""),
+          content: contentVal,
+          videoSettings: merged.subtype === "video" ? (typeof newContent === 'object' ? newContent : typeof merged.content === 'object' ? merged.content : {}) : undefined,
           subtype: merged.subtype || "image",
           sectionLabel: "Media",
         }];

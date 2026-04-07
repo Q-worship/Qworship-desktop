@@ -45,6 +45,9 @@ export const DashboardMainWorkspace = (props: any) => {
   // Local state for Image Editor Browse Media modal
   const [isImageBrowseModalOpen, setIsImageBrowseModalOpen] = useState(false);
   const [isImageImportModalOpen, setIsImageImportModalOpen] = useState(false);
+  // Local state for Video Editor Browse Media modal
+  const [isVideoBrowseModalOpen, setIsVideoBrowseModalOpen] = useState(false);
+  const [videoBrowseModalMode, setVideoBrowseModalMode] = useState<"browse" | "import">("browse");
 
   const { isLiveMode, activeTab, isSidebarCollapsed, setIsSidebarCollapsed } = useDashboardUI();
   const { isSlideEditorOpen, setIsSlideEditorOpen } = useDashboardModals();
@@ -159,7 +162,7 @@ export const DashboardMainWorkspace = (props: any) => {
 
                 {/* Edit Content Area */}
                 <div className="flex-1 border-2 border-dashed border-gray-600 rounded-lg">
-                  {selectedSlide ? (
+                  {selectedSlide && !(selectedSlide.item?.type === "media" && selectedSlide.item?.subtype === "video") ? (
                     /* Slide Editor */
                     <div className="p-6 h-full overflow-y-auto">
                       <div className="space-y-6">
@@ -2999,6 +3002,304 @@ import type { Slide } from "@/types";\n${text}`,
                           </div>
                         )}
 
+                        {/* ========== VIDEO EDITOR ========== */}
+                        {editingContent.type === "media" && editingContent.subtype === "video" && (
+                          <div className="space-y-6">
+                            {/* Title Input */}
+                            <div>
+                              <label className="text-white font-medium block mb-2">Video Title</label>
+                              <Input
+                                value={editingContent.title}
+                                onChange={(e) => {
+                                  const newTitle = e.target.value;
+                                  updateItemContent(editingContent.id, newTitle, editingContent.content, editingContent.slides);
+                                  setEditingContent({...editingContent, title: newTitle});
+                                }}
+                                className="bg-[#2a1f3d] border-gray-600 text-white"
+                                placeholder="Enter video title..."
+                              />
+                            </div>
+
+                            {/* Browse / Import Video Controls */}
+                            <div className="flex justify-between items-center bg-gradient-to-r from-[#2a1f3d] to-[#1a0f2e] p-4 rounded-lg border border-gray-600">
+                              <div>
+                                <h3 className="text-white font-medium text-lg">Add Video</h3>
+                                <p className="text-sm text-gray-400">Load videos from cloud or import from your device</p>
+                              </div>
+                              <div className="flex space-x-3">
+                                <button
+                                  onClick={() => {
+                                    setVideoBrowseModalMode("browse");
+                                    setIsVideoBrowseModalOpen(true);
+                                  }}
+                                  className="bg-[#2a1f3d] hover:bg-[#3a2f4d] text-white px-4 py-2.5 rounded-lg border border-purple-500/30 shadow-lg transition-all flex items-center space-x-2 text-sm font-medium"
+                                >
+                                  <FolderOpen className="w-4 h-4 text-purple-400"/>
+                                  <span>Browse media</span>
+                                </button>
+                                <label className="bg-gradient-to-r from-purple-600 to-purple-700 hover:opacity-90 text-white px-4 py-2.5 rounded-lg border border-purple-500 shadow-lg cursor-pointer transition-all flex items-center space-x-2 text-sm font-medium">
+                                  <Upload className="w-4 h-4"/>
+                                  <span>Import Video</span>
+                                  <input
+                                    type="file"
+                                    accept="video/*"
+                                    multiple
+                                    className="hidden"
+                                    onChange={async (e) => {
+                                      if (e.target.files && e.target.files.length > 0) {
+                                        const files = Array.from(e.target.files);
+                                        const existingRealSlides = (editingContent.slides || []).filter(
+                                          (s: any) => s.content && s.content !== "Worship background image" && s.content !== "Inspirational worship video" && s.content !== "Ready for content"
+                                        );
+
+                                        const token = localStorage.getItem('token');
+                                        try {
+                                          const formData = new FormData();
+                                          files.forEach((file, index) => {
+                                            formData.append('files', file);
+                                            formData.append(`metadata_${index}`, JSON.stringify({
+                                              title: editingContent.title || file.name.replace(/\.[^/.]+$/, ''),
+                                              categories: ['Imported Media'],
+                                            }));
+                                          });
+
+                                          const headers: Record<string, string> = {};
+                                          if (token) {
+                                            headers['Authorization'] = `Bearer ${token}`;
+                                          }
+
+                                          const response = await fetch('/api/user-media-assets/upload', {
+                                            method: 'POST',
+                                            body: formData,
+                                            headers,
+                                            credentials: 'include',
+                                          });
+
+                                          const contentObj = {
+                                            ...((typeof editingContent.content === 'object' && editingContent.content !== null) ? editingContent.content : {}),
+                                            autoPlay: true,
+                                            displayMode: "fullscreen",
+                                            endAction: "loop",
+                                          };
+
+                                          if (response.ok) {
+                                            const data = await response.json();
+                                            const uploadedAssets = data.assets || [];
+
+                                            const newSlides = uploadedAssets.map((asset: any, idx: number) => ({
+                                              id: `slide-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+                                              type: "media" as const,
+                                              subtype: "video" as const,
+                                              title: editingContent.title || asset.title || asset.fileName,
+                                              content: `/api/user-media-assets/${asset._id}/file`,
+                                              videoSettings: { ...contentObj, url: `/api/user-media-assets/${asset._id}/file` },
+                                              itemId: editingContent.id
+                                            }));
+
+                                            const updatedSlides = [...existingRealSlides, ...newSlides];
+                                            const finalContentObj = { ...contentObj, url: newSlides[0]?.content };
+                                            updateItemContent(editingContent.id, editingContent.title, finalContentObj, updatedSlides);
+                                            setEditingContent({...editingContent, content: finalContentObj, slides: updatedSlides});
+
+                                            if (uploadedAssets.length > 0 && setRecentlyUploadedMediaId) {
+                                              setRecentlyUploadedMediaId(uploadedAssets[0]._id);
+                                            }
+
+                                            toast({ title: "Media Uploaded", description: `${uploadedAssets.length} video(s) uploaded and saved to My Media`, className: "bg-gradient-to-r from-green-900/90 to-green-800/90 border-green-500/30 text-white" });
+                                          } else {
+                                            // Fallback
+                                            const newSlides = files.map((file, idx) => {
+                                              const url = URL.createObjectURL(file);
+                                              return {
+                                                id: `slide-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+                                                type: "media" as const,
+                                                subtype: "video" as const,
+                                                title: editingContent.title || file.name.replace(/\.[^/.]+$/, ''),
+                                                content: url,
+                                                videoSettings: { ...contentObj, url },
+                                                itemId: editingContent.id
+                                              }
+                                            });
+                                            const updatedSlides = [...existingRealSlides, ...newSlides];
+                                            const finalContentObj = { ...contentObj, url: newSlides[0]?.content };
+                                            updateItemContent(editingContent.id, editingContent.title, finalContentObj, updatedSlides);
+                                            setEditingContent({...editingContent, content: finalContentObj, slides: updatedSlides});
+                                            toast({ title: "Upload Warning", description: "Videos added locally but could not be saved to cloud", className: "bg-gradient-to-r from-yellow-900/90 to-yellow-800/90 border-yellow-500/30 text-white" });
+                                          }
+                                        } catch (error) {
+                                          console.error('Media upload error:', error);
+                                          const contentObj = {
+                                            ...((typeof editingContent.content === 'object' && editingContent.content !== null) ? editingContent.content : {}),
+                                            autoPlay: true,
+                                            displayMode: "fullscreen",
+                                            endAction: "loop",
+                                          };
+                                          const newSlides = files.map((file, idx) => {
+                                            const url = URL.createObjectURL(file);
+                                            return {
+                                              id: `slide-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+                                              type: "media" as const,
+                                              subtype: "video" as const,
+                                              title: editingContent.title || file.name.replace(/\.[^/.]+$/, ''),
+                                              content: url,
+                                              videoSettings: { ...contentObj, url },
+                                              itemId: editingContent.id
+                                            }
+                                          });
+                                          const updatedSlides = [...existingRealSlides, ...newSlides];
+                                          const finalContentObj = { ...contentObj, url: newSlides[0]?.content };
+                                          updateItemContent(editingContent.id, editingContent.title, finalContentObj, updatedSlides);
+                                          setEditingContent({...editingContent, content: finalContentObj, slides: updatedSlides});
+                                        }
+                                      }
+                                    }}
+                                  />
+                                </label>
+                              </div>
+                            </div>
+
+                            {/* Video Settings */}
+                            <div className="bg-[#2a1f3d] p-4 rounded-lg border border-gray-600">
+                              <label className="text-white font-medium mb-3 block border-b border-gray-600 pb-2">Video Controls</label>
+                              
+                              <div className="space-y-4 text-sm mt-3">
+                                {/* Autoplay checkbox */}
+                                <label className="flex items-center space-x-3 text-white cursor-pointer w-max">
+                                  <input
+                                    type="checkbox"
+                                    className="rounded bg-[#0f0624] border-gray-600 text-purple-600 focus:ring-purple-500 w-4 h-4 cursor-pointer"
+                                    checked={typeof editingContent.content === 'object' && editingContent.content?.autoPlay !== undefined ? editingContent.content.autoPlay : true}
+                                    onChange={(e) => {
+                                      const nextContent = { ...((typeof editingContent.content === 'object' && editingContent.content) ? editingContent.content : {}), autoPlay: e.target.checked };
+                                      const nextSlides = editingContent.slides?.map((s:any) => ({ ...s, videoSettings: nextContent }));
+                                      updateItemContent(editingContent.id, editingContent.title, nextContent, nextSlides);
+                                      setEditingContent({...editingContent, content: nextContent, slides: nextSlides});
+                                    }}
+                                  />
+                                  <span>Start playing video automatically</span>
+                                </label>
+
+                                {/* Display Parameters */}
+                                <div className="flex items-center justify-between text-gray-300">
+                                  <span>Display Mode:</span>
+                                  <select
+                                    className="bg-[#0f0624] border border-gray-600 rounded py-1 px-2 text-white outline-none w-48"
+                                    value={typeof editingContent.content === 'object' ? editingContent.content?.displayMode : "fullscreen"}
+                                    onChange={(e) => {
+                                      const nextContent = { ...((typeof editingContent.content === 'object' && editingContent.content) ? editingContent.content : {}), displayMode: e.target.value };
+                                      const nextSlides = editingContent.slides?.map((s:any) => ({ ...s, videoSettings: nextContent }));
+                                      updateItemContent(editingContent.id, editingContent.title, nextContent, nextSlides);
+                                      setEditingContent({...editingContent, content: nextContent, slides: nextSlides});
+                                    }}
+                                  >
+                                    <option value="fullscreen">Full screen</option>
+                                    <option value="center">Centre only</option>
+                                  </select>
+                                </div>
+
+                                {/* End Action */}
+                                <div className="flex items-center justify-between text-gray-300">
+                                  <span>When Video Ends:</span>
+                                  <select
+                                    className="bg-[#0f0624] border border-gray-600 rounded py-1 px-2 text-white outline-none w-48"
+                                    value={typeof editingContent.content === 'object' ? editingContent.content?.endAction : "loop"}
+                                    onChange={(e) => {
+                                      const nextContent = { ...((typeof editingContent.content === 'object' && editingContent.content) ? editingContent.content : {}), endAction: e.target.value };
+                                      const nextSlides = editingContent.slides?.map((s:any) => ({ ...s, videoSettings: nextContent }));
+                                      updateItemContent(editingContent.id, editingContent.title, nextContent, nextSlides);
+                                      setEditingContent({...editingContent, content: nextContent, slides: nextSlides});
+                                    }}
+                                  >
+                                    <option value="loop">Loop continuously</option>
+                                    <option value="nothing">Do Nothing</option>
+                                    <option value="advance">Advance To Next Slide</option>
+                                  </select>
+                                </div>
+
+                                {/* Start / End Time boxes */}
+                                <div className="grid grid-cols-2 gap-4 pt-2">
+                                  <div>
+                                    <label className="text-gray-400 text-xs block mb-1">Start Time (sec)</label>
+                                    <input
+                                      type="number"
+                                      min={0}
+                                      className="w-full bg-[#0f0624] border border-gray-600 rounded py-1.5 px-3 text-white outline-none focus:border-purple-500"
+                                      value={typeof editingContent.content === 'object' && editingContent.content?.startTime !== undefined ? editingContent.content.startTime : ""}
+                                      placeholder="0.0"
+                                      onChange={(e) => {
+                                        const nextContent = { ...((typeof editingContent.content === 'object' && editingContent.content) ? editingContent.content : {}) };
+                                        if (e.target.value === '') { delete nextContent.startTime; } else { nextContent.startTime = parseFloat(e.target.value); }
+                                        const startT = nextContent.startTime || 0;
+                                        const endT = nextContent.endTime ? ','+nextContent.endTime : '';
+                                        const nextSlides = editingContent.slides?.map((s:any) => ({ ...s, content: `${nextContent.url || s.content.split('#')[0]}#t=${startT}${endT}`, videoSettings: nextContent }));
+                                        updateItemContent(editingContent.id, editingContent.title, nextContent, nextSlides);
+                                        setEditingContent({...editingContent, content: nextContent, slides: nextSlides});
+                                      }}
+                                    />
+                                  </div>
+                                  <div>
+                                    <label className="text-gray-400 text-xs block mb-1">End Time (sec)</label>
+                                    <input
+                                      type="number"
+                                      min={0}
+                                      className="w-full bg-[#0f0624] border border-gray-600 rounded py-1.5 px-3 text-white outline-none focus:border-purple-500"
+                                      value={typeof editingContent.content === 'object' && editingContent.content?.endTime !== undefined ? editingContent.content.endTime : ""}
+                                      placeholder="End of video"
+                                      onChange={(e) => {
+                                        const nextContent = { ...((typeof editingContent.content === 'object' && editingContent.content) ? editingContent.content : {}) };
+                                        if (e.target.value === '') { delete nextContent.endTime; } else { nextContent.endTime = parseFloat(e.target.value); }
+                                        const startT = nextContent.startTime || 0;
+                                        const endT = nextContent.endTime ? ','+nextContent.endTime : '';
+                                        const nextSlides = editingContent.slides?.map((s:any) => ({ ...s, content: `${nextContent.url || s.content.split('#')[0]}#t=${startT}${endT}`, videoSettings: nextContent }));
+                                        updateItemContent(editingContent.id, editingContent.title, nextContent, nextSlides);
+                                        setEditingContent({...editingContent, content: nextContent, slides: nextSlides});
+                                      }}
+                                    />
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+
+
+
+                            {/* Browse Media Modal for Video Editor */}
+                              <BackgroundAssetsModal
+                                isOpen={isVideoBrowseModalOpen}
+                                onClose={() => setIsVideoBrowseModalOpen(false)}
+                                backgroundModalMode={videoBrowseModalMode}
+                              recentlyUploadedMediaId={null}
+                              filterType={"video"}
+                              getCurrentItemId={() => editingContent?.id || null}
+                              applyBackgroundToCurrentItem={(bg: any) => {
+                                const contentObj = {
+                                  ...((typeof editingContent.content === 'object' && editingContent.content !== null) ? editingContent.content : {}),
+                                  url: bg.value,
+                                  autoPlay: true,
+                                  displayMode: "fullscreen",
+                                  endAction: "loop",
+                                };
+                                const newSlide = {
+                                  id: `slide-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+                                  type: "media" as const,
+                                  subtype: "video" as const,
+                                  title: editingContent.title || bg.name || "Cloud Video",
+                                  content: bg.value,
+                                  videoSettings: contentObj,
+                                  itemId: editingContent.id
+                                };
+                                const existingRealSlides = (editingContent.slides || []).filter(
+                                  (s: any) => s.content && s.content !== "Worship background image" && s.content !== "Inspirational worship video" && s.content !== "Ready for content"
+                                );
+                                const updatedSlides = [...existingRealSlides, newSlide];
+                                updateItemContent(editingContent.id, editingContent.title, contentObj, updatedSlides);
+                                setEditingContent({...editingContent, content: contentObj, slides: updatedSlides});
+                                setIsVideoBrowseModalOpen(false);
+                              }}
+                            />
+
+                          </div>
+                        )}
+
                         {editingContent.type === "bible" && (
                           <OnScreenBibleEditor
                             content={
@@ -3826,7 +4127,7 @@ import type { Slide } from "@/types";\n${text}`,
                 return { backgroundColor: "#000000" };
               })()}
             >
-              {selectedSlide ? (
+              {selectedSlide && !(selectedSlide.item?.type === "media" && selectedSlide.item?.subtype === "video") ? (
                 /* Show Selected Slide Content */
                 <div className="w-full h-full p-8 flex flex-col justify-center">
                   <div className="text-center space-y-6">
@@ -4002,18 +4303,20 @@ import type { Slide } from "@/types";\n${text}`,
                         </div>
                       </>
                     ) : selectedSlide.slide.type === "media" ? (
-                      <div className="w-full flex-1 flex flex-col justify-center items-center h-full">
-                        <h1 className="text-white text-3xl font-bold mb-4 w-full text-center" style={{ textShadow: "2px 2px 8px rgba(0,0,0,0.8)" }}>
-                          {selectedSlide.slide.title}
-                        </h1>
-                        <div className="w-full flex justify-center items-center rounded-xl overflow-hidden shadow-2xl relative" style={{ maxHeight: "calc(100% - 4rem)" }}>
+                      <div className="w-full flex-1 flex flex-col justify-center items-center h-full bg-black">
+                        {(selectedSlide.slide as any).subtype !== "video" && (
+                          <h1 className="text-white text-3xl font-bold mb-4 w-full text-center" style={{ textShadow: "2px 2px 8px rgba(0,0,0,0.8)" }}>
+                            {selectedSlide.slide.title}
+                          </h1>
+                        )}
+                        <div className="w-full flex justify-center items-center rounded-xl overflow-hidden shadow-2xl relative" style={{ maxHeight: "calc(100% - 2rem)", height: "100%" }}>
                           {(selectedSlide.slide as any).subtype === "video" ? (
                             <video
-                              src={typeof selectedSlide.slide.content === "string" && selectedSlide.slide.content !== "Inspirational worship video" ? selectedSlide.slide.content : undefined}
-                              autoPlay
-                              loop
+                              src={typeof selectedSlide.slide.content === "string" && selectedSlide.slide.content !== "Inspirational worship video" ? selectedSlide.slide.content : (selectedSlide.slide.videoSettings?.url || undefined)}
+                              autoPlay={(selectedSlide.slide as any).videoSettings?.autoPlay ?? true}
+                              loop={(selectedSlide.slide as any).videoSettings?.endAction !== "nothing"}
                               muted
-                              className="max-w-full max-h-full object-contain rounded-xl"
+                              className={(selectedSlide.slide as any).videoSettings?.displayMode === "center" ? "max-w-full max-h-full object-contain rounded-xl" : "w-full h-full object-cover rounded-xl"}
                             />
                           ) : (
                             <img
@@ -4553,9 +4856,10 @@ import type { Slide } from "@/types";\n${text}`,
                     </>
                   ) : editingContent.subtype === "video" ? (
                     <video
-                      src={typeof editingContent.content === 'string' ? editingContent.content : undefined}
+                      src={typeof editingContent.content === 'string' ? editingContent.content : (editingContent.content?.url || editingContent.slides?.[0]?.content?.split('#')[0] || undefined)}
                       autoPlay loop muted
-                      className="absolute inset-0 w-full h-full object-cover"
+                      controls
+                      className={editingContent.content?.displayMode === "center" ? "absolute inset-0 w-full h-full object-contain" : "absolute inset-0 w-full h-full object-cover"}
                     />
                   ) : (
                     /* Single image fallback */
@@ -4572,9 +4876,11 @@ import type { Slide } from "@/types";\n${text}`,
                       />
                     </>
                   )}
-                  <h3 className="absolute top-6 w-full text-center text-white/80 font-bold text-xl z-20" style={{ textShadow: "2px 2px 4px rgba(0,0,0,0.8)" }}>
-                    {editingContent.title || "Media File"}
-                  </h3>
+                  {editingContent.subtype !== "video" && (
+                    <h3 className="absolute top-6 w-full text-center text-white/80 font-bold text-xl z-20" style={{ textShadow: "2px 2px 4px rgba(0,0,0,0.8)" }}>
+                      {editingContent.title || "Media File"}
+                    </h3>
+                  )}
                 </div>
               ) : (
                 /* Default Preview State */
@@ -4719,11 +5025,12 @@ import type { Slide } from "@/types";\n${text}`,
                       <div className="w-full flex-1 flex justify-center items-center rounded-xl overflow-hidden shadow-2xl relative z-10 p-4">
                         {(currentlyDisplayedSlide as any).subtype === "video" ? (
                           <video
-                            src={typeof currentlyDisplayedSlide.content === "string" && currentlyDisplayedSlide.content !== "Inspirational worship video" ? currentlyDisplayedSlide.content : undefined}
-                            autoPlay
-                            loop
+                            src={typeof currentlyDisplayedSlide.content === "string" && currentlyDisplayedSlide.content !== "Inspirational worship video" ? currentlyDisplayedSlide.content : ((currentlyDisplayedSlide as any).videoSettings?.url || undefined)}
+                            autoPlay={(currentlyDisplayedSlide as any).videoSettings?.autoPlay ?? true}
+                            loop={(currentlyDisplayedSlide as any).videoSettings?.endAction !== "nothing"}
                             muted
-                            className="max-w-full max-h-full object-contain rounded-xl"
+                            controls
+                            className={(currentlyDisplayedSlide as any).videoSettings?.displayMode === "center" ? "w-full h-full object-contain rounded-xl bg-black" : "absolute inset-0 w-full h-full object-cover rounded-none"}
                           />
                         ) : (
                           <img
