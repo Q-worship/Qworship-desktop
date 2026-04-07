@@ -2,7 +2,7 @@ import React from "react";
 import { MyMediaPatch } from "@/features/dashboard/components/MyMediaPatch";
 
 interface AssetsPageProps {
-  onAssetSelect?: (assetUrl: string, assetType: string) => void;
+  onAssetSelect?: (assetUrl: string, assetType: string, assetTitle?: string) => void;
   isModal?: boolean;
   filterType?: 'all' | 'video';
   mode?: 'browse' | 'import';

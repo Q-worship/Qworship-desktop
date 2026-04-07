@@ -44,7 +44,19 @@ interface FAQItem {
   notHelpful?: number;
 }
 
-import { HelpArticle, articleMap } from "../data/helpArticles";
+interface HelpArticle {
+  id: string;
+  title: string;
+  slug: string;
+  description: string;
+  content: string;
+  category: string;
+  readTime?: string;
+  difficulty?: string;
+  tags?: string[];
+  helpful?: number;
+  notHelpful?: number;
+}
 
 interface ResourceLink {
   id: string;
@@ -72,7 +84,7 @@ export const HelpSupport: React.FC = () => {
   });
 
   // Fetch data from API
-  const { data: articlesData, isLoading: articlesLoading } = useQuery({
+  const { data: articlesData, isLoading: articlesLoading } = useQuery<{articles: HelpArticle[]}>({
     queryKey: ['/api/help/articles'],
     queryFn: async () => {
       const response = await apiRequest('GET', '/api/help/articles');
@@ -80,7 +92,7 @@ export const HelpSupport: React.FC = () => {
     }
   });
 
-  const { data: faqsData, isLoading: faqsLoading } = useQuery({
+  const { data: faqsData, isLoading: faqsLoading } = useQuery<{faqs: FAQItem[]}>({
     queryKey: ['/api/help/faqs'],
     queryFn: async () => {
       const response = await apiRequest('GET', '/api/help/faqs');
@@ -88,7 +100,7 @@ export const HelpSupport: React.FC = () => {
     }
   });
 
-  const { data: resourcesData, isLoading: resourcesLoading } = useQuery({
+  const { data: resourcesData, isLoading: resourcesLoading } = useQuery<{resources: ResourceLink[]}>({
     queryKey: ['/api/help/resources'],
     queryFn: async () => {
       const response = await apiRequest('GET', '/api/help/resources');
@@ -106,14 +118,14 @@ export const HelpSupport: React.FC = () => {
     const urlParams = new URLSearchParams(window.location.search);
     const articleParam = urlParams.get('article');
     
-    if (articleParam) {
-      const targetArticle = articleMap[articleParam];
+    if (articleParam && helpArticles.length > 0) {
+      const targetArticle = helpArticles.find(a => a.slug === articleParam);
       if (targetArticle) {
         setSelectedArticle(targetArticle);
         setActiveTab("help-articles");
       }
     }
-  }, []);
+  }, [helpArticles]);
 
   // Submit support ticket mutation
   const submitTicketMutation = useMutation({
@@ -266,6 +278,9 @@ export const HelpSupport: React.FC = () => {
     return matchesSearch && matchesCategory;
   });
 
+  const filteredStandardArticles = filteredArticles.filter(a => a.category !== 'guides' && !a.tags?.includes('guide'));
+  const filteredGuides = filteredArticles.filter(a => a.category === 'guides' || a.tags?.includes('guide'));
+
   if (selectedArticle) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-purple-950 via-gray-950 to-black text-white">
@@ -396,13 +411,20 @@ export const HelpSupport: React.FC = () => {
         {/* Main Content */}
         <div className="max-w-6xl mx-auto">
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <TabsList className="grid w-full grid-cols-4 bg-gray-900/50 border-purple-500/30 p-1 rounded-lg h-12">
+            <TabsList className="grid w-full grid-cols-5 bg-gray-900/50 border-purple-500/30 p-1 rounded-lg h-12">
               <TabsTrigger 
                 value="help-articles"
                 className="data-[state=active]:bg-purple-600 data-[state=active]:text-white text-purple-300 flex items-center justify-center gap-2 px-3 py-1.5 text-sm font-medium rounded-md transition-all h-10"
               >
                 <BookOpen className="w-4 h-4" />
                 <span className="hidden sm:inline">Articles</span>
+              </TabsTrigger>
+              <TabsTrigger 
+                value="guides"
+                className="data-[state=active]:bg-purple-600 data-[state=active]:text-white text-purple-300 flex items-center justify-center gap-2 px-3 py-1.5 text-sm font-medium rounded-md transition-all h-10"
+              >
+                <BookOpen className="w-4 h-4" />
+                <span className="hidden sm:inline">Guides</span>
               </TabsTrigger>
               <TabsTrigger 
                 value="faq"
@@ -433,7 +455,7 @@ export const HelpSupport: React.FC = () => {
                   <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-500 mx-auto mb-4"></div>
                   <p className="text-purple-300">Loading help articles...</p>
                 </div>
-              ) : filteredArticles.length === 0 ? (
+              ) : filteredStandardArticles.length === 0 ? (
                 <div className="text-center py-12">
                   <BookOpen className="w-16 h-16 text-purple-400 mx-auto mb-4" />
                   <h3 className="text-xl font-semibold text-white mb-2">No articles found</h3>
@@ -441,7 +463,78 @@ export const HelpSupport: React.FC = () => {
                 </div>
               ) : (
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {filteredArticles.map((article: HelpArticle) => (
+                  {filteredStandardArticles.map((article: HelpArticle) => (
+                    <Card 
+                      key={article.id}
+                      className="bg-gradient-to-br from-purple-900/20 to-gray-900/40 border border-purple-500/20 hover:border-purple-400/40 transition-colors cursor-pointer backdrop-blur-sm"
+                      onClick={() => setSelectedArticle(article)}
+                    >
+                      <CardHeader>
+                        <CardTitle className="text-white text-lg">{article.title}</CardTitle>
+                        <CardDescription className="text-purple-200">
+                          {article.description}
+                        </CardDescription>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="flex items-center justify-between text-sm text-purple-300 mb-4">
+                          {article.readTime && (
+                            <div className="flex items-center gap-1">
+                              <Clock className="w-4 h-4" />
+                              {article.readTime}
+                            </div>
+                          )}
+                          {article.difficulty && (
+                            <Badge variant="secondary" className="bg-purple-800/30 text-purple-200 border-purple-600/30">
+                              {article.difficulty}
+                            </Badge>
+                          )}
+                        </div>
+                        {article.tags && (
+                          <div className="flex flex-wrap gap-1 mb-4">
+                            {article.tags.slice(0, 3).map((tag) => (
+                              <Badge key={tag} variant="outline" className="text-xs text-purple-300 border-purple-600/30">
+                                {tag}
+                              </Badge>
+                            ))}
+                            {article.tags.length > 3 && (
+                              <Badge variant="outline" className="text-xs text-purple-300 border-purple-600/30">
+                                +{article.tags.length - 3}
+                              </Badge>
+                            )}
+                          </div>
+                        )}
+                        <div className="flex items-center gap-4 text-xs text-purple-400">
+                          <div className="flex items-center gap-1">
+                            <ThumbsUp className="w-3 h-3" />
+                            {article.helpful || 0}
+                          </div>
+                          <div className="flex items-center gap-1">
+                            <ThumbsDown className="w-3 h-3" />
+                            {article.notHelpful || 0}
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              )}
+            </TabsContent>
+
+            <TabsContent value="guides" className="mt-8">
+              {articlesLoading ? (
+                <div className="text-center py-12">
+                  <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-500 mx-auto mb-4"></div>
+                  <p className="text-purple-300">Loading guides...</p>
+                </div>
+              ) : filteredGuides.length === 0 ? (
+                <div className="text-center py-12">
+                  <BookOpen className="w-16 h-16 text-purple-400 mx-auto mb-4" />
+                  <h3 className="text-xl font-semibold text-white mb-2">No guides found</h3>
+                  <p className="text-purple-300">Try adjusting your search terms or category filter.</p>
+                </div>
+              ) : (
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {filteredGuides.map((article: HelpArticle) => (
                     <Card 
                       key={article.id}
                       className="bg-gradient-to-br from-purple-900/20 to-gray-900/40 border border-purple-500/20 hover:border-purple-400/40 transition-colors cursor-pointer backdrop-blur-sm"
