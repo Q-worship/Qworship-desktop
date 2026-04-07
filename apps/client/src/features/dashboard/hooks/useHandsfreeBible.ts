@@ -10,6 +10,7 @@ import { useBibleProjectionStore } from "@/stores/useBibleProjectionStore";
 import { useRealtimeSocket } from "@/hooks/useRealtimeSocket";
 import { useRawAudioStream } from "@/hooks/useRawAudioStream";
 import { useToast } from "@/hooks/use-toast";
+import { useHFBStore } from "./useHFBStore";
 
 interface UseHandsfreeBibleProps {
   liveWindow: Window | null;
@@ -119,6 +120,27 @@ export const useHandsfreeBible = ({
       : null;
     setZustandVerse(verseForStore, `${book} ${chapter}:${verseNum}`);
     setZustandBibleVersion(effectiveVersion);
+
+    // Integrate with HFB layout store
+    useHFBStore.getState().addHfbDetectedVerse({
+      id: Date.now(),
+      reference: `${book} ${chapter}:${verseNum}`,
+      verseText: text,
+      version: effectiveVersion,
+      isActive: true,
+      verseNum: verseNum,
+      book,
+      chapter
+    });
+    
+    // Set all other detected verses to inactive
+    useHFBStore.getState().setHfbDetectedVerses(prev => 
+      prev.map(d => ({ ...d, isActive: d.id === Date.now() })) // This handles new addition logic
+    );
+    useHFBStore.getState().setHfbCurrentProjected({ reference: `${book} ${chapter}:${verseNum}`, text, version: effectiveVersion });
+    
+    // Asynchronously fetch and display the whole chapter in Center Stage
+    useHFBStore.getState().fetchHFBChapter(book, chapter, effectiveVersion, verseNum);
 
     if (isHandsfreeBibleOpen) {
       setDisplayMode("hfb-bible");
@@ -278,6 +300,13 @@ export const useHandsfreeBible = ({
     onFinalTranscript: (text) => {
       resetInactivityTimer();
       setMicrophoneStatus("Listening");
+      if (text.trim()) {
+        useHFBStore.getState().addHfbTranscriptLine({
+          id: Date.now(),
+          text,
+          ts: new Date().toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' })
+        });
+      }
     },
     onSleepCommand: () => {
       resetInactivityTimer();
@@ -321,12 +350,14 @@ export const useHandsfreeBible = ({
     if (isHandsfreeBibleOpen && !isConnected) {
       connect();
     }
+  }, [isHandsfreeBibleOpen, connect, isConnected]);
+
+  // Clean up socket on unmount ONLY
+  useEffect(() => {
     return () => {
-      if (!isHandsfreeBibleOpen) {
-        disconnect();
-      }
+      disconnect();
     };
-  }, [isHandsfreeBibleOpen, connect, disconnect, isConnected]);
+  }, [disconnect]);
 
   // Sync state to local storage and live window
   useEffect(() => {
@@ -432,6 +463,7 @@ export const useHandsfreeBible = ({
       currentVerseContextRef.current = null;
       setWidgetVerseData(null);
       clearZustandProjection();
+      useHFBStore.getState().clearAllState();
 
       // Stop recording and disconnect
       stopRecording();

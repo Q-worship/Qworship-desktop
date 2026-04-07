@@ -18,7 +18,8 @@ export const LiveSlideLayer: React.FC<ReturnType<typeof useLivePresentationState
     currentSlide,
     animationKey,
     titleEditorState,
-    totalSlides
+    totalSlides,
+    pacingLineIdx
   } = props;
 
   return (
@@ -75,7 +76,26 @@ export const LiveSlideLayer: React.FC<ReturnType<typeof useLivePresentationState
                   textTransform: (editorState.styleTextTransform as any) || "",
                   textAlign: slideAlignment,
                 }}>
-                {currentSongProjection.lyrics}
+                {projectionType === "song" && pacingLineIdx >= 0 ? (
+                  currentSongProjection.lyrics.split("\n").map((line, lineIdx) => (
+                    <div
+                      key={lineIdx}
+                      style={{
+                        color: line.trim() === ""
+                          ? "transparent"
+                          : lineIdx <= pacingLineIdx
+                            ? "#fbbf24" // Amber highlight color
+                            : (editorState.styleColor || editorState.textColor || "#ffffff"),
+                        minHeight: "1.2em",
+                        transition: "color 0.15s ease",
+                      }}
+                    >
+                      {line || "\u00A0"}
+                    </div>
+                  ))
+                ) : (
+                  currentSongProjection.lyrics
+                )}
               </div>
               {/* For Bible projections, show version below the scripture text */}
               {projectionType === "bible" &&
