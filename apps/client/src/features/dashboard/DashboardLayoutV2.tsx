@@ -3120,6 +3120,7 @@ export const QworshipHomeV2Base = (): JSX.Element => {
 
   // Modal calendar helper functions
   const formatModalDate = (date: Date | null) => {
+    if (!date) return "";
     const days = [
       "Sunday",
       "Monday",
