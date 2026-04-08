@@ -17,7 +17,8 @@ import { useToast } from "@/hooks/use-toast";
 interface ImportFilesModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onMediaUploaded?: (mediaAsset: { id: number; title: string; fileType: string }) => void;
+  onMediaUploaded?: (mediaAsset: { id: number; title: string; fileType: string, fileUrl?: string }) => void;
+  onMultipleMediaUploaded?: (mediaAssets: { id: number; title: string; fileType: string, fileUrl?: string }[]) => void;
 }
 
 interface FilePreview {
@@ -73,7 +74,7 @@ const availableCategories = [
   'Logo'
 ];
 
-export const ImportFilesModal = ({ open, onOpenChange, onMediaUploaded }: ImportFilesModalProps): JSX.Element => {
+export const ImportFilesModal = ({ open, onOpenChange, onMediaUploaded, onMultipleMediaUploaded }: ImportFilesModalProps): JSX.Element => {
   const [files, setFiles] = useState<FilePreview[]>([]);
   const [currentTag, setCurrentTag] = useState('');
   const [tagDropdownOpen, setTagDropdownOpen] = useState<string>(''); // Track which file's dropdown is open
@@ -171,8 +172,18 @@ export const ImportFilesModal = ({ open, onOpenChange, onMediaUploaded }: Import
         onMediaUploaded({
           id: firstAsset.id,
           title: firstAsset.title || firstAsset.fileName,
-          fileType: firstAsset.fileType
+          fileType: firstAsset.fileType,
+          fileUrl: firstAsset.fileUrl || `/api/user-media-assets/${firstAsset.id}/file`
         });
+      }
+
+      if (onMultipleMediaUploaded && data?.assets && data.assets.length > 0) {
+        onMultipleMediaUploaded(data.assets.map((a: any) => ({
+          id: a.id,
+          title: a.title || a.fileName,
+          fileType: a.fileType,
+          fileUrl: a.fileUrl || `/api/user-media-assets/${a.id}/file`
+        })));
       }
       
       // Invalidate both caches to ensure tag dropdown updates dynamically
@@ -294,6 +305,15 @@ export const ImportFilesModal = ({ open, onOpenChange, onMediaUploaded }: Import
       console.log('Upload completed successfully:', result);
       
       // Manually trigger the callback since mutateAsync might not call onSuccess
+      if (onMultipleMediaUploaded && result?.assets && result.assets.length > 0) {
+        onMultipleMediaUploaded(result.assets.map((a: any) => ({
+          id: a.id,
+          title: a.title || a.fileName,
+          fileType: a.fileType,
+          fileUrl: a.fileUrl || `/api/user-media-assets/${a.id}/file`
+        })));
+      }
+
       if (onMediaUploaded && result?.assets && result.assets.length > 0) {
         const firstAsset = result.assets[0];
         console.log('Manually triggering callback with asset:', firstAsset);
@@ -308,9 +328,10 @@ export const ImportFilesModal = ({ open, onOpenChange, onMediaUploaded }: Import
         onMediaUploaded({
           id: firstAsset.id,
           title: firstAsset.title || firstAsset.fileName,
-          fileType: firstAsset.fileType
+          fileType: firstAsset.fileType,
+          fileUrl: firstAsset.fileUrl || `/api/user-media-assets/${firstAsset.id}/file`
         });
-      } else {
+      } else if (!onMultipleMediaUploaded) {
         // Debug why callback isn't being called
         toast({
           title: "DEBUG: Callback NOT called",
