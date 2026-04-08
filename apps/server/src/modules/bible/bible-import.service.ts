@@ -1,5 +1,5 @@
 import fs from "fs";
-import { BibleVerse } from "./bible.model.ts";
+import { BibleVerse } from "./bible.model.js";
 
 export class BibleImportService {
   /**
