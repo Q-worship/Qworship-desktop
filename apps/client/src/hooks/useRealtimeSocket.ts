@@ -60,7 +60,8 @@ export const useRealtimeSocket = ({
       return;
     }
 
-    const wsUrl = `ws://localhost:5000/api/bible/audio-stream`;
+    const baseUrl = import.meta.env.VITE_WS_URL || 'ws://localhost:5000';
+    const wsUrl = `${baseUrl}/api/bible/audio-stream`;
 
     const ws = new WebSocket(wsUrl);
 
