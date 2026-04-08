@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  server:
+    build:
+      context: .
+      dockerfile: apps/server/Dockerfile
+    ports:
+      - "5000:5000"
+    environment:
+      # Inject necessary backend environment variables.
+      # When deployed on Coolify, these will be populated from the application's Secret configurations.
+      - NODE_ENV=production
+      - MONGODB_URI=${MONGODB_URI}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - SESSION_SECRET=${SESSION_SECRET}
+      - ELEVENLABS_API_KEY=${ELEVENLABS_API_KEY}
+      - LT_API_KEY=${LT_API_KEY}
+      - LT_BASE_URL=${LT_BASE_URL}
+      - R2_ACCESS_KEY_ID=${R2_ACCESS_KEY_ID}
+      - R2_SECRET_ACCESS_KEY=${R2_SECRET_ACCESS_KEY}
+      - R2_ENDPOINT=${R2_ENDPOINT}
+      - R2_BUCKET_NAME=${R2_BUCKET_NAME}
+      - R2_PUBLIC_URL=${R2_PUBLIC_URL}
+      - SLACK_WEBHOOK_URL=${SLACK_WEBHOOK_URL}
+    restart: unless-stopped
+
+  client:
+    build:
+      context: .
+      dockerfile: apps/client/Dockerfile
+      args:
+        # Vite requires these values AT BUILD TIME to inject them into the static bundle.
+        # You will set these in Coolify's environment variables.
+        - VITE_API_URL=${VITE_API_URL}
+        - VITE_WS_URL=${VITE_WS_URL}
+    ports:
+      - "3000:80"
+    depends_on:
+      - server
+    restart: unless-stopped
