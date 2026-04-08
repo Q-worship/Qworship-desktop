@@ -124,11 +124,14 @@ export const useRealtimeSocket = ({
   }, []);
 
   const disconnect = useCallback(() => {
-    if (socketRef.current) {
+    const socketToClose = socketRef.current;
+    if (socketToClose) {
       // Small delay to let final bits transmit
       setTimeout(() => {
-        if (socketRef.current) {
-          socketRef.current.close();
+        if (socketToClose.readyState === WebSocket.OPEN || socketToClose.readyState === WebSocket.CONNECTING) {
+          socketToClose.close();
+        }
+        if (socketRef.current === socketToClose) {
           socketRef.current = null;
         }
       }, 500);

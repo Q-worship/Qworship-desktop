@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { BibleService } from './bible.service.js';
 import type { BibleReference } from './bible.service.js';
+import { BibleVerse } from './bible.model.js';
 
 export const searchBible = async (req: Request, res: Response) => {
   try {
@@ -52,7 +53,9 @@ export const searchBible = async (req: Request, res: Response) => {
       const passage = {
          reference: result.formattedReference,
          version: result.version || requestedVersion.toUpperCase(),
-         verses: mappedVerses
+         verses: mappedVerses,
+         book: result.book,
+         chapter: result.chapter
       };
 
       return res.json({ success: true, passage });
@@ -107,5 +110,69 @@ export const handleVoiceCommand = async (req: Request, res: Response) => {
   } catch (error) {
     console.error('Voice Command Error:', error);
     res.status(500).json({ success: false, message: 'Server Error' });
+  }
+};
+
+export const structuredSearchBible = async (req: Request, res: Response) => {
+  try {
+    const { book, chapter, verseStart, verseEnd, version = 'kjv' } = req.body;
+
+    if (!book || !chapter || !verseStart) {
+      console.log('Structured search 400 error. req.body:', req.body);
+      return res.status(400).json({ 
+        success: false, 
+        message: `Book, chapter, and verseStart are required. Received: ${JSON.stringify(req.body)}`
+      });
+    }
+
+    const reference: BibleReference = {
+      book,
+      chapter: parseInt(chapter),
+      verseStart: parseInt(verseStart),
+      verseEnd: verseEnd ? parseInt(verseEnd) : undefined,
+      version: (version as any) || 'kjv'
+    };
+
+    const result = await BibleService.searchBible(reference);
+
+    if (result && result.verses.length > 0) {
+      return res.json({ success: true, result });
+    } else {
+      return res.status(404).json({ success: false, message: 'Bible reference not found' });
+    }
+  } catch (error) {
+    console.error('Bible Structured Search Error:', error);
+    return res.status(500).json({ success: false, message: 'Internal server error' });
+  }
+};
+
+export const exportBibleVersion = async (req: Request, res: Response) => {
+  try {
+    const version = (req.params.version || 'kjv').toLowerCase();
+    const validVersions = ['kjv', 'nkjv', 'amp', 'msg', 'esv', 'niv'];
+
+    if (!validVersions.includes(version)) {
+      return res.status(400).json({ success: false, message: 'Invalid version specified' });
+    }
+
+    // Fetch all verses, projecting only the requested version
+    const verses = await BibleVerse.find(
+      {},
+      { bookName: 1, chapter: 1, verse: 1, [version]: 1, _id: 0 }
+    ).lean();
+
+    // Map into flat structure for Dexie bulk insertion
+    const payload = verses.map((v: any) => ({
+      book: v.bookName,
+      chapter: v.chapter,
+      verse: v.verse,
+      text: v[version] || '',
+      version: version
+    }));
+
+    return res.json({ success: true, version, total: payload.length, verses: payload });
+  } catch (error) {
+    console.error('Bible Export Error:', error);
+    return res.status(500).json({ success: false, message: 'Failed to export bible translation' });
   }
 };
