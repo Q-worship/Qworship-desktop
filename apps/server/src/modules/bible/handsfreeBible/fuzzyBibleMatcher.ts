@@ -159,22 +159,17 @@ export function extractBookFromCommand(command: string): {
 export function parseChapterVerse(
   text: string,
 ): { chapter: number; verseStart: number; verseEnd?: number } | null {
-  // Use words-to-numbers to robustly handle spoken numbers (e.g., "one hundred and nineteen" -> "119")
-  let normalizedText = text.toLowerCase();
+  let normalizedText = text.toLowerCase().trim();
 
-  // Convert text to numbers using the library
-  const converted = wordsToNumbers(normalizedText, { fuzzy: true });
-  normalizedText =
-    typeof converted === "string" ? converted : String(converted);
-
-  // Optional: Clean up edge cases that still persist
-  normalizedText = normalizedText
-    .replace(/\b(one|1st)\b/g, "1")
-    .replace(/\b(two|2nd)\b/g, "2")
-    .replace(/\b(three|3rd)\b/g, "3")
-    .replace(/\b(first)\b/g, "1")
-    .replace(/\b(second)\b/g, "2")
-    .replace(/\b(third)\b/g, "3");
+  // Strip trailing quotes or prose that comes after the verse numbers
+  // This prevents "3:16: for god so loved..." from confusing the number extractors
+  const proseIndex = normalizedText.search(/[:.,]?[-\s]*["'‘“]/);
+  if (proseIndex > -1) {
+    normalizedText = normalizedText.substring(0, proseIndex).trim();
+  } else {
+    // Also try to strip if there's a clear boundary like "3:16 says..."
+    normalizedText = normalizedText.replace(/\b(?:says|reads|which is|and it goes)\b.*$/i, "").trim();
+  }
 
   const patterns = [
     // chapter X verse Y to Z (e.g., "chapter 3 and verse 16")
@@ -191,33 +186,61 @@ export function parseChapterVerse(
     /^(\d+)$/,
   ];
 
-  for (let i = 0; i < patterns.length; i++) {
-    const pattern = patterns[i];
-    const match = normalizedText.match(pattern);
-    if (match) {
-      if (i === 3) {
-        // verse Y of chapter X
-        // match[1] = verse, match[2] = chapter, match[3] = verseEnd
-        return {
-          chapter: parseInt(match[2], 10),
-          verseStart: parseInt(match[1], 10),
-          verseEnd: match[3] ? parseInt(match[3], 10) : undefined,
-        };
-      } else if (match[2]) {
-        // Format with chapter and verse
-        return {
-          chapter: parseInt(match[1], 10),
-          verseStart: parseInt(match[2], 10),
-          verseEnd: match[3] ? parseInt(match[3], 10) : undefined,
-        };
-      } else {
-        // Format with chapter only
-        return {
-          chapter: parseInt(match[1], 10),
-          verseStart: 1,
-        };
+  const matchPatterns = (inputStr: string) => {
+    for (let i = 0; i < patterns.length; i++) {
+      const match = inputStr.match(patterns[i]);
+      if (match) {
+        if (i === 3) {
+          return {
+            chapter: parseInt(match[2], 10),
+            verseStart: parseInt(match[1], 10),
+            verseEnd: match[3] ? parseInt(match[3], 10) : undefined,
+          };
+        } else if (match[2]) {
+          return {
+            chapter: parseInt(match[1], 10),
+            verseStart: parseInt(match[2], 10),
+            verseEnd: match[3] ? parseInt(match[3], 10) : undefined,
+          };
+        } else {
+          return {
+            chapter: parseInt(match[1], 10),
+            verseStart: 1,
+          };
+        }
       }
     }
+    return null;
+  };
+
+  // Attempt 1: Raw numbers match (this prevents wordsToNumbers from destroying "3:16")
+  const rawMatch = matchPatterns(normalizedText);
+  if (rawMatch && rawMatch.chapter > 0 && rawMatch.verseStart > 0) {
+    return rawMatch;
+  }
+
+  // Attempt 2: Use words-to-numbers to robustly handle spoken numbers (e.g., "one hundred and nineteen")
+  // Only executed if the raw matching failed to find numbers
+  
+  // OPTIMIZATION: Chop the string down to a maximum of 8 words. 
+  // wordsToNumbers with { fuzzy: true } is exponentially complex and hangs the Node thread for 1.1s on long strings.
+  const choppedText = normalizedText.split(/\s+/).slice(0, 8).join(" ");
+  
+  const converted = wordsToNumbers(choppedText, { fuzzy: true });
+  let numericText = typeof converted === "string" ? converted : String(converted);
+
+  // Clean up edge cases that still persist
+  numericText = numericText
+    .replace(/\b(one|1st)\b/g, "1")
+    .replace(/\b(two|2nd)\b/g, "2")
+    .replace(/\b(three|3rd)\b/g, "3")
+    .replace(/\b(first)\b/g, "1")
+    .replace(/\b(second)\b/g, "2")
+    .replace(/\b(third)\b/g, "3");
+
+  const fallbackMatch = matchPatterns(numericText);
+  if (fallbackMatch && fallbackMatch.chapter > 0 && fallbackMatch.verseStart > 0) {
+    return fallbackMatch;
   }
 
   return null;

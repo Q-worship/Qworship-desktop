@@ -88,6 +88,8 @@ export const LivePresentation = (): JSX.Element => {
   const [projectionType, setProjectionType] = useState<"bible" | "song" | null>(
     null,
   );
+  // Pacing/teleprompter: index of the currently highlighted lyric line (-1 = none)
+  const [pacingLineIdx, setPacingLineIdx] = useState(-1);
 
   // Enhanced song projection state for navigation
   const [currentProjectedSong, setCurrentProjectedSong] = useState<{
@@ -1528,7 +1530,14 @@ export const LivePresentation = (): JSX.Element => {
           if (data.fullSongData) {
             setCurrentProjectedSong(data.fullSongData);
           }
+          // Pacing: accept initial line index from the console
+          if (typeof data.pacingLineIdx === "number") {
+            setPacingLineIdx(data.pacingLineIdx);
+          } else {
+            setPacingLineIdx(-1);
+          }
           setProjectionType("song");
+          useDisplayModeStore.getState().setMode("song");
           // Send state update back to Live Console for preview sync
           if (window.opener && !window.opener.closed) {
             window.opener.postMessage(
@@ -1546,6 +1555,11 @@ export const LivePresentation = (): JSX.Element => {
               },
               window.location.origin,
             );
+          }
+          break;
+        case "PACING_LINE_UPDATE":
+          if (typeof data?.lineIdx === "number") {
+            setPacingLineIdx(data.lineIdx);
           }
           break;
         case "PROJECT_BIBLE_VERSE":
@@ -1589,6 +1603,7 @@ export const LivePresentation = (): JSX.Element => {
           setCurrentSongProjection(null);
           setCurrentProjectedSong(null);
           setProjectionType(null);
+          useDisplayModeStore.getState().setMode("none");
           // Send state update back to Live Console for preview sync
           if (window.opener && !window.opener.closed) {
             window.opener.postMessage(
@@ -2690,7 +2705,24 @@ export const LivePresentation = (): JSX.Element => {
                   textTransform: (editorState.styleTextTransform as any) || "",
                   textAlign: slideAlignment,
                 }}>
-                {currentSongProjection.lyrics}
+                {currentSongProjection.lyrics.split("\n").map((line, idx) => {
+                  const isHighlighted = pacingLineIdx >= 0 && idx === pacingLineIdx;
+                  return (
+                    <span
+                      key={idx}
+                      style={{
+                        display: "block",
+                        color: isHighlighted ? "#fbbf24" : "inherit",
+                        background: isHighlighted ? "rgba(251,191,36,0.08)" : "transparent",
+                        borderRadius: isHighlighted ? "4px" : undefined,
+                        padding: isHighlighted ? "0 4px" : undefined,
+                        transition: "color 0.2s, background 0.2s",
+                      }}
+                    >
+                      {line || "\u00A0"}
+                    </span>
+                  );
+                })}
               </div>
               {/* For Bible projections, show version below the scripture text */}
               {projectionType === "bible" &&
