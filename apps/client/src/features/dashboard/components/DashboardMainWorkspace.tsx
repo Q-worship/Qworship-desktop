@@ -120,7 +120,7 @@ export const DashboardMainWorkspace = (props: any) => {
               height: "600px",
               minHeight: "600px",
               maxHeight: "600px",
-              minWidth: "1400px",
+              minWidth: "100%",
             }}
           >
             {/* Left Section - Edit & Preparation */}
