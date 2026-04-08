@@ -655,7 +655,7 @@ export const DashboardMainWorkspace = (props: any) => {
                                   placeholder="Enter media title..."
                                 />
                               </div>
-                              
+
                               <div className="mt-4 border-t border-gray-600 pt-4">
                                 <label className="text-white font-medium block mb-3">
                                   Media File Source
@@ -671,7 +671,7 @@ export const DashboardMainWorkspace = (props: any) => {
                                     />
                                     <p className="text-xs text-purple-400 font-medium">Enter a direct link to an image or video file.</p>
                                   </div>
-                                  
+
                                   <div className="flex flex-col space-y-2">
                                     <label className="text-gray-300 text-sm font-medium">Local Override (Upload from Device)</label>
                                     <input
@@ -2580,152 +2580,152 @@ import type { Slide } from "@/types";\n${text}`,
                         {editingContent.type === "media" && editingContent.subtype === "slideshow" && (
                           <div className="space-y-6">
                             <div className="flex justify-between items-center bg-[#2a1f3d] p-4 rounded-lg border border-gray-600">
-                               <div>
-                                 <h3 className="text-white font-medium text-lg">Image Slideshow Configuration</h3>
-                                 <p className="text-sm text-gray-400">Upload multiple images to sequence dynamically</p>
-                               </div>
-                               <label className="bg-gradient-to-r from-purple-600 to-purple-700 hover:opacity-90 text-white px-5 py-2.5 rounded-lg border border-purple-500 shadow-lg cursor-pointer transition-all flex items-center space-x-2 font-medium">
-                                 <PlusIcon className="w-4 h-4"/>
-                                 <span>Add Images</span>
-                                 <input
-                                   type="file"
-                                   accept="image/*"
-                                   multiple
-                                   className="hidden"
-                                   onChange={(e) => {
-                                     if (e.target.files && e.target.files.length > 0) {
-                                       const files = Array.from(e.target.files);
-                                       const newSlides = files.map(file => ({
-                                         id: `slide-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
-                                         type: "media",
-                                         subtype: "image",
-                                         title: file.name,
-                                         content: URL.createObjectURL(file),
-                                         itemId: editingContent.id
-                                       }));
-                                       const updatedSlides = [...(editingContent.slides || []), ...newSlides];
-                                       updateItemContent(editingContent.id, editingContent.title, editingContent.content, updatedSlides);
-                                       setEditingContent({...editingContent, slides: updatedSlides});
-                                     }
-                                   }}
-                                 />
-                               </label>
+                              <div>
+                                <h3 className="text-white font-medium text-lg">Image Slideshow Configuration</h3>
+                                <p className="text-sm text-gray-400">Upload multiple images to sequence dynamically</p>
+                              </div>
+                              <label className="bg-gradient-to-r from-purple-600 to-purple-700 hover:opacity-90 text-white px-5 py-2.5 rounded-lg border border-purple-500 shadow-lg cursor-pointer transition-all flex items-center space-x-2 font-medium">
+                                <PlusIcon className="w-4 h-4" />
+                                <span>Add Images</span>
+                                <input
+                                  type="file"
+                                  accept="image/*"
+                                  multiple
+                                  className="hidden"
+                                  onChange={(e) => {
+                                    if (e.target.files && e.target.files.length > 0) {
+                                      const files = Array.from(e.target.files);
+                                      const newSlides = files.map(file => ({
+                                        id: `slide-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+                                        type: "media",
+                                        subtype: "image",
+                                        title: file.name,
+                                        content: URL.createObjectURL(file),
+                                        itemId: editingContent.id
+                                      }));
+                                      const updatedSlides = [...(editingContent.slides || []), ...newSlides];
+                                      updateItemContent(editingContent.id, editingContent.title, editingContent.content, updatedSlides);
+                                      setEditingContent({ ...editingContent, slides: updatedSlides });
+                                    }
+                                  }}
+                                />
+                              </label>
                             </div>
 
                             <div className="grid grid-cols-2 gap-4">
-                               <div className="bg-[#2a1f3d] p-4 rounded-lg border border-gray-600">
-                                 <label className="text-white font-medium mb-3 block">Playback Settings</label>
-                                 <div className="space-y-4 text-sm mt-3">
-                                   <label className="flex items-center space-x-3 text-white">
-                                     <input 
-                                       type="checkbox" 
-                                       className="rounded bg-[#0f0624] border-gray-600 text-purple-600 focus:ring-purple-500 w-4 h-4"
-                                       checked={editingContent.content?.autoAdvance ?? true}
-                                       onChange={(e) => {
-                                          const nextContent = { ...((typeof editingContent.content === 'object' && editingContent.content) ? editingContent.content : {}), autoAdvance: e.target.checked };
-                                          updateItemContent(editingContent.id, editingContent.title, nextContent, editingContent.slides);
-                                          setEditingContent({...editingContent, content: nextContent});
-                                       }}
-                                     />
-                                     <span>Advance to next slide automatically</span>
-                                   </label>
-                                   <div className="flex items-center justify-between text-gray-300 pl-7">
-                                     <span>Auto-advance timer (sec):</span>
-                                     <input 
-                                        type="number" 
-                                        className="bg-[#0f0624] border border-gray-600 w-16 text-center rounded py-1 px-2 text-white"
-                                        value={typeof editingContent.content?.timer === 'number' ? editingContent.content.timer : 5}
-                                        min={1}
-                                        onChange={(e) => {
-                                          const nextContent = { ...((typeof editingContent.content === 'object' && editingContent.content) ? editingContent.content : {}), timer: parseInt(e.target.value) || 5 };
-                                          updateItemContent(editingContent.id, editingContent.title, nextContent, editingContent.slides);
-                                          setEditingContent({...editingContent, content: nextContent});
-                                       }}
-                                     />
-                                   </div>
-                                   <div className="flex items-center justify-between text-gray-300">
-                                     <span>Transition Effect:</span>
-                                     <select 
-                                        className="bg-[#0f0624] border border-gray-600 rounded py-1 px-2 text-white outline-none w-32"
-                                        value={editingContent.content?.transition ?? "fade"}
-                                        onChange={(e) => {
-                                          const nextContent = { ...((typeof editingContent.content === 'object' && editingContent.content) ? editingContent.content : {}), transition: e.target.value };
-                                          updateItemContent(editingContent.id, editingContent.title, nextContent, editingContent.slides);
-                                          setEditingContent({...editingContent, content: nextContent});
-                                       }}
-                                     >
-                                       <option value="none">None</option>
-                                       <option value="fade">Fade In/Out</option>
-                                       <option value="slide">Slide Left</option>
-                                     </select>
-                                   </div>
-                                 </div>
-                               </div>
-                               
-                               <div className="bg-[#2a1f3d] p-4 rounded-lg border border-gray-600 flex flex-col justify-center items-center text-center">
-                                  <div className="w-12 h-12 bg-purple-500/20 text-purple-400 rounded-full flex items-center justify-center mb-3">
-                                     <ImageIcon className="w-6 h-6" />
+                              <div className="bg-[#2a1f3d] p-4 rounded-lg border border-gray-600">
+                                <label className="text-white font-medium mb-3 block">Playback Settings</label>
+                                <div className="space-y-4 text-sm mt-3">
+                                  <label className="flex items-center space-x-3 text-white">
+                                    <input
+                                      type="checkbox"
+                                      className="rounded bg-[#0f0624] border-gray-600 text-purple-600 focus:ring-purple-500 w-4 h-4"
+                                      checked={editingContent.content?.autoAdvance ?? true}
+                                      onChange={(e) => {
+                                        const nextContent = { ...((typeof editingContent.content === 'object' && editingContent.content) ? editingContent.content : {}), autoAdvance: e.target.checked };
+                                        updateItemContent(editingContent.id, editingContent.title, nextContent, editingContent.slides);
+                                        setEditingContent({ ...editingContent, content: nextContent });
+                                      }}
+                                    />
+                                    <span>Advance to next slide automatically</span>
+                                  </label>
+                                  <div className="flex items-center justify-between text-gray-300 pl-7">
+                                    <span>Auto-advance timer (sec):</span>
+                                    <input
+                                      type="number"
+                                      className="bg-[#0f0624] border border-gray-600 w-16 text-center rounded py-1 px-2 text-white"
+                                      value={typeof editingContent.content?.timer === 'number' ? editingContent.content.timer : 5}
+                                      min={1}
+                                      onChange={(e) => {
+                                        const nextContent = { ...((typeof editingContent.content === 'object' && editingContent.content) ? editingContent.content : {}), timer: parseInt(e.target.value) || 5 };
+                                        updateItemContent(editingContent.id, editingContent.title, nextContent, editingContent.slides);
+                                        setEditingContent({ ...editingContent, content: nextContent });
+                                      }}
+                                    />
                                   </div>
-                                  <span className="text-white text-4xl font-bold">{editingContent.slides?.length || 0}</span>
-                                  <p className="text-gray-400 text-sm mt-1">Total Images In Sequence</p>
-                               </div>
+                                  <div className="flex items-center justify-between text-gray-300">
+                                    <span>Transition Effect:</span>
+                                    <select
+                                      className="bg-[#0f0624] border border-gray-600 rounded py-1 px-2 text-white outline-none w-32"
+                                      value={editingContent.content?.transition ?? "fade"}
+                                      onChange={(e) => {
+                                        const nextContent = { ...((typeof editingContent.content === 'object' && editingContent.content) ? editingContent.content : {}), transition: e.target.value };
+                                        updateItemContent(editingContent.id, editingContent.title, nextContent, editingContent.slides);
+                                        setEditingContent({ ...editingContent, content: nextContent });
+                                      }}
+                                    >
+                                      <option value="none">None</option>
+                                      <option value="fade">Fade In/Out</option>
+                                      <option value="slide">Slide Left</option>
+                                    </select>
+                                  </div>
+                                </div>
+                              </div>
+
+                              <div className="bg-[#2a1f3d] p-4 rounded-lg border border-gray-600 flex flex-col justify-center items-center text-center">
+                                <div className="w-12 h-12 bg-purple-500/20 text-purple-400 rounded-full flex items-center justify-center mb-3">
+                                  <ImageIcon className="w-6 h-6" />
+                                </div>
+                                <span className="text-white text-4xl font-bold">{editingContent.slides?.length || 0}</span>
+                                <p className="text-gray-400 text-sm mt-1">Total Images In Sequence</p>
+                              </div>
                             </div>
-                            
+
                             <h4 className="text-white font-medium mt-8 border-b border-gray-600 pb-2">Image Sequence Map</h4>
-                            
+
                             {/* Slide Grid Configuration */}
                             {editingContent.slides?.length > 0 ? (
                               <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 overflow-y-auto max-h-[500px] p-2 bg-[#0f0624] rounded-lg border border-gray-600 shadow-inner">
-                                 {editingContent.slides.map((slide: any, idx: number) => (
-                                   <div key={slide.id} 
-                                        className="relative group bg-[#1a0f2e] border border-gray-600 shadow-md rounded-lg overflow-hidden flex flex-col aspect-video hover:border-purple-500 transition-colors cursor-pointer"
-                                        onClick={() => {
-                                          if (setCurrentlyDisplayedSlide) {
-                                            setCurrentlyDisplayedSlide(slide);
-                                          }
+                                {editingContent.slides.map((slide: any, idx: number) => (
+                                  <div key={slide.id}
+                                    className="relative group bg-[#1a0f2e] border border-gray-600 shadow-md rounded-lg overflow-hidden flex flex-col aspect-video hover:border-purple-500 transition-colors cursor-pointer"
+                                    onClick={() => {
+                                      if (setCurrentlyDisplayedSlide) {
+                                        setCurrentlyDisplayedSlide(slide);
+                                      }
+                                    }}>
+                                    <img src={slide.content} className="w-full h-full object-cover" />
+                                    <div className="absolute top-0 right-0 left-0 bg-black/70 p-2 flex justify-between opacity-0 group-hover:opacity-100 transition-opacity backdrop-blur-sm">
+                                      <div className="flex space-x-1">
+                                        <button disabled={idx === 0} className="bg-gray-700/80 hover:bg-gray-500 text-white p-1 rounded disabled:opacity-30 disabled:cursor-not-allowed"
+                                          onClick={(e) => {
+                                            e.stopPropagation();
+                                            const newSlides = [...editingContent.slides];
+                                            [newSlides[idx - 1], newSlides[idx]] = [newSlides[idx], newSlides[idx - 1]];
+                                            updateItemContent(editingContent.id, editingContent.title, editingContent.content, newSlides);
+                                            setEditingContent({ ...editingContent, slides: newSlides });
+                                          }}>
+                                          <ChevronLeftIcon className="w-4 h-4" />
+                                        </button>
+                                        <button disabled={idx === editingContent.slides.length - 1} className="bg-gray-700/80 hover:bg-gray-500 text-white p-1 rounded disabled:opacity-30 disabled:cursor-not-allowed"
+                                          onClick={(e) => {
+                                            e.stopPropagation();
+                                            const newSlides = [...editingContent.slides];
+                                            [newSlides[idx + 1], newSlides[idx]] = [newSlides[idx], newSlides[idx + 1]];
+                                            updateItemContent(editingContent.id, editingContent.title, editingContent.content, newSlides);
+                                            setEditingContent({ ...editingContent, slides: newSlides });
+                                          }}>
+                                          <ChevronRightIcon className="w-4 h-4" />
+                                        </button>
+                                      </div>
+                                      <button className="bg-red-600 hover:bg-red-500 text-white p-1 rounded"
+                                        onClick={(e) => {
+                                          e.stopPropagation();
+                                          const nextSlides = editingContent.slides.filter((s: any) => s.id !== slide.id);
+                                          updateItemContent(editingContent.id, editingContent.title, editingContent.content, nextSlides);
+                                          setEditingContent({ ...editingContent, slides: nextSlides });
                                         }}>
-                                       <img src={slide.content} className="w-full h-full object-cover" />
-                                       <div className="absolute top-0 right-0 left-0 bg-black/70 p-2 flex justify-between opacity-0 group-hover:opacity-100 transition-opacity backdrop-blur-sm">
-                                          <div className="flex space-x-1">
-                                             <button disabled={idx === 0} className="bg-gray-700/80 hover:bg-gray-500 text-white p-1 rounded disabled:opacity-30 disabled:cursor-not-allowed"
-                                               onClick={(e) => {
-                                                  e.stopPropagation();
-                                                  const newSlides = [...editingContent.slides];
-                                                  [newSlides[idx-1], newSlides[idx]] = [newSlides[idx], newSlides[idx-1]];
-                                                  updateItemContent(editingContent.id, editingContent.title, editingContent.content, newSlides);
-                                                  setEditingContent({...editingContent, slides: newSlides});
-                                               }}>
-                                               <ChevronLeftIcon className="w-4 h-4"/>
-                                             </button>
-                                             <button disabled={idx === editingContent.slides.length - 1} className="bg-gray-700/80 hover:bg-gray-500 text-white p-1 rounded disabled:opacity-30 disabled:cursor-not-allowed"
-                                               onClick={(e) => {
-                                                  e.stopPropagation();
-                                                  const newSlides = [...editingContent.slides];
-                                                  [newSlides[idx+1], newSlides[idx]] = [newSlides[idx], newSlides[idx+1]];
-                                                  updateItemContent(editingContent.id, editingContent.title, editingContent.content, newSlides);
-                                                  setEditingContent({...editingContent, slides: newSlides});
-                                               }}>
-                                               <ChevronRightIcon className="w-4 h-4"/>
-                                             </button>
-                                          </div>
-                                          <button className="bg-red-600 hover:bg-red-500 text-white p-1 rounded"
-                                            onClick={(e) => {
-                                              e.stopPropagation();
-                                              const nextSlides = editingContent.slides.filter((s:any) => s.id !== slide.id);
-                                              updateItemContent(editingContent.id, editingContent.title, editingContent.content, nextSlides);
-                                              setEditingContent({...editingContent, slides: nextSlides});
-                                            }}>
-                                            <XIcon className="w-4 h-4" />
-                                          </button>
-                                        </div>
-                                       <div className="absolute bottom-2 left-2 bg-black/80 px-2 py-0.5 rounded text-xs text-white font-medium border border-gray-600">Slide {idx + 1}</div>
-                                   </div>
-                                 ))}
+                                        <XIcon className="w-4 h-4" />
+                                      </button>
+                                    </div>
+                                    <div className="absolute bottom-2 left-2 bg-black/80 px-2 py-0.5 rounded text-xs text-white font-medium border border-gray-600">Slide {idx + 1}</div>
+                                  </div>
+                                ))}
                               </div>
                             ) : (
-                               <div className="bg-[#1a0f2e] border-2 border-dashed border-gray-600 rounded-lg p-12 text-center text-gray-400">
-                                 No images uploaded. <br/>Click <span className="text-purple-400">"Add Images"</span> above to start building your slideshow sequence.
-                               </div>
+                              <div className="bg-[#1a0f2e] border-2 border-dashed border-gray-600 rounded-lg p-12 text-center text-gray-400">
+                                No images uploaded. <br />Click <span className="text-purple-400">"Add Images"</span> above to start building your slideshow sequence.
+                              </div>
                             )}
                           </div>
                         )}
@@ -2741,7 +2741,7 @@ import type { Slide } from "@/types";\n${text}`,
                                 onChange={(e) => {
                                   const newTitle = e.target.value;
                                   updateItemContent(editingContent.id, newTitle, editingContent.content, editingContent.slides);
-                                  setEditingContent({...editingContent, title: newTitle});
+                                  setEditingContent({ ...editingContent, title: newTitle });
                                 }}
                                 className="bg-[#2a1f3d] border-gray-600 text-white"
                                 placeholder="Enter image title..."
@@ -2759,11 +2759,11 @@ import type { Slide } from "@/types";\n${text}`,
                                   onClick={() => setIsImageBrowseModalOpen(true)}
                                   className="bg-[#2a1f3d] hover:bg-[#3a2f4d] text-white px-4 py-2.5 rounded-lg border border-purple-500/30 shadow-lg transition-all flex items-center space-x-2 text-sm font-medium"
                                 >
-                                  <FolderOpen className="w-4 h-4 text-purple-400"/>
+                                  <FolderOpen className="w-4 h-4 text-purple-400" />
                                   <span>Browse media</span>
                                 </button>
                                 <label className="bg-gradient-to-r from-purple-600 to-purple-700 hover:opacity-90 text-white px-4 py-2.5 rounded-lg border border-purple-500 shadow-lg cursor-pointer transition-all flex items-center space-x-2 text-sm font-medium">
-                                  <Upload className="w-4 h-4"/>
+                                  <Upload className="w-4 h-4" />
                                   <span>Import Media</span>
                                   <input
                                     type="file"
@@ -2773,12 +2773,12 @@ import type { Slide } from "@/types";\n${text}`,
                                     onChange={async (e) => {
                                       if (e.target.files && e.target.files.length > 0) {
                                         const files = Array.from(e.target.files);
-                                        
+
                                         // Filter out placeholder slides that were auto-created
                                         const existingRealSlides = (editingContent.slides || []).filter(
                                           (s: any) => s.content && s.content !== "Worship background image" && s.content !== "Inspirational worship video" && s.content !== "Ready for content"
                                         );
-                                        
+
                                         // Upload to server API for persistent storage under "My Media"
                                         const token = localStorage.getItem('token');
                                         try {
@@ -2790,23 +2790,23 @@ import type { Slide } from "@/types";\n${text}`,
                                               categories: ['Imported Media'],
                                             }));
                                           });
-                                          
+
                                           const headers: Record<string, string> = {};
                                           if (token) {
                                             headers['Authorization'] = `Bearer ${token}`;
                                           }
-                                          
+
                                           const response = await fetch('/api/user-media-assets/upload', {
                                             method: 'POST',
                                             body: formData,
                                             headers,
                                             credentials: 'include',
                                           });
-                                          
+
                                           if (response.ok) {
                                             const data = await response.json();
                                             const uploadedAssets = data.assets || [];
-                                            
+
                                             const newSlides = uploadedAssets.map((asset: any, idx: number) => ({
                                               id: `slide-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
                                               type: "media" as const,
@@ -2815,16 +2815,16 @@ import type { Slide } from "@/types";\n${text}`,
                                               content: `/api/user-media-assets/${asset._id}/file`,
                                               itemId: editingContent.id
                                             }));
-                                            
+
                                             const updatedSlides = [...existingRealSlides, ...newSlides];
                                             updateItemContent(editingContent.id, editingContent.title, editingContent.content, updatedSlides);
-                                            setEditingContent({...editingContent, slides: updatedSlides});
-                                            
+                                            setEditingContent({ ...editingContent, slides: updatedSlides });
+
                                             // Set recently uploaded for "My Media" highlight
                                             if (uploadedAssets.length > 0 && setRecentlyUploadedMediaId) {
                                               setRecentlyUploadedMediaId(uploadedAssets[0]._id);
                                             }
-                                            
+
                                             toast({ title: "Media Uploaded", description: `${uploadedAssets.length} image(s) uploaded and saved to My Media`, className: "bg-gradient-to-r from-green-900/90 to-green-800/90 border-green-500/30 text-white" });
                                           } else {
                                             // Fallback to blob URLs if upload fails
@@ -2838,7 +2838,7 @@ import type { Slide } from "@/types";\n${text}`,
                                             }));
                                             const updatedSlides = [...existingRealSlides, ...newSlides];
                                             updateItemContent(editingContent.id, editingContent.title, editingContent.content, updatedSlides);
-                                            setEditingContent({...editingContent, slides: updatedSlides});
+                                            setEditingContent({ ...editingContent, slides: updatedSlides });
                                             toast({ title: "Upload Warning", description: "Files added locally but could not be saved to cloud", className: "bg-gradient-to-r from-yellow-900/90 to-yellow-800/90 border-yellow-500/30 text-white" });
                                           }
                                         } catch (error) {
@@ -2854,7 +2854,7 @@ import type { Slide } from "@/types";\n${text}`,
                                           }));
                                           const updatedSlides = [...existingRealSlides, ...newSlides];
                                           updateItemContent(editingContent.id, editingContent.title, editingContent.content, updatedSlides);
-                                          setEditingContent({...editingContent, slides: updatedSlides});
+                                          setEditingContent({ ...editingContent, slides: updatedSlides });
                                         }
                                       }
                                     }}
@@ -2876,7 +2876,7 @@ import type { Slide } from "@/types";\n${text}`,
                                       onChange={(e) => {
                                         const nextContent = { ...((typeof editingContent.content === 'object' && editingContent.content) ? editingContent.content : {}), autoAdvance: e.target.checked };
                                         updateItemContent(editingContent.id, editingContent.title, nextContent, editingContent.slides);
-                                        setEditingContent({...editingContent, content: nextContent});
+                                        setEditingContent({ ...editingContent, content: nextContent });
                                       }}
                                     />
                                     <span>Advance to next slide automatically</span>
@@ -2891,7 +2891,7 @@ import type { Slide } from "@/types";\n${text}`,
                                       onChange={(e) => {
                                         const nextContent = { ...((typeof editingContent.content === 'object' && editingContent.content) ? editingContent.content : {}), timer: parseInt(e.target.value) || 5 };
                                         updateItemContent(editingContent.id, editingContent.title, nextContent, editingContent.slides);
-                                        setEditingContent({...editingContent, content: nextContent});
+                                        setEditingContent({ ...editingContent, content: nextContent });
                                       }}
                                     />
                                   </div>
@@ -2903,7 +2903,7 @@ import type { Slide } from "@/types";\n${text}`,
                                       onChange={(e) => {
                                         const nextContent = { ...((typeof editingContent.content === 'object' && editingContent.content) ? editingContent.content : {}), transition: e.target.value };
                                         updateItemContent(editingContent.id, editingContent.title, nextContent, editingContent.slides);
-                                        setEditingContent({...editingContent, content: nextContent});
+                                        setEditingContent({ ...editingContent, content: nextContent });
                                       }}
                                     >
                                       <option value="none">None</option>
@@ -2936,27 +2936,27 @@ import type { Slide } from "@/types";\n${text}`,
                                         <button disabled={idx === 0} className="bg-gray-700/80 hover:bg-gray-500 text-white p-1 rounded disabled:opacity-30 disabled:cursor-not-allowed"
                                           onClick={() => {
                                             const newSlides = [...editingContent.slides];
-                                            [newSlides[idx-1], newSlides[idx]] = [newSlides[idx], newSlides[idx-1]];
+                                            [newSlides[idx - 1], newSlides[idx]] = [newSlides[idx], newSlides[idx - 1]];
                                             updateItemContent(editingContent.id, editingContent.title, editingContent.content, newSlides);
-                                            setEditingContent({...editingContent, slides: newSlides});
+                                            setEditingContent({ ...editingContent, slides: newSlides });
                                           }}>
-                                          <ChevronLeftIcon className="w-4 h-4"/>
+                                          <ChevronLeftIcon className="w-4 h-4" />
                                         </button>
                                         <button disabled={idx === editingContent.slides.length - 1} className="bg-gray-700/80 hover:bg-gray-500 text-white p-1 rounded disabled:opacity-30 disabled:cursor-not-allowed"
                                           onClick={() => {
                                             const newSlides = [...editingContent.slides];
-                                            [newSlides[idx+1], newSlides[idx]] = [newSlides[idx], newSlides[idx+1]];
+                                            [newSlides[idx + 1], newSlides[idx]] = [newSlides[idx], newSlides[idx + 1]];
                                             updateItemContent(editingContent.id, editingContent.title, editingContent.content, newSlides);
-                                            setEditingContent({...editingContent, slides: newSlides});
+                                            setEditingContent({ ...editingContent, slides: newSlides });
                                           }}>
-                                          <ChevronRightIcon className="w-4 h-4"/>
+                                          <ChevronRightIcon className="w-4 h-4" />
                                         </button>
                                       </div>
                                       <button className="bg-red-600 hover:bg-red-500 text-white p-1 rounded"
                                         onClick={() => {
-                                          const nextSlides = editingContent.slides.filter((s:any) => s.id !== slide.id);
+                                          const nextSlides = editingContent.slides.filter((s: any) => s.id !== slide.id);
                                           updateItemContent(editingContent.id, editingContent.title, editingContent.content, nextSlides);
-                                          setEditingContent({...editingContent, slides: nextSlides});
+                                          setEditingContent({ ...editingContent, slides: nextSlides });
                                         }}>
                                         <XIcon className="w-4 h-4" />
                                       </button>
@@ -2967,8 +2967,8 @@ import type { Slide } from "@/types";\n${text}`,
                               </div>
                             ) : (
                               <div className="bg-[#1a0f2e] border-2 border-dashed border-gray-600 rounded-lg p-12 text-center text-gray-400">
-                                <ImageIcon className="w-10 h-10 mx-auto mb-3 text-gray-500"/>
-                                No images added yet.<br/>Use <span className="text-purple-400">"Browse media"</span> or <span className="text-purple-400">"Import Media"</span> above to start.
+                                <ImageIcon className="w-10 h-10 mx-auto mb-3 text-gray-500" />
+                                No images added yet.<br />Use <span className="text-purple-400">"Browse media"</span> or <span className="text-purple-400">"Import Media"</span> above to start.
                               </div>
                             )}
 
@@ -2994,7 +2994,7 @@ import type { Slide } from "@/types";\n${text}`,
                                 );
                                 const updatedSlides = [...existingRealSlides, newSlide];
                                 updateItemContent(editingContent.id, editingContent.title, editingContent.content, updatedSlides);
-                                setEditingContent({...editingContent, slides: updatedSlides});
+                                setEditingContent({ ...editingContent, slides: updatedSlides });
                                 setIsImageBrowseModalOpen(false);
                               }}
                             />
@@ -3012,7 +3012,7 @@ import type { Slide } from "@/types";\n${text}`,
                                 onChange={(e) => {
                                   const newTitle = e.target.value;
                                   updateItemContent(editingContent.id, newTitle, editingContent.content, editingContent.slides);
-                                  setEditingContent({...editingContent, title: newTitle});
+                                  setEditingContent({ ...editingContent, title: newTitle });
                                 }}
                                 className="bg-[#2a1f3d] border-gray-600 text-white"
                                 placeholder="Enter video title..."
@@ -3033,11 +3033,11 @@ import type { Slide } from "@/types";\n${text}`,
                                   }}
                                   className="bg-[#2a1f3d] hover:bg-[#3a2f4d] text-white px-4 py-2.5 rounded-lg border border-purple-500/30 shadow-lg transition-all flex items-center space-x-2 text-sm font-medium"
                                 >
-                                  <FolderOpen className="w-4 h-4 text-purple-400"/>
+                                  <FolderOpen className="w-4 h-4 text-purple-400" />
                                   <span>Browse media</span>
                                 </button>
                                 <label className="bg-gradient-to-r from-purple-600 to-purple-700 hover:opacity-90 text-white px-4 py-2.5 rounded-lg border border-purple-500 shadow-lg cursor-pointer transition-all flex items-center space-x-2 text-sm font-medium">
-                                  <Upload className="w-4 h-4"/>
+                                  <Upload className="w-4 h-4" />
                                   <span>Import Video</span>
                                   <input
                                     type="file"
@@ -3098,7 +3098,7 @@ import type { Slide } from "@/types";\n${text}`,
                                             const updatedSlides = [...existingRealSlides, ...newSlides];
                                             const finalContentObj = { ...contentObj, url: newSlides[0]?.content };
                                             updateItemContent(editingContent.id, editingContent.title, finalContentObj, updatedSlides);
-                                            setEditingContent({...editingContent, content: finalContentObj, slides: updatedSlides});
+                                            setEditingContent({ ...editingContent, content: finalContentObj, slides: updatedSlides });
 
                                             if (uploadedAssets.length > 0 && setRecentlyUploadedMediaId) {
                                               setRecentlyUploadedMediaId(uploadedAssets[0]._id);
@@ -3122,7 +3122,7 @@ import type { Slide } from "@/types";\n${text}`,
                                             const updatedSlides = [...existingRealSlides, ...newSlides];
                                             const finalContentObj = { ...contentObj, url: newSlides[0]?.content };
                                             updateItemContent(editingContent.id, editingContent.title, finalContentObj, updatedSlides);
-                                            setEditingContent({...editingContent, content: finalContentObj, slides: updatedSlides});
+                                            setEditingContent({ ...editingContent, content: finalContentObj, slides: updatedSlides });
                                             toast({ title: "Upload Warning", description: "Videos added locally but could not be saved to cloud", className: "bg-gradient-to-r from-yellow-900/90 to-yellow-800/90 border-yellow-500/30 text-white" });
                                           }
                                         } catch (error) {
@@ -3148,7 +3148,7 @@ import type { Slide } from "@/types";\n${text}`,
                                           const updatedSlides = [...existingRealSlides, ...newSlides];
                                           const finalContentObj = { ...contentObj, url: newSlides[0]?.content };
                                           updateItemContent(editingContent.id, editingContent.title, finalContentObj, updatedSlides);
-                                          setEditingContent({...editingContent, content: finalContentObj, slides: updatedSlides});
+                                          setEditingContent({ ...editingContent, content: finalContentObj, slides: updatedSlides });
                                         }
                                       }
                                     }}
@@ -3160,7 +3160,7 @@ import type { Slide } from "@/types";\n${text}`,
                             {/* Video Settings */}
                             <div className="bg-[#2a1f3d] p-4 rounded-lg border border-gray-600">
                               <label className="text-white font-medium mb-3 block border-b border-gray-600 pb-2">Video Controls</label>
-                              
+
                               <div className="space-y-4 text-sm mt-3">
                                 {/* Autoplay checkbox */}
                                 <label className="flex items-center space-x-3 text-white cursor-pointer w-max">
@@ -3170,9 +3170,9 @@ import type { Slide } from "@/types";\n${text}`,
                                     checked={typeof editingContent.content === 'object' && editingContent.content?.autoPlay !== undefined ? editingContent.content.autoPlay : true}
                                     onChange={(e) => {
                                       const nextContent = { ...((typeof editingContent.content === 'object' && editingContent.content) ? editingContent.content : {}), autoPlay: e.target.checked };
-                                      const nextSlides = editingContent.slides?.map((s:any) => ({ ...s, videoSettings: nextContent }));
+                                      const nextSlides = editingContent.slides?.map((s: any) => ({ ...s, videoSettings: nextContent }));
                                       updateItemContent(editingContent.id, editingContent.title, nextContent, nextSlides);
-                                      setEditingContent({...editingContent, content: nextContent, slides: nextSlides});
+                                      setEditingContent({ ...editingContent, content: nextContent, slides: nextSlides });
                                     }}
                                   />
                                   <span>Start playing video automatically</span>
@@ -3186,9 +3186,9 @@ import type { Slide } from "@/types";\n${text}`,
                                     value={typeof editingContent.content === 'object' ? editingContent.content?.displayMode : "fullscreen"}
                                     onChange={(e) => {
                                       const nextContent = { ...((typeof editingContent.content === 'object' && editingContent.content) ? editingContent.content : {}), displayMode: e.target.value };
-                                      const nextSlides = editingContent.slides?.map((s:any) => ({ ...s, videoSettings: nextContent }));
+                                      const nextSlides = editingContent.slides?.map((s: any) => ({ ...s, videoSettings: nextContent }));
                                       updateItemContent(editingContent.id, editingContent.title, nextContent, nextSlides);
-                                      setEditingContent({...editingContent, content: nextContent, slides: nextSlides});
+                                      setEditingContent({ ...editingContent, content: nextContent, slides: nextSlides });
                                     }}
                                   >
                                     <option value="fullscreen">Full screen</option>
@@ -3204,9 +3204,9 @@ import type { Slide } from "@/types";\n${text}`,
                                     value={typeof editingContent.content === 'object' ? editingContent.content?.endAction : "loop"}
                                     onChange={(e) => {
                                       const nextContent = { ...((typeof editingContent.content === 'object' && editingContent.content) ? editingContent.content : {}), endAction: e.target.value };
-                                      const nextSlides = editingContent.slides?.map((s:any) => ({ ...s, videoSettings: nextContent }));
+                                      const nextSlides = editingContent.slides?.map((s: any) => ({ ...s, videoSettings: nextContent }));
                                       updateItemContent(editingContent.id, editingContent.title, nextContent, nextSlides);
-                                      setEditingContent({...editingContent, content: nextContent, slides: nextSlides});
+                                      setEditingContent({ ...editingContent, content: nextContent, slides: nextSlides });
                                     }}
                                   >
                                     <option value="loop">Loop continuously</option>
@@ -3229,10 +3229,10 @@ import type { Slide } from "@/types";\n${text}`,
                                         const nextContent = { ...((typeof editingContent.content === 'object' && editingContent.content) ? editingContent.content : {}) };
                                         if (e.target.value === '') { delete nextContent.startTime; } else { nextContent.startTime = parseFloat(e.target.value); }
                                         const startT = nextContent.startTime || 0;
-                                        const endT = nextContent.endTime ? ','+nextContent.endTime : '';
-                                        const nextSlides = editingContent.slides?.map((s:any) => ({ ...s, content: `${nextContent.url || s.content.split('#')[0]}#t=${startT}${endT}`, videoSettings: nextContent }));
+                                        const endT = nextContent.endTime ? ',' + nextContent.endTime : '';
+                                        const nextSlides = editingContent.slides?.map((s: any) => ({ ...s, content: `${nextContent.url || s.content.split('#')[0]}#t=${startT}${endT}`, videoSettings: nextContent }));
                                         updateItemContent(editingContent.id, editingContent.title, nextContent, nextSlides);
-                                        setEditingContent({...editingContent, content: nextContent, slides: nextSlides});
+                                        setEditingContent({ ...editingContent, content: nextContent, slides: nextSlides });
                                       }}
                                     />
                                   </div>
@@ -3248,10 +3248,10 @@ import type { Slide } from "@/types";\n${text}`,
                                         const nextContent = { ...((typeof editingContent.content === 'object' && editingContent.content) ? editingContent.content : {}) };
                                         if (e.target.value === '') { delete nextContent.endTime; } else { nextContent.endTime = parseFloat(e.target.value); }
                                         const startT = nextContent.startTime || 0;
-                                        const endT = nextContent.endTime ? ','+nextContent.endTime : '';
-                                        const nextSlides = editingContent.slides?.map((s:any) => ({ ...s, content: `${nextContent.url || s.content.split('#')[0]}#t=${startT}${endT}`, videoSettings: nextContent }));
+                                        const endT = nextContent.endTime ? ',' + nextContent.endTime : '';
+                                        const nextSlides = editingContent.slides?.map((s: any) => ({ ...s, content: `${nextContent.url || s.content.split('#')[0]}#t=${startT}${endT}`, videoSettings: nextContent }));
                                         updateItemContent(editingContent.id, editingContent.title, nextContent, nextSlides);
-                                        setEditingContent({...editingContent, content: nextContent, slides: nextSlides});
+                                        setEditingContent({ ...editingContent, content: nextContent, slides: nextSlides });
                                       }}
                                     />
                                   </div>
@@ -3262,10 +3262,10 @@ import type { Slide } from "@/types";\n${text}`,
 
 
                             {/* Browse Media Modal for Video Editor */}
-                              <BackgroundAssetsModal
-                                isOpen={isVideoBrowseModalOpen}
-                                onClose={() => setIsVideoBrowseModalOpen(false)}
-                                backgroundModalMode={videoBrowseModalMode}
+                            <BackgroundAssetsModal
+                              isOpen={isVideoBrowseModalOpen}
+                              onClose={() => setIsVideoBrowseModalOpen(false)}
+                              backgroundModalMode={videoBrowseModalMode}
                               recentlyUploadedMediaId={null}
                               filterType={"video"}
                               getCurrentItemId={() => editingContent?.id || null}
@@ -3291,7 +3291,7 @@ import type { Slide } from "@/types";\n${text}`,
                                 );
                                 const updatedSlides = [...existingRealSlides, newSlide];
                                 updateItemContent(editingContent.id, editingContent.title, contentObj, updatedSlides);
-                                setEditingContent({...editingContent, content: contentObj, slides: updatedSlides});
+                                setEditingContent({ ...editingContent, content: contentObj, slides: updatedSlides });
                                 setIsVideoBrowseModalOpen(false);
                               }}
                             />
@@ -5770,11 +5770,11 @@ import type { Slide } from "@/types";\n${text}`,
                                         playsInline
                                       />
                                     ) : (
-                                        <img
-                                          src={typeof slide.content === 'string' && slide.content.length > 5 && slide.content !== "Worship background image" && slide.content !== "Inspirational worship video" ? slide.content : "https://images.unsplash.com/photo-1438232992991-995b7058bbb3?q=80&w=2673&auto=format&fit=crop"}
-                                          alt={slide.title}
-                                          className="relative z-10 w-full h-full object-contain bg-black"
-                                        />
+                                      <img
+                                        src={typeof slide.content === 'string' && slide.content.length > 5 && slide.content !== "Worship background image" && slide.content !== "Inspirational worship video" ? slide.content : "https://images.unsplash.com/photo-1438232992991-995b7058bbb3?q=80&w=2673&auto=format&fit=crop"}
+                                        alt={slide.title}
+                                        className="relative z-10 w-full h-full object-contain bg-black"
+                                      />
                                     )}
                                   </div>
                                 ) : slide.type === "custom" &&
