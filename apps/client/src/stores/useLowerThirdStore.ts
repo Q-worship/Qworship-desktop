@@ -116,6 +116,17 @@ function persistCustomTemplates(templates: LowerThirdTemplate[]) {
   } catch {}
 }
 
+function getStoredOrgName(): string {
+  try {
+    const stored = localStorage.getItem("qworship_user");
+    if (stored) {
+      const user = JSON.parse(stored);
+      return user.organizationName || "";
+    }
+  } catch {}
+  return "";
+}
+
 // ─── Server API helpers ────────────────────────────────────────────────────────
 
 function getAuthHeaders(): Record<string, string> {
@@ -455,6 +466,7 @@ export const useLowerThirdStore = create<LowerThirdState>((set, get) => {
         verse,
         reference,
         version,
+        churchName: getStoredOrgName(),
         type: "scripture",
       };
       set({
@@ -480,6 +492,8 @@ export const useLowerThirdStore = create<LowerThirdState>((set, get) => {
         verse: lyrics,
         reference: sectionTitle || songTitle || "",
         version: songTitle || "",
+        churchName: getStoredOrgName(),
+        songTitle: songTitle || "",
         type: "lyrics",
       };
       set({ activeData, isVisible: true, selectedTemplateId: lyricTemplateId });
@@ -501,6 +515,7 @@ export const useLowerThirdStore = create<LowerThirdState>((set, get) => {
         verse: text,
         reference: category,
         version: subtitle,
+        churchName: getStoredOrgName(),
         type: "announcement",
       };
       set({ activeData, isVisible: true, selectedTemplateId: announcementTemplateId });

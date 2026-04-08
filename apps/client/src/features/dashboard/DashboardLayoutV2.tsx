@@ -1854,6 +1854,15 @@ export const QworshipHomeV2Base = (): JSX.Element => {
         setActiveDropdown(null);
       },
     },
+    {
+      name: "Main Presentation Settings",
+      shortcut: "",
+      hasSubmenu: false,
+      action: () => {
+        setLocation("/main-presentation-settings");
+        setActiveDropdown(null);
+      },
+    },
   ];
 
   // Insert item functions
@@ -5078,7 +5087,9 @@ export const QworshipHomeV2Base = (): JSX.Element => {
                         categoryFilters={mediaCategoryFilters}
                         onSelectMedia={(mediaAsset) => {
                           console.log("🌩️ CLOUD MEDIA SELECTED:", mediaAsset);
-                          const fileUrl = mediaAsset.fileUrl || `${window.location.origin}/api/cloud-media/${mediaAsset.id}/file`;
+                          const fileUrl =
+                            mediaAsset.fileUrl ||
+                            `${window.location.origin}/api/cloud-media/${mediaAsset.id}/file`;
                           console.log(
                             "⚡ APPLYING CLOUD MEDIA BACKGROUND:",
                             fileUrl,

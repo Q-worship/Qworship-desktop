@@ -46,12 +46,26 @@ interface LowerThirdSettingsPageProps {
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
+function getStoredChurchName(): string {
+  try {
+    const stored = localStorage.getItem("qworship_user");
+    if (stored) {
+      const user = JSON.parse(stored);
+      return user.organizationName || "My Church";
+    }
+  } catch {}
+  return "My Church";
+}
+
 function getPlaceholderData(template: LowerThirdTemplate): LowerThirdBindingData {
+  const churchName = getStoredChurchName();
   if (template.category === "lyrics") {
     return {
       verse: "Amazing grace, how sweet the sound\nThat saved a wretch like me",
       reference: "Verse 1",
       version: "Amazing Grace",
+      churchName,
+      songTitle: "Amazing Grace",
     };
   }
   if (template.category === "announcement") {
@@ -59,12 +73,16 @@ function getPlaceholderData(template: LowerThirdTemplate): LowerThirdBindingData
       verse: "Sunday Service — Join us for worship and fellowship",
       reference: "This Sunday",
       version: "10:00 AM",
+      churchName,
+      songTitle: "",
     };
   }
   return {
     verse: "For God so loved the world that he gave his one and only Son, that whoever believes in him shall not perish but have eternal life.",
     reference: "John 3:16",
     version: "NIV",
+    churchName,
+    songTitle: "",
   };
 }
 

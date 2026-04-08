@@ -24,9 +24,20 @@ function resolveText(
   element: LowerThirdElement,
   data: LowerThirdBindingData,
 ): string {
+  // Composite (merged) binding takes priority
+  if (element.compositeBinding && element.compositeBinding.length > 0) {
+    return element.compositeBinding
+      .map((part) => {
+        const value = data[part.field as keyof LowerThirdBindingData] as string | undefined;
+        if (!value) return "";
+        return `${part.prefix ?? ""}${value}${part.suffix ?? ""}`;
+      })
+      .join("");
+  }
+  // Single-field binding
   if (element.binding) {
     const value = data[element.binding.field as keyof LowerThirdBindingData];
-    return value || element.binding.placeholder || element.text || "";
+    return (value as string) || element.binding.placeholder || element.text || "";
   }
   return element.text || "";
 }
@@ -249,6 +260,52 @@ function ShapeElement({
   );
 }
 
+// ─── ImageElement ─────────────────────────────────────────────────────────────
+
+function ImageElement({
+  element,
+  isVisible,
+  isPreview,
+}: {
+  element: LowerThirdElement;
+  isVisible: boolean;
+  isPreview: boolean;
+}) {
+  const animStyle = getAnimationStyle(element, isVisible, isPreview);
+
+  return (
+    <div
+      style={{
+        position: "absolute",
+        left: `${element.x}%`,
+        top: `${element.y}%`,
+        width: `${element.width}%`,
+        height: `${element.height}%`,
+        overflow: "hidden",
+        opacity: element.opacity ?? 1,
+        zIndex: element.zIndex,
+        display: element.visible ? "block" : "none",
+        borderRadius: element.borderRadius
+          ? `${element.borderRadius}px`
+          : undefined,
+        ...animStyle,
+      }}>
+      {element.src && (
+        <img
+          src={element.src}
+          alt={element.name || ""}
+          style={{
+            width: "100%",
+            height: "100%",
+            objectFit: (element.objectFit as React.CSSProperties["objectFit"]) || "cover",
+            display: "block",
+          }}
+        />
+      )}
+    </div>
+  );
+}
+
 // ─── LowerThirdRenderer ───────────────────────────────────────────────────────
 
 interface LowerThirdRendererProps {
@@ -290,6 +347,16 @@ export function LowerThirdRenderer({
               />
             );
           }
+          if (element.type === "image") {
+            return (
+              <ImageElement
+                key={element.id}
+                element={element}
+                isVisible={isVisible}
+                isPreview={isPreview}
+              />
+            );
+          }
           return (
             <ShapeElement
               key={element.id}
@@ -319,6 +386,7 @@ export function LowerThirdPreviewThumbnail({
     reference: "John 3:16",
     version: "NIV",
     churchName: "My Church",
+    songTitle: "",
   };
 
   return (

@@ -48,13 +48,36 @@ import type {
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
+function getEditorAuthHeaders(): Record<string, string> {
+  const headers: Record<string, string> = { "Content-Type": "application/json" };
+  if (typeof window !== "undefined") {
+    const token = localStorage.getItem("token");
+    if (token) headers["Authorization"] = `Bearer ${token}`;
+  }
+  return headers;
+}
+
+function getStoredChurchName(): string {
+  try {
+    const stored = localStorage.getItem("qworship_user");
+    if (stored) {
+      const user = JSON.parse(stored);
+      return user.organizationName || "My Church";
+    }
+  } catch {}
+  return "My Church";
+}
+
 function getPlaceholderData(template: LowerThirdTemplate): LowerThirdBindingData {
+  const churchName = getStoredChurchName();
   if (template.category === "lyrics") {
     return {
       verse:
         "Amazing grace, how sweet the sound that saved a wretch like me! I once was lost, but now I'm found, was blind, but now I see.",
       reference: "Verse 1",
       version: "Amazing Grace",
+      churchName,
+      songTitle: "Amazing Grace",
       type: "lyrics",
     };
   }
@@ -64,6 +87,8 @@ function getPlaceholderData(template: LowerThirdTemplate): LowerThirdBindingData
         "Sunday Service — Join us for worship and fellowship at our Church Auditorium",
       reference: "This Sunday",
       version: "10:00 AM",
+      churchName,
+      songTitle: "",
       type: "announcement",
     };
   }
@@ -72,6 +97,8 @@ function getPlaceholderData(template: LowerThirdTemplate): LowerThirdBindingData
       "For God so loved the world that he gave his one and only Son, that whoever believeth in him should not perish but have everlasting life.",
     reference: "John 3:16",
     version: "NIV",
+    churchName,
+    songTitle: "",
     type: "scripture",
   };
 }
@@ -1006,7 +1033,7 @@ export function LowerThirdEditorPage() {
   const [, navigate] = useLocation();
   const authUser = useAuthStore((s) => s.user);
 
-  const { getAllTemplates, updateCustomTemplate, duplicateTemplate } =
+  const { getAllTemplates, updateCustomTemplate, addCustomTemplate, duplicateTemplate } =
     useLowerThirdStore();
 
   // ── Load template from store ───────────────────────────────────────────────
@@ -1103,7 +1130,7 @@ export function LowerThirdEditorPage() {
         const res = await fetch("/api/lower-third/upload-asset", {
           method: "POST",
           credentials: "include",
-          headers: { "Content-Type": "application/json" },
+          headers: getEditorAuthHeaders(),
           body: JSON.stringify({
             fileBase64: b64,
             mimeType: file.type,
@@ -1128,27 +1155,51 @@ export function LowerThirdEditorPage() {
     if (!template || !authUser?.id) return;
     setSaving(true);
     try {
-      const updated = { ...template, updatedAt: new Date().toISOString() };
-      updateCustomTemplate(updated);
+      let saveTarget = { ...template, updatedAt: new Date().toISOString() };
 
-      // Generate snapshot
-      const snapRes = await fetch("/api/lower-third/snapshot", {
-        method: "POST",
-        credentials: "include",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          template: updated,
-          bindingData: getPlaceholderData(updated),
-          templateId: updated.id,
-        }),
-      });
-      if (snapRes.ok) {
-        const { thumbnailUrl } = await snapRes.json();
-        updateCustomTemplate({ ...updated, thumbnail: thumbnailUrl });
-        setTemplate((prev) =>
-          prev ? { ...prev, thumbnail: thumbnailUrl } : prev,
-        );
+      // If editing a default template, auto-duplicate to a custom template first
+      if (saveTarget.isDefault) {
+        const newId = `custom-${Date.now()}`;
+        saveTarget = {
+          ...saveTarget,
+          id: newId,
+          name: `${saveTarget.name} (Custom)`,
+          isDefault: false,
+          isCustom: true,
+          createdAt: new Date().toISOString(),
+          createdBy: "user",
+        };
+        await addCustomTemplate(saveTarget);
+        setTemplate(saveTarget);
+        // Update URL to the new custom template ID
+        navigate(`/lower-third-editor/${newId}`, { replace: true });
+      } else {
+        updateCustomTemplate(saveTarget);
       }
+
+      // Generate snapshot (best effort)
+      try {
+        const snapRes = await fetch("/api/lower-third/snapshot", {
+          method: "POST",
+          credentials: "include",
+          headers: getEditorAuthHeaders(),
+          body: JSON.stringify({
+            template: saveTarget,
+            bindingData: getPlaceholderData(saveTarget),
+            templateId: saveTarget.id,
+          }),
+        });
+        if (snapRes.ok) {
+          const { thumbnailUrl } = await snapRes.json();
+          updateCustomTemplate({ ...saveTarget, thumbnail: thumbnailUrl });
+          setTemplate((prev) =>
+            prev ? { ...prev, thumbnail: thumbnailUrl } : prev,
+          );
+        }
+      } catch {
+        // Snapshot is optional — don't fail the save
+      }
+
       setSaved(true);
       setTimeout(() => setSaved(false), 3000);
     } finally {

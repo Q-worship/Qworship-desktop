@@ -153,5 +153,6 @@ export interface LowerThirdBindingData {
   reference: string;
   version: string;
   churchName?: string;
+  songTitle?: string;
   type?: "scripture" | "lyrics" | "announcement";
 }
