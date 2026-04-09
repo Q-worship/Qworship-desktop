@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Play, Image } from "lucide-react";
+import { buildUrl } from "@/lib/queryClient";
 
 interface CloudMediaAsset {
   id: number;
@@ -87,8 +88,8 @@ const ImageThumbnail = ({ asset, activeTab }: { asset: MediaAsset; activeTab: st
   if (hasError || !asset.thumbnail) {
     if (isVideo && activeTab) {
       const videoUrl = activeTab === 'cloud-media' 
-        ? `/api/cloud-media/${asset.id}/file` 
-        : `/api/user-media-assets/${asset.id}/file`;
+        ? buildUrl(`/api/cloud-media/${asset.id}/file`)
+        : buildUrl(`/api/user-media-assets/${asset.id}/file`);
         
       return (
         <video
@@ -159,7 +160,7 @@ export const DynamicMediaSections: React.FC<DynamicMediaSectionsProps> = ({
     userMediaResponse?.assets?.map((asset) => {
       // For video files, use generated thumbnail if available, otherwise use placeholder
       const assetType = asset.fileType?.toLowerCase() || "image";
-      let thumbnailPath = `/api/user-media-assets/${asset.id}/thumbnail`;
+      let thumbnailPath = buildUrl(`/api/user-media-assets/${asset.id}/thumbnail`);
       
       if (assetType === "video") {
         if (!asset.thumbnailPath) {
@@ -415,7 +416,7 @@ export const DynamicMediaSections: React.FC<DynamicMediaSectionsProps> = ({
         cloudMediaAssets.map((asset) => {
           // For cloud media, handle video thumbnails properly too
           const assetType = asset?.fileType?.toLowerCase() || "image";
-          let thumbnailPath = `/api/cloud-media/${asset.id}/thumbnail`;
+          let thumbnailPath = buildUrl(`/api/cloud-media/${asset.id}/thumbnail`);
           
           if (assetType === "video" && !asset?.thumbnailPath) {
             // Use placeholder only if no thumbnail available
@@ -714,9 +715,9 @@ export const DynamicMediaSections: React.FC<DynamicMediaSectionsProps> = ({
             : cloudMediaAssets?.find((a) => a.id === asset.id);
 
         if (activeTab === "cloud-media") {
-          assetUrl = `/api/cloud-media/${asset.id}/file`;
+          assetUrl = buildUrl(`/api/cloud-media/${asset.id}/file`);
         } else if (activeTab === "my-media") {
-          assetUrl = `/api/user-media-assets/${asset.id}/file`;
+          assetUrl = buildUrl(`/api/user-media-assets/${asset.id}/file`);
         } else {
           // Final fallback to thumbnail
           assetUrl = asset.thumbnail || "";
@@ -741,9 +742,9 @@ export const DynamicMediaSections: React.FC<DynamicMediaSectionsProps> = ({
             : cloudMediaAssets?.find((a) => a.id === asset.id);
 
         if (activeTab === "cloud-media") {
-          assetUrl = `/api/cloud-media/${asset.id}/file`;
+          assetUrl = buildUrl(`/api/cloud-media/${asset.id}/file`);
         } else if (activeTab === "my-media") {
-          assetUrl = `/api/user-media-assets/${asset.id}/file`;
+          assetUrl = buildUrl(`/api/user-media-assets/${asset.id}/file`);
         } else {
           // Final fallback to thumbnail
           assetUrl = asset.thumbnail || "";
