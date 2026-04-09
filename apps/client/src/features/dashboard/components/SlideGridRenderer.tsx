@@ -1,12 +1,12 @@
 import React from "react";
-import { buildUrl } from "@/lib/queryClient";
 
 const resolveMediaUrl = (url: string | null | undefined): string | undefined => {
   if (!url) return undefined;
   if (url === "Worship background image" || url === "Inspirational worship video") return undefined;
   if (url.startsWith('http://') || url.startsWith('https://')) return url;
   if (url.startsWith('data:') || url.startsWith('blob:')) return url;
-  if (url.startsWith('/api/')) return buildUrl(url);
+  // Return /api/ paths as-is — the Vite proxy (dev) or same-origin (prod) handles them
+  if (url.startsWith('/api/')) return url;
   return url;
 };
 
@@ -46,7 +46,7 @@ export const SlideGridRenderer = (props: any) => {
                                   background.type === "image" ||
                                   background.type === "video"
                                 ) {
-                                  // Ensure URL is properly formatted via buildUrl
+                                  // Ensure URL is properly resolved for media rendering
                                   const backgroundUrl = resolveMediaUrl(background.value) || background.value;
 
                                   return {
@@ -405,7 +405,7 @@ export const SlideGridRenderer = (props: any) => {
                                             itemBackground.type === "image" ||
                                             itemBackground.type === "video"
                                           ) {
-                                            // Ensure URL is properly formatted via buildUrl
+                                            // Ensure URL is properly resolved for media rendering
                                             const backgroundUrl = resolveMediaUrl(itemBackground.value) || itemBackground.value;
 
                                             return {
