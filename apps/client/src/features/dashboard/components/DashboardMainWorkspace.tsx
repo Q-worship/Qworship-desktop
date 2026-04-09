@@ -20,6 +20,14 @@ import { SlideGridRenderer } from "@/features/dashboard/components/SlideGridRend
 import { EditAndPreparationArea } from "@/features/dashboard/components/EditAndPreparationArea";
 import { SidebarOpen, SidebarClose } from "lucide-react";
 import { apiClient } from "@/lib/api";
+import { buildUrl } from "@/lib/queryClient";
+
+const resolveMediaUrl = (url: string | null | undefined): string | undefined => {
+  if (!url) return undefined;
+  if (url === "Worship background image" || url === "Inspirational worship video") return undefined;
+  if (url.startsWith('/api/')) return buildUrl(url);
+  return url;
+};
 
 export const DashboardMainWorkspace = (props: any) => {
   const {
@@ -2686,7 +2694,7 @@ import type { Slide } from "@/types";\n${text}`,
                                         setCurrentlyDisplayedSlide(slide);
                                       }
                                     }}>
-                                    <img src={slide.content} className="w-full h-full object-cover" />
+                                    <img src={resolveMediaUrl(slide.content) || slide.content} className="w-full h-full object-cover" />
                                     <div className="absolute top-0 right-0 left-0 bg-black/70 p-2 flex justify-between opacity-100 transition-opacity backdrop-blur-sm">
                                       <div className="flex space-x-1">
                                         <button disabled={idx === 0} className="bg-gray-700/80 hover:bg-gray-500 text-white p-1 rounded disabled:opacity-30 disabled:cursor-not-allowed"
@@ -2854,7 +2862,7 @@ import type { Slide } from "@/types";\n${text}`,
                               <div className="flex flex-row overflow-x-auto gap-4 custom-scrollbar p-4 bg-[#0f0624] rounded-lg border border-gray-600 shadow-inner max-w-full">
                                 {editingContent.slides.map((slide: any, idx: number) => (
                                   <div key={slide.id} className="relative group bg-black border border-gray-600 shadow-md rounded-lg overflow-hidden flex flex-col flex-shrink-0 w-[240px] aspect-video hover:border-purple-500 transition-colors">
-                                    <img src={slide.content} alt={slide.title || `Slide ${idx + 1}`} className="relative z-10 w-full h-full object-contain bg-black" />
+                                    <img src={resolveMediaUrl(slide.content) || slide.content} alt={slide.title || `Slide ${idx + 1}`} className="relative z-10 w-full h-full object-contain bg-black" />
                                     <div className="absolute z-20 top-0 right-0 left-0 bg-black/70 p-2 flex justify-between opacity-100 transition-opacity backdrop-blur-sm">
                                       <div className="flex space-x-1">
                                         <button disabled={idx === 0} className="bg-gray-700 hover:bg-gray-500 text-white p-1 rounded disabled:opacity-30 disabled:cursor-not-allowed"
@@ -4696,7 +4704,7 @@ import type { Slide } from "@/types";\n${text}`,
                         return (
                           <>
                             <img
-                              src={displaySlide?.content}
+                              src={resolveMediaUrl(displaySlide?.content) || displaySlide?.content}
                               alt={displaySlide?.title || editingContent.title}
                               className="relative z-10 w-full h-full object-contain drop-shadow-2xl bg-black"
                             />
@@ -4709,7 +4717,7 @@ import type { Slide } from "@/types";\n${text}`,
                     </>
                   ) : editingContent.subtype === "video" ? (
                     <video
-                      src={typeof editingContent.content === 'string' ? editingContent.content : (editingContent.content?.url || editingContent.slides?.[0]?.content?.split('#')[0] || undefined)}
+                      src={resolveMediaUrl(typeof editingContent.content === 'string' ? editingContent.content : (editingContent.content?.url || editingContent.slides?.[0]?.content?.split('#')[0] || undefined))}
                       autoPlay={(typeof editingContent.content !== 'string' && editingContent.content?.autoPlay !== undefined) ? editingContent.content.autoPlay : true}
                       loop={(typeof editingContent.content !== 'string' && editingContent.content?.endAction === "loop")}
                       muted
@@ -4891,7 +4899,7 @@ import type { Slide } from "@/types";\n${text}`,
                       <div className="w-full flex-1 flex justify-center items-center rounded-xl overflow-hidden shadow-2xl relative z-10 p-4">
                         {(currentlyDisplayedSlide as any).subtype === "video" ? (
                           <video
-                            src={typeof currentlyDisplayedSlide.content === "string" && currentlyDisplayedSlide.content !== "Inspirational worship video" ? currentlyDisplayedSlide.content : ((currentlyDisplayedSlide as any).videoSettings?.url || undefined)}
+                            src={resolveMediaUrl(typeof currentlyDisplayedSlide.content === "string" && currentlyDisplayedSlide.content !== "Inspirational worship video" ? currentlyDisplayedSlide.content : ((currentlyDisplayedSlide as any).videoSettings?.url || undefined))}
                             autoPlay={(currentlyDisplayedSlide as any).videoSettings?.autoPlay ?? true}
                             loop={(currentlyDisplayedSlide as any).videoSettings?.endAction === "loop"}
                             muted
