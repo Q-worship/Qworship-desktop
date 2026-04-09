@@ -166,10 +166,36 @@ export function LiveConsolePreview(props: LiveConsolePreviewProps) {
                   <video
                     src={currentSlideData.content && currentSlideData.content !== "Inspirational worship video" ? currentSlideData.content : undefined}
                     autoPlay={(currentSlideData as any).videoSettings?.autoPlay ?? true}
-                    loop={(currentSlideData as any).videoSettings?.endAction !== "nothing"}
+                    loop={(currentSlideData as any).videoSettings?.endAction === "loop"}
                     muted
                     playsInline
                     className={(currentSlideData as any).videoSettings?.displayMode === "center" ? "absolute inset-0 w-full h-full object-contain z-10" : "absolute inset-0 w-full h-full object-cover z-10"}
+                    onTimeUpdate={(e) => {
+                        const videoSettings = (currentSlideData as any).videoSettings;
+                        if (!videoSettings) return;
+                        
+                        const videoEle = e.currentTarget;
+                        const endTime = videoSettings.endTime;
+                        const startTime = videoSettings.startTime || 0;
+                        
+                        // Enforce startTime if video somehow jumps before it
+                        if (videoEle.currentTime < startTime - 0.5) {
+                            videoEle.currentTime = startTime;
+                        }
+                        
+                        // Enforce endTime
+                        if (endTime && videoEle.currentTime >= endTime) {
+                            if (videoSettings.endAction === "loop") {
+                                videoEle.currentTime = startTime;
+                                videoEle.play().catch(console.error);
+                            } else {
+                                videoEle.pause();
+                                if (videoSettings.endAction === "advance") {
+                                    window.postMessage({ type: 'VIDEO_ENDED_NEXT_SLIDE' }, window.location.origin);
+                                }
+                            }
+                        }
+                    }}
                     onEnded={() => {
                         const endAction = (currentSlideData as any).videoSettings?.endAction;
                         if (endAction === "advance") {

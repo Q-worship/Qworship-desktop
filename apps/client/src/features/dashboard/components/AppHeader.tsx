@@ -319,7 +319,7 @@ export function AppHeader({
                         </span>
                         <div className="flex items-center space-x-3 flex-shrink-0">
                           {menuItem.shortcut && (
-                            <span className="text-xs text-gray-500 font-mono">
+                            <span className={`text-xs text-gray-500 font-mono ${menuItem.shortcut === 'coming soon' ? 'font-bold' : ''}`}>
                               {menuItem.shortcut}
                             </span>
                           )}
@@ -560,7 +560,7 @@ export function AppHeader({
                           </div>
                           <div className="flex items-center space-x-3 flex-shrink-0">
                             {menuItem.shortcut && (
-                              <span className="text-xs font-mono text-gray-500">
+                              <span className={`text-xs font-mono text-gray-500 ${menuItem.shortcut === 'coming soon' ? 'font-bold' : ''}`}>
                                 {menuItem.shortcut}
                               </span>
                             )}
@@ -612,7 +612,7 @@ export function AppHeader({
                         data-testid={`settings-menu-${menuItem.name.toLowerCase().replace(/\s+/g, "-")}`}>
                         <span className="flex-shrink-0">{menuItem.name}</span>
                         {menuItem.shortcut && (
-                          <span className="text-xs text-gray-500 font-mono ml-4">
+                          <span className={`text-xs text-gray-500 font-mono ml-4 ${menuItem.shortcut === 'coming soon' ? 'font-bold' : ''}`}>
                             {menuItem.shortcut}
                           </span>
                         )}

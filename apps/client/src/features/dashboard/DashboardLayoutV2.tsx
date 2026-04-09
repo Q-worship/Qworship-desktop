@@ -1825,7 +1825,7 @@ export const QworshipHomeV2Base = (): JSX.Element => {
     },
     {
       name: "Slide Canvas",
-      shortcut: "",
+      shortcut: "coming soon",
       iconComponent: Palette,
       hasSubmenu: false,
       action: () =>
@@ -1853,7 +1853,7 @@ export const QworshipHomeV2Base = (): JSX.Element => {
     },
 
     {
-      name: "Image",
+      name: "Image Slide",
       shortcut: "Ctrl + Shift + I",
       iconComponent: Image,
       hasSubmenu: false,
@@ -1868,7 +1868,7 @@ export const QworshipHomeV2Base = (): JSX.Element => {
     },
     {
       name: "Web Page",
-      shortcut: "Ctrl + Shift + W",
+      shortcut: "coming soon",
       iconComponent: Globe,
       hasSubmenu: false,
       action: () =>

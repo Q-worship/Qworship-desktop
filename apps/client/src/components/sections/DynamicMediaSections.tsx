@@ -43,7 +43,7 @@ interface MediaAsset {
 }
 
 interface DynamicMediaSectionsProps {
-  activeTab: "cloud-media" | "my-media";
+  activeTab: "cloud-media" | "my-media" | "templates";
   userId: string;
   hasUsedAssets: boolean;
   hasUploadedAssets: boolean;
@@ -79,6 +79,48 @@ interface DynamicMediaSectionsProps {
   isModal?: boolean;
   recentlyUploadedMediaId?: number | null;
 }
+
+const ImageThumbnail = ({ asset, activeTab }: { asset: MediaAsset; activeTab: string }) => {
+  const [hasError, setHasError] = React.useState(false);
+  const isVideo = asset.type?.toLowerCase().startsWith('video');
+
+  if (hasError || !asset.thumbnail) {
+    if (isVideo && activeTab) {
+      const videoUrl = activeTab === 'cloud-media' 
+        ? `/api/cloud-media/${asset.id}/file` 
+        : `/api/user-media-assets/${asset.id}/file`;
+        
+      return (
+        <video
+          src={videoUrl}
+          className="w-full h-48 object-cover rounded-t pointer-events-none bg-black/40"
+          preload="metadata"
+          muted
+          playsInline
+        />
+      );
+    }
+
+    return (
+      <div className="w-full h-48 bg-[#2a1b3e] flex items-center justify-center rounded-t border-b border-[#cea2fd]/20">
+        <div className="text-[#cea2fd]/40 text-xs font-medium font-['Poppins',Helvetica]">
+          {isVideo ? 'Video asset' : 'Media preview'}
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <img
+      src={asset.thumbnail}
+      alt="Media preview"
+      className="w-full h-48 object-cover rounded-t pointer-events-none"
+      onError={() => {
+        if (!hasError) setHasError(true);
+      }}
+    />
+  );
+};
 
 export const DynamicMediaSections: React.FC<DynamicMediaSectionsProps> = ({
   activeTab,
@@ -122,8 +164,7 @@ export const DynamicMediaSections: React.FC<DynamicMediaSectionsProps> = ({
       if (assetType === "video") {
         if (!asset.thumbnailPath) {
           // Fallback to placeholder if no thumbnail generated
-          thumbnailPath =
-            "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDQwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSIzMDAiIGZpbGw9IiMxYTFhMWEiLz4KICA8Y2lyY2xlIGN4PSIyMDAiIGN5PSIxNTAiIHI9IjMwIiBmaWxsPSJ3aGl0ZSIgZmlsbC1vcGFjaXR5PSIwLjgiLz4KICA8cG9seWdvbiBwb2ludHM9IjE4OCwxMzUgMTg4LDE2NSAyMTgsMTUwIiBmaWxsPSIjMWExYTFhIi8+CiAgPHRleHQgeD0iMjAwIiB5PSIyMDAiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIG9wYWNpdHk9IjAuNyI+VmlkZW88L3RleHQ+Cjwvc3ZnPg==";
+          thumbnailPath = "";
         }
       }
 
@@ -378,8 +419,7 @@ export const DynamicMediaSections: React.FC<DynamicMediaSectionsProps> = ({
           
           if (assetType === "video" && !asset?.thumbnailPath) {
             // Use placeholder only if no thumbnail available
-            thumbnailPath =
-              "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDQwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSIzMDAiIGZpbGw9IiMxYTFhMWEiLz4KICA8Y2lyY2xlIGN4PSIyMDAiIGN5PSIxNTAiIHI9IjMwIiBmaWxsPSJ3aGl0ZSIgZmlsbC1vcGFjaXR5PSIwLjgiLz4KICA8cG9seWdvbiBwb2ludHM9IjE4OCwxMzUgMTg4LDE2NSAyMTgsMTUwIiBmaWxsPSIjMWExYTFhIi8+CiAgPHRleHQgeD0iMjAwIiB5PSIyMDAiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIG9wYWNpdHk9IjEiPjwvdGV4dD4KPC9zdmc+";
+            thumbnailPath = "";
           }
 
           return {
@@ -444,29 +484,7 @@ export const DynamicMediaSections: React.FC<DynamicMediaSectionsProps> = ({
             asset: firstAsset,
           });
         }
-      }
-      // For MY MEDIA: Check if user has assets
-      else if (activeTab === "my-media") {
-        if (!isLoading && hasUploadedAssets && mediaAssets.length > 0) {
-          // User has assets: auto-select first one
-          const firstAsset = mediaAssets[0];
-          // Check if not already selected
-          if (selectedMedia?.asset?.id !== firstAsset.id) {
-            onMediaSelect({
-              sectionIndex: 1, // Recently added section
-              itemIndex: 0,
-              title: firstAsset.title,
-              color: "#8356f3",
-              type: firstAsset.type,
-              asset: firstAsset,
-            });
-          }
-        } else if (!isLoading && !hasUploadedAssets) {
-          // User has no assets or loading: clear selection immediately
-          if (selectedMedia !== null) {
-            onMediaSelect(null);
-          }
-        }
+      // For MY MEDIA: Auto-selection is handled entirely in MyMediaPatch.tsx to avoid infinite loop conflicts
       }
     }
   }, [
@@ -806,45 +824,20 @@ export const DynamicMediaSections: React.FC<DynamicMediaSectionsProps> = ({
         <div className="p-0">
           <div className="flex flex-col">
             <div className="relative">
-              <img
-                src={
-                  asset.thumbnail ||
-                  (asset.type === "video"
-                    ? "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDQwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSIzMDAiIGZpbGw9IiMxYTFhMWEiLz4KICA8Y2lyY2xlIGN4PSIyMDAiIGN5PSIxNTAiIHI9IjMwIiBmaWxsPSJ3aGl0ZSIgZmlsbC1vcGFjaXR5PSIwLjgiLz4KICA8cG9seWdvbiBwb2ludHM9IjE4OCwxMzUgMTg4LDE2NSAyMTgsMTUwIiBmaWxsPSIjMWExYTFhIi8+CiAgPHRleHQgeD0iMjAwIiB5PSIyMDAiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIG9wYWNpdHk9IjAuNyI+VmlkZW88L3RleHQ+Cjwvc3ZnPg=="
-                    : "/figmaAssets/image-7.png")
-                }
-                alt="Media preview"
-                className="w-full h-48 object-cover rounded-t pointer-events-none"
-                onError={(e) => {
-                  console.error(
-                    "Image failed to load:",
-                    asset.thumbnail,
-                    "for asset:",
-                    asset.title,
-                    "type:",
-                    asset.type,
-                  );
-                  // Use appropriate fallback based on asset type
-                  e.currentTarget.src =
-                    asset.type === "video"
-                      ? "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDQwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSIzMDAiIGZpbGw9IiMxYTFhMWEiLz4KICA8Y2lyY2xlIGN4PSIyMDAiIGN5PSIxNTAiIHI9IjMwIiBmaWxsPSJ3aGl0ZSIgZmlsbC1vcGFjaXR5PSIwLjgiLz4KICA8cG9seWdvbiBwb2ludHM9IjE4OCwxMzUgMTg4LDE2NSAyMTgsMTUwIiBmaWxsPSIjMWExYTFhIi8+CiAgPHRleHQgeD0iMjAwIiB5PSIyMDAiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0id2hpdGUiIHRleXQtYW5jaG9yPSJtaWRkbGUiIG9wYWNpdHk9IjAuNyI+VmlkZW88L3RleHQ+Cjwvc3ZnPg=="
-                      : "/figmaAssets/image-7.png";
-                }}
-                onLoad={() => {
-                  console.log(
-                    "Image loaded successfully:",
-                    asset.thumbnail,
-                    "for asset:",
-                    asset.title,
-                    "type:",
-                    asset.type,
-                  );
-                }}
-              />
+              <ImageThumbnail asset={asset} activeTab={activeTab} />
               <div className="absolute top-2 right-2 bg-black/60 rounded-full p-1.5 pointer-events-none">
                 {asset.type?.toLowerCase() === "video" ? (
                   <Play className="w-4 h-4 text-white fill-white" />
-                ) : (
+                ) : activeTab === "templates" ? (
+            <div className="w-full flex-1 flex flex-col items-center justify-center min-h-[400px]">
+              <div className="text-gray-400 text-lg mb-4 font-medium uppercase tracking-widest relative z-10" style={{ textShadow: "0 2px 4px rgba(0,0,0,0.5)" }}>
+                Premium Templates Coming Soon
+              </div>
+              <p className="text-gray-500 text-center max-w-md text-sm mt-2">
+                Professionally designed presentation templates will be available in the upcoming release to help you create stunning worship experiences faster.
+              </p>
+            </div>
+          ) : (
                   <Image className="w-4 h-4 text-white" />
                 )}
               </div>

@@ -5,11 +5,15 @@ import fs from 'fs';
 import { objectStorage } from './s3.service.js';
 import sharp from 'sharp';
 
-// 1. Upload User Media
 export const uploadMedia = async (req: Request, res: Response) => {
+  console.log('[UPLOAD] Starting User Media Upload route check...');
+  
   try {
     const files = req.files as Express.Multer.File[];
+    console.log('[UPLOAD] Files received:', files?.length || 0);
+    
     if (!files || files.length === 0) {
+      console.log('[UPLOAD] Responding with 400 - no files');
       return res.status(400).json({ message: 'No files uploaded' });
     }
 
@@ -79,10 +83,11 @@ export const uploadMedia = async (req: Request, res: Response) => {
       uploadedRecords.push(newMedia);
     }
 
+    console.log('[UPLOAD] Successfully uploaded all elements:', uploadedRecords.length);
     res.status(201).json({ assets: uploadedRecords });
 
   } catch (error) {
-    console.error('Error uploading media:', error);
+    console.error('[UPLOAD] Fatal Error aborting upload media stream:', error);
     res.status(500).json({ message: 'Failed to upload media' });
   }
 };

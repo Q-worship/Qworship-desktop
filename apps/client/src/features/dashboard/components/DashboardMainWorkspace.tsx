@@ -3055,9 +3055,9 @@ import type { Slide } from "@/types";\n${text}`,
                                     setEditingContent({ ...editingContent, content: nextContent, slides: nextSlides });
                                   }}
                                 >
-                                  <option value="loop">Loop</option>
-                                  <option value="nothing">Stop</option>
-                                  <option value="advance">Next</option>
+                                  <option value="loop">Loop continuously</option>
+                                  <option value="nothing">Do Nothing</option>
+                                  <option value="advance">Advance To Next Slide</option>
                                 </select>
                               </div>
 
@@ -4155,9 +4155,25 @@ import type { Slide } from "@/types";\n${text}`,
                             <video
                               src={typeof selectedSlide.slide.content === "string" && selectedSlide.slide.content !== "Inspirational worship video" ? selectedSlide.slide.content : (selectedSlide.slide.videoSettings?.url || undefined)}
                               autoPlay={(selectedSlide.slide as any).videoSettings?.autoPlay ?? true}
-                              loop={(selectedSlide.slide as any).videoSettings?.endAction !== "nothing"}
+                              loop={(selectedSlide.slide as any).videoSettings?.endAction === "loop"}
                               muted
                               className={(selectedSlide.slide as any).videoSettings?.displayMode === "center" ? "max-w-full max-h-full object-contain rounded-xl" : "w-full h-full object-cover rounded-xl"}
+                              onTimeUpdate={(e) => {
+                                  const videoSettings = (selectedSlide.slide as any).videoSettings;
+                                  if (!videoSettings) return;
+                                  const videoEle = e.currentTarget;
+                                  const endTime = videoSettings.endTime;
+                                  const startTime = videoSettings.startTime || 0;
+                                  if (videoEle.currentTime < startTime - 0.5) videoEle.currentTime = startTime;
+                                  if (endTime && videoEle.currentTime >= endTime) {
+                                      if (videoSettings.endAction === "loop") {
+                                          videoEle.currentTime = startTime;
+                                          videoEle.play().catch(console.error);
+                                      } else {
+                                          videoEle.pause();
+                                      }
+                                  }
+                              }}
                             />
                           ) : (
                             <img
@@ -4693,9 +4709,27 @@ import type { Slide } from "@/types";\n${text}`,
                   ) : editingContent.subtype === "video" ? (
                     <video
                       src={typeof editingContent.content === 'string' ? editingContent.content : (editingContent.content?.url || editingContent.slides?.[0]?.content?.split('#')[0] || undefined)}
-                      autoPlay loop muted
+                      autoPlay={(typeof editingContent.content !== 'string' && editingContent.content?.autoPlay !== undefined) ? editingContent.content.autoPlay : true}
+                      loop={(typeof editingContent.content !== 'string' && editingContent.content?.endAction === "loop")}
+                      muted
                       controls
                       className={editingContent.content?.displayMode === "center" ? "absolute inset-0 w-full h-full object-contain" : "absolute inset-0 w-full h-full object-cover"}
+                      onTimeUpdate={(e) => {
+                          const videoSettings = typeof editingContent.content !== 'string' ? editingContent.content : null;
+                          if (!videoSettings) return;
+                          const videoEle = e.currentTarget;
+                          const endTime = videoSettings.endTime;
+                          const startTime = videoSettings.startTime || 0;
+                          if (videoEle.currentTime < startTime - 0.5) videoEle.currentTime = startTime;
+                          if (endTime && videoEle.currentTime >= endTime) {
+                              if (videoSettings.endAction === "loop") {
+                                  videoEle.currentTime = startTime;
+                                  videoEle.play().catch(console.error);
+                              } else {
+                                  videoEle.pause();
+                              }
+                          }
+                      }}
                     />
                   ) : (
                     /* Single image fallback */
@@ -4858,10 +4892,26 @@ import type { Slide } from "@/types";\n${text}`,
                           <video
                             src={typeof currentlyDisplayedSlide.content === "string" && currentlyDisplayedSlide.content !== "Inspirational worship video" ? currentlyDisplayedSlide.content : ((currentlyDisplayedSlide as any).videoSettings?.url || undefined)}
                             autoPlay={(currentlyDisplayedSlide as any).videoSettings?.autoPlay ?? true}
-                            loop={(currentlyDisplayedSlide as any).videoSettings?.endAction !== "nothing"}
+                            loop={(currentlyDisplayedSlide as any).videoSettings?.endAction === "loop"}
                             muted
                             controls
                             className={(currentlyDisplayedSlide as any).videoSettings?.displayMode === "center" ? "w-full h-full object-contain rounded-xl bg-black" : "absolute inset-0 w-full h-full object-cover rounded-none"}
+                            onTimeUpdate={(e) => {
+                                const videoSettings = (currentlyDisplayedSlide as any).videoSettings;
+                                if (!videoSettings) return;
+                                const videoEle = e.currentTarget;
+                                const endTime = videoSettings.endTime;
+                                const startTime = videoSettings.startTime || 0;
+                                if (videoEle.currentTime < startTime - 0.5) videoEle.currentTime = startTime;
+                                if (endTime && videoEle.currentTime >= endTime) {
+                                    if (videoSettings.endAction === "loop") {
+                                        videoEle.currentTime = startTime;
+                                        videoEle.play().catch(console.error);
+                                    } else {
+                                        videoEle.pause();
+                                    }
+                                }
+                            }}
                           />
                         ) : (
                           <img
