@@ -18,14 +18,14 @@ import facebookIcon from "@assets/R (2)_1756733484236.png";
 import instagramIcon from "@assets/1658586823instagram-logo-transparent_1756733484234.png";
 import { SongProjectionWidget } from "@/features/dashboard/components/SongProjectionWidget";
 import { BibleProjectionWidget } from "@/features/dashboard/components/BibleProjectionWidget";
-import { buildUrl } from "@/lib/queryClient";
 
 const resolveMediaUrl = (url: string | null | undefined): string | undefined => {
   if (!url) return undefined;
   if (url === "Worship background image" || url === "Inspirational worship video") return undefined;
   if (url.startsWith('http://') || url.startsWith('https://')) return url;
   if (url.startsWith('data:') || url.startsWith('blob:')) return url;
-  if (url.startsWith('/api/')) return buildUrl(url);
+  // Return /api/ paths as-is — the Vite proxy (dev) or same-origin (prod) handles them
+  if (url.startsWith('/api/')) return url;
   return url;
 };
 import { OBSControlPanel } from "@/features/dashboard/components/OBSControlPanel";
