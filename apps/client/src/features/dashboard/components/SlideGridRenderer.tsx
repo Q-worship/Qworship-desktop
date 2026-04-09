@@ -2,12 +2,19 @@ import React from "react";
 
 const resolveMediaUrl = (url: string | null | undefined): string | undefined => {
   if (!url) return undefined;
-  if (url === "Worship background image" || url === "Inspirational worship video") return undefined;
+  
+  // Exact placeholder matches
+  if (url === "Worship background image" || url === "Inspirational worship video" || url === "Background Image") return undefined;
+  
+  // Valid URL prefixes
   if (url.startsWith('http://') || url.startsWith('https://')) return url;
   if (url.startsWith('data:') || url.startsWith('blob:')) return url;
-  // Return /api/ paths as-is — the Vite proxy (dev) or same-origin (prod) handles them
+  
+  // Relative API paths (handled by Vite proxy in dev)
   if (url.startsWith('/api/')) return url;
-  return url;
+  
+  // If it doesn't match any known valid prefix, it's likely a generic string/placeholder
+  return undefined;
 };
 
 export const SlideGridRenderer = (props: any) => {
@@ -390,7 +397,7 @@ export const SlideGridRenderer = (props: any) => {
                                           if (slide.type === "media" && slide.content) {
                                              let slideContentUrl = typeof slide.content === 'object' ? (slide.content as any).url : slide.content;
                                              if (slideContentUrl && typeof slideContentUrl === 'string') {
-                                               slideContentUrl = resolveMediaUrl(slideContentUrl) || slideContentUrl;
+                                               slideContentUrl = resolveMediaUrl(slideContentUrl) || "https://images.unsplash.com/photo-1438232992991-995b7058bbb3?q=80&w=2673&auto=format&fit=crop";
                                                return {
                                                  backgroundImage: `url("${slideContentUrl}")`,
                                                  backgroundSize: "cover",
