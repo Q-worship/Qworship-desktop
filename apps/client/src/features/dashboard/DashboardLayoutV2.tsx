@@ -4670,7 +4670,6 @@ export const QworshipHomeV2Base = (): JSX.Element => {
                 formattedReference={widgetFormattedReference}
                 volume={volume}
                 onNavigate={(dir) => executeNavigation("verse_change", dir)}
-                currentUser={currentUserResponse?.user || null}
               />
             </div>
           )}
