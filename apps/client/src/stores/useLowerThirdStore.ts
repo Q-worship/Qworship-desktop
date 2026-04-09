@@ -211,6 +211,7 @@ async function getLtBaseUrl(): Promise<string> {
   try {
     const res = await fetch("/api/lower-third/config", {
       credentials: "include",
+      headers: getAuthHeaders(),
     });
     if (res.ok) {
       const data = await res.json();
@@ -286,7 +287,7 @@ export const useLowerThirdStore = create<LowerThirdState>((set, get) => {
     fetch("/api/lower-third/push", {
       method: "POST",
       credentials: "include",
-      headers: { "Content-Type": "application/json" },
+      headers: getAuthHeaders(),
       body: JSON.stringify(body),
     })
       .then((r) => {

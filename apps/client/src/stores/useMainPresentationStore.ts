@@ -92,11 +92,20 @@ export function setMPUserIdImmediate(id: string | null | undefined): void {
   _resolvedUserId = id;
 }
 
+function getAuthHeaders(): Record<string, string> {
+  const headers: Record<string, string> = { "Content-Type": "application/json" };
+  if (typeof window !== "undefined") {
+    const token = localStorage.getItem("token");
+    if (token) headers["Authorization"] = `Bearer ${token}`;
+  }
+  return headers;
+}
+
 let ltBaseUrl: string | null = null;
 async function getLtBaseUrl(): Promise<string> {
   if (ltBaseUrl) return ltBaseUrl;
   try {
-    const res = await fetch("/api/lower-third/config", { credentials: "include" });
+    const res = await fetch("/api/lower-third/config", { credentials: "include", headers: getAuthHeaders() });
     if (res.ok) {
       const data = await res.json();
       ltBaseUrl = data.ltBaseUrl || "http://localhost:3400";
@@ -151,7 +160,7 @@ export const useMainPresentationStore = create<MainPresentationState>((set, get)
     fetch("/api/lower-third/push", {
       method: "POST",
       credentials: "include",
-      headers: { "Content-Type": "application/json" },
+      headers: getAuthHeaders(),
       body: JSON.stringify(body),
     }).catch(() => {});
   }
