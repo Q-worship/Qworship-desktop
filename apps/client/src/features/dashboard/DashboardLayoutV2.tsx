@@ -50,6 +50,10 @@ import { StylesDropdown } from "@/features/dashboard/components/StylesDropdown";
 import { useBibleProjectionStore } from "@/stores/useBibleProjectionStore";
 import { useDisplayModeStore } from "@/stores/useDisplayModeStore";
 import { useLowerThirdStore } from "@/stores/useLowerThirdStore";
+import {
+  useMainPresentationStore,
+  setMPUserIdImmediate,
+} from "@/stores/useMainPresentationStore";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useSongs } from "@/features/songs/api/useSongs";
 import { apiRequest } from "@/lib/queryClient";
@@ -138,9 +142,20 @@ export const QworshipHomeV2Base = (): JSX.Element => {
     setUserId: ltSetUserId,
     projectScripture: ltProjectScripture,
     projectLyric: ltProjectLyric,
+    projectAnnouncement: ltProjectAnnouncement,
     clearActiveData: ltClear,
     enabled: ltEnabled,
   } = useLowerThirdStore();
+
+  // Main Presentation store — mirrors lower-third pushes to the main presentation overlay
+  const {
+    setUserId: mpSetUserId,
+    projectScripture: mpProjectScripture,
+    projectLyric: mpProjectLyric,
+    projectAnnouncement: mpProjectAnnouncement,
+    clearActiveData: mpClear,
+    enabled: mpEnabled,
+  } = useMainPresentationStore();
 
   // Register the current user's ID so the OBS render URL is unique per user.
   // Raw query response is { success, user: { id } }
@@ -149,9 +164,13 @@ export const QworshipHomeV2Base = (): JSX.Element => {
     | number
     | undefined;
 
+  // Set MP userId at render time so pushToServer works even before the useEffect fires
+  setMPUserIdImmediate(currentUserId != null ? String(currentUserId) : null);
+
   useEffect(() => {
     if (currentUserId) {
       ltSetUserId(currentUserId);
+      mpSetUserId(String(currentUserId));
     }
   }, [currentUserId]);
 
@@ -165,7 +184,6 @@ export const QworshipHomeV2Base = (): JSX.Element => {
       !!useBibleProjectionStore.getState().currentVerse;
 
     const unsubscribe = useBibleProjectionStore.subscribe((state) => {
-      if (!ltEnabled) return;
       const nowProjecting = state.isProjecting && !!state.currentVerse;
 
       if (nowProjecting) {
@@ -176,22 +194,25 @@ export const QworshipHomeV2Base = (): JSX.Element => {
           (state.currentVerse![versionKey] as string | undefined) ??
           state.currentVerse!.kjv ??
           "";
+        const ref = state.formattedReference ?? "";
+        const ver = state.bibleVersion ?? "KJV";
         // Pass currentUser?.id directly so pushToServer gets userId even
         // before the setUserId useEffect has had a chance to fire.
-        ltProjectScripture(
-          verseText,
-          state.formattedReference ?? "",
-          state.bibleVersion ?? "KJV",
-          currentUserId,
-        );
+        if (ltEnabled) {
+          ltProjectScripture(verseText, ref, ver, currentUserId);
+        }
+        if (mpEnabled) {
+          mpProjectScripture(verseText, ref, ver, currentUserId != null ? String(currentUserId) : null);
+        }
       } else if (!nowProjecting && prevProjecting) {
-        ltClear(currentUserId);
+        if (ltEnabled) ltClear(currentUserId);
+        if (mpEnabled) mpClear(currentUserId != null ? String(currentUserId) : null);
       }
 
       prevProjecting = nowProjecting;
     });
     return unsubscribe;
-  }, [ltEnabled, ltProjectScripture, ltClear, currentUserId]);
+  }, [ltEnabled, ltProjectScripture, ltClear, mpEnabled, mpProjectScripture, mpClear, currentUserId]);
   const [, setLocation] = useLocation();
   const {
     activeTab,
@@ -959,25 +980,34 @@ export const QworshipHomeV2Base = (): JSX.Element => {
   // AND live-window navigation (SLIDE_CHANGE_FROM_LIVE). It is the single source
   // of truth for lower-third projection during a live presentation.
   useEffect(() => {
-    if (!isLive || !ltEnabled) return;
+    if (!isLive) return;
 
     const slide = slides[currentSlide - 1] as any;
     if (!slide) return;
 
     const type: string = slide.type ?? "";
     const content: string = slide.content ?? "";
+    const mpUserId = currentUserId != null ? String(currentUserId) : null;
 
     if (type === "bible") {
       const reference: string =
         slide.bibleReference ?? slide.reference ?? slide.title ?? "";
       const version: string = slide.bibleVersion ?? slide.version ?? "KJV";
-      ltProjectScripture(content, reference, version, currentUserId);
+      if (ltEnabled) ltProjectScripture(content, reference, version, currentUserId);
+      if (mpEnabled) mpProjectScripture(content, reference, version, mpUserId);
     } else if (type === "verse" || type === "chorus" || type === "song") {
       const label: string = slide.sectionLabel ?? slide.title ?? "";
       const songTitle: string = slide.songTitle ?? "";
-      ltProjectLyric(content, label, songTitle, currentUserId);
+      if (ltEnabled) ltProjectLyric(content, label, songTitle, currentUserId);
+      if (mpEnabled) mpProjectLyric(content, label, songTitle, mpUserId);
+    } else if (type === "announcement") {
+      const category: string = slide.category ?? slide.title ?? "";
+      const subtitle: string = slide.subtitle ?? "";
+      if (ltEnabled) ltProjectAnnouncement(content, category, subtitle, currentUserId);
+      if (mpEnabled) mpProjectAnnouncement(content, category, subtitle, mpUserId);
     } else {
-      ltClear(currentUserId);
+      if (ltEnabled) ltClear(currentUserId);
+      if (mpEnabled) mpClear(mpUserId);
     }
   }, [
     currentSlide,
@@ -986,7 +1016,13 @@ export const QworshipHomeV2Base = (): JSX.Element => {
     ltEnabled,
     ltProjectScripture,
     ltProjectLyric,
+    ltProjectAnnouncement,
     ltClear,
+    mpEnabled,
+    mpProjectScripture,
+    mpProjectLyric,
+    mpProjectAnnouncement,
+    mpClear,
     currentUserId,
   ]);
 

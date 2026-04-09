@@ -4,7 +4,13 @@ export function useLivePreviewSync({
   ltEnabled,
   ltProjectLyric,
   ltProjectScripture,
+  ltProjectAnnouncement,
   ltClear,
+  mpEnabled,
+  mpProjectLyric,
+  mpProjectScripture,
+  mpProjectAnnouncement,
+  mpClear,
   toast,
   navigationDebounceRef,
   previewCurrentSlide,
@@ -63,27 +69,38 @@ export function useLivePreviewSync({
           // Sync all state from live screen to preview
           if (!data) break;
 
-          // Forward the live screen's authoritative projection to the Lower Third OBS overlay.
+          // Forward the live screen's authoritative projection to the Lower Third
+          // AND Main Presentation OBS overlays.
           // projectionType is always present when songProjection/bibleProjection change, so
           // this covers every projection path: Live Console widgets AND main editor slide clicks.
-          if (ltEnabled && data.projectionType !== undefined) {
+          if (data.projectionType !== undefined) {
             if (data.projectionType === "song" && data.songProjection) {
-              ltProjectLyric(
-                data.songProjection.lyrics ?? "",
-                data.songProjection.sectionTitle ?? "",
-                data.songProjection.title ?? "",
-              );
+              const lyrics = data.songProjection.lyrics ?? "";
+              const sectionTitle = data.songProjection.sectionTitle ?? "";
+              const title = data.songProjection.title ?? "";
+              if (ltEnabled) ltProjectLyric(lyrics, sectionTitle, title);
+              if (mpEnabled) mpProjectLyric(lyrics, sectionTitle, title);
             } else if (
               data.projectionType === "bible" &&
               data.bibleProjection
             ) {
-              ltProjectScripture(
-                data.bibleProjection.text ?? "",
-                data.bibleProjection.reference ?? "",
-                data.bibleProjection.version ?? "KJV",
-              );
+              const text = data.bibleProjection.text ?? "";
+              const reference = data.bibleProjection.reference ?? "";
+              const version = data.bibleProjection.version ?? "KJV";
+              if (ltEnabled) ltProjectScripture(text, reference, version);
+              if (mpEnabled) mpProjectScripture(text, reference, version);
+            } else if (
+              data.projectionType === "announcement" &&
+              data.announcementProjection
+            ) {
+              const announcementText = data.announcementProjection.text ?? "";
+              const category = data.announcementProjection.category ?? "";
+              const subtitle = data.announcementProjection.subtitle ?? "";
+              if (ltEnabled) ltProjectAnnouncement(announcementText, category, subtitle);
+              if (mpEnabled) mpProjectAnnouncement(announcementText, category, subtitle);
             } else if (data.projectionType === null) {
-              ltClear();
+              if (ltEnabled) ltClear();
+              if (mpEnabled) mpClear();
             }
           }
 
@@ -176,7 +193,7 @@ export function useLivePreviewSync({
                 setPreviewCurrentSlide(validSlide);
               } else {
                 // Data-only update: ensure we're in bounds without changing position
-                setPreviewCurrentSlide((prev) =>
+                setPreviewCurrentSlide((prev: number) =>
                   Math.max(1, Math.min(prev, newSlides.length || 1)),
                 );
               }
