@@ -18,6 +18,14 @@ import facebookIcon from "@assets/R (2)_1756733484236.png";
 import instagramIcon from "@assets/1658586823instagram-logo-transparent_1756733484234.png";
 import { SongProjectionWidget } from "@/features/dashboard/components/SongProjectionWidget";
 import { BibleProjectionWidget } from "@/features/dashboard/components/BibleProjectionWidget";
+import { buildUrl } from "@/lib/queryClient";
+
+const resolveMediaUrl = (url: string | null | undefined): string | undefined => {
+  if (!url) return undefined;
+  if (url === "Worship background image" || url === "Inspirational worship video") return undefined;
+  if (url.startsWith('/api/')) return buildUrl(url);
+  return url;
+};
 import { OBSControlPanel } from "@/features/dashboard/components/OBSControlPanel";
 import { OBSStatusBadge } from "@/features/dashboard/components/OBSStatusBadge";
 import { obsService, OBSSettings } from "@/services/OBSConnectionService";
@@ -2626,7 +2634,7 @@ export const LivePresentation = (): JSX.Element => {
           muted
           playsInline
           className="absolute inset-0 w-full h-full object-cover z-0"
-          src={appliedBackgroundVideo}
+          src={resolveMediaUrl(appliedBackgroundVideo)}
           onLoadStart={() =>
             console.log("Video loading started:", appliedBackgroundVideo)
           }
@@ -3477,7 +3485,7 @@ export const LivePresentation = (): JSX.Element => {
                   {backgroundImage && (
                     <div className="mt-3">
                       <img
-                        src={backgroundImage}
+                        src={resolveMediaUrl(backgroundImage)}
                         alt="Background preview"
                         className="w-full h-20 object-cover rounded border border-purple-500/30 shadow-lg"
                       />
@@ -3538,7 +3546,7 @@ export const LivePresentation = (): JSX.Element => {
                   {backgroundVideo && (
                     <div className="mt-3">
                       <video
-                        src={backgroundVideo}
+                        src={resolveMediaUrl(backgroundVideo)}
                         className="w-full h-20 object-cover rounded border border-purple-500/30 shadow-lg"
                         muted
                       />

@@ -2,6 +2,14 @@ import React from "react";
 import { OBSStatusBadge } from "@/features/dashboard/components/OBSStatusBadge";
 import facebookIcon from "@assets/R (2)_1756733484236.png";
 import instagramIcon from "@assets/1658586823instagram-logo-transparent_1756733484234.png";
+import { buildUrl } from "@/lib/queryClient";
+
+const resolveMediaUrl = (url: string | null | undefined): string | undefined => {
+  if (!url) return undefined;
+  if (url === "Worship background image" || url === "Inspirational worship video") return undefined;
+  if (url.startsWith('/api/')) return buildUrl(url);
+  return url;
+};
 
 export interface LiveConsolePreviewProps {
   activeMode: string;
@@ -88,14 +96,14 @@ export function LiveConsolePreview(props: LiveConsolePreviewProps) {
       )}
       {appliedBackgroundType === "image" && appliedBackgroundImage && (
         <img
-          src={appliedBackgroundImage}
+          src={resolveMediaUrl(appliedBackgroundImage)}
           alt=""
           className="absolute inset-0 w-full h-full object-cover"
         />
       )}
       {appliedBackgroundType === "video" && appliedBackgroundVideo && (
         <video
-          src={appliedBackgroundVideo}
+          src={resolveMediaUrl(appliedBackgroundVideo)}
           className="absolute inset-0 w-full h-full object-cover"
           autoPlay
           loop
@@ -164,7 +172,7 @@ export function LiveConsolePreview(props: LiveConsolePreviewProps) {
               <>
                 {(currentSlideData as any).subtype === "video" ? (
                   <video
-                    src={currentSlideData.content && currentSlideData.content !== "Inspirational worship video" ? currentSlideData.content : undefined}
+                    src={resolveMediaUrl(currentSlideData.content)}
                     autoPlay={(currentSlideData as any).videoSettings?.autoPlay ?? true}
                     loop={(currentSlideData as any).videoSettings?.endAction === "loop"}
                     muted
@@ -205,7 +213,7 @@ export function LiveConsolePreview(props: LiveConsolePreviewProps) {
                   />
                 ) : (
                   <img
-                    src={currentSlideData.content && currentSlideData.content !== "Worship background image" && currentSlideData.content !== "Inspirational worship video" ? currentSlideData.content : "https://images.unsplash.com/photo-1438232992991-995b7058bbb3?q=80&w=2673&auto=format&fit=crop"}
+                    src={resolveMediaUrl(currentSlideData.content) || "https://images.unsplash.com/photo-1438232992991-995b7058bbb3?q=80&w=2673&auto=format&fit=crop"}
                     alt={currentSlideData.title || "Media slide"}
                     className="absolute inset-0 w-full h-full object-cover z-10"
                   />
