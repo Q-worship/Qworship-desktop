@@ -23,12 +23,19 @@ import { apiClient } from "@/lib/api";
 
 const resolveMediaUrl = (url: string | null | undefined): string | undefined => {
   if (!url) return undefined;
-  if (url === "Worship background image" || url === "Inspirational worship video") return undefined;
+  
+  // Exact placeholder matches
+  if (url === "Worship background image" || url === "Inspirational worship video" || url === "Background Image") return undefined;
+  
+  // Valid URL prefixes
   if (url.startsWith('http://') || url.startsWith('https://')) return url;
   if (url.startsWith('data:') || url.startsWith('blob:')) return url;
-  // Return /api/ paths as-is — the Vite proxy (dev) or same-origin (prod) handles them
+  
+  // Relative API paths (handled by Vite proxy in dev)
   if (url.startsWith('/api/')) return url;
-  return url;
+  
+  // If it doesn't match any known valid prefix, it's likely a generic string/placeholder
+  return undefined;
 };
 
 export const DashboardMainWorkspace = (props: any) => {
@@ -2696,7 +2703,7 @@ import type { Slide } from "@/types";\n${text}`,
                                         setCurrentlyDisplayedSlide(slide);
                                       }
                                     }}>
-                                    <img src={resolveMediaUrl(slide.content) || slide.content} className="w-full h-full object-cover" />
+                                    <img src={resolveMediaUrl(slide.content) || "https://images.unsplash.com/photo-1438232992991-995b7058bbb3?q=80&w=2673&auto=format&fit=crop"} className="w-full h-full object-cover" />
                                     <div className="absolute top-0 right-0 left-0 bg-black/70 p-2 flex justify-between opacity-100 transition-opacity backdrop-blur-sm">
                                       <div className="flex space-x-1">
                                         <button disabled={idx === 0} className="bg-gray-700/80 hover:bg-gray-500 text-white p-1 rounded disabled:opacity-30 disabled:cursor-not-allowed"
@@ -2864,7 +2871,7 @@ import type { Slide } from "@/types";\n${text}`,
                               <div className="flex flex-row overflow-x-auto gap-4 custom-scrollbar p-4 bg-[#0f0624] rounded-lg border border-gray-600 shadow-inner max-w-full">
                                 {editingContent.slides.map((slide: any, idx: number) => (
                                   <div key={slide.id} className="relative group bg-black border border-gray-600 shadow-md rounded-lg overflow-hidden flex flex-col flex-shrink-0 w-[240px] aspect-video hover:border-purple-500 transition-colors">
-                                    <img src={resolveMediaUrl(slide.content) || slide.content} alt={slide.title || `Slide ${idx + 1}`} className="relative z-10 w-full h-full object-contain bg-black" />
+                                    <img src={resolveMediaUrl(slide.content) || "https://images.unsplash.com/photo-1438232992991-995b7058bbb3?q=80&w=2673&auto=format&fit=crop"} alt={slide.title || `Slide ${idx + 1}`} className="relative z-10 w-full h-full object-contain bg-black" />
                                     <div className="absolute z-20 top-0 right-0 left-0 bg-black/70 p-2 flex justify-between opacity-100 transition-opacity backdrop-blur-sm">
                                       <div className="flex space-x-1">
                                         <button disabled={idx === 0} className="bg-gray-700 hover:bg-gray-500 text-white p-1 rounded disabled:opacity-30 disabled:cursor-not-allowed"
@@ -4699,7 +4706,7 @@ import type { Slide } from "@/types";\n${text}`,
                         return (
                           <>
                             <img
-                              src={resolveMediaUrl(displaySlide?.content) || displaySlide?.content}
+                              src={resolveMediaUrl(displaySlide?.content) || "https://images.unsplash.com/photo-1438232992991-995b7058bbb3?q=80&w=2673&auto=format&fit=crop"}
                               alt={displaySlide?.title || editingContent.title}
                               className="relative z-10 w-full h-full object-contain drop-shadow-2xl bg-black"
                             />

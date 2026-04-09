@@ -5,12 +5,19 @@ import instagramIcon from "@assets/1658586823instagram-logo-transparent_17567334
 
 const resolveMediaUrl = (url: string | null | undefined): string | undefined => {
   if (!url) return undefined;
-  if (url === "Worship background image" || url === "Inspirational worship video") return undefined;
+  
+  // Exact placeholder matches
+  if (url === "Worship background image" || url === "Inspirational worship video" || url === "Background Image") return undefined;
+  
+  // Valid URL prefixes
   if (url.startsWith('http://') || url.startsWith('https://')) return url;
   if (url.startsWith('data:') || url.startsWith('blob:')) return url;
-  // Return /api/ paths as-is — the Vite proxy (dev) or same-origin (prod) handles them
+  
+  // Relative API paths (handled by Vite proxy in dev)
   if (url.startsWith('/api/')) return url;
-  return url;
+  
+  // If it doesn't match any known valid prefix, it's likely a generic string/placeholder
+  return undefined;
 };
 
 export interface LiveConsolePreviewProps {
