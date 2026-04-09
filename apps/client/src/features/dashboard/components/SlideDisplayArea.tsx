@@ -193,8 +193,26 @@ export const SlideDisplayArea: React.FC<SlideDisplayAreaProps> = ({
                     {(selectedSlide.slide as any).subtype === "video" ? (
                       <video
                         src={selectedSlide.slide.content && selectedSlide.slide.content !== "Inspirational worship video" ? selectedSlide.slide.content : undefined}
-                        autoPlay loop muted playsInline
+                        autoPlay={(selectedSlide.slide as any).videoSettings?.autoPlay ?? true}
+                        loop={(selectedSlide.slide as any).videoSettings?.endAction !== "nothing"}
+                        muted playsInline
                         className="w-full h-full object-cover"
+                        onTimeUpdate={(e) => {
+                            const videoSettings = (selectedSlide.slide as any).videoSettings;
+                            if (!videoSettings) return;
+                            const videoEle = e.currentTarget;
+                            const endTime = videoSettings.endTime;
+                            const startTime = videoSettings.startTime || 0;
+                            if (videoEle.currentTime < startTime - 0.5) videoEle.currentTime = startTime;
+                            if (endTime && videoEle.currentTime >= endTime) {
+                                if (videoSettings.endAction === "loop") {
+                                    videoEle.currentTime = startTime;
+                                    videoEle.play().catch(console.error);
+                                } else {
+                                    videoEle.pause();
+                                }
+                            }
+                        }}
                       />
                     ) : (
                       <img
@@ -354,8 +372,26 @@ export const SlideDisplayArea: React.FC<SlideDisplayAreaProps> = ({
                       {(currentlyDisplayedSlide as any).subtype === "video" ? (
                         <video
                           src={currentlyDisplayedSlide.content && currentlyDisplayedSlide.content !== "Inspirational worship video" ? currentlyDisplayedSlide.content : undefined}
-                          autoPlay loop muted playsInline
+                          autoPlay={(currentlyDisplayedSlide as any).videoSettings?.autoPlay ?? true}
+                          loop={(currentlyDisplayedSlide as any).videoSettings?.endAction !== "nothing"}
+                          muted playsInline
                           className="w-full h-full object-cover"
+                          onTimeUpdate={(e) => {
+                              const videoSettings = (currentlyDisplayedSlide as any).videoSettings;
+                              if (!videoSettings) return;
+                              const videoEle = e.currentTarget;
+                              const endTime = videoSettings.endTime;
+                              const startTime = videoSettings.startTime || 0;
+                              if (videoEle.currentTime < startTime - 0.5) videoEle.currentTime = startTime;
+                              if (endTime && videoEle.currentTime >= endTime) {
+                                  if (videoSettings.endAction === "loop") {
+                                      videoEle.currentTime = startTime;
+                                      videoEle.play().catch(console.error);
+                                  } else {
+                                      videoEle.pause();
+                                  }
+                              }
+                          }}
                         />
                       ) : (
                         <img

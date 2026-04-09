@@ -42,28 +42,26 @@ export const MediaAssetGridCard = React.memo(
         )}
 
         {!hasError ? (
-          isVideo ? (
-            <video
-              src={fileUrl}
-              muted
-              playsInline
-              preload="metadata"
-              className="w-full h-full object-cover pointer-events-none absolute inset-0"
-              onError={() => setHasError(true)}
-              onLoadedMetadata={(e) => {
-                // Seek to the first frame specifically so black UI is cleared
-                (e.currentTarget as HTMLVideoElement).currentTime = 0.1;
-              }}
-            />
-          ) : (
+          <>
             <img
               src={thumbnailUrl}
               alt={media.title}
               loading="lazy"
               className="w-full h-full object-cover pointer-events-none absolute inset-0"
-              onError={() => setHasError(true)}
+              onError={() => {
+                // If thumbnail fails specifically for video, try using the video tag but paused as a fallback
+                // or just set error
+                setHasError(true);
+              }}
             />
-          )
+            {isVideo && (
+              <div className="absolute inset-0 flex items-center justify-center pointer-events-none bg-black/10">
+                <div className="w-8 h-8 rounded-full bg-black/50 flex items-center justify-center border border-white/30 backdrop-blur-sm">
+                  <div className="w-0 h-0 border-t-4 border-t-transparent border-l-6 border-l-white border-b-4 border-b-transparent ml-1" />
+                </div>
+              </div>
+            )}
+          </>
         ) : (
           <div className="flex flex-col text-center text-gray-400 w-full h-full items-center justify-center absolute inset-0 bg-gray-800 pointer-events-none">
             <div className="text-xs max-w-[80%] truncate px-2">{media.title}</div>

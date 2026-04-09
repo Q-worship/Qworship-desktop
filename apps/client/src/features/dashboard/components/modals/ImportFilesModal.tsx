@@ -210,10 +210,10 @@ export const ImportFilesModal = ({ open, onOpenChange, onMediaUploaded, onMultip
     }
   });
 
-  const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedFiles = Array.from(event.target.files || []);
-    
-    selectedFiles.forEach((file) => {
+  const [isDragOver, setIsDragOver] = useState(false);
+
+  const processSelectedFiles = (selectedFilesArray: File[]) => {
+    selectedFilesArray.forEach((file) => {
       const filePreview: FilePreview = {
         file,
         id: Math.random().toString(36).substr(2, 9),
@@ -224,7 +224,6 @@ export const ImportFilesModal = ({ open, onOpenChange, onMediaUploaded, onMultip
         description: ''
       };
 
-      // Create preview for images
       if (filePreview.fileType === 'image') {
         const reader = new FileReader();
         reader.onload = (e) => {
@@ -236,6 +235,31 @@ export const ImportFilesModal = ({ open, onOpenChange, onMediaUploaded, onMultip
         setFiles(prev => [...prev, filePreview]);
       }
     });
+  };
+
+  const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedFiles = Array.from(event.target.files || []);
+    processSelectedFiles(selectedFiles);
+    // Reset input so the same file could be selected again if needed
+    if (event.target) event.target.value = '';
+  };
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragOver(true);
+  };
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragOver(false);
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragOver(false);
+    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+      processSelectedFiles(Array.from(e.dataTransfer.files));
+    }
   };
 
   const updateFile = (id: string, updates: Partial<FilePreview>) => {
@@ -373,7 +397,14 @@ export const ImportFilesModal = ({ open, onOpenChange, onMediaUploaded, onMultip
         <ScrollArea className="h-[75vh] pr-3">
           <div className="space-y-6">
           {/* File Selection */}
-          <div className="border-2 border-dashed border-white/20 rounded-lg p-8 text-center">
+          <div 
+            className={`border-2 border-dashed rounded-lg p-8 text-center transition-colors ${
+              isDragOver ? 'border-[#8356f3] bg-[#8356f3]/10' : 'border-white/20 bg-transparent'
+            }`}
+            onDragOver={handleDragOver}
+            onDragLeave={handleDragLeave}
+            onDrop={handleDrop}
+          >
             <Upload className="h-12 w-12 text-white/50 mx-auto mb-4" />
             <p className="text-white/70 mb-4">
               Drag and drop files here or click to browse

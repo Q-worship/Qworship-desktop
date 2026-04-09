@@ -10,8 +10,8 @@ import { useQuery } from "@tanstack/react-query";
 import { ImportFilesModal } from "@/features/dashboard/components/modals/ImportFilesModal";
 
 interface MediaGallerySectionProps {
-  activeTab: 'cloud-media' | 'my-media';
-  onTabChange: (tab: 'cloud-media' | 'my-media') => void;
+  activeTab: 'cloud-media' | 'my-media' | 'templates';
+  onTabChange: (tab: 'cloud-media' | 'my-media' | 'templates') => void;
 }
 
 export const MediaGallerySection = ({ activeTab, onTabChange }: MediaGallerySectionProps): JSX.Element => {
@@ -23,6 +23,7 @@ export const MediaGallerySection = ({ activeTab, onTabChange }: MediaGallerySect
     queryKey: ['/api/user-media-stats', user?.id],
     enabled: !!user?.id,
     staleTime: 60 * 1000, // Cache for 1 minute
+    retry: false, // Don't retry on 404s for unimplemented endpoints
   });
 
   const userId = user?.id?.toString() || '';
@@ -55,7 +56,7 @@ export const MediaGallerySection = ({ activeTab, onTabChange }: MediaGallerySect
 
           {/* Media tabs */}
           <div className="flex justify-center">
-            <Tabs value={activeTab} onValueChange={(value) => onTabChange(value as 'cloud-media' | 'my-media')} className="w-auto">
+            <Tabs value={activeTab} onValueChange={(value) => onTabChange(value as 'cloud-media' | 'my-media' | 'templates')} className="w-auto">
               <TabsList className="bg-[#1d0d46] p-1 rounded-full">
                 <TabsTrigger
                   value="cloud-media"
@@ -68,6 +69,12 @@ export const MediaGallerySection = ({ activeTab, onTabChange }: MediaGallerySect
                   className="py-2 px-6 rounded-full text-white font-medium text-sm data-[state=active]:bg-[#8356f3]"
                 >
                   MY MEDIA
+                </TabsTrigger>
+                <TabsTrigger
+                  value="templates"
+                  className="py-2 px-6 rounded-full text-white font-medium text-sm data-[state=active]:bg-[#8356f3]"
+                >
+                  TEMPLATES
                 </TabsTrigger>
               </TabsList>
             </Tabs>
@@ -97,6 +104,12 @@ export const MediaGallerySection = ({ activeTab, onTabChange }: MediaGallerySect
       <ImportFilesModal 
         open={isImportModalOpen} 
         onOpenChange={setIsImportModalOpen} 
+        onMultipleMediaUploaded={() => {
+          // Immediately pivot user to My Media to view their newly uploaded personal assets
+          if (activeTab === 'cloud-media') {
+            onTabChange('my-media');
+          }
+        }}
       />
     </section>
   );

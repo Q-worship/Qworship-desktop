@@ -29,7 +29,7 @@ interface MediaFilterSectionProps {
     seasons: string[];
     recent: string[];
   }) => void;
-  activeTab: 'cloud-media' | 'my-media';
+  activeTab: 'cloud-media' | 'my-media' | 'templates';
 }
 
 export const MediaFilterSection = ({ 
