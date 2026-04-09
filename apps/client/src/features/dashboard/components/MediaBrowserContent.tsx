@@ -7,7 +7,7 @@ export const MediaBrowserContent: React.FC<{
   onSelectMedia: (asset: MediaAsset) => void;
   currentUser: User | null;
 }> = ({ onSelectMedia, currentUser }) => {
-  const [activeTab, setActiveTab] = React.useState<"cloud-media" | "my-media">(
+  const [activeTab, setActiveTab] = React.useState<"cloud-media" | "my-media" | "templates">(
     "my-media",
   );
   const [selectedMedia, setSelectedMedia] = React.useState<any>(null);
@@ -42,6 +42,15 @@ export const MediaBrowserContent: React.FC<{
               : "text-gray-400 border-transparent hover:text-white"
           }`}>
           MY MEDIA
+        </button>
+        <button
+          onClick={() => setActiveTab("templates")}
+          className={`px-6 py-3 text-sm font-medium transition-colors border-b-2 ${
+            activeTab === "templates"
+              ? "text-[#8356F3] border-[#8356F3]"
+              : "text-gray-400 border-transparent hover:text-white"
+          }`}>
+          TEMPLATES
         </button>
       </div>
 

@@ -111,7 +111,12 @@ export const ProfileSettings: React.FC<ProfileSettingsProps> = ({ isOpen, onClos
 
   const fetchOrganizationDetails = async (orgId: number) => {
     try {
-      const response = await fetch(`/api/organization/${orgId}`);
+      const response = await apiRequest('GET', `/api/organization/${orgId}`);
+      
+      if (!response.ok) {
+        throw new Error(`Failed to fetch organization: ${response.statusText}`);
+      }
+      
       const data = await response.json();
       if (data.success && data.organization) {
         setOrganizationInfo({

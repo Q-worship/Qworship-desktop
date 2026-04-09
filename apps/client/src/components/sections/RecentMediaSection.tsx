@@ -19,8 +19,65 @@ interface RecentMediaSectionProps {
     type: string;
     asset?: any; // Complete asset data
   } | null;
-  activeTab: 'cloud-media' | 'my-media';
+  activeTab: 'cloud-media' | 'my-media' | 'templates';
 }
+
+const ImagePreviewCard = ({ asset }: { asset: any }) => {
+  const [hasError, setHasError] = useState(false);
+  const fallbackSrc = '/figmaAssets/image-7.png';
+
+  // Reset error state if a different asset is selected
+  React.useEffect(() => {
+    setHasError(false);
+  }, [asset?.id]);
+
+  const isVideo = asset?.type?.toLowerCase() === 'video';
+
+  // Determine the file URL if it's a video based on who owns the asset
+  const videoUrl = asset?.uploadedBy === 'admin' 
+    ? `/api/cloud-media/${asset?.id}/file`
+    : `/api/user-media-assets/${asset?.id}/file`;
+
+  if (isVideo) {
+    return (
+      <div className="w-full relative h-64 mt-[12px] mb-[12px] rounded-lg overflow-hidden bg-black/40 flex items-center justify-center shadow-inner">
+        <video
+          src={videoUrl}
+          controls
+          className="w-full h-full object-contain"
+          playsInline
+          controlsList="nodownload"
+          crossOrigin="use-credentials"
+        >
+          Your browser does not support the video tag.
+        </video>
+      </div>
+    );
+  }
+
+  if (hasError || !asset?.thumbnail) {
+    return (
+      <div className="w-full relative h-64 mt-[12px] mb-[12px] rounded-lg overflow-hidden bg-[#2a1b3e] shadow-inner flex items-center justify-center border border-[#cea2fd]/20">
+        <div className="text-[#cea2fd]/40 text-sm font-medium font-['Poppins',Helvetica]">
+          Preview not available
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="w-full relative h-64 mt-[12px] mb-[12px] rounded-lg overflow-hidden bg-[#2a1b3e] shadow-inner flex items-center justify-center border border-[#cea2fd]/20">
+      <img
+        src={asset.thumbnail}
+        alt={asset?.title || 'Media preview'}
+        className="max-w-full max-h-full object-contain"
+        onError={() => {
+          if (!hasError) setHasError(true);
+        }}
+      />
+    </div>
+  );
+};
 
 export const RecentMediaSection = ({ selectedMedia, activeTab }: RecentMediaSectionProps): JSX.Element => {
   
@@ -201,16 +258,7 @@ export const RecentMediaSection = ({ selectedMedia, activeTab }: RecentMediaSect
   return (
     <section className="w-full p-4 flex flex-col gap-4">
       {/* Large Media Preview */}
-      <div className="w-full">
-        <img
-          src={selectedMedia.asset.thumbnail || '/figmaAssets/image-7.png'}
-          alt={selectedMedia.asset.title}
-          className="w-full h-64 mt-[12px] mb-[12px] rounded-lg object-cover"
-          onError={(e) => {
-            e.currentTarget.src = '/figmaAssets/image-7.png';
-          }}
-        />
-      </div>
+      <ImagePreviewCard asset={selectedMedia.asset} />
       {/* Media Title */}
       <div className="bg-[#392a48] p-3 rounded-lg">
         {isEditable ? (
