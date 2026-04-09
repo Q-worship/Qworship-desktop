@@ -3949,26 +3949,19 @@ import type { Slide } from "@/types";\n${text}`,
                     itemBackground.type === "image" ||
                     itemBackground.type === "video"
                   ) {
-                    // Ensure URL is properly formatted with absolute path
-                    let backgroundUrl = itemBackground.value;
-                    if (
-                      !backgroundUrl.startsWith("http") &&
-                      !backgroundUrl.startsWith("data:")
-                    ) {
-                      backgroundUrl = `${window.location.origin}${backgroundUrl.startsWith("/") ? "" : "/"}${backgroundUrl}`;
+                    const backgroundUrl = resolveMediaUrl(itemBackground.value);
+                    if (backgroundUrl) {
+                      return {
+                        backgroundImage: `url("${backgroundUrl}")`,
+                        backgroundSize: "cover",
+                        backgroundPosition: "center",
+                        backgroundRepeat: "no-repeat",
+                        backgroundColor: "#000000",
+                        minHeight: "100%",
+                        width: "100%",
+                      };
                     }
-
-                    const backgroundStyle = {
-                      backgroundImage: `url("${backgroundUrl}")`,
-                      backgroundSize: "cover",
-                      backgroundPosition: "center",
-                      backgroundRepeat: "no-repeat",
-                      backgroundColor: "#000000", // Black fallback
-                      minHeight: "100%",
-                      width: "100%",
-                    };
-
-                    return backgroundStyle;
+                    return { backgroundColor: "#000000" };
                   } else {
                     return {
                       backgroundColor:
@@ -5126,22 +5119,16 @@ import type { Slide } from "@/types";\n${text}`,
                           background.type === "image" ||
                           background.type === "video"
                         ) {
-                          // Ensure URL is properly formatted with absolute path
-                          let backgroundUrl = background.value;
-                          if (
-                            !backgroundUrl.startsWith("http") &&
-                            !backgroundUrl.startsWith("data:")
-                          ) {
-                            backgroundUrl = `${window.location.origin}${backgroundUrl.startsWith("/") ? "" : "/"}${backgroundUrl}`;
+                          const backgroundUrl = resolveMediaUrl(background.value);
+                          if (backgroundUrl) {
+                            return {
+                              backgroundImage: `url("${backgroundUrl}")`,
+                              backgroundSize: "cover",
+                              backgroundPosition: "center",
+                              backgroundRepeat: "no-repeat",
+                              backgroundColor: "#000000",
+                            };
                           }
-
-                          return {
-                            backgroundImage: `url("${backgroundUrl}")`,
-                            backgroundSize: "cover",
-                            backgroundPosition: "center",
-                            backgroundRepeat: "no-repeat",
-                            backgroundColor: "#000000",
-                          };
                         }
 
                         return {
@@ -5477,35 +5464,17 @@ import type { Slide } from "@/types";\n${text}`,
                                     itemBackground.type === "image" ||
                                     itemBackground.type === "video"
                                   ) {
-                                    // Ensure URL is properly formatted with absolute path
-                                    let backgroundUrl =
-                                      itemBackground.value;
-                                    if (
-                                      !backgroundUrl.startsWith(
-                                        "http",
-                                      ) &&
-                                      !backgroundUrl.startsWith("data:")
-                                    ) {
-                                      // Convert relative path to absolute
-                                      backgroundUrl = `${window.location.origin}${backgroundUrl.startsWith("/") ? "" : "/"}${backgroundUrl}`;
+                                    const backgroundUrl = resolveMediaUrl(itemBackground.value);
+                                    if (backgroundUrl) {
+                                      return {
+                                        backgroundImage: `url("${backgroundUrl}")`,
+                                        backgroundSize: "cover",
+                                        backgroundPosition: "center",
+                                        backgroundRepeat: "no-repeat",
+                                        backgroundColor: "#1a0f2e",
+                                      };
                                     }
-
-                                    const styles = {
-                                      backgroundImage: `url("${backgroundUrl}")`,
-                                      backgroundSize: "cover",
-                                      backgroundPosition: "center",
-                                      backgroundRepeat: "no-repeat",
-                                      backgroundColor: "#1a0f2e", // Dark purple fallback
-                                    };
-                                    console.log(
-                                      "🎨 Applying slide thumbnail image background styles:",
-                                      styles,
-                                    );
-                                    console.log(
-                                      "🔗 Final thumbnail background URL:",
-                                      backgroundUrl,
-                                    );
-                                    return styles;
+                                    return { backgroundColor: "#2E2D39" };
                                   } else if (
                                     itemBackground.type ===
                                     "gradient" ||
