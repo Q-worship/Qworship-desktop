@@ -9,7 +9,7 @@ async function throwIfResNotOk(res: Response) {
 
 const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
-function buildUrl(path: string): string {
+export function buildUrl(path: string): string {
   if (path.startsWith('http://') || path.startsWith('https://')) return path;
   // Normalize double /api if VITE_API_URL ends in /api
   if (path.startsWith('/api') && API_BASE.endsWith('/api')) {

@@ -13,7 +13,8 @@ import {
   getCloudMediaThumbnail,
   getCloudMediaFile,
   uploadCloudMedia,
-  updateCloudMedia
+  updateCloudMedia,
+  getUserMediaStats
 } from './media.controller.js';
 
 // Setup multer storage
@@ -48,6 +49,7 @@ export const mediaRouter = Router();
 
 // User Media Routes -> /api/user-media-assets
 mediaRouter.post('/user-media-assets/upload', protect, upload.array('files'), uploadMedia); // The frontend uses 'files' for FormData
+mediaRouter.get('/user-media-stats', protect, getUserMediaStats);
 mediaRouter.get('/user-media-assets', protect, listUserMedia);
 mediaRouter.get('/user-media-assets/:id/file', getMediaFile);
 mediaRouter.get('/user-media-assets/:id/thumbnail', getMediaThumbnail);
