@@ -13,10 +13,22 @@ import {
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 
+// ── Auth Helper ─────────────────────────────────────────────────────────────────
+
+function getAuthHeaders(contentType?: string): Record<string, string> {
+  const headers: Record<string, string> = {};
+  if (contentType) headers["Content-Type"] = contentType;
+  if (typeof window !== "undefined") {
+    const token = localStorage.getItem("token");
+    if (token) headers["Authorization"] = `Bearer ${token}`;
+  }
+  return headers;
+}
+
 // ── Types ───────────────────────────────────────────────────────────────────────
 
 interface MediaAssetBase {
-  id: number;
+  id: string;
   _id?: string;
   title: string;
   fileName: string;
@@ -40,10 +52,10 @@ interface CloudMediaAsset extends MediaAssetBase {
 type MediaAsset = UserMediaAsset | CloudMediaAsset;
 
 interface BackgroundMediaPickerProps {
-  selectedMediaId?: number;
+  selectedMediaId?: string;
   selectedMediaSource?: "user" | "cloud";
   onSelect: (asset: {
-    id: number;
+    id: string;
     url: string;
     mediaType: "image" | "video";
     source: "user" | "cloud";
@@ -59,16 +71,23 @@ function formatFileSize(bytes: number): string {
   return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
 }
 
-function isVideoMime(mime: string): boolean {
-  return mime.startsWith("video/");
-}
-
 function isVideoFileType(ft: string): boolean {
   return ft === "VIDEO";
 }
 
-function getAssetId(asset: MediaAsset): string | number {
-  return (asset as any)._id ?? asset.id;
+function getAssetId(asset: MediaAsset): string {
+  return asset._id ?? asset.id;
+}
+
+/**
+ * Maps a raw server MIME-type string (e.g. "image/jpeg", "video/mp4")
+ * to the frontend enum discriminator.
+ */
+function mapMimeToFileType(mime: string): "IMAGE" | "VIDEO" | "AUDIO" | "DOCUMENT" {
+  if (mime.startsWith("image")) return "IMAGE";
+  if (mime.startsWith("video")) return "VIDEO";
+  if (mime.startsWith("audio")) return "AUDIO";
+  return "DOCUMENT";
 }
 
 // ── Component ───────────────────────────────────────────────────────────────────
@@ -84,7 +103,7 @@ export function BackgroundMediaPicker({
   const [cloudAssets, setCloudAssets] = useState<CloudMediaAsset[]>([]);
   const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
-  const [deleting, setDeleting] = useState<number | null>(null);
+  const [deleting, setDeleting] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
@@ -92,12 +111,37 @@ export function BackgroundMediaPicker({
   // ── Fetch user media assets (images + videos only) ──────────────────────────
   const fetchUserAssets = useCallback(async () => {
     try {
-      const res = await fetch("/api/user-media-assets", { credentials: "include" });
+      const res = await fetch("/api/user-media-assets", {
+        headers: getAuthHeaders(),
+      });
       if (!res.ok) throw new Error("Failed to load user media");
-      const data: Omit<UserMediaAsset, "source">[] = await res.json();
-      return data
-        .filter((a) => a.fileType === "IMAGE" || a.fileType === "VIDEO")
-        .map((a) => ({ ...a, source: "user" as const }));
+
+      // Server returns { assets: [...] } envelope
+      const json = await res.json();
+      const rawAssets: any[] = json.assets ?? json;
+
+      return rawAssets
+        .filter((a: any) => {
+          const ft = mapMimeToFileType(a.fileType || a.type || "");
+          return ft === "IMAGE" || ft === "VIDEO";
+        })
+        .map((a: any): UserMediaAsset => {
+          const id = a._id ?? a.id;
+          const mapped = mapMimeToFileType(a.fileType || a.type || "");
+          return {
+            id,
+            _id: a._id,
+            title: a.title || a.fileName || "Untitled",
+            fileName: a.fileName || "",
+            fileType: mapped,
+            mimeType: a.fileType || "application/octet-stream",
+            filePath: `/api/user-media-assets/${id}/file`,
+            thumbnailPath: `/api/user-media-assets/${id}/thumbnail`,
+            fileSize: a.fileSize || 0,
+            source: "user",
+            uploadedAt: a.createdAt || a.uploadedAt || new Date().toISOString(),
+          };
+        });
     } catch {
       return [];
     }
@@ -108,10 +152,28 @@ export function BackgroundMediaPicker({
     try {
       const res = await fetch("/api/cloud-media");
       if (!res.ok) throw new Error("Failed to load cloud media");
-      const data: (Omit<CloudMediaAsset, "source"> & { categoryName?: string })[] = await res.json();
+
+      // Cloud endpoint returns a raw array (already mapped by server)
+      const data: any[] = await res.json();
+
       return data
-        .filter((a) => a.fileType === "IMAGE" || a.fileType === "VIDEO")
-        .map((a) => ({ ...a, source: "cloud" as const }));
+        .filter((a: any) => a.fileType === "IMAGE" || a.fileType === "VIDEO")
+        .map((a: any): CloudMediaAsset => {
+          const id = a._id ?? a.id;
+          return {
+            id,
+            _id: a._id,
+            title: a.title || a.fileName || "Untitled",
+            fileName: a.fileName || "",
+            fileType: a.fileType,
+            mimeType: a.mimeType || a.fileType || "application/octet-stream",
+            filePath: `/api/cloud-media/${id}/file`,
+            thumbnailPath: `/api/cloud-media/${id}/thumbnail`,
+            fileSize: a.fileSize || 0,
+            source: "cloud",
+            categoryName: a.categoryName,
+          };
+        });
     } catch {
       return [];
     }
@@ -169,27 +231,30 @@ export function BackgroundMediaPicker({
 
       const res = await fetch("/api/user-media-assets/upload", {
         method: "POST",
-        credentials: "include",
+        headers: getAuthHeaders(),  // No Content-Type — browser sets multipart boundary
         body: formData,
       });
 
       if (!res.ok) {
         const errData = await res.json().catch(() => ({}));
-        throw new Error(errData.error || "Upload failed");
+        throw new Error(errData.error || errData.message || "Upload failed");
       }
 
-      const uploaded: Omit<UserMediaAsset, "source">[] = await res.json();
+      // Server returns { assets: [...] } envelope
+      const json = await res.json();
+      const uploaded: any[] = json.assets ?? json;
+
       toast({ title: "Upload Complete", description: `${file.name} uploaded successfully.` });
 
       // Refresh and auto-select
       await fetchAll();
       if (uploaded.length > 0) {
         const asset = uploaded[0];
-        const assetId = getAssetId(asset as any);
+        const assetId = asset._id ?? asset.id;
         onSelect({
-          id: asset.id,
+          id: assetId,
           url: `${window.location.origin}/api/user-media-assets/${assetId}/file`,
-          mediaType: isVideoMime(asset.mimeType) ? "video" : "image",
+          mediaType: (asset.fileType || asset.type || "").startsWith("video") ? "video" : "image",
           source: "user",
         });
       }
@@ -209,27 +274,27 @@ export function BackgroundMediaPicker({
   const handleDelete = async (asset: UserMediaAsset) => {
     if (deleting) return;
     const assetId = getAssetId(asset);
-    setDeleting(asset.id);
+    setDeleting(assetId);
     try {
       const res = await fetch(`/api/user-media-assets/${assetId}`, {
         method: "DELETE",
-        credentials: "include",
+        headers: getAuthHeaders(),
       });
 
       if (!res.ok) {
         const errData = await res.json().catch(() => ({}));
-        throw new Error(errData.error || "Delete failed");
+        throw new Error(errData.error || errData.message || "Delete failed");
       }
 
       toast({ title: "Deleted", description: `${asset.title} removed.` });
 
       // If this was the selected asset, clear selection
-      if (selectedMediaId === asset.id) {
+      if (selectedMediaId === assetId) {
         onClear();
       }
 
       // Refresh list
-      setUserAssets((prev) => prev.filter((a) => a.id !== asset.id));
+      setUserAssets((prev) => prev.filter((a) => getAssetId(a) !== assetId));
     } catch (err: any) {
       toast({
         title: "Delete Failed",
@@ -250,7 +315,7 @@ export function BackgroundMediaPicker({
         : `/api/user-media-assets/${assetId}/file`;
 
     onSelect({
-      id: asset.id,
+      id: assetId,
       url: `${window.location.origin}${downloadBase}`,
       mediaType: isVideoFileType(asset.fileType) ? "video" : "image",
       source: asset.source,
@@ -361,11 +426,11 @@ export function BackgroundMediaPicker({
           </p>
           <div className="grid grid-cols-3 gap-2 max-h-[280px] overflow-y-auto pr-1 custom-scrollbar">
             {currentAssets.map((asset) => {
-              const isSelected = selectedMediaId === asset.id && selectedMediaSource === asset.source;
+              const assetId = getAssetId(asset);
+              const isSelected = selectedMediaId === assetId && selectedMediaSource === asset.source;
               const isVideo = asset.fileType === "VIDEO";
               const isUserAsset = asset.source === "user";
-              const isBeingDeleted = deleting === asset.id;
-              const assetId = getAssetId(asset);
+              const isBeingDeleted = deleting === assetId;
               const thumbnailUrl =
                 asset.source === "cloud"
                   ? `/api/cloud-media/${assetId}/thumbnail`
@@ -376,7 +441,7 @@ export function BackgroundMediaPicker({
                   : `/api/user-media-assets/${assetId}/file`;
 
               return (
-                <div key={`${asset.source}-${asset.id}`} className="relative group">
+                <div key={`${asset.source}-${assetId}`} className="relative group">
                   <button
                     onClick={() => handleSelect(asset)}
                     disabled={isBeingDeleted}

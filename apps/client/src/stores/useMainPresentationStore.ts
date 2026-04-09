@@ -5,7 +5,7 @@ export interface MainPresentationSettings {
   backgroundType: "solid" | "gradient" | "media";
   backgroundValue: string;
   backgroundMediaType?: "image" | "video";
-  backgroundMediaId?: number;
+  backgroundMediaId?: string;
   backgroundMediaSource?: "user" | "cloud";
   fontColor: string;
   fontFamily: string;
