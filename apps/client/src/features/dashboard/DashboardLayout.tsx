@@ -1669,7 +1669,7 @@ export const QworshipHome = (): JSX.Element => {
     },
     {
       name: "Slide Canvas",
-      shortcut: "",
+      shortcut: "coming soon",
       iconComponent: Palette,
       hasSubmenu: false,
       action: () =>
@@ -1696,7 +1696,7 @@ export const QworshipHome = (): JSX.Element => {
         }),
     },
     {
-      name: "Image",
+      name: "Image Slide",
       shortcut: "Ctrl + Shift + I",
       iconComponent: Image,
       hasSubmenu: false,
@@ -1711,7 +1711,7 @@ export const QworshipHome = (): JSX.Element => {
     },
     {
       name: "Web Page",
-      shortcut: "Ctrl + Shift + W",
+      shortcut: "coming soon",
       iconComponent: Globe,
       hasSubmenu: false,
       action: () =>
@@ -3052,6 +3052,7 @@ export const QworshipHome = (): JSX.Element => {
 
   // Modal calendar helper functions
   const formatModalDate = (date: Date | null) => {
+    if (!date) return '';
     const days = [
       "Sunday",
       "Monday",
@@ -8662,7 +8663,6 @@ export const QworshipHome = (): JSX.Element => {
                 formattedReference={widgetFormattedReference}
                 volume={volume}
                 onNavigate={(dir) => executeNavigation("verse_change", dir)}
-                currentUser={currentUserResponse?.user || null}
               />
             </div>
           )}

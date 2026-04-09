@@ -38,7 +38,7 @@ export const MyMediaPatch = ({ onAssetSelect, isModal = false, filterType = 'all
   } | null>(null);
 
   // Get current active tab from MediaGallerySection
-  const [activeTab, setActiveTab] = useState<'cloud-media' | 'my-media'>('my-media');
+  const [activeTab, setActiveTab] = useState<'cloud-media' | 'my-media' | 'templates'>('my-media');
   const user = useAuthStore((state) => state.user);
   const [, setLocation] = useLocation();
   
@@ -117,7 +117,7 @@ export const MyMediaPatch = ({ onAssetSelect, isModal = false, filterType = 'all
           thumbnailPath = firstAsset.thumbnailPath;
         } else {
           // Fallback to placeholder if no thumbnail generated
-          thumbnailPath = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDQwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSIzMDAiIGZpbGw9IiMxYTFhMWEiLz4KICA8Y2lyY2xlIGN4PSIyMDAiIGN5PSIxNTAiIHI9IjMwIiBmaWxsPSJ3aGl0ZSIgZmlsbC1vcGFjaXR5PSIwLjgiLz4KICA8cG9seWdvbiBwb2ludHM9IjE4OCwxMzUgMTg4LDE2NSAyMTgsMTUwIiBmaWxsPSIjMWExYTFhIi8+CiAgPHRleHQgeD0iMjAwIiB5PSIyMDAiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIG9wYWNpdHk9IjAuNyI+VmlkZW88L3RleHQ+Cjwvc3ZnPg==';
+          thumbnailPath = '';
         }
       }
       
@@ -150,17 +150,19 @@ export const MyMediaPatch = ({ onAssetSelect, isModal = false, filterType = 'all
         description: firstAsset.description,
       };
 
-      // Auto-select the first asset
-      setSelectedMedia({
-        sectionIndex: 1, // MY MEDIA typically appears in section 1
-        itemIndex: 0,    // First item
-        title: transformedAsset.title,
-        color: '#8356f3', // Q-worship purple
-        type: transformedAsset.type,
-        asset: transformedAsset
-      });
+      // Only auto-select if no media is currently selected
+      if (!selectedMedia?.asset?.id) {
+        setSelectedMedia({
+          sectionIndex: 1, // MY MEDIA typically appears in section 1
+          itemIndex: 0,    // First item
+          title: transformedAsset.title,
+          color: '#8356f3', // Q-worship purple
+          type: transformedAsset.type,
+          asset: transformedAsset
+        });
+      }
     }
-  }, [activeTab, userMediaResponse?.assets, isVideoOnly]); // Include isVideoOnly in dependencies
+  }, [activeTab, userMediaResponse?.assets, isVideoOnly, selectedMedia?.asset?.id]); // Include selectedMedia.id in dependencies
 
   // Clear selection when switching away from MY MEDIA
   useEffect(() => {

@@ -154,9 +154,40 @@ export const LiveSlideLayer: React.FC<ReturnType<typeof useLivePresentationState
                   <video
                     src={slides[currentSlide - 1].content && slides[currentSlide - 1].content !== "Inspirational worship video" ? slides[currentSlide - 1].content : undefined}
                     autoPlay={(slides[currentSlide - 1] as any).videoSettings?.autoPlay ?? true}
-                    loop={(slides[currentSlide - 1] as any).videoSettings?.endAction !== "nothing"}
+                    loop={(slides[currentSlide - 1] as any).videoSettings?.endAction === "loop"}
                     muted
                     className={(slides[currentSlide - 1] as any).videoSettings?.displayMode === "center" ? "w-full h-full object-contain bg-black" : "w-full h-full object-cover"}
+                    onTimeUpdate={(e) => {
+                        const videoSettings = (slides[currentSlide - 1] as any).videoSettings;
+                        if (!videoSettings) return;
+                        
+                        const videoEle = e.currentTarget;
+                        const endTime = videoSettings.endTime;
+                        const startTime = videoSettings.startTime || 0;
+                        
+                        // Enforce startTime
+                        if (videoEle.currentTime < startTime - 0.5) {
+                            videoEle.currentTime = startTime;
+                        }
+                        
+                        // Enforce endTime
+                        if (endTime && videoEle.currentTime >= endTime) {
+                            if (videoSettings.endAction === "loop") {
+                                videoEle.currentTime = startTime;
+                                videoEle.play().catch(console.error);
+                            } else {
+                                videoEle.pause();
+                                if (videoSettings.endAction === "advance") {
+                                    const advanceMsg = { type: 'VIDEO_ENDED_NEXT_SLIDE' };
+                                    if (window.opener && !window.opener.closed) {
+                                        window.opener.postMessage(advanceMsg, window.location.origin);
+                                    } else {
+                                        window.postMessage(advanceMsg, window.location.origin);
+                                    }
+                                }
+                            }
+                        }
+                    }}
                     onEnded={() => {
                         const endAction = (slides[currentSlide - 1] as any).videoSettings?.endAction;
                         if (endAction === "advance") {
