@@ -2205,6 +2205,7 @@ import type { Slide } from "@/types";\n${text}`,
                                                     const newSlides =
                                                       createSlidesFromSong(
                                                         updatedSong,
+                                                        editingContent.id
                                                       );
 
                                                     updateItemContent(

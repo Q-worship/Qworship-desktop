@@ -100,8 +100,9 @@ export function useServiceItemManager({
     return sections;
   };
 
-  const createSlidesFromSong = (song: any): any[] => {
+  const createSlidesFromSong = (song: any, parentItemId?: string): any[] => {
     const slides: any[] = [];
+    const actualItemId = parentItemId || song.id;
 
     if (song.lyrics) {
       const parsedSections = parseLyricsIntoSections(song.lyrics);
@@ -133,7 +134,9 @@ export function useServiceItemManager({
         }
 
         slides.push({
-          id: `slide-${song.id}-${slideNumber}`,
+          id: `slide-${actualItemId}-${slideNumber}`,
+          itemId: actualItemId,
+          songId: song.id,
           type,
           title: song.title,
           content: (lyrics as string).trim(),
@@ -147,7 +150,9 @@ export function useServiceItemManager({
 
     if (slides.length === 0) {
       slides.push({
-        id: `slide-${song.id}-1`,
+        id: `slide-${actualItemId}-1`,
+        itemId: actualItemId,
+        songId: song.id,
         type: "verse",
         title: song.title,
         content: song.lyrics || "No lyrics available",
