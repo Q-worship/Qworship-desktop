@@ -41,6 +41,7 @@ import type { MediaAsset, User, Slide, Presentation, Song } from "@/types";
 import qworshipLogo from "@assets/Group 1_1754122708985.png";
 import qworshipLogoEdit from "@assets/Frame 2085662258_1754172975921.png";
 import { ProfileSettings } from "@/features/dashboard/components/ProfileSettings";
+import { NotificationsModal } from "@/features/dashboard/components/modals/NotificationsModal";
 import { SubscriptionManagement } from "@/features/dashboard/components/SubscriptionManagement";
 import { SongbookModal } from "@/features/dashboard/components/SongbookModal";
 import { SongSearchModal } from "@/features/dashboard/components/SongSearchModal";
@@ -1292,6 +1293,7 @@ export const QworshipHomeV2Base = (): JSX.Element => {
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const [isProfileSettingsOpen, setIsProfileSettingsOpen] = useState(false);
   const [isSubscriptionOpen, setIsSubscriptionOpen] = useState(false);
+  const [isNotificationsModalOpen, setIsNotificationsModalOpen] = useState(false);
   const [isSongbookOpen, setIsSongbookOpen] = useState(false);
   const [isSongEditorOpen, setIsSongEditorOpen] = useState(false);
   const [importedSongData, setImportedSongData] = useState<any>(null);
@@ -4458,6 +4460,7 @@ export const QworshipHomeV2Base = (): JSX.Element => {
         markNotificationAsRead={markNotificationAsRead}
         setIsProfileSettingsOpen={setIsProfileSettingsOpen}
         setIsSubscriptionOpen={setIsSubscriptionOpen}
+        setIsNotificationsModalOpen={setIsNotificationsModalOpen}
         handleLogout={handleLogout}
       />
 
@@ -4929,6 +4932,11 @@ export const QworshipHomeV2Base = (): JSX.Element => {
       <ProfileSettings
         isOpen={isProfileSettingsOpen}
         onClose={() => setIsProfileSettingsOpen(false)}
+      />
+      {/* Notifications History Modal */}
+      <NotificationsModal
+        isOpen={isNotificationsModalOpen}
+        onClose={() => setIsNotificationsModalOpen(false)}
       />
       {/* Subscription Management Modal */}
       <SubscriptionManagement

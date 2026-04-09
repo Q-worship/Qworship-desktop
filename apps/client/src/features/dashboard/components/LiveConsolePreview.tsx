@@ -7,6 +7,8 @@ import { buildUrl } from "@/lib/queryClient";
 const resolveMediaUrl = (url: string | null | undefined): string | undefined => {
   if (!url) return undefined;
   if (url === "Worship background image" || url === "Inspirational worship video") return undefined;
+  if (url.startsWith('http://') || url.startsWith('https://')) return url;
+  if (url.startsWith('data:') || url.startsWith('blob:')) return url;
   if (url.startsWith('/api/')) return buildUrl(url);
   return url;
 };

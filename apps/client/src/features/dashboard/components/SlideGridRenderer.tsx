@@ -1,4 +1,14 @@
 import React from "react";
+import { buildUrl } from "@/lib/queryClient";
+
+const resolveMediaUrl = (url: string | null | undefined): string | undefined => {
+  if (!url) return undefined;
+  if (url === "Worship background image" || url === "Inspirational worship video") return undefined;
+  if (url.startsWith('http://') || url.startsWith('https://')) return url;
+  if (url.startsWith('data:') || url.startsWith('blob:')) return url;
+  if (url.startsWith('/api/')) return buildUrl(url);
+  return url;
+};
 
 export const SlideGridRenderer = (props: any) => {
   const { 
@@ -36,14 +46,8 @@ export const SlideGridRenderer = (props: any) => {
                                   background.type === "image" ||
                                   background.type === "video"
                                 ) {
-                                  // Ensure URL is properly formatted with absolute path
-                                  let backgroundUrl = background.value;
-                                  if (
-                                    !backgroundUrl.startsWith("http") &&
-                                    !backgroundUrl.startsWith("data:")
-                                  ) {
-                                    backgroundUrl = `${window.location.origin}${backgroundUrl.startsWith("/") ? "" : "/"}${backgroundUrl}`;
-                                  }
+                                  // Ensure URL is properly formatted via buildUrl
+                                  const backgroundUrl = resolveMediaUrl(background.value) || background.value;
 
                                   return {
                                     backgroundImage: `url("${backgroundUrl}")`,
@@ -386,9 +390,7 @@ export const SlideGridRenderer = (props: any) => {
                                           if (slide.type === "media" && slide.content) {
                                              let slideContentUrl = typeof slide.content === 'object' ? (slide.content as any).url : slide.content;
                                              if (slideContentUrl && typeof slideContentUrl === 'string') {
-                                               if (!slideContentUrl.startsWith("http") && !slideContentUrl.startsWith("data:")) {
-                                                 slideContentUrl = `${window.location.origin}${slideContentUrl.startsWith("/") ? "" : "/"}${slideContentUrl}`;
-                                               }
+                                               slideContentUrl = resolveMediaUrl(slideContentUrl) || slideContentUrl;
                                                return {
                                                  backgroundImage: `url("${slideContentUrl}")`,
                                                  backgroundSize: "cover",
@@ -403,35 +405,16 @@ export const SlideGridRenderer = (props: any) => {
                                             itemBackground.type === "image" ||
                                             itemBackground.type === "video"
                                           ) {
-                                            // Ensure URL is properly formatted with absolute path
-                                            let backgroundUrl =
-                                              itemBackground.value;
-                                            if (
-                                              !backgroundUrl.startsWith(
-                                                "http",
-                                              ) &&
-                                              !backgroundUrl.startsWith("data:")
-                                            ) {
-                                              // Convert relative path to absolute
-                                              backgroundUrl = `${window.location.origin}${backgroundUrl.startsWith("/") ? "" : "/"}${backgroundUrl}`;
-                                            }
+                                            // Ensure URL is properly formatted via buildUrl
+                                            const backgroundUrl = resolveMediaUrl(itemBackground.value) || itemBackground.value;
 
-                                            const styles = {
+                                            return {
                                               backgroundImage: `url("${backgroundUrl}")`,
                                               backgroundSize: "cover",
                                               backgroundPosition: "center",
                                               backgroundRepeat: "no-repeat",
-                                              backgroundColor: "#1a0f2e", // Dark purple fallback
+                                              backgroundColor: "#1a0f2e",
                                             };
-                                            console.log(
-                                              "🎨 Applying slide thumbnail image background styles:",
-                                              styles,
-                                            );
-                                            console.log(
-                                              "🔗 Final thumbnail background URL:",
-                                              backgroundUrl,
-                                            );
-                                            return styles;
                                           } else if (
                                             itemBackground.type ===
                                               "gradient" ||
