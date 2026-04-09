@@ -117,6 +117,7 @@ export interface AppHeaderProps {
   markNotificationAsRead: (id: string) => void;
   setIsProfileSettingsOpen: (open: boolean) => void;
   setIsSubscriptionOpen: (open: boolean) => void;
+  setIsNotificationsModalOpen: (open: boolean) => void;
   handleLogout: () => void;
 }
 
@@ -183,6 +184,7 @@ export function AppHeader({
   markNotificationAsRead,
   setIsProfileSettingsOpen,
   setIsSubscriptionOpen,
+  setIsNotificationsModalOpen,
   handleLogout,
 }: AppHeaderProps) {
   return (
@@ -879,22 +881,34 @@ export function AppHeader({
                   <div className="space-y-3">
                     <div className="flex items-center justify-between">
                       <h4 className="font-medium text-white">Notifications</h4>
-                      {unreadCount > 0 && (
-                        <Badge
-                          variant="secondary"
-                          className="text-xs bg-gray-700 text-gray-300">
-                          {unreadCount} new
-                        </Badge>
-                      )}
+                      <div className="flex items-center gap-2">
+                        {unreadCount > 0 && (
+                          <Badge
+                            variant="secondary"
+                            className="text-xs bg-gray-700 text-gray-300">
+                            {unreadCount} new
+                          </Badge>
+                        )}
+                        <button
+                          onClick={() => {
+                            setIsNotificationsModalOpen(true);
+                            setIsProfileMenuOpen(false);
+                          }}
+                          className="text-xs text-purple-400 hover:text-purple-300 transition-colors">
+                          View All
+                        </button>
+                      </div>
                     </div>
-                    <div className="space-y-2 max-h-64 overflow-y-auto">
-                      {notifications.map((notification) => (
+                    <div className="space-y-2 max-h-48 overflow-y-auto">
+                      {notifications.slice(0, 3).map((notification) => (
                         <div
                           key={notification.id}
                           className={`p-3 rounded-lg cursor-pointer transition-colors duration-200 ${notification.read ? "hover:bg-gray-700 opacity-75" : "hover:bg-gray-700 border-l-2 border-blue-400"} border border-gray-700`}
-                          onClick={() =>
-                            markNotificationAsRead(notification.id)
-                          }>
+                          onClick={() => {
+                            markNotificationAsRead(notification.id);
+                            setIsNotificationsModalOpen(true);
+                            setIsProfileMenuOpen(false);
+                          }}>
                           <div className="flex items-start space-x-3">
                             {getNotificationIcon(notification.type)}
                             <div className="flex-1 min-w-0">
@@ -911,6 +925,11 @@ export function AppHeader({
                           </div>
                         </div>
                       ))}
+                      {notifications.length === 0 && (
+                        <div className="text-sm text-gray-500 py-3 text-center">
+                          No notifications
+                        </div>
+                      )}
                     </div>
                   </div>
 
