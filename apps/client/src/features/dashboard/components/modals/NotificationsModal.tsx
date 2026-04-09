@@ -147,7 +147,7 @@ export function NotificationsModal({ isOpen, onClose }: NotificationsModalProps)
       <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
 
       {/* Modal */}
-      <div className="relative bg-[#1a0f2e] border border-gray-600/50 rounded-xl shadow-2xl w-[900px] max-w-[95vw] max-h-[80vh] flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+      <div className="relative bg-[#1a0f2e] border border-gray-600/50 rounded-xl shadow-2xl w-[900px] max-w-[95vw] h-[70vh] max-h-[80vh] flex flex-col overflow-hidden">
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-gray-700/60">
           <h2 className="text-white text-xl font-bold tracking-tight">Your Notifications</h2>
@@ -210,7 +210,7 @@ export function NotificationsModal({ isOpen, onClose }: NotificationsModalProps)
                   <button
                     key={notification._id}
                     onClick={() => handleSelectNotification(notification)}
-                    className={`w-full text-left px-4 py-3.5 transition-all duration-150 border-b border-gray-800/40 ${
+                    className={`relative w-full text-left px-4 py-3.5 transition-all duration-150 border-b border-gray-800/40 ${
                       selectedNotification?._id === notification._id
                         ? "bg-purple-600/20 border-l-2 border-l-purple-500"
                         : notification.isRead

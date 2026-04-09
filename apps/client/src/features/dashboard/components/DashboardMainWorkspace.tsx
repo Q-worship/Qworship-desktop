@@ -20,14 +20,14 @@ import { SlideGridRenderer } from "@/features/dashboard/components/SlideGridRend
 import { EditAndPreparationArea } from "@/features/dashboard/components/EditAndPreparationArea";
 import { SidebarOpen, SidebarClose } from "lucide-react";
 import { apiClient } from "@/lib/api";
-import { buildUrl } from "@/lib/queryClient";
 
 const resolveMediaUrl = (url: string | null | undefined): string | undefined => {
   if (!url) return undefined;
   if (url === "Worship background image" || url === "Inspirational worship video") return undefined;
   if (url.startsWith('http://') || url.startsWith('https://')) return url;
   if (url.startsWith('data:') || url.startsWith('blob:')) return url;
-  if (url.startsWith('/api/')) return buildUrl(url);
+  // Return /api/ paths as-is — the Vite proxy (dev) or same-origin (prod) handles them
+  if (url.startsWith('/api/')) return url;
   return url;
 };
 
@@ -4846,7 +4846,7 @@ import type { Slide } from "@/types";\n${text}`,
                       itemBackground.type === "image" ||
                       itemBackground.type === "video"
                     ) {
-                      // Ensure URL is properly formatted via buildUrl
+                      // Ensure URL is properly resolved for media rendering
                       let backgroundUrl = resolveMediaUrl(itemBackground.value) || itemBackground.value;
 
                       console.log(
