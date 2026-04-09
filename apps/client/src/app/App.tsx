@@ -7,6 +7,8 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { useBibleSync } from "@/hooks/useBibleSync";
 import { useSongSync } from "@/hooks/useSongSync";
 import { useBibleRAMCache } from "@/features/dashboard/hooks/useBibleRAMCache";
+import { useSongRAMCache } from "@/features/dashboard/hooks/useSongRAMCache";
+import { SyncLoadingOverlay } from "@/features/dashboard/components/SyncLoadingOverlay";
 
 import { Home } from "@/features/web/pages/Home";
 import About from "@/features/web/pages/About";
@@ -58,17 +60,26 @@ const AuthGuard = ({ children }: { children: React.ReactNode }) => {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   
   // Hydrate the IndexedDB background caches once authenticated
-  useBibleSync();
-  useSongSync();
+  const { isSyncing: isBibleSyncing } = useBibleSync();
+  const { isSyncing: isSongSyncing } = useSongSync();
+
+  const isSyncing = isBibleSyncing || isSongSyncing;
 
   // Instantly dump the IndexedDB offline safehouse into the 0.00ms Memory dictionary
+  // ONLY after the initial synchronization completes to prevent thread locking
   React.useEffect(() => {
-    if (isAuthenticated) {
+    if (isAuthenticated && !isSyncing) {
       useBibleRAMCache.getState().loadFromDisk();
+      useSongRAMCache.getState().loadFromDisk();
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated, isSyncing]);
 
   if (!isAuthenticated) return <Redirect to="/login" />;
+  
+  if (isSyncing) {
+    return <SyncLoadingOverlay />;
+  }
+  
   return <>{children}</>;
 };
 
