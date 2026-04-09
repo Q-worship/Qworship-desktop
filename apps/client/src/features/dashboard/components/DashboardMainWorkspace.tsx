@@ -121,7 +121,7 @@ export const DashboardMainWorkspace = (props: any) => {
               height: "600px",
               minHeight: "600px",
               maxHeight: "600px",
-              minWidth: "1400px",
+              minWidth: "100%",
             }}
           >
             {/* Left Section - Edit & Preparation */}
@@ -2205,6 +2205,7 @@ import type { Slide } from "@/types";\n${text}`,
                                                     const newSlides =
                                                       createSlidesFromSong(
                                                         updatedSong,
+                                                        editingContent.id
                                                       );
 
                                                     updateItemContent(

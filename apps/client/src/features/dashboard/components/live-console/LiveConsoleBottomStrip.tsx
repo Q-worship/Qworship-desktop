@@ -217,7 +217,7 @@ export function LiveConsoleBottomStrip({
                               <span className="text-xs font-bold text-white uppercase tracking-widest">Video Slide</span>
                             ) : (
                               <span className="text-white text-[11px] font-bold leading-tight line-clamp-4 font-serif text-shadow-lg">
-                                {slide.content?.text || slide.content}
+                                {typeof slide.content === 'string' ? slide.content : (slide.content?.text || slide.content?.lyrics || slide.title || '')}
                               </span>
                             )}
                           </div>

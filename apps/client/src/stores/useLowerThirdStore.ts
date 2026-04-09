@@ -1,14 +1,12 @@
 import { create } from "zustand";
-// Suppress type errors for features/lowerThird bindings if they are pending migration
-type LowerThirdTemplate = any;
-type LowerThirdBindingData = any;
+import type { LowerThirdTemplate, LowerThirdBindingData } from "@/features/lowerThird/types";
+import { DEFAULT_TEMPLATES } from "@/features/lowerThird/defaultTemplates";
 
 const STORAGE_KEY = "qworship-lower-third";
 const CUSTOM_TEMPLATES_KEY = "qworship-lower-third-custom-templates"; // write-through cache only
 const THUMBNAIL_OVERRIDES_KEY = "qworship-lower-third-thumbnails";
 const CHANNEL_NAME = "qworship-lower-third-sync";
 const MAX_CUSTOM_TEMPLATES = 10;
-const DEFAULT_TEMPLATES: any[] = [];
 
 interface LowerThirdState {
   enabled: boolean;
@@ -118,13 +116,33 @@ function persistCustomTemplates(templates: LowerThirdTemplate[]) {
   } catch {}
 }
 
+function getStoredOrgName(): string {
+  try {
+    const stored = localStorage.getItem("qworship_user");
+    if (stored) {
+      const user = JSON.parse(stored);
+      return user.organizationName || "";
+    }
+  } catch {}
+  return "";
+}
+
 // ─── Server API helpers ────────────────────────────────────────────────────────
+
+function getAuthHeaders(): Record<string, string> {
+  const headers: Record<string, string> = { "Content-Type": "application/json" };
+  if (typeof window !== "undefined") {
+    const token = localStorage.getItem("token");
+    if (token) headers["Authorization"] = `Bearer ${token}`;
+  }
+  return headers;
+}
 
 async function apiSaveTemplate(template: LowerThirdTemplate): Promise<void> {
   const res = await fetch("/api/lower-third/templates", {
     method: "POST",
     credentials: "include",
-    headers: { "Content-Type": "application/json" },
+    headers: getAuthHeaders(),
     body: JSON.stringify({ template }),
   });
   if (!res.ok) {
@@ -137,7 +155,7 @@ async function apiUpdateTemplate(template: LowerThirdTemplate): Promise<void> {
   const res = await fetch(`/api/lower-third/templates/${template.id}`, {
     method: "PUT",
     credentials: "include",
-    headers: { "Content-Type": "application/json" },
+    headers: getAuthHeaders(),
     body: JSON.stringify({ template }),
   });
   if (!res.ok) {
@@ -147,20 +165,27 @@ async function apiUpdateTemplate(template: LowerThirdTemplate): Promise<void> {
 }
 
 async function apiDeleteTemplate(templateId: string): Promise<void> {
+  const headers = getAuthHeaders();
+  delete headers["Content-Type"];
   await fetch(`/api/lower-third/templates/${templateId}`, {
     method: "DELETE",
     credentials: "include",
+    headers,
   });
 }
 
 async function apiFetchTemplates(): Promise<LowerThirdTemplate[]> {
+  const headers = getAuthHeaders();
+  delete headers["Content-Type"];
   const res = await fetch("/api/lower-third/templates", {
     credentials: "include",
+    headers,
   });
   if (!res.ok) return [];
   const data = await res.json();
   return data.templates ?? [];
 }
+
 
 
 let broadcastChannel: BroadcastChannel | null = null;
@@ -186,6 +211,7 @@ async function getLtBaseUrl(): Promise<string> {
   try {
     const res = await fetch("/api/lower-third/config", {
       credentials: "include",
+      headers: getAuthHeaders(),
     });
     if (res.ok) {
       const data = await res.json();
@@ -261,7 +287,7 @@ export const useLowerThirdStore = create<LowerThirdState>((set, get) => {
     fetch("/api/lower-third/push", {
       method: "POST",
       credentials: "include",
-      headers: { "Content-Type": "application/json" },
+      headers: getAuthHeaders(),
       body: JSON.stringify(body),
     })
       .then((r) => {
@@ -441,6 +467,7 @@ export const useLowerThirdStore = create<LowerThirdState>((set, get) => {
         verse,
         reference,
         version,
+        churchName: getStoredOrgName(),
         type: "scripture",
       };
       set({
@@ -466,6 +493,8 @@ export const useLowerThirdStore = create<LowerThirdState>((set, get) => {
         verse: lyrics,
         reference: sectionTitle || songTitle || "",
         version: songTitle || "",
+        churchName: getStoredOrgName(),
+        songTitle: songTitle || "",
         type: "lyrics",
       };
       set({ activeData, isVisible: true, selectedTemplateId: lyricTemplateId });
@@ -487,6 +516,7 @@ export const useLowerThirdStore = create<LowerThirdState>((set, get) => {
         verse: text,
         reference: category,
         version: subtitle,
+        churchName: getStoredOrgName(),
         type: "announcement",
       };
       set({ activeData, isVisible: true, selectedTemplateId: announcementTemplateId });

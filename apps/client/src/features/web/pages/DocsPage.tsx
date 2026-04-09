@@ -71,7 +71,7 @@ export function DocsPage() {
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={() => setLocation("/qworship-home")}
+                onClick={() => setLocation("/dashboard")}
                 className="text-gray-400 hover:text-white hover:bg-[#2a1f4b]"
                 data-testid="button-back-dashboard"
               >

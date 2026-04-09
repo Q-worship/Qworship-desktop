@@ -44,14 +44,18 @@ export interface SlideContent {
 
 export interface Slide {
   id: string;
+  itemId?: string | number;
+  songId?: string | number;
   type: "blank" | "text" | "lyrics" | "bible" | "media" | "web" | string;
   content: string | SlideContent;
-  background: BackgroundData;
+  background?: BackgroundData;
   notes?: string;
   title?: string;
   order?: number;
   sectionLabel?: string;
   songTitle?: string;
+  bibleVersion?: string;
+  bibleReference?: string;
 }
 
 export interface Presentation {

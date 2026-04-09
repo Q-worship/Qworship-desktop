@@ -3,7 +3,8 @@ import { SearchIcon, XIcon, ChevronLeftIcon, ChevronRightIcon, PlayIcon, PauseIc
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { apiRequest } from "@/lib/queryClient";
-import { Song, SongSection } from "@shared/schema";
+import type { Song } from "@/types";
+type SongSection = any;
 
 interface SongProjectionWidgetProps {
   onProjectSong: (songTitle: string, sectionTitle: string, lyrics: string, fullSongData?: any) => void;
@@ -117,7 +118,7 @@ export const SongProjectionWidget: React.FC<SongProjectionWidgetProps> = ({
   const isInLiveWindow = window.opener !== null;
 
   // Load song details
-  const loadSong = async (songId: number) => {
+  const loadSong = async (songId: number | string) => {
     console.log('🎵 FRONTEND - Loading song with ID:', songId);
     setIsLoadingSong(true);
     

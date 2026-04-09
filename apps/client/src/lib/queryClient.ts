@@ -7,11 +7,25 @@ async function throwIfResNotOk(res: Response) {
   }
 }
 
+const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+
+function buildUrl(path: string): string {
+  if (path.startsWith('http://') || path.startsWith('https://')) return path;
+  // Normalize double /api if VITE_API_URL ends in /api
+  if (path.startsWith('/api') && API_BASE.endsWith('/api')) {
+    return API_BASE.slice(0, -4) + path;
+  }
+  const normalizedPath = path.startsWith('/') ? path : `/${path}`;
+  // If API_BASE doesn't end in /api but path doesn't start with /api, we should perhaps just concat
+  return API_BASE.replace(/\/$/, '') + normalizedPath;
+}
+
 export async function apiRequest(
   method: string,
   url: string,
   data?: unknown | undefined,
 ): Promise<Response> {
+  const fullUrl = buildUrl(url);
   const headers: Record<string, string> = data ? { "Content-Type": "application/json" } : {};
   
   if (typeof window !== 'undefined') {
@@ -21,7 +35,7 @@ export async function apiRequest(
     }
   }
 
-  const res = await fetch(url, {
+  const res = await fetch(fullUrl, {
     method,
     headers,
     body: data ? JSON.stringify(data) : undefined,
@@ -38,11 +52,12 @@ export async function adminApiRequest(
   url: string,
   data?: unknown | undefined,
 ): Promise<Response> {
+  const fullUrl = buildUrl(url);
   const adminKey = 'qworship-superadmin-2025';
   
   // Add admin key as query parameter
-  const separator = url.includes('?') ? '&' : '?';
-  const urlWithKey = `${url}${separator}adminKey=${adminKey}`;
+  const separator = fullUrl.includes('?') ? '&' : '?';
+  const urlWithKey = `${fullUrl}${separator}adminKey=${adminKey}`;
   
   const headers: Record<string, string> = {};
   
@@ -83,7 +98,8 @@ export const getQueryFn: <T>(options: {
       }
     }
 
-    const res = await fetch(queryKey[0] as string, {
+    const fullUrl = buildUrl(queryKey[0] as string);
+    const res = await fetch(fullUrl, {
       headers,
       credentials: "include",
     });
@@ -103,9 +119,11 @@ export const getAdminQueryFn: <T>(options: {
   ({ on401: unauthorizedBehavior }) =>
   async ({ queryKey }) => {
     const adminKey = 'qworship-superadmin-2025';
-    const url = queryKey[0] as string;
-    const separator = url.includes('?') ? '&' : '?';
-    const urlWithKey = `${url}${separator}adminKey=${adminKey}`;
+    const originalUrl = queryKey[0] as string;
+    const fullUrl = buildUrl(originalUrl);
+    
+    const separator = fullUrl.includes('?') ? '&' : '?';
+    const urlWithKey = `${fullUrl}${separator}adminKey=${adminKey}`;
     
     const headers: Record<string, string> = {};
     if (typeof window !== 'undefined') {
