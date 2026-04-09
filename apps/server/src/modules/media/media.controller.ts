@@ -92,6 +92,24 @@ export const uploadMedia = async (req: Request, res: Response) => {
   }
 };
 
+export const getUserMediaStats = async (req: Request, res: Response) => {
+  try {
+    const assetsCount = await Media.countDocuments({
+      isCloud: { $ne: true },
+      uploadedBy: (req as any).user._id
+    });
+    
+    // For now returning basic hasUploadedAssets based on existence
+    res.json({
+      hasUsedAssets: false,
+      hasUploadedAssets: assetsCount > 0
+    });
+  } catch (error) {
+    console.error('Error fetching media stats:', error);
+    res.status(500).json({ message: 'Failed to fetch media stats' });
+  }
+};
+
 // 2. List User Media
 export const listUserMedia = async (req: Request, res: Response) => {
   try {

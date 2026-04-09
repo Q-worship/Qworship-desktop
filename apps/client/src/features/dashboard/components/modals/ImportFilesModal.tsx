@@ -11,7 +11,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { X, Upload, Image, Video, Music, FileText, Plus, ChevronDown, Check } from "lucide-react";
 import { useMutation, useQueryClient, useQuery } from "@tanstack/react-query";
-import { apiRequest } from "@/lib/queryClient";
+import { apiRequest, buildUrl } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 
 interface ImportFilesModalProps {
@@ -130,8 +130,8 @@ export const ImportFilesModal = ({ open, onOpenChange, onMediaUploaded, onMultip
     mutationFn: async (formData: FormData) => {
       console.log('Starting upload mutation...');
       
-      // Use fetch directly for FormData uploads instead of apiRequest
-      const response = await fetch('/api/user-media-assets/upload', {
+      // Use fetch directly with buildUrl for FormData uploads instead of apiRequest
+      const response = await fetch(buildUrl('/api/user-media-assets/upload'), {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`
