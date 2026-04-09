@@ -23,6 +23,8 @@ import { buildUrl } from "@/lib/queryClient";
 const resolveMediaUrl = (url: string | null | undefined): string | undefined => {
   if (!url) return undefined;
   if (url === "Worship background image" || url === "Inspirational worship video") return undefined;
+  if (url.startsWith('http://') || url.startsWith('https://')) return url;
+  if (url.startsWith('data:') || url.startsWith('blob:')) return url;
   if (url.startsWith('/api/')) return buildUrl(url);
   return url;
 };
@@ -520,15 +522,17 @@ export const LivePresentation = (): JSX.Element => {
     switch (appliedBackgroundType) {
       case "color":
         return { backgroundColor: appliedBackgroundColor };
-      case "image":
-        return appliedBackgroundImage
+      case "image": {
+        const resolvedImageUrl = resolveMediaUrl(appliedBackgroundImage);
+        return resolvedImageUrl
           ? {
-              backgroundImage: `url(${appliedBackgroundImage})`,
+              backgroundImage: `url(${resolvedImageUrl})`,
               backgroundSize: "cover",
               backgroundPosition: "center",
               backgroundRepeat: "no-repeat",
             }
           : { backgroundColor: "#000000" };
+      }
       case "video":
         return { backgroundColor: "#000000" }; // Video will be handled separately with a video element
       default:

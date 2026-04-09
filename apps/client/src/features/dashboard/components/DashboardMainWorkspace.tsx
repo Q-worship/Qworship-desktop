@@ -25,6 +25,8 @@ import { buildUrl } from "@/lib/queryClient";
 const resolveMediaUrl = (url: string | null | undefined): string | undefined => {
   if (!url) return undefined;
   if (url === "Worship background image" || url === "Inspirational worship video") return undefined;
+  if (url.startsWith('http://') || url.startsWith('https://')) return url;
+  if (url.startsWith('data:') || url.startsWith('blob:')) return url;
   if (url.startsWith('/api/')) return buildUrl(url);
   return url;
 };
@@ -4744,7 +4746,7 @@ import type { Slide } from "@/types";\n${text}`,
                     /* Single image fallback */
                     <>
                       <img
-                        src={typeof editingContent.content === 'string' && editingContent.content.length > 5 && editingContent.content !== "Worship background image" ? editingContent.content : "https://images.unsplash.com/photo-1438232992991-995b7058bbb3?q=80&w=2673&auto=format&fit=crop"}
+                        src={resolveMediaUrl(typeof editingContent.content === 'string' && editingContent.content.length > 5 && editingContent.content !== "Worship background image" ? editingContent.content : undefined) || "https://images.unsplash.com/photo-1438232992991-995b7058bbb3?q=80&w=2673&auto=format&fit=crop"}
                         alt={editingContent.title}
                         className="relative z-10 w-full h-full object-contain drop-shadow-2xl bg-black"
                       />
@@ -4844,14 +4846,8 @@ import type { Slide } from "@/types";\n${text}`,
                       itemBackground.type === "image" ||
                       itemBackground.type === "video"
                     ) {
-                      // Ensure URL is properly formatted with absolute path
-                      let backgroundUrl = itemBackground.value;
-                      if (
-                        !backgroundUrl.startsWith("http") &&
-                        !backgroundUrl.startsWith("data:")
-                      ) {
-                        backgroundUrl = `${window.location.origin}${backgroundUrl.startsWith("/") ? "" : "/"}${backgroundUrl}`;
-                      }
+                      // Ensure URL is properly formatted via buildUrl
+                      let backgroundUrl = resolveMediaUrl(itemBackground.value) || itemBackground.value;
 
                       console.log(
                         "🌄 Main preview applying media background URL:",
@@ -4924,7 +4920,7 @@ import type { Slide } from "@/types";\n${text}`,
                           />
                         ) : (
                           <img
-                            src={typeof currentlyDisplayedSlide.content === "string" && currentlyDisplayedSlide.content.length > 5 && currentlyDisplayedSlide.content !== "Worship background image" && currentlyDisplayedSlide.content !== "Inspirational worship video" ? currentlyDisplayedSlide.content : "https://images.unsplash.com/photo-1438232992991-995b7058bbb3?q=80&w=2673&auto=format&fit=crop"}
+                            src={resolveMediaUrl(typeof currentlyDisplayedSlide.content === "string" && currentlyDisplayedSlide.content.length > 5 && currentlyDisplayedSlide.content !== "Worship background image" && currentlyDisplayedSlide.content !== "Inspirational worship video" ? currentlyDisplayedSlide.content : undefined) || "https://images.unsplash.com/photo-1438232992991-995b7058bbb3?q=80&w=2673&auto=format&fit=crop"}
                             alt={currentlyDisplayedSlide.title || "Media preview"}
                             className="max-w-full max-h-full object-contain rounded-xl"
                           />
