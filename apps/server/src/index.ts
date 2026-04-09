@@ -54,6 +54,7 @@ import { mediaRouter } from "./modules/media/media.routes.js";
 import { bibleRouter } from "./modules/bible/bible.routes.js";
 import adminRouter from "./modules/admin/admin.routes.js";
 import { notificationRouter } from "./modules/notifications/notification.routes.js";
+import { lowerThirdRouter } from "./modules/lower-third/lower-third.routes.js";
 
 // Main Routes
 app.use("/api/auth", authRouter);
@@ -68,6 +69,7 @@ app.use("/api/help", helpRouter);
 app.use("/api/bible", bibleRouter);
 app.use("/api/admin", adminRouter);
 app.use("/api", notificationRouter);
+app.use("/api/lower-third", lowerThirdRouter);
 
 // Database & Server Initialization
 const PORT = process.env.PORT || 5000;
