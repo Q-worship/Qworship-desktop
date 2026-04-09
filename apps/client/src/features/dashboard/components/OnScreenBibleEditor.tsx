@@ -76,11 +76,13 @@ export const OnScreenBibleEditor: React.FC<OnScreenBibleEditorProps> = ({
           }));
           
           // Generate slides first
-          const slides = [];
+          const parentItemId = content?.id || `bible-${Date.now()}`;
+          const slides: any[] = [];
           if (oneVersePerSlide) {
             bibleVerses.forEach((verse: any, index: number) => {
               slides.push({
-                id: `bible-slide-${index + 1}`,
+                id: `slide-${parentItemId}-${index + 1}`,
+                itemId: parentItemId,
                 type: 'bible',
                 title: searchInput.trim(),
                 content: includeVerseNumbers ? `${verse.number} ${verse.text}` : verse.text,
@@ -97,7 +99,8 @@ export const OnScreenBibleEditor: React.FC<OnScreenBibleEditorProps> = ({
             ).join(' ');
             
             slides.push({
-              id: 'bible-slide-1',
+              id: `slide-${parentItemId}-1`,
+              itemId: parentItemId,
               type: 'bible',
               title: searchInput.trim(),
               content: allContent,
@@ -111,7 +114,7 @@ export const OnScreenBibleEditor: React.FC<OnScreenBibleEditorProps> = ({
 
           // Create updated content with all necessary fields
           const updatedContent = {
-            id: content?.id || `bible-${Date.now()}`,
+            id: parentItemId,
             type: 'bible',
             reference: searchInput.trim(),
             version: activeVersion,
@@ -190,11 +193,13 @@ export const OnScreenBibleEditor: React.FC<OnScreenBibleEditorProps> = ({
             }));
             
             // Generate updated slides with new translation
-            const slides = [];
+            const parentItemId = content?.id || `bible-${Date.now()}`;
+            const slides: any[] = [];
             if (oneVersePerSlide) {
               bibleVerses.forEach((verse: any, index: number) => {
                 slides.push({
-                  id: `bible-slide-${index + 1}`,
+                  id: `slide-${parentItemId}-${index + 1}`,
+                  itemId: parentItemId,
                   type: 'bible',
                   title: searchInput.trim(),
                   content: includeVerseNumbers ? `${verse.number} ${verse.text}` : verse.text,
@@ -211,7 +216,8 @@ export const OnScreenBibleEditor: React.FC<OnScreenBibleEditorProps> = ({
               ).join(' ');
               
               slides.push({
-                id: 'bible-slide-1',
+                id: `slide-${parentItemId}-1`,
+                itemId: parentItemId,
                 type: 'bible',
                 title: searchInput.trim(),
                 content: allContent,
@@ -225,7 +231,7 @@ export const OnScreenBibleEditor: React.FC<OnScreenBibleEditorProps> = ({
 
             // Create updated content with new version and verses
             const updatedContent = {
-              id: content?.id || `bible-${Date.now()}`,
+              id: parentItemId,
               type: 'bible',
               reference: searchInput.trim(),
               version: version,
@@ -271,12 +277,14 @@ export const OnScreenBibleEditor: React.FC<OnScreenBibleEditorProps> = ({
   const generateSlides = () => {
     if (!content?.bibleVerses) return [];
     
-    const slides = [];
+    const parentItemId = content.id || `bible-${Date.now()}`;
+    const slides: any[] = [];
     
     if (oneVersePerSlide) {
       content.bibleVerses.forEach((verse: any, index: number) => {
         slides.push({
-          id: `bible-slide-${index + 1}`,
+          id: `slide-${parentItemId}-${index + 1}`,
+          itemId: parentItemId,
           type: 'bible',
           title: content.reference,
           content: includeVerseNumbers ? `${verse.number} ${verse.text}` : verse.text,
@@ -291,7 +299,8 @@ export const OnScreenBibleEditor: React.FC<OnScreenBibleEditorProps> = ({
       ).join(' ');
       
       slides.push({
-        id: 'bible-slide-1',
+        id: `slide-${parentItemId}-1`,
+        itemId: parentItemId,
         type: 'bible',
         title: content.reference,
         content: allContent,

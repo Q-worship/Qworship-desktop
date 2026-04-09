@@ -932,7 +932,7 @@ export const QworshipHomeV2Base = (): JSX.Element => {
         editingContent.id,
         editingContent.title,
         updatedSong,
-        createSlidesFromSong(updatedSong),
+        createSlidesFromSong(updatedSong, editingContent.id),
       );
       const sections = parseLyricsIntoSections(newContent);
       setParsedLyrics(sections);
@@ -1227,7 +1227,7 @@ export const QworshipHomeV2Base = (): JSX.Element => {
             editingContent.id,
             editingContent.title,
             updatedSong,
-            createSlidesFromSong(updatedSong),
+            createSlidesFromSong(updatedSong, editingContent.id),
           );
         }
 
@@ -1246,7 +1246,7 @@ export const QworshipHomeV2Base = (): JSX.Element => {
           editingContent.id,
           editingContent.title,
           updatedSong,
-          createSlidesFromSong(updatedSong),
+          createSlidesFromSong(updatedSong, editingContent.id),
         );
       }
     }
@@ -1832,7 +1832,7 @@ export const QworshipHomeV2Base = (): JSX.Element => {
         addItemToPreparation({
           id: `slide-${Date.now()}`,
           type: "media",
-          subtype: "slide",
+          subtype: "slideshow",
           title: "Custom Slide",
           content: "Custom presentation slide",
         }),
@@ -2239,7 +2239,7 @@ export const QworshipHomeV2Base = (): JSX.Element => {
         editingContent.id,
         song.title,
         song,
-        createSlidesFromSong(song),
+        createSlidesFromSong(song, editingContent.id),
       );
 
       // Update the current song title for the preview section
@@ -2326,8 +2326,9 @@ export const QworshipHomeV2Base = (): JSX.Element => {
   };
 
   // Helper function to create slides from song data
-  const createSlidesFromSong = (song: any) => {
+  const createSlidesFromSong = (song: any, parentItemId?: string) => {
     const slides: any[] = [];
+    const actualItemId = parentItemId || song.id;
 
     if (song.lyrics) {
       const parsedSections = parseLyricsIntoSections(song.lyrics);
@@ -2360,10 +2361,12 @@ export const QworshipHomeV2Base = (): JSX.Element => {
         }
 
         slides.push({
-          id: `slide-${song.id}-${slideNumber}`,
+          id: `slide-${actualItemId}-${slideNumber}`,
+          itemId: actualItemId,
+          songId: song.id,
           type: type,
           title: song.title, // Show song title on all slides
-          content: lyrics.trim(),
+          content: (lyrics as string).trim(),
           sectionLabel: label,
           songTitle: song.title, // Store song title separately for display
         });
@@ -2375,7 +2378,9 @@ export const QworshipHomeV2Base = (): JSX.Element => {
     // If no lyrics sections were found, create a basic slide
     if (slides.length === 0) {
       slides.push({
-        id: `slide-${song.id}-1`,
+        id: `slide-${actualItemId}-1`,
+        itemId: actualItemId,
+        songId: song.id,
         type: "verse",
         title: song.title,
         content: song.lyrics || "No lyrics available",
@@ -2778,7 +2783,7 @@ export const QworshipHomeV2Base = (): JSX.Element => {
             id: `song-${item.id}-${Date.now()}`,
             type: "song" as const,
             title: item.title || "Song",
-            content: item.content || item.lyrics || "Ready for lyrics",
+            content: typeof item.content === "string" ? item.content : (item.content?.lyrics || item.lyrics || "Ready for lyrics"),
             songId: item.id,
             sectionLabel: "Song",
           };
@@ -2803,7 +2808,7 @@ export const QworshipHomeV2Base = (): JSX.Element => {
             id: `item-${item.id}-${Date.now()}`,
             type: "custom" as const,
             title: item.title || "Untitled",
-            content: item.content || item.title || "Custom Content",
+            content: typeof item.content === "string" ? item.content : (item.title || "Custom Content"),
           };
           allSlides.push(singleSlide); // Append to existing slides
         }

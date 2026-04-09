@@ -205,13 +205,15 @@ export const BibleSearchEditor: React.FC<BibleSearchEditorProps> = ({
   };
 
   const generateSlides = (passage: BiblePassage) => {
-    const slides = [];
+    const parentItemId = selectedBibleItemId || `bible-${Date.now()}`;
+    const slides: any[] = [];
     
     if (oneVersePerSlide) {
       // One verse per slide (priority 1 according to requirements)
       passage.verses.forEach((verse, index) => {
         slides.push({
-          id: `bible-slide-${index + 1}`,
+          id: `slide-${parentItemId}-${index + 1}`,
+          itemId: parentItemId,
           type: 'bible',
           title: passage.reference,
           content: includeVerseNumbers ? `${verse.number} ${verse.text}` : verse.text,
@@ -228,7 +230,8 @@ export const BibleSearchEditor: React.FC<BibleSearchEditorProps> = ({
       ).join(' ');
       
       slides.push({
-        id: 'bible-slide-1',
+        id: `slide-${parentItemId}-1`,
+        itemId: parentItemId,
         type: 'bible',
         title: passage.reference,
         content,
@@ -243,7 +246,8 @@ export const BibleSearchEditor: React.FC<BibleSearchEditorProps> = ({
       ).join(' ');
       
       slides.push({
-        id: 'bible-slide-1',
+        id: `slide-${parentItemId}-1`,
+        itemId: parentItemId,
         type: 'bible',
         title: passage.reference,
         content,

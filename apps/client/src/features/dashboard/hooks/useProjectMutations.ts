@@ -729,7 +729,14 @@ export const useProjectMutations = ({
           }),
         );
 
-        setServiceItems((prev) => [...prev, ...importedServiceItems]);
+        setServiceItems((prev: any[]) => [...prev, ...importedServiceItems]);
+        setSectionItems((prev: Record<string, any[]>) => ({
+          ...prev,
+          "SERVICE ITEMS": [
+            ...(prev["SERVICE ITEMS"] || []),
+            ...importedServiceItems,
+          ],
+        }));
       }
 
       toast({

@@ -8,9 +8,8 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { ServiceItem } from "@shared/schema";
-import { Slide } from "@shared/types";
-import { useWysiwygEditor } from "@/hooks/useWysiwygEditor";
+import type { Item as ServiceItem, Slide } from "@/types";
+import { useWysiwygEditor } from "@/features/dashboard/hooks/useWysiwygEditor";
 
 // SlideEditorPanel Props Interface
 export interface SlideEditorPanelProps {
@@ -55,7 +54,7 @@ export interface SlideEditorPanelProps {
     content?: any,
     slides?: Slide[],
   ) => void;
-  createSlidesFromSong: (song: any) => Slide[];
+  createSlidesFromSong: (song: any, parentItemId?: string) => Slide[];
   getItemBackground: (itemId: string) => {
     type: "color" | "image" | "video";
     value: string;
@@ -105,15 +104,12 @@ export const SlideEditorPanel: React.FC<SlideEditorPanelProps> = ({
     applyStylesToTextarea,
     handleUndo,
     handleRedo,
-    handleStylesClick,
     insertTextAtCursor,
-    stylesButtonRef,
-    listDropdownRef,
     titleTextAreaRef,
     textAreaRef,
   } = useWysiwygEditor({
-    onContentChange: (content) => setSongEditorContent(content),
-    onUndoRedo: (content) => setSongEditorContent(content),
+    onContentChange: (content: string, _textarea: HTMLTextAreaElement) => setSongEditorContent(content),
+    onUndoRedo: (content: string) => setSongEditorContent(content),
   });
 
   if (!isSlideEditorOpen) return null;
@@ -167,12 +163,14 @@ export const SlideEditorPanel: React.FC<SlideEditorPanelProps> = ({
               setIsSlideEditorOpen(false);
               setSelectedSlide(null);
             }}
-            className="text-gray-400 hover:text-white transition-colors p-2 rounded-full hover:bg-white/10">
+            className="text-gray-400 hover:text-white transition-colors p-2 rounded-full hover:bg-white/10"
+          >
             <svg
               className="w-5 h-5"
               fill="none"
               stroke="currentColor"
-              viewBox="0 0 24 24">
+              viewBox="0 0 24 24"
+            >
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -240,7 +238,8 @@ export const SlideEditorPanel: React.FC<SlideEditorPanelProps> = ({
                             if (parentItem) {
                               setEditingContent(parentItem);
                             }
-                          }}>
+                          }}
+                        >
                           Edit Full Song
                         </Button>
                       </div>
@@ -577,7 +576,8 @@ export const SlideEditorPanel: React.FC<SlideEditorPanelProps> = ({
                           // Save changes for non-Bible slides
                           console.log("Save changes for non-Bible slide");
                         }
-                      }}>
+                      }}
+                    >
                       {selectedSlide.slide.type === "bible"
                         ? "Edit in Bible Editor"
                         : "Save Changes"}
@@ -588,13 +588,15 @@ export const SlideEditorPanel: React.FC<SlideEditorPanelProps> = ({
                       onClick={() => {
                         setSelectedSlide(null);
                         setIsSlideEditorOpen(false);
-                      }}>
+                      }}
+                    >
                       Close
                     </Button>
                     {selectedSlide.slide.type !== "bible" && (
                       <Button
                         variant="outline"
-                        className="border-red-600 text-red-400 hover:text-red-300">
+                        className="border-red-600 text-red-400 hover:text-red-300"
+                      >
                         Delete Slide
                       </Button>
                     )}
@@ -640,7 +642,8 @@ export const SlideEditorPanel: React.FC<SlideEditorPanelProps> = ({
                     }
                   }
                   return { backgroundColor: "#000000" };
-                })()}>
+                })()}
+              >
                 {/* Show Selected Slide Content */}
                 <div className="w-full h-full p-8 flex flex-col justify-center">
                   <div className="text-center space-y-6">
@@ -674,7 +677,8 @@ export const SlideEditorPanel: React.FC<SlideEditorPanelProps> = ({
                             textDecoration:
                               `${titleEditorState.isUnderline ? "underline" : ""} ${titleEditorState.isStrikethrough ? "line-through" : ""}`.trim() ||
                               "none",
-                          }}>
+                          }}
+                        >
                           {selectedSlide.slide.songTitle ||
                             selectedSlide.slide.title}
                         </h1>
@@ -716,7 +720,8 @@ export const SlideEditorPanel: React.FC<SlideEditorPanelProps> = ({
                             letterSpacing: editorState.styleLetterSpacing || "",
                             textTransform:
                               (editorState.styleTextTransform as any) || "",
-                          }}>
+                          }}
+                        >
                           <div
                             dangerouslySetInnerHTML={{
                               __html: selectedSlide.slide.content.replace(
@@ -756,7 +761,8 @@ export const SlideEditorPanel: React.FC<SlideEditorPanelProps> = ({
                             letterSpacing: editorState.styleLetterSpacing || "",
                             textTransform:
                               (editorState.styleTextTransform as any) || "",
-                          }}>
+                          }}
+                        >
                           <div
                             dangerouslySetInnerHTML={{
                               __html: selectedSlide.slide.content.replace(
@@ -797,14 +803,16 @@ export const SlideEditorPanel: React.FC<SlideEditorPanelProps> = ({
                       className={`p-1.5 rounded transition-colors ${editorState.canUndo ? "text-white hover:bg-white/10" : "text-gray-500 cursor-not-allowed"}`}
                       disabled={!editorState.canUndo}
                       onClick={handleUndo}
-                      title="Undo (Ctrl+Z)">
+                      title="Undo (Ctrl+Z)"
+                    >
                       <UndoIcon className="w-4 h-4" />
                     </button>
                     <button
                       className={`p-1.5 rounded transition-colors ${editorState.canRedo ? "text-white hover:bg-white/10" : "text-gray-500 cursor-not-allowed"}`}
                       disabled={!editorState.canRedo}
                       onClick={handleRedo}
-                      title="Redo (Ctrl+Y)">
+                      title="Redo (Ctrl+Y)"
+                    >
                       <RedoIcon className="w-4 h-4" />
                     </button>
                   </div>
@@ -823,7 +831,8 @@ export const SlideEditorPanel: React.FC<SlideEditorPanelProps> = ({
                       }));
                       applyFontFamily(newFont);
                     }}
-                    title="Font Family">
+                    title="Font Family"
+                  >
                     <option className="bg-[#2d1f4a]" value="Lufgord">
                       Lufgord
                     </option>
@@ -843,10 +852,9 @@ export const SlideEditorPanel: React.FC<SlideEditorPanelProps> = ({
                   {/* Visual Styles Dropdown */}
                   <div className="relative styles-dropdown">
                     <button
-                      ref={stylesButtonRef}
-                      onClick={handleStylesClick}
                       className="bg-transparent text-white text-sm border border-gray-500 rounded focus:border-gray-400 outline-none w-[120px] flex-shrink-0 box-border flex items-center justify-between"
-                      title="Visual Style Presets">
+                      title="Visual Style Presets"
+                    >
                       <span>
                         {(activeTextarea?.getAttribute("data-title-field") ===
                         "true"
@@ -873,7 +881,8 @@ export const SlideEditorPanel: React.FC<SlideEditorPanelProps> = ({
                           : "text-white hover:bg-white/10"
                       }`}
                       onClick={() => applyFormatting("bold")}
-                      title="Bold (Ctrl+B)">
+                      title="Bold (Ctrl+B)"
+                    >
                       B
                     </button>
                     <button
@@ -888,7 +897,8 @@ export const SlideEditorPanel: React.FC<SlideEditorPanelProps> = ({
                           : "text-white hover:bg-white/10"
                       }`}
                       onClick={() => applyFormatting("italic")}
-                      title="Italic (Ctrl+I)">
+                      title="Italic (Ctrl+I)"
+                    >
                       I
                     </button>
                     <button
@@ -903,7 +913,8 @@ export const SlideEditorPanel: React.FC<SlideEditorPanelProps> = ({
                           : "text-white hover:bg-white/10"
                       }`}
                       onClick={() => applyFormatting("underline")}
-                      title="Underline (Ctrl+U)">
+                      title="Underline (Ctrl+U)"
+                    >
                       U
                     </button>
                   </div>
@@ -918,7 +929,8 @@ export const SlideEditorPanel: React.FC<SlideEditorPanelProps> = ({
                   <div className="relative h-full">
                     <div
                       className="space-y-6 overflow-y-auto scroll-smooth pr-4"
-                      style={{ maxHeight: "480px" }}>
+                      style={{ maxHeight: "480px" }}
+                    >
                       {/* Song Title Display */}
                       <div className="text-center">
                         <h2
@@ -928,7 +940,8 @@ export const SlideEditorPanel: React.FC<SlideEditorPanelProps> = ({
                               titleEditorState.selectedFont || "Lufgord",
                             fontSize: titleEditorState.fontSize || "24px",
                             color: titleEditorState.textColor || "#ffffff",
-                          }}>
+                          }}
+                        >
                           {currentSongTitle || editingContent.title}
                         </h2>
                       </div>
@@ -972,7 +985,8 @@ export const SlideEditorPanel: React.FC<SlideEditorPanelProps> = ({
                               {songArrangement.map((section, index) => (
                                 <div
                                   key={index}
-                                  className="flex items-center flex-shrink-0">
+                                  className="flex items-center flex-shrink-0"
+                                >
                                   <button className="bg-[#8356F3] text-white px-4 py-2 rounded-lg text-sm font-medium">
                                     {section}
                                   </button>
@@ -1002,7 +1016,8 @@ export const SlideEditorPanel: React.FC<SlideEditorPanelProps> = ({
                           return (
                             <div
                               key={sectionName}
-                              className="bg-[#1a0f2e] rounded-xl border border-gray-600 p-6">
+                              className="bg-[#1a0f2e] rounded-xl border border-gray-600 p-6"
+                            >
                               <h4 className="text-lg font-semibold text-white mb-4">
                                 {sectionName}
                               </h4>
