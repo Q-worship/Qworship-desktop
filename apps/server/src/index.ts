@@ -17,6 +17,10 @@ const app = express();
 const allowedOrigins = [
   "http://localhost:3000",
   "http://localhost:5173",
+  "https://app.qworship.com",
+  "https://www.app.qworship.com",
+  "https://qworship.com",
+  "https://www.qworship.com",
   process.env.FRONTEND_URL,
 ].filter(Boolean);
 

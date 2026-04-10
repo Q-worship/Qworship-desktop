@@ -7,7 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Textarea } from "@/components/ui/textarea";
 import { X, Plus } from "lucide-react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { apiRequest } from "@/lib/queryClient";
+import { apiRequest, buildUrl } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 
 interface RecentMediaSectionProps {
@@ -35,8 +35,8 @@ const ImagePreviewCard = ({ asset }: { asset: any }) => {
 
   // Determine the file URL if it's a video based on who owns the asset
   const videoUrl = asset?.uploadedBy === 'admin' 
-    ? `/api/cloud-media/${asset?.id}/file`
-    : `/api/user-media-assets/${asset?.id}/file`;
+    ? buildUrl(`/api/cloud-media/${asset?.id}/file`)
+    : buildUrl(`/api/user-media-assets/${asset?.id}/file`);
 
   if (isVideo) {
     return (

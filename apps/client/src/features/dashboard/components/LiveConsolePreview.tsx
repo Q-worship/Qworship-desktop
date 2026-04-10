@@ -3,22 +3,8 @@ import { OBSStatusBadge } from "@/features/dashboard/components/OBSStatusBadge";
 import facebookIcon from "@assets/R (2)_1756733484236.png";
 import instagramIcon from "@assets/1658586823instagram-logo-transparent_1756733484234.png";
 
-const resolveMediaUrl = (url: string | null | undefined): string | undefined => {
-  if (!url) return undefined;
-  
-  // Exact placeholder matches
-  if (url === "Worship background image" || url === "Inspirational worship video" || url === "Background Image") return undefined;
-  
-  // Valid URL prefixes
-  if (url.startsWith('http://') || url.startsWith('https://')) return url;
-  if (url.startsWith('data:') || url.startsWith('blob:')) return url;
-  
-  // Relative API paths (handled by Vite proxy in dev)
-  if (url.startsWith('/api/')) return url;
-  
-  // If it doesn't match any known valid prefix, it's likely a generic string/placeholder
-  return undefined;
-};
+import { buildUrl, resolveMediaUrl } from "@/lib/queryClient";
+
 
 export interface LiveConsolePreviewProps {
   activeMode: string;

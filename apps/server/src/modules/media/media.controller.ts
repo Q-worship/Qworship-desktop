@@ -21,7 +21,7 @@ export const uploadMedia = async (req: Request, res: Response) => {
 
     for (let index = 0; index < files.length; index++) {
       const file = files[index];
-      const { originalname, mimetype, size, filename, path: uploadPath } = file;
+      const { originalname, mimetype, size, buffer } = file;
 
       // Extract metadata from frontend mapping
       let metadata: any = {};
@@ -37,33 +37,27 @@ export const uploadMedia = async (req: Request, res: Response) => {
       const title = metadata.title || originalname;
       
       let finalFileSize = size;
+      let processedBuffer = buffer;
 
       // Compress Images
       if (type === 'image') {
         try {
-          // Generate a safe temporary path with the original extension so sharp infers format
-          const tempPath = path.join(path.dirname(uploadPath), 'tmp-' + path.basename(uploadPath));
-          
-          await sharp(uploadPath)
+          processedBuffer = await sharp(buffer)
             .resize({ width: 1920, withoutEnlargement: true })
             .jpeg({ quality: 80, force: false })
             .webp({ quality: 80, force: false })
             .png({ quality: 80, force: false })
             .withMetadata()
-            .toFile(tempPath);
-            
-          // Replace the original with the compressed version
-          fs.unlinkSync(uploadPath);
-          fs.renameSync(tempPath, uploadPath);
-          
-          // Re-measure file size
-          const stats = fs.statSync(uploadPath);
-          finalFileSize = stats.size;
+            .toBuffer();
+          finalFileSize = processedBuffer.length;
         } catch (err) {
-          console.error(`Error compressing image ${filename}:`, err);
+          console.error(`Error compressing image ${originalname}:`, err);
           // If compression fails, we still have the original file, we just proceed.
         }
       }
+
+      // Push buffer to S3 directly
+      const { key, fileUrl } = await objectStorage.uploadCloudMedia(originalname, processedBuffer, mimetype);
 
       const newMedia = new Media({
         title,
@@ -72,8 +66,9 @@ export const uploadMedia = async (req: Request, res: Response) => {
         categories: metadata.categories || [],
         type,
         fileType: mimetype,
-        fileName: filename,
-        filePath: uploadPath,
+        fileName: originalname,
+        cloudKey: key,
+        fileUrl: fileUrl,
         fileSize: finalFileSize,
         uploadedBy: (req as any).user._id,
         usageCount: 0,
@@ -128,14 +123,19 @@ export const listUserMedia = async (req: Request, res: Response) => {
 export const getMediaFile = async (req: Request, res: Response) => {
   try {
     const media = await Media.findById(req.params.id);
-    if (!media || !media.filePath) {
+    if (!media) {
       return res.status(404).json({ message: 'Media not found' });
     }
 
-    if (fs.existsSync(media.filePath)) {
-      res.sendFile(path.resolve(media.filePath));
+    if (media.cloudKey) {
+      const signedUrl = await objectStorage.getSignedDownloadUrl(media.cloudKey, 3600);
+      return res.redirect(signedUrl);
+    } else if (media.fileUrl) {
+      return res.redirect(media.fileUrl);
+    } else if (media.filePath && fs.existsSync(media.filePath)) {
+      return res.sendFile(path.resolve(media.filePath));
     } else {
-      res.status(404).json({ message: 'File physically missing from server' });
+      return res.status(404).json({ message: 'File physically missing from server' });
     }
   } catch (error) {
     console.error('Error fetching media file:', error);
@@ -151,19 +151,22 @@ export const getMediaThumbnail = async (req: Request, res: Response) => {
       return res.status(404).json({ message: 'Media not found' });
     }
 
-    if (media.thumbnail && fs.existsSync(media.thumbnail)) {
+    if (media.cloudKey) {
+      const signedUrl = await objectStorage.getSignedDownloadUrl(media.cloudKey, 3600);
+      return res.redirect(signedUrl);
+    } else if (media.thumbnail && fs.existsSync(media.thumbnail)) {
       // 1) explicitly generated local thumbnail
-      res.sendFile(path.resolve(media.thumbnail));
+      return res.sendFile(path.resolve(media.thumbnail));
     } else if (media.type === 'video') {
       // 2) The browser Frontend is now robustly handling video meta extraction
       // Do NOT send the massive RAW mp4 file down as a thumbnail,
       // Just 404, instructing the frontend video component to use its own engine
-      res.status(404).json({ message: 'Video thumbnail extraction handled by client' });
+      return res.status(404).json({ message: 'Video thumbnail extraction handled by client' });
     } else if (media.filePath && fs.existsSync(media.filePath)) {
       // 3) it's an image, so the file itself serves as the perfect thumbnail
-      res.sendFile(path.resolve(media.filePath));
+      return res.sendFile(path.resolve(media.filePath));
     } else {
-      res.status(404).json({ message: 'Thumbnail not available' });
+      return res.status(404).json({ message: 'Thumbnail not available' });
     }
   } catch (error) {
     console.error('Error fetching media thumbnail:', error);
@@ -179,8 +182,11 @@ export const deleteMedia = async (req: Request, res: Response) => {
       return res.status(404).json({ message: 'Media not found' });
     }
 
-    // Remove from disk
-    if (media.filePath && fs.existsSync(media.filePath)) {
+    // Remove from object storage if cloudKey exists
+    if (media.cloudKey) {
+      await objectStorage.deleteFile(media.cloudKey);
+    } else if (media.filePath && fs.existsSync(media.filePath)) {
+      // Remove from disk
       fs.unlinkSync(media.filePath);
     }
 
