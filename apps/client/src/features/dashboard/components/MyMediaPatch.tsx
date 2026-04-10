@@ -9,6 +9,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Home } from "lucide-react";
 import { useLocation } from "wouter";
 import { useToast } from "@/hooks/use-toast";
+import { buildUrl } from "@/lib/queryClient";
 
 interface MyMediaPatchProps {
   onAssetSelect?: (assetUrl: string, assetType: string, assetTitle?: string) => void;
@@ -137,8 +138,8 @@ export const MyMediaPatch = ({ onAssetSelect, isModal = false, filterType = 'all
         id: firstAsset.id,
         title: firstAsset.title,
         type: assetType,
-        thumbnail: thumbnailPath,
-        filePath: firstAsset.filePath, // Include the original file path for background selection
+        thumbnail: thumbnailPath ? buildUrl(thumbnailPath) : '',
+        filePath: buildUrl(`/api/user-media-assets/${firstAsset.id}/file`),
         uploadedBy: 'user',
         tags: Array.isArray(firstAsset.tags) ? firstAsset.tags : (firstAsset.tags ? [firstAsset.tags] : []),
         collection: firstAsset.categories || 'Uncategorized',

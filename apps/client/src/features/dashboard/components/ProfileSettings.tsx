@@ -12,7 +12,7 @@ import { Separator } from "@/components/ui/separator";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { apiRequest } from "@/lib/queryClient";
+import { apiRequest, buildUrl } from "@/lib/queryClient";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 interface ProfileSettingsProps {
@@ -141,8 +141,9 @@ export const ProfileSettings: React.FC<ProfileSettingsProps> = ({ isOpen, onClos
     if (!pic) return undefined;
     if (pic instanceof File) return URL.createObjectURL(pic);
     if (typeof pic === 'string') {
-      if (pic.startsWith('http') || pic.startsWith('/')) return pic;
-      return `/api/user-media-assets/${pic}/file`; // Map legacy DB string IDs directly dynamically.
+      if (pic.startsWith('http')) return pic;
+      if (pic.startsWith('/api') || pic.startsWith('/uploads')) return buildUrl(pic);
+      return buildUrl(`/api/user-media-assets/${pic}/file`); // Map legacy DB string IDs directly dynamically.
     }
     return undefined;
   };

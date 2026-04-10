@@ -1,21 +1,6 @@
 import React from "react";
 
-const resolveMediaUrl = (url: string | null | undefined): string | undefined => {
-  if (!url) return undefined;
-  
-  // Exact placeholder matches
-  if (url === "Worship background image" || url === "Inspirational worship video" || url === "Background Image") return undefined;
-  
-  // Valid URL prefixes
-  if (url.startsWith('http://') || url.startsWith('https://')) return url;
-  if (url.startsWith('data:') || url.startsWith('blob:')) return url;
-  
-  // Relative API paths (handled by Vite proxy in dev)
-  if (url.startsWith('/api/')) return url;
-  
-  // If it doesn't match any known valid prefix, it's likely a generic string/placeholder
-  return undefined;
-};
+import { buildUrl, resolveMediaUrl } from "@/lib/queryClient";
 
 export const SlideGridRenderer = (props: any) => {
   const { 
@@ -280,11 +265,9 @@ export const SlideGridRenderer = (props: any) => {
                               totalItemSlides = bibleSameChapterSlides.length;
                             }
 
-                            // Get item title (song name, bible reference, etc.)
-                            const itemTitle =
-                              slide.songTitle ||
-                              slide.title.split(" - ")[0] ||
-                              slide.title;
+                            // Dynamically get live title from the updated service item to ensure edits reflect instantly
+                            const liveItem = slide.itemId ? serviceItems.find((item: any) => item.id === slide.itemId) : null;
+                            const itemTitle = liveItem ? liveItem.title : (slide.songTitle || slide.title.split(" - ")[0] || slide.title);
 
                             // Determine if this is the first slide of an item (should show title)
                             const isFirstSlideOfItem = itemSlideNumber === 1;

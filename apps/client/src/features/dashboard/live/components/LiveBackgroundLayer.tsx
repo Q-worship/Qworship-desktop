@@ -1,4 +1,6 @@
 import React from "react";
+import { buildUrl, resolveMediaUrl } from "@/lib/queryClient";
+
 
 interface LiveBackgroundLayerProps {
   appliedBackgroundType: string;
@@ -19,7 +21,7 @@ export const LiveBackgroundLayer: React.FC<LiveBackgroundLayerProps> = ({
                 muted
                 playsInline
                 className="absolute inset-0 w-full h-full object-cover z-0"
-                src={appliedBackgroundVideo}
+                src={resolveMediaUrl(appliedBackgroundVideo) || appliedBackgroundVideo}
                 onLoadStart={() =>
                   console.log("Video loading started:", appliedBackgroundVideo)
                 }

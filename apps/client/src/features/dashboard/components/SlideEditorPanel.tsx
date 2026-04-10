@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import type { Item as ServiceItem, Slide } from "@/types";
 import { useWysiwygEditor } from "@/features/dashboard/hooks/useWysiwygEditor";
+import { buildUrl, resolveMediaUrl } from "@/lib/queryClient";
 
 // SlideEditorPanel Props Interface
 export interface SlideEditorPanelProps {
@@ -293,7 +294,7 @@ export const SlideEditorPanel: React.FC<SlideEditorPanelProps> = ({
                               // Determine current slide position (for first/last slide logic)
                               const allSlides = parentItem?.slides || [];
                               const currentSlideIndex = allSlides.findIndex(
-                                (s) => s.id === selectedSlide.slide.id,
+                                (s: any) => s.id === selectedSlide.slide.id,
                               );
                               const isFirstSlide = currentSlideIndex === 0;
                               const isLastSlide =
@@ -327,8 +328,7 @@ export const SlideEditorPanel: React.FC<SlideEditorPanelProps> = ({
                                   {/* Main verse content */}
                                   <div className="text-white text-sm text-center leading-relaxed flex-1 flex items-center justify-center px-2">
                                     <div className="max-w-full">
-                                      {selectedSlide.slide.content ||
-                                        "Bible verse content will appear here"}
+                                      {typeof selectedSlide.slide.content === 'string' ? selectedSlide.slide.content : "Bible verse content will appear here"}
                                     </div>
                                   </div>
 
@@ -510,7 +510,7 @@ export const SlideEditorPanel: React.FC<SlideEditorPanelProps> = ({
                           Slide Content
                         </label>
                         <textarea
-                          value={selectedSlide.slide.content}
+                          value={typeof selectedSlide.slide.content === 'string' ? selectedSlide.slide.content : ''}
                           onChange={(e) => {
                             // Update slide content functionality would go here
                             console.log(
@@ -610,14 +610,17 @@ export const SlideEditorPanel: React.FC<SlideEditorPanelProps> = ({
                 style={(() => {
                   // Apply the background of the currently editing item to the entire preview section
                   if (editingContent) {
-                    const itemBackground = getItemBackground(editingContent.id);
+                    const itemBackground = getItemBackground(String(editingContent.id));
                     if (
                       itemBackground.type === "image" ||
                       itemBackground.type === "video"
                     ) {
                       // Ensure URL is properly formatted with absolute path
                       let backgroundUrl = itemBackground.value;
-                      if (
+                      const resolvedUrl = resolveMediaUrl(backgroundUrl);
+                      if (resolvedUrl) {
+                        backgroundUrl = resolvedUrl;
+                      } else if (
                         !backgroundUrl.startsWith("http") &&
                         !backgroundUrl.startsWith("data:")
                       ) {
@@ -653,7 +656,7 @@ export const SlideEditorPanel: React.FC<SlideEditorPanelProps> = ({
                           {selectedSlide.slide.title}
                         </h1>
                         <p className="text-gray-300 text-xl leading-relaxed max-w-2xl mx-auto">
-                          {selectedSlide.slide.content}
+                          {typeof selectedSlide.slide.content === 'string' ? selectedSlide.slide.content : ''}
                         </p>
                       </>
                     ) : selectedSlide.slide.type === "verse" ||

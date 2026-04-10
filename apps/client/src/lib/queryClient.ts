@@ -11,14 +11,47 @@ const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
 export function buildUrl(path: string): string {
   if (path.startsWith('http://') || path.startsWith('https://')) return path;
-  // Normalize double /api if VITE_API_URL ends in /api
-  if (path.startsWith('/api') && API_BASE.endsWith('/api')) {
-    return API_BASE.slice(0, -4) + path;
+  
+  // Clean up API_BASE to strip trailing slash
+  const cleanApiBase = API_BASE.replace(/\/$/, '');
+  
+  // Clean up path to ensure it starts with a slash
+  const cleanPath = path.startsWith('/') ? path : `/${path}`;
+  
+  // If cleanApiBase ends with '/api' and cleanPath starts with '/api',
+  // we must avoid '/api/api/something'.
+  if (cleanApiBase.endsWith('/api') && cleanPath.startsWith('/api')) {
+     return cleanApiBase.slice(0, -4) + cleanPath;
   }
-  const normalizedPath = path.startsWith('/') ? path : `/${path}`;
-  // If API_BASE doesn't end in /api but path doesn't start with /api, we should perhaps just concat
-  return API_BASE.replace(/\/$/, '') + normalizedPath;
+  
+  return cleanApiBase + cleanPath;
 }
+
+export const resolveMediaUrl = (url: string | null | undefined): string | undefined => {
+  if (!url) return undefined;
+  if (url === "Worship background image" || url === "Inspirational worship video" || url === "Background Image" || url === "Ready for content") return undefined;
+  
+  // Strip hardcoded UI API origins that might have leaked into Database from previous buggy app clients
+  let cleanUrl = url;
+  if (cleanUrl.startsWith('https://app.qworship.com/api/')) {
+    cleanUrl = cleanUrl.replace('https://app.qworship.com/api/', '/api/');
+  } else if (cleanUrl.startsWith('https://api.qworship.com/api/')) {
+    cleanUrl = cleanUrl.replace('https://api.qworship.com/api/', '/api/');
+  } else if (cleanUrl.startsWith('http://localhost:5000/api/')) {
+    cleanUrl = cleanUrl.replace('http://localhost:5000/api/', '/api/');
+  }
+  
+  if (cleanUrl.startsWith('data:') || cleanUrl.startsWith('blob:')) return cleanUrl;
+  if (cleanUrl.startsWith('/api/') || cleanUrl.startsWith('/uploads/')) return buildUrl(cleanUrl);
+
+  // If a raw unsigned R2 URL somehow got saved to a slide, bounce it to the backend resolver explicitly 
+  if (cleanUrl.includes('.r2.cloudflarestorage.com')) {
+    return buildUrl(`/api/user-media-assets/resolve-r2?url=${encodeURIComponent(cleanUrl)}`);
+  }
+
+  if (cleanUrl.startsWith('http://') || cleanUrl.startsWith('https://')) return cleanUrl;
+  return undefined;
+};
 
 export async function apiRequest(
   method: string,
