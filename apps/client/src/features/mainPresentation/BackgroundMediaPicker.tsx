@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
+import { buildUrl } from "@/lib/queryClient";
 
 // ── Auth Helper ─────────────────────────────────────────────────────────────────
 
@@ -111,7 +112,7 @@ export function BackgroundMediaPicker({
   // ── Fetch user media assets (images + videos only) ──────────────────────────
   const fetchUserAssets = useCallback(async () => {
     try {
-      const res = await fetch("/api/user-media-assets", {
+      const res = await fetch(buildUrl("/api/user-media-assets"), {
         headers: getAuthHeaders(),
       });
       if (!res.ok) throw new Error("Failed to load user media");
@@ -135,8 +136,8 @@ export function BackgroundMediaPicker({
             fileName: a.fileName || "",
             fileType: mapped,
             mimeType: a.fileType || "application/octet-stream",
-            filePath: `/api/user-media-assets/${id}/file`,
-            thumbnailPath: `/api/user-media-assets/${id}/thumbnail`,
+            filePath: buildUrl(`/api/user-media-assets/${id}/file`),
+            thumbnailPath: buildUrl(`/api/user-media-assets/${id}/thumbnail`),
             fileSize: a.fileSize || 0,
             source: "user",
             uploadedAt: a.createdAt || a.uploadedAt || new Date().toISOString(),
@@ -150,7 +151,7 @@ export function BackgroundMediaPicker({
   // ── Fetch cloud media assets ────────────────────────────────────────────────
   const fetchCloudAssets = useCallback(async () => {
     try {
-      const res = await fetch("/api/cloud-media");
+      const res = await fetch(buildUrl("/api/cloud-media"));
       if (!res.ok) throw new Error("Failed to load cloud media");
 
       // Cloud endpoint returns a raw array (already mapped by server)
@@ -167,8 +168,8 @@ export function BackgroundMediaPicker({
             fileName: a.fileName || "",
             fileType: a.fileType,
             mimeType: a.mimeType || a.fileType || "application/octet-stream",
-            filePath: `/api/cloud-media/${id}/file`,
-            thumbnailPath: `/api/cloud-media/${id}/thumbnail`,
+            filePath: buildUrl(`/api/cloud-media/${id}/file`),
+            thumbnailPath: buildUrl(`/api/cloud-media/${id}/thumbnail`),
             fileSize: a.fileSize || 0,
             source: "cloud",
             categoryName: a.categoryName,
@@ -229,7 +230,7 @@ export function BackgroundMediaPicker({
       const formData = new FormData();
       formData.append("files", file);
 
-      const res = await fetch("/api/user-media-assets/upload", {
+      const res = await fetch(buildUrl("/api/user-media-assets/upload"), {
         method: "POST",
         headers: getAuthHeaders(),  // No Content-Type — browser sets multipart boundary
         body: formData,
@@ -253,7 +254,7 @@ export function BackgroundMediaPicker({
         const assetId = asset._id ?? asset.id;
         onSelect({
           id: assetId,
-          url: `${window.location.origin}/api/user-media-assets/${assetId}/file`,
+          url: buildUrl(`/api/user-media-assets/${assetId}/file`),
           mediaType: (asset.fileType || asset.type || "").startsWith("video") ? "video" : "image",
           source: "user",
         });
@@ -276,7 +277,7 @@ export function BackgroundMediaPicker({
     const assetId = getAssetId(asset);
     setDeleting(assetId);
     try {
-      const res = await fetch(`/api/user-media-assets/${assetId}`, {
+      const res = await fetch(buildUrl(`/api/user-media-assets/${assetId}`), {
         method: "DELETE",
         headers: getAuthHeaders(),
       });
@@ -311,12 +312,12 @@ export function BackgroundMediaPicker({
     const assetId = getAssetId(asset);
     const downloadBase =
       asset.source === "cloud"
-        ? `/api/cloud-media/${assetId}/file`
-        : `/api/user-media-assets/${assetId}/file`;
+        ? buildUrl(`/api/cloud-media/${assetId}/file`)
+        : buildUrl(`/api/user-media-assets/${assetId}/file`);
 
     onSelect({
       id: assetId,
-      url: `${window.location.origin}${downloadBase}`,
+      url: downloadBase,
       mediaType: isVideoFileType(asset.fileType) ? "video" : "image",
       source: asset.source,
     });
@@ -433,12 +434,12 @@ export function BackgroundMediaPicker({
               const isBeingDeleted = deleting === assetId;
               const thumbnailUrl =
                 asset.source === "cloud"
-                  ? `/api/cloud-media/${assetId}/thumbnail`
-                  : `/api/user-media-assets/${assetId}/thumbnail`;
+                  ? buildUrl(`/api/cloud-media/${assetId}/thumbnail`)
+                  : buildUrl(`/api/user-media-assets/${assetId}/thumbnail`);
               const videoPreviewUrl =
                 asset.source === "cloud"
-                  ? `/api/cloud-media/${assetId}/file`
-                  : `/api/user-media-assets/${assetId}/file`;
+                  ? buildUrl(`/api/cloud-media/${assetId}/file`)
+                  : buildUrl(`/api/user-media-assets/${assetId}/file`);
 
               return (
                 <div key={`${asset.source}-${assetId}`} className="relative group">

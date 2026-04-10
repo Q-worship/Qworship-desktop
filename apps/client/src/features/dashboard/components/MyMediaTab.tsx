@@ -2,6 +2,7 @@ import React, { useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import type { MediaAsset, User } from "@/types";
 import { MediaAssetGridCard } from "./MediaAssetGridCard";
+import { buildUrl } from "@/lib/queryClient";
 
 // My Media Tab Component
 export function MyMediaTab({
@@ -118,8 +119,8 @@ export function MyMediaTab({
                 media={media}
                 isRecentlyUploaded={recentlyUploadedId === media.id}
                 onSelectMedia={onSelectMedia}
-                thumbnailUrl={`/api/user-media-assets/${media.id}/thumbnail`}
-                fileUrl={`/api/user-media-assets/${media.id}/file`}
+                thumbnailUrl={buildUrl(`/api/user-media-assets/${media.id}/thumbnail`)}
+                fileUrl={buildUrl(`/api/user-media-assets/${media.id}/file`)}
               />
             ))}
           </div>

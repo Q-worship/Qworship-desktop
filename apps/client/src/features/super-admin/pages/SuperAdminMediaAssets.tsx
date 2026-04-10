@@ -18,7 +18,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { apiRequest, adminApiRequest, getAdminQueryFn } from "@/lib/queryClient";
+import { apiRequest, adminApiRequest, getAdminQueryFn, buildUrl } from "@/lib/queryClient";
 import { 
   Upload, 
   Image, 
@@ -720,14 +720,14 @@ export default function SuperAdminMediaAssets({ isDarkMode }: SuperAdminMediaAss
                         }`}>
                           {asset.fileType === 'IMAGE' ? (
                             <img
-                              src={asset.filePath}
+                              src={buildUrl(asset.filePath)}
                               alt={asset.title}
                               className="w-full h-full object-cover"
                             />
                           ) : asset.fileType === 'VIDEO' && asset.thumbnailPath ? (
                             <div className="relative w-full h-full">
                               <img
-                                src={asset.thumbnailPath}
+                                src={buildUrl(asset.thumbnailPath)}
                                 alt={asset.title}
                                 className="w-full h-full object-cover"
                               />

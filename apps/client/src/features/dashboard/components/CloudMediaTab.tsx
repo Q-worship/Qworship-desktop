@@ -2,6 +2,7 @@ import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import type { MediaAsset } from "@/types";
 import { MediaAssetGridCard } from "./MediaAssetGridCard";
+import { buildUrl } from "@/lib/queryClient";
 
 // Cloud Media Tab Component
 export function CloudMediaTab({
@@ -98,8 +99,8 @@ export function CloudMediaTab({
                 key={media.id}
                 media={media}
                 onSelectMedia={onSelectMedia}
-                thumbnailUrl={media.thumbnail || `/api/cloud-media/${media.id}/thumbnail`}
-                fileUrl={media.fileUrl || `/api/cloud-media/${media.id}/file`}
+                thumbnailUrl={media.thumbnail || buildUrl(`/api/cloud-media/${media.id}/thumbnail`)}
+                fileUrl={media.fileUrl || buildUrl(`/api/cloud-media/${media.id}/file`)}
               />
             ))}
           </div>
