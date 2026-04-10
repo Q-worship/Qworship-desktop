@@ -72,7 +72,6 @@ export async function apiRequest(
     method,
     headers,
     body: data ? JSON.stringify(data) : undefined,
-    credentials: "include",
   });
 
   await throwIfResNotOk(res);
@@ -110,7 +109,6 @@ export async function adminApiRequest(
     method,
     headers,
     body: data instanceof FormData ? data : (data ? JSON.stringify(data) : undefined),
-    credentials: "include",
   });
 
   await throwIfResNotOk(res);
@@ -134,7 +132,6 @@ export const getQueryFn: <T>(options: {
     const fullUrl = buildUrl(queryKey[0] as string);
     const res = await fetch(fullUrl, {
       headers,
-      credentials: "include",
     });
 
     if (unauthorizedBehavior === "returnNull" && res.status === 401) {
@@ -168,7 +165,6 @@ export const getAdminQueryFn: <T>(options: {
 
     const res = await fetch(urlWithKey, {
       headers,
-      credentials: "include",
     });
 
     if (unauthorizedBehavior === "returnNull" && res.status === 401) {
