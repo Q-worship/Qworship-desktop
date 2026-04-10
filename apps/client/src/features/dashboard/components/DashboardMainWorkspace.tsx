@@ -21,27 +21,14 @@ import { EditAndPreparationArea } from "@/features/dashboard/components/EditAndP
 import { SidebarOpen, SidebarClose } from "lucide-react";
 import { apiClient } from "@/lib/api";
 
+import { buildUrl } from "@/lib/queryClient";
+
 const resolveMediaUrl = (url: string | null | undefined): string | undefined => {
   if (!url) return undefined;
-  
-  // Exact placeholder matches
   if (url === "Worship background image" || url === "Inspirational worship video" || url === "Background Image" || url === "Ready for content") return undefined;
-  
-  // Valid URL prefixes
   if (url.startsWith('http://') || url.startsWith('https://')) return url;
   if (url.startsWith('data:') || url.startsWith('blob:')) return url;
-  
-  // Relative API paths
-  if (url.startsWith('/api/') || url.startsWith('/uploads/')) {
-    const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
-    if (url.startsWith('/api') && API_BASE.endsWith('/api')) {
-      return API_BASE.slice(0, -4) + url;
-    }
-    const normalizedPath = url.startsWith('/') ? url : `/${url}`;
-    return API_BASE.replace(/\/$/, '') + normalizedPath;
-  }
-  
-  // If it doesn't match any known valid prefix, it's likely a generic string/placeholder
+  if (url.startsWith('/api/') || url.startsWith('/uploads/')) return buildUrl(url);
   return undefined;
 };
 
@@ -5643,7 +5630,7 @@ import type { Slide } from "@/types";\n${text}`,
                                   <div className="absolute inset-0 flex items-center justify-center">
                                     {(slide as any).subtype === "video" ? (
                                       <video
-                                        src={typeof slide.content === 'string' && slide.content !== "Inspirational worship video" ? slide.content : ((slide as any).videoSettings?.url || undefined)}
+                                        src={resolveMediaUrl(typeof slide.content === 'string' ? slide.content : undefined) || (typeof slide.content === 'string' && slide.content !== "Inspirational worship video" ? slide.content : ((slide as any).videoSettings?.url || undefined))}
                                         className={(slide as any).videoSettings?.displayMode === "center" ? "w-full h-full object-contain bg-black" : "w-full h-full object-cover"}
                                         preload="metadata"
                                         muted
@@ -5651,7 +5638,7 @@ import type { Slide } from "@/types";\n${text}`,
                                       />
                                     ) : (
                                       <img
-                                        src={typeof slide.content === 'string' && slide.content.length > 5 && slide.content !== "Worship background image" && slide.content !== "Inspirational worship video" ? slide.content : "https://images.unsplash.com/photo-1438232992991-995b7058bbb3?q=80&w=2673&auto=format&fit=crop"}
+                                        src={resolveMediaUrl(typeof slide.content === 'string' ? slide.content : undefined) || (typeof slide.content === 'string' && slide.content.length > 5 && slide.content !== "Worship background image" && slide.content !== "Inspirational worship video" ? slide.content : "https://images.unsplash.com/photo-1438232992991-995b7058bbb3?q=80&w=2673&auto=format&fit=crop")}
                                         alt={slide.title}
                                         className="relative z-10 w-full h-full object-contain bg-black"
                                       />

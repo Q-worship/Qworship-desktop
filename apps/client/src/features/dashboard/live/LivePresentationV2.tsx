@@ -23,6 +23,16 @@ import instagramIcon from "@assets/1658586823instagram-logo-transparent_17567334
 import { SongProjectionWidget } from "@/features/dashboard/components/SongProjectionWidget";
 import { BibleProjectionWidget } from "@/features/dashboard/components/BibleProjectionWidget";
 import { OBSControlPanel } from "@/features/dashboard/components/OBSControlPanel";
+import { buildUrl } from "@/lib/queryClient";
+
+const resolveMediaUrl = (url: string | null | undefined): string | undefined => {
+  if (!url) return undefined;
+  if (url === "Worship background image" || url === "Inspirational worship video" || url === "Background Image" || url === "Ready for content") return undefined;
+  if (url.startsWith('http://') || url.startsWith('https://')) return url;
+  if (url.startsWith('data:') || url.startsWith('blob:')) return url;
+  if (url.startsWith('/api/') || url.startsWith('/uploads/')) return buildUrl(url);
+  return undefined;
+};
 import { OBSStatusBadge } from "@/features/dashboard/components/OBSStatusBadge";
 import { obsService, OBSSettings } from "@/services/OBSConnectionService";
 import { useToast } from "@/hooks/use-toast";
@@ -706,7 +716,7 @@ export const LivePresentationV2 = (): JSX.Element => {
                   {backgroundImage && (
                     <div className="mt-3">
                       <img
-                        src={backgroundImage}
+                        src={resolveMediaUrl(backgroundImage) || backgroundImage}
                         alt="Background preview"
                         className="w-full h-20 object-cover rounded border border-purple-500/30 shadow-lg"
                       />
@@ -767,7 +777,7 @@ export const LivePresentationV2 = (): JSX.Element => {
                   {backgroundVideo && (
                     <div className="mt-3">
                       <video
-                        src={backgroundVideo}
+                        src={resolveMediaUrl(backgroundVideo) || backgroundVideo}
                         className="w-full h-20 object-cover rounded border border-purple-500/30 shadow-lg"
                         muted
                       />

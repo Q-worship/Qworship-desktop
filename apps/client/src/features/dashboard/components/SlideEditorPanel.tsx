@@ -10,6 +10,16 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import type { Item as ServiceItem, Slide } from "@/types";
 import { useWysiwygEditor } from "@/features/dashboard/hooks/useWysiwygEditor";
+import { buildUrl } from "@/lib/queryClient";
+
+const resolveMediaUrl = (url: string | null | undefined): string | undefined => {
+  if (!url) return undefined;
+  if (url === "Worship background image" || url === "Inspirational worship video" || url === "Background Image" || url === "Ready for content") return undefined;
+  if (url.startsWith('http://') || url.startsWith('https://')) return url;
+  if (url.startsWith('data:') || url.startsWith('blob:')) return url;
+  if (url.startsWith('/api/') || url.startsWith('/uploads/')) return buildUrl(url);
+  return undefined;
+};
 
 // SlideEditorPanel Props Interface
 export interface SlideEditorPanelProps {
@@ -617,7 +627,10 @@ export const SlideEditorPanel: React.FC<SlideEditorPanelProps> = ({
                     ) {
                       // Ensure URL is properly formatted with absolute path
                       let backgroundUrl = itemBackground.value;
-                      if (
+                      const resolvedUrl = resolveMediaUrl(backgroundUrl);
+                      if (resolvedUrl) {
+                        backgroundUrl = resolvedUrl;
+                      } else if (
                         !backgroundUrl.startsWith("http") &&
                         !backgroundUrl.startsWith("data:")
                       ) {

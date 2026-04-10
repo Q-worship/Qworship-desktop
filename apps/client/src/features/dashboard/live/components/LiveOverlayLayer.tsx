@@ -2,6 +2,16 @@ import React from "react";
 import { useLivePresentationState } from "../useLivePresentationState";
 import facebookIcon from "@assets/R (2)_1756733484236.png";
 import instagramIcon from "@assets/1658586823instagram-logo-transparent_1756733484234.png";
+import { buildUrl } from "@/lib/queryClient";
+
+const resolveMediaUrl = (url: string | null | undefined): string | undefined => {
+  if (!url) return undefined;
+  if (url === "Worship background image" || url === "Inspirational worship video" || url === "Background Image" || url === "Ready for content") return undefined;
+  if (url.startsWith('http://') || url.startsWith('https://')) return url;
+  if (url.startsWith('data:') || url.startsWith('blob:')) return url;
+  if (url.startsWith('/api/') || url.startsWith('/uploads/')) return buildUrl(url);
+  return undefined;
+};
 
 export const LiveOverlayLayer: React.FC<ReturnType<typeof useLivePresentationState>> = (props) => {
   const {
@@ -36,7 +46,7 @@ export const LiveOverlayLayer: React.FC<ReturnType<typeof useLivePresentationSta
               {customLogo && (
                 <div className={`absolute z-30 ${getLogoPositionClass()}`}>
                   <img
-                    src={customLogo}
+                    src={resolveMediaUrl(customLogo) || customLogo}
                     alt="Custom Logo"
                     className={`object-contain ${getLogoSizeClass()}`}
                   />
