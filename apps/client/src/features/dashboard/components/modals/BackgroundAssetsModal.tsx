@@ -1,6 +1,6 @@
 import React from "react";
 import { XIcon } from "lucide-react";
-import { AssetsPage } from "@/features/web/pages/AssetsPage";
+import AssetsPage from "@/features/dashboard/pages/AssetsPage";
 import { toast } from "@/hooks/use-toast";
 
 interface BackgroundAssetsModalProps {

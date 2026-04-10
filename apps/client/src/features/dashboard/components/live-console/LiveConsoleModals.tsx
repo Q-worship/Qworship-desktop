@@ -1,6 +1,6 @@
 import { useLiveConsoleStore } from "../../hooks/useLiveConsoleStore";
 import { OBSControlPanel } from "../OBSControlPanel";
-import { AssetsPage } from "@/features/web/pages/AssetsPage";
+import AssetsPage from "@/features/dashboard/pages/AssetsPage";
 import { X } from "lucide-react";
 
 export function LiveConsoleModals() {

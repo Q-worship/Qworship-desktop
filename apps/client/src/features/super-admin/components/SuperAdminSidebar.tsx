@@ -144,7 +144,6 @@ import {
 import { Link } from "wouter";
 import qWorshipLogo from "@assets/Group 1_1753843572404.png";
 import AdminSettings from "@/features/super-admin/pages/AdminSettings";
-import PoliciesView from "@/features/web/pages/PoliciesView";
 import { apiRequest } from "@/lib/queryClient";
 import { queryClient } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
@@ -1451,7 +1450,7 @@ export default function SuperAdminSidebar() {
 
       // Content & Features
       case "policies":
-        return <PoliciesView adminKey={adminKey} />;
+        return <div className="p-8"><h2 className="text-2xl font-bold">Policies Data</h2><p className="text-muted-foreground mt-2">This section has been omitted in the desktop client.</p></div>;
       case "media-assets":
         return <SuperAdminMediaAssets isDarkMode={isDarkMode} />;
 

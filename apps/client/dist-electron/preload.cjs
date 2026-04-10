@@ -1,0 +1,1 @@
+"use strict";const e=require("electron");e.contextBridge.exposeInMainWorld("api",{onDeepLinkPayload:n=>{const r=(p,i)=>n(i);return e.ipcRenderer.on("deep-link-payload",r),()=>e.ipcRenderer.removeListener("deep-link-payload",r)},requestInitialDeepLink:()=>{e.ipcRenderer.send("request-deep-link")},openWebAuth:n=>{e.ipcRenderer.send("open-external-url",n)}});

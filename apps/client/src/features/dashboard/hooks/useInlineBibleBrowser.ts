@@ -2,6 +2,7 @@ import { useState, useRef, useCallback, useEffect } from 'react';
 import { BIBLE_BOOKS_LCC, BIBLE_VERSIONS_LCC } from '../data/bibleBooks';
 import { db } from '../../../lib/db';
 import { useBibleRAMCache } from './useBibleRAMCache';
+import { searchOffline, type BibleVersion } from '../../../lib/offlineBibleEngine';
 
 export interface BibleVerse { number: number; text: string }
 export interface BiblePassage {
@@ -173,35 +174,56 @@ export function useInlineBibleBrowser({ onProjectVerse }: UseInlineBibleBrowserP
     setBibleIsLoading(true);
     setBibleSearchError(null);
     try {
+      const version = selBibleVersion.toLowerCase() as BibleVersion;
+
+      // 1. Try offline IndexedDB first
+      const offlineResult = await searchOffline(bibleSearch.trim(), version);
+
+      if (offlineResult && offlineResult.verses.length > 0) {
+        const bookName = offlineResult.book;
+        const chapterNum = offlineResult.chapter;
+        const targetVerseNumber = offlineResult.verses[0].number;
+
+        // Load the full chapter so adjacent verses are browsable
+        const fullChapterPassage = await fetchBibleChapter(bookName, chapterNum, selBibleVersion);
+        if (fullChapterPassage && fullChapterPassage.verses.length > 0) {
+          setBiblePassage(fullChapterPassage);
+          const bIdx = BIBLE_BOOKS_LCC.findIndex(b => b.name.toLowerCase() === bookName.toLowerCase());
+          if (bIdx !== -1) setBibleBookIndex(bIdx);
+          setBibleChapterNum(chapterNum);
+          const targetIdx = fullChapterPassage.verses.findIndex((v: any) => v.number === targetVerseNumber);
+          const finalIdx = targetIdx !== -1 ? targetIdx : 0;
+          setBibleVerseIndex(finalIdx);
+          projectVerse(fullChapterPassage, finalIdx);
+          setTimeout(() => {
+            if (bibleVerseListRef.current && bibleVerseListRef.current.children[finalIdx]) {
+              (bibleVerseListRef.current.children[finalIdx] as HTMLElement).scrollIntoView({ block: 'center' });
+            }
+          }, 100);
+        } else {
+          setBibleSearchError('Could not load chapter context.');
+        }
+        return;
+      }
+
+      // 2. Fallback to cloud API (when Bible not yet synced to IndexedDB)
       const resp = await fetch(`/api/bible/search?reference=${encodeURIComponent(bibleSearch.trim())}&version=${selBibleVersion.toLowerCase()}`);
       if (resp.ok) {
         const data = await resp.json();
         if (data?.success && data?.passage && data.passage.verses && data.passage.verses.length > 0) {
           const targetVerseNumber = Number(data.passage.verses[0].number);
-          const bookName = (data.passage.book || "").trim();
+          const bookName = (data.passage.book || '').trim();
           const chapterNum = Number(data.passage.chapter);
-          
-          // Now fetch the FULL chapter into the browser state so the user can see adjacent verses
           const fullChapterPassage = await fetchBibleChapter(bookName, chapterNum, selBibleVersion);
-          
           if (fullChapterPassage && fullChapterPassage.verses.length > 0) {
             setBiblePassage(fullChapterPassage);
-            
-            const bIdx = BIBLE_BOOKS_LCC.findIndex(
-              b => b.name.toLowerCase() === bookName.toLowerCase()
-            );
+            const bIdx = BIBLE_BOOKS_LCC.findIndex(b => b.name.toLowerCase() === bookName.toLowerCase());
             if (bIdx !== -1) setBibleBookIndex(bIdx);
-            
             setBibleChapterNum(chapterNum);
-            
-            // Find the specific verse the user queried in the full chapter
             const targetIdx = fullChapterPassage.verses.findIndex((v: any) => v.number === targetVerseNumber);
             const finalIdx = targetIdx !== -1 ? targetIdx : 0;
-            
             setBibleVerseIndex(finalIdx);
             projectVerse(fullChapterPassage, finalIdx);
-            
-            // Scroll the verse into view after a short delay to allow React to render the list
             setTimeout(() => {
               if (bibleVerseListRef.current && bibleVerseListRef.current.children[finalIdx]) {
                 (bibleVerseListRef.current.children[finalIdx] as HTMLElement).scrollIntoView({ block: 'center' });
@@ -221,7 +243,7 @@ export function useInlineBibleBrowser({ onProjectVerse }: UseInlineBibleBrowserP
     } finally {
       setBibleIsLoading(false);
     }
-  }, [bibleSearch, selBibleVersion, projectVerse]);
+  }, [bibleSearch, selBibleVersion, projectVerse, fetchBibleChapter]);
 
   // Auto-load Genesis 1 when bible mode first opens
   const openBibleMode = useCallback(async () => {

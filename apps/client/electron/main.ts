@@ -1,4 +1,4 @@
-import { app, BrowserWindow, shell, ipcMain } from 'electron';
+import { app, BrowserWindow, shell, ipcMain, session } from 'electron';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -55,7 +55,18 @@ if (!gotTheLock) {
     app.setAsDefaultProtocolClient('qworship');
   }
 
-  app.whenReady().then(createWindow);
+  app.whenReady().then(() => {
+    // Grant microphone permission automatically so webkitSpeechRecognition doesn't hang
+    session.defaultSession.setPermissionRequestHandler((_wc, permission, callback) => {
+      const allowed = ['microphone', 'camera', 'media', 'audioCapture', 'videoCapture'];
+      callback(allowed.includes(permission));
+    });
+    session.defaultSession.setPermissionCheckHandler((_wc, permission) => {
+      const allowed = ['microphone', 'camera', 'media', 'audioCapture', 'videoCapture'];
+      return allowed.includes(permission);
+    });
+    createWindow();
+  });
 
   // Handle protocol on macOS
   app.on('open-url', (event, url) => {
@@ -90,23 +101,57 @@ ipcMain.on('open-external-url', (_event, url) => {
 });
 
 function createWindow() {
+  // Grant microphone (and camera) permissions automatically so webkitSpeechRecognition
+  // does not hang waiting for a system dialog that Electron never shows in dev mode.
+  const { session } = require('electron');
+  session.defaultSession.setPermissionRequestHandler((_webContents, permission, callback) => {
+    const allowed = ['microphone', 'camera', 'media', 'audioCapture', 'videoCapture'];
+    callback(allowed.includes(permission));
+  });
+  session.defaultSession.setPermissionCheckHandler((_webContents, permission) => {
+    const allowed = ['microphone', 'camera', 'media', 'audioCapture', 'videoCapture'];
+    return allowed.includes(permission);
+  });
+
   win = new BrowserWindow({
     width: 1200,
     height: 800,
     minWidth: 800,
     minHeight: 600,
+    show: false, // Don't show immediately to prevent white flash
     titleBarStyle: 'hiddenInset',
     icon: path.join(process.env.VITE_PUBLIC, 'favicon.ico'),
     webPreferences: {
-      preload: path.join(__dirname, 'preload.js'),
+      preload: path.join(__dirname, 'preload.cjs'),
       nodeIntegration: false,
       contextIsolation: true,
       webviewTag: true, // Necessary if they use <webview> for pricing
     },
   });
 
-  // Handle window controls and deep external links
+  // Wait until the renderer has painted its first frame before showing the window
+  win.on('ready-to-show', () => {
+    win?.show();
+  });
+
+  // Handle window.open() calls from the renderer
   win.webContents.setWindowOpenHandler(({ url }) => {
+    // Allow internal localhost URLs (e.g. live presentation window) to open as a new Electron window
+    if (url.startsWith('http://localhost') || url.startsWith('http://127.0.0.1')) {
+      return {
+        action: 'allow',
+        overrideBrowserWindowOptions: {
+          fullscreen: true,
+          frame: false,
+          webPreferences: {
+            preload: path.join(__dirname, 'preload.cjs'),
+            nodeIntegration: false,
+            contextIsolation: true,
+          },
+        },
+      };
+    }
+    // Send external URLs to the system browser
     if (url.startsWith('http:') || url.startsWith('https:')) {
       shell.openExternal(url);
     }

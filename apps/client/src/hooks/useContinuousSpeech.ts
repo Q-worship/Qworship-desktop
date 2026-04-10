@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from "react";
+import { parseVoiceCommand, lookupOffline, type BibleVersion } from "@/lib/offlineBibleEngine";
 
 // For TypeScript generic window access
 declare global {
@@ -35,63 +36,80 @@ export const useContinuousSpeech = ({
     currentBook?: string;
     currentChapter?: number;
     currentVerse?: number;
-    currentVersion?: string;
+    currentVersion?: BibleVersion;
   }>({});
 
   const processCommand = async (text: string) => {
     try {
-      const commandRes = await fetch("/api/bible/voice-command", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          text,
-          ...contextRef.current,
-        }),
-      });
+      const version = contextRef.current.currentVersion || 'kjv';
+      const command = parseVoiceCommand(text, version);
 
-      const commandData = await commandRes.json();
-
-      if (!commandData.success) {
-        console.warn("Command failed or not recognized:", commandData.error);
-        return;
-      }
-
-      switch (commandData.commandType) {
-        case "lookup":
-          if (commandData.result) {
-            onBibleMatch({ result: commandData.result, commandType: "lookup" });
+      switch (command.commandType) {
+        case 'lookup': {
+          if (!command.parsedReference) {
+            console.warn('[HFB Offline] Could not parse reference:', text);
+            return;
           }
-          break;
-        case "sleep":
-          onSleepCommand?.();
-          break;
-        case "wake":
-          onWakeCommand?.();
-          break;
-        case "version_change":
-          if (commandData.requestedVersion) {
-            onVersionChange?.(commandData.requestedVersion);
-          }
-          break;
-        case "verse_change":
-        case "chapter_change":
-          if (commandData.result) {
+          const result = await lookupOffline(command.parsedReference);
+          if (result && result.verses.length > 0) {
+            contextRef.current = {
+              currentBook: result.book,
+              currentChapter: result.chapter,
+              currentVerse: result.verses[0].number,
+              currentVersion: version,
+            };
             onBibleMatch({
-              result: commandData.result,
-              commandType: commandData.commandType,
+              commandType: 'lookup',
+              parsedReference: command.parsedReference,
+              data: {
+                book: result.book,
+                chapter: result.chapter,
+                verses: result.verses,
+                version: result.version,
+                formattedReference: result.formattedReference,
+              },
             });
           } else {
-            onNavigation?.(
-              commandData.commandType,
-              commandData.navigationDirection,
-            );
+            console.warn('[HFB Offline] Verse not found in IndexedDB for:', command.parsedReference);
           }
           break;
+        }
+        case 'version_change':
+          if (command.requestedVersion) {
+            contextRef.current.currentVersion = command.requestedVersion;
+            onVersionChange?.(command.requestedVersion);
+          }
+          break;
+        case 'verse_change':
+          if (command.navigationDirection) {
+            onNavigation?.('verse_change', command.navigationDirection);
+          }
+          break;
+        case 'chapter_change':
+          if (command.navigationDirection) {
+            onNavigation?.('chapter_change', command.navigationDirection);
+          }
+          break;
+        case 'jump_to_verse':
+          onNavigation?.('jump_to_verse', 'next');
+          break;
+        case 'sleep':
+          onSleepCommand?.();
+          break;
+        case 'wake':
+          onWakeCommand?.();
+          break;
+        default:
+          break;
       }
-    } catch (err) {
-      console.error("[ContinuousSpeech] Failed to process command", err);
+    } catch (e: any) {
+      console.error('[HFB Offline] processCommand error:', e);
+      onError?.(e.message || 'Failed to process voice command');
     }
   };
+
+
+
 
   const startListening = useCallback(
     (context?: any) => {

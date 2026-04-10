@@ -1,5 +1,6 @@
 import React from "react";
-import { Switch, Route, Redirect, useLocation } from "wouter";
+import { Switch, Route, Redirect, useLocation, Router } from "wouter";
+import { useHashLocation } from "wouter/use-hash-location";
 import { queryClient } from "@/lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
@@ -10,20 +11,12 @@ import { useBibleRAMCache } from "@/features/dashboard/hooks/useBibleRAMCache";
 import { useSongRAMCache } from "@/features/dashboard/hooks/useSongRAMCache";
 import { SyncLoadingOverlay } from "@/features/dashboard/components/SyncLoadingOverlay";
 
-import { Home } from "@/features/web/pages/Home";
-import About from "@/features/web/pages/About";
-import { Pricing } from "@/features/web/pages/Pricing";
-import Contact from "@/features/web/pages/Contact";
-import EndUserLicense from "@/features/web/pages/EndUserLicense";
-import Features from "@/features/web/pages/Features";
-import PrivacyPolicy from "@/features/web/pages/PrivacyPolicy";
-import RefundPolicy from "@/features/web/pages/RefundPolicy";
-import { DocsPage } from "@/features/web/pages/DocsPage";
+import { SplashScreen } from "@/features/onboarding/pages/SplashScreen";
 import SignInPage from "@/features/auth/pages/SignInPage";
 import AdminSignInPage from "@/features/auth/pages/AdminSignInPage";
 import { LivePresentationV2 } from "@/features/dashboard/live/LivePresentationV2";
 import OrganizationSetup from "@/features/onboarding/pages/OrganizationSetup";
-import PlanSelection from "@/features/onboarding/pages/PlanSelection";
+import { PricingWebView } from "@/features/onboarding/pages/PricingWebView";
 import { ProjectSelection } from "@/features/onboarding/pages/ProjectSelection";
 import { QworshipHomeV2Wrapper } from "@/features/dashboard/DashboardLayoutV2";
 
@@ -32,7 +25,6 @@ import { useAuthStore } from "@/features/auth/auth.store";
 import { BibleWorkspace } from "@/features/bible-reader/components/BibleWorkspace";
 import AssetsPage from "@/features/dashboard/pages/AssetsPage";
 import HelpSupportPage from "@/features/dashboard/pages/HelpSupportPage";
-import GuidesPage from "@/features/web/pages/GuidesPage";
 import { LowerThirdEditorPage, LowerThirdSettingsPage } from "@/features/lowerThird";
 import { MainPresentationSettingsPage } from "@/features/mainPresentation";
 import SuperAdminSidebar from "@/features/super-admin/components/SuperAdminSidebar";
@@ -129,24 +121,33 @@ function MainPresentationSettingsRoute() {
   return <MainPresentationSettingsPage onClose={() => navigate("/dashboard")} />;
 }
 
+import { useDesktopAuth } from "@/hooks/useDesktopAuth";
+import { Loader2 } from "lucide-react";
+
 export const AppRouter = () => {
+  const { isAuthenticating } = useDesktopAuth();
+
   return (
-    <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <Toaster />
-        <Switch>
-          <Route path="/" component={Home} />
-          <Route path="/about" component={About} />
-          <Route path="/pricing" component={Pricing} />
-          <Route path="/features" component={Features} />
-          <Route path="/contact" component={Contact} />
-          <Route path="/docs" component={DocsPage} />
-          <Route path="/privacy-policy" component={PrivacyPolicy} />
-          <Route path="/refund-policy" component={RefundPolicy} />
-          <Route path="/eula" component={EndUserLicense} />
-          <Route path="/login" component={SignInPage} />
-          <Route path="/signup" component={SignInPage} />
-          <Route path="/admin/login" component={AdminSignInPage} />
+    <Router hook={useHashLocation}>
+      <QueryClientProvider client={queryClient}>
+        <TooltipProvider>
+          <Toaster />
+
+          {/* Global Desktop Authentication Loader overlay */}
+          {isAuthenticating && (
+            <div className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-background/95 backdrop-blur-md animate-in fade-in duration-300">
+              <Loader2 className="w-12 h-12 text-primary animate-spin mb-4" />
+              <h2 className="text-xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-primary to-indigo-400">Authenticating...</h2>
+              <p className="text-muted-foreground text-sm mt-2">Connecting your Qworship account</p>
+            </div>
+          )}
+
+          <Switch>
+            <Route path="/" component={SplashScreen} />
+            <Route path="/pricing" component={PricingWebView} />
+            <Route path="/login" component={SignInPage} />
+            <Route path="/signup" component={SignInPage} />
+            <Route path="/admin/login" component={AdminSignInPage} />
 
           {/* Standalone authenticated routes like Super Admin */}
           <Route path="/super-admin">
@@ -167,7 +168,6 @@ export const AppRouter = () => {
               <AppLayout>
                 <Switch>
                   <Route path="/organization-setup" component={OrganizationSetup} />
-                  <Route path="/plan-selection" component={PlanSelection} />
                   <Route path="/project-selection" component={ProjectSelection} />
                   <Route path="/dashboard" component={QworshipHomeV2Wrapper} />
                   <Route path="/bible" component={BibleWorkspace} />
@@ -175,7 +175,6 @@ export const AppRouter = () => {
                   <Route path="/presentations" component={PresentationsMock} />
                   <Route path="/dashboard-assets" component={AssetsPage} />
                   <Route path="/dashboard-help" component={HelpSupportPage} />
-                  <Route path="/guides" component={GuidesPage} />
                   <Route path="/lower-third-settings" component={LowerThirdSettingsRoute} />
                   <Route path="/lower-third-editor/:templateId" component={LowerThirdEditorPage} />
                   <Route path="/main-presentation-settings" component={MainPresentationSettingsRoute} />
@@ -192,5 +191,6 @@ export const AppRouter = () => {
         </Switch>
       </TooltipProvider>
     </QueryClientProvider>
+    </Router>
   );
 };
