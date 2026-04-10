@@ -11,13 +11,20 @@ const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
 export function buildUrl(path: string): string {
   if (path.startsWith('http://') || path.startsWith('https://')) return path;
-  // Normalize double /api if VITE_API_URL ends in /api
-  if (path.startsWith('/api') && API_BASE.endsWith('/api')) {
-    return API_BASE.slice(0, -4) + path;
+  
+  // Clean up API_BASE to strip trailing slash
+  const cleanApiBase = API_BASE.replace(/\/$/, '');
+  
+  // Clean up path to ensure it starts with a slash
+  const cleanPath = path.startsWith('/') ? path : `/${path}`;
+  
+  // If cleanApiBase ends with '/api' and cleanPath starts with '/api',
+  // we must avoid '/api/api/something'.
+  if (cleanApiBase.endsWith('/api') && cleanPath.startsWith('/api')) {
+     return cleanApiBase.slice(0, -4) + cleanPath;
   }
-  const normalizedPath = path.startsWith('/') ? path : `/${path}`;
-  // If API_BASE doesn't end in /api but path doesn't start with /api, we should perhaps just concat
-  return API_BASE.replace(/\/$/, '') + normalizedPath;
+  
+  return cleanApiBase + cleanPath;
 }
 
 export const resolveMediaUrl = (url: string | null | undefined): string | undefined => {

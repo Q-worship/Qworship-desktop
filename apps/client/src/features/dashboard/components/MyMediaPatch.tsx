@@ -139,7 +139,7 @@ export const MyMediaPatch = ({ onAssetSelect, isModal = false, filterType = 'all
         title: firstAsset.title,
         type: assetType,
         thumbnail: thumbnailPath ? buildUrl(thumbnailPath) : '',
-        filePath: firstAsset.filePath ? buildUrl(firstAsset.filePath) : '', // Include the original file path for background selection
+        filePath: buildUrl(`/api/user-media-assets/${firstAsset.id}/file`),
         uploadedBy: 'user',
         tags: Array.isArray(firstAsset.tags) ? firstAsset.tags : (firstAsset.tags ? [firstAsset.tags] : []),
         collection: firstAsset.categories || 'Uncategorized',

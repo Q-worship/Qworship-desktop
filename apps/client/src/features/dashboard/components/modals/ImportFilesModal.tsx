@@ -173,7 +173,7 @@ export const ImportFilesModal = ({ open, onOpenChange, onMediaUploaded, onMultip
           id: firstAsset.id,
           title: firstAsset.title || firstAsset.fileName,
           fileType: firstAsset.fileType,
-          fileUrl: firstAsset.fileUrl ? buildUrl(firstAsset.fileUrl) : buildUrl(`/api/user-media-assets/${firstAsset.id}/file`)
+          fileUrl: buildUrl(`/api/user-media-assets/${firstAsset.id}/file`)
         });
       }
 
@@ -182,7 +182,7 @@ export const ImportFilesModal = ({ open, onOpenChange, onMediaUploaded, onMultip
           id: a.id,
           title: a.title || a.fileName,
           fileType: a.fileType,
-          fileUrl: a.fileUrl ? buildUrl(a.fileUrl) : buildUrl(`/api/user-media-assets/${a.id}/file`)
+          fileUrl: buildUrl(`/api/user-media-assets/${a.id}/file`)
         })));
       }
       
