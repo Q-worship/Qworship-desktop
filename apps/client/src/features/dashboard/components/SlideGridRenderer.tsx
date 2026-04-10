@@ -265,11 +265,9 @@ export const SlideGridRenderer = (props: any) => {
                               totalItemSlides = bibleSameChapterSlides.length;
                             }
 
-                            // Get item title (song name, bible reference, etc.)
-                            const itemTitle =
-                              slide.songTitle ||
-                              slide.title.split(" - ")[0] ||
-                              slide.title;
+                            // Dynamically get live title from the updated service item to ensure edits reflect instantly
+                            const liveItem = slide.itemId ? serviceItems.find((item: any) => item.id === slide.itemId) : null;
+                            const itemTitle = liveItem ? liveItem.title : (slide.songTitle || slide.title.split(" - ")[0] || slide.title);
 
                             // Determine if this is the first slide of an item (should show title)
                             const isFirstSlideOfItem = itemSlideNumber === 1;

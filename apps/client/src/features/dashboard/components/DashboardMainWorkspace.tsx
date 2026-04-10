@@ -2770,7 +2770,7 @@ import type { Slide } from "@/types";\n${text}`,
                                 </button>
                               </div>
                             </div>
-                            
+
                             {/* Import Media Modal for Image Editor */}
                             <ImportFilesModal
                               open={isImageImportModalOpen}
@@ -2799,57 +2799,57 @@ import type { Slide } from "@/types";\n${text}`,
 
                             {/* Inline Playback Settings */}
                             <div className="flex flex-wrap items-center bg-[#2a1f3d] p-3 rounded-lg border border-gray-600 gap-x-6 gap-y-2 text-sm">
-                               <label className="flex items-center space-x-2 text-white cursor-pointer w-max m-0">
-                                 <input
-                                   type="checkbox"
-                                   className="rounded bg-[#0f0624] border-gray-600 text-purple-600 focus:ring-purple-500 w-4 h-4 m-0 p-0"
-                                   checked={editingContent.content?.autoAdvance ?? true}
-                                   onChange={(e) => {
-                                     const nextContent = { ...((typeof editingContent.content === 'object' && editingContent.content) ? editingContent.content : {}), autoAdvance: e.target.checked };
-                                     updateItemContent(editingContent.id, editingContent.title, nextContent, editingContent.slides);
-                                     setEditingContent({...editingContent, content: nextContent});
-                                   }}
-                                 />
-                                 <span>Auto-advance sequence</span>
-                               </label>
-                               
-                               <div className="flex items-center space-x-2 text-gray-300 border-l border-gray-600 pl-6">
-                                 <span>Timer (sec):</span>
-                                 <input
-                                    type="number"
-                                    className="h-7 w-14 bg-[#0f0624] border border-gray-600 text-center rounded text-white"
-                                    value={typeof editingContent.content?.timer === 'number' ? editingContent.content.timer : 5}
-                                    min={1}
-                                    onChange={(e) => {
-                                      const nextContent = { ...((typeof editingContent.content === 'object' && editingContent.content) ? editingContent.content : {}), timer: parseInt(e.target.value) || 5 };
-                                      updateItemContent(editingContent.id, editingContent.title, nextContent, editingContent.slides);
-                                      setEditingContent({...editingContent, content: nextContent});
-                                    }}
-                                 />
-                               </div>
-                               
-                               <div className="flex items-center space-x-2 text-gray-300 border-l border-gray-600 pl-6">
-                                 <span>Transition:</span>
-                                 <select
-                                    className="h-7 bg-[#0f0624] border border-gray-600 rounded px-1 text-white outline-none w-28"
-                                    value={editingContent.content?.transition ?? "fade"}
-                                    onChange={(e) => {
-                                      const nextContent = { ...((typeof editingContent.content === 'object' && editingContent.content) ? editingContent.content : {}), transition: e.target.value };
-                                      updateItemContent(editingContent.id, editingContent.title, nextContent, editingContent.slides);
-                                      setEditingContent({...editingContent, content: nextContent});
-                                    }}
-                                 >
-                                   <option value="none">None</option>
-                                   <option value="fade">Fade In/Out</option>
-                                   <option value="slide">Slide Left</option>
-                                 </select>
-                               </div>
+                              <label className="flex items-center space-x-2 text-white cursor-pointer w-max m-0">
+                                <input
+                                  type="checkbox"
+                                  className="rounded bg-[#0f0624] border-gray-600 text-purple-600 focus:ring-purple-500 w-4 h-4 m-0 p-0"
+                                  checked={editingContent.content?.autoAdvance ?? true}
+                                  onChange={(e) => {
+                                    const nextContent = { ...((typeof editingContent.content === 'object' && editingContent.content) ? editingContent.content : {}), autoAdvance: e.target.checked };
+                                    updateItemContent(editingContent.id, editingContent.title, nextContent, editingContent.slides);
+                                    setEditingContent({ ...editingContent, content: nextContent });
+                                  }}
+                                />
+                                <span>Auto-advance sequence</span>
+                              </label>
+
+                              <div className="flex items-center space-x-2 text-gray-300 border-l border-gray-600 pl-6">
+                                <span>Timer (sec):</span>
+                                <input
+                                  type="number"
+                                  className="h-7 w-14 bg-[#0f0624] border border-gray-600 text-center rounded text-white"
+                                  value={typeof editingContent.content?.timer === 'number' ? editingContent.content.timer : 5}
+                                  min={1}
+                                  onChange={(e) => {
+                                    const nextContent = { ...((typeof editingContent.content === 'object' && editingContent.content) ? editingContent.content : {}), timer: parseInt(e.target.value) || 5 };
+                                    updateItemContent(editingContent.id, editingContent.title, nextContent, editingContent.slides);
+                                    setEditingContent({ ...editingContent, content: nextContent });
+                                  }}
+                                />
+                              </div>
+
+                              <div className="flex items-center space-x-2 text-gray-300 border-l border-gray-600 pl-6">
+                                <span>Transition:</span>
+                                <select
+                                  className="h-7 bg-[#0f0624] border border-gray-600 rounded px-1 text-white outline-none w-28"
+                                  value={editingContent.content?.transition ?? "fade"}
+                                  onChange={(e) => {
+                                    const nextContent = { ...((typeof editingContent.content === 'object' && editingContent.content) ? editingContent.content : {}), transition: e.target.value };
+                                    updateItemContent(editingContent.id, editingContent.title, nextContent, editingContent.slides);
+                                    setEditingContent({ ...editingContent, content: nextContent });
+                                  }}
+                                >
+                                  <option value="none">None</option>
+                                  <option value="fade">Fade In/Out</option>
+                                  <option value="slide">Slide Left</option>
+                                </select>
+                              </div>
                             </div>
 
                             {/* Image Sequence Grid */}
                             <h4 className="text-white font-medium mt-2 border-b border-gray-600 pb-2 flex items-center justify-between">
-                               <span>Image Sequence</span>
-                               <span className="text-purple-300 font-medium text-xs bg-purple-900/30 px-2 py-1 rounded border border-purple-500/30">{editingContent.slides?.length || 0} Slides Total</span>
+                              <span>Image Sequence</span>
+                              <span className="text-purple-300 font-medium text-xs bg-purple-900/30 px-2 py-1 rounded border border-purple-500/30">{editingContent.slides?.length || 0} Slides Total</span>
                             </h4>
 
                             {editingContent.slides?.length > 0 ? (
@@ -3006,7 +3006,7 @@ import type { Slide } from "@/types";\n${text}`,
                                 const updatedSlides = [...existingRealSlides, ...newSlides];
                                 const finalContentObj = { ...contentObj, url: newSlides[0]?.content };
                                 updateItemContent(editingContent.id, editingContent.title, finalContentObj, updatedSlides);
-                                setEditingContent({...editingContent, content: finalContentObj, slides: updatedSlides});
+                                setEditingContent({ ...editingContent, content: finalContentObj, slides: updatedSlides });
                                 setIsVideoImportModalOpen(false);
                               }}
                             />
@@ -4155,20 +4155,20 @@ import type { Slide } from "@/types";\n${text}`,
                               muted
                               className={(selectedSlide.slide as any).videoSettings?.displayMode === "center" ? "max-w-full max-h-full object-contain rounded-xl" : "w-full h-full object-cover rounded-xl"}
                               onTimeUpdate={(e) => {
-                                  const videoSettings = (selectedSlide.slide as any).videoSettings;
-                                  if (!videoSettings) return;
-                                  const videoEle = e.currentTarget;
-                                  const endTime = videoSettings.endTime;
-                                  const startTime = videoSettings.startTime || 0;
-                                  if (videoEle.currentTime < startTime - 0.5) videoEle.currentTime = startTime;
-                                  if (endTime && videoEle.currentTime >= endTime) {
-                                      if (videoSettings.endAction === "loop") {
-                                          videoEle.currentTime = startTime;
-                                          videoEle.play().catch(console.error);
-                                      } else {
-                                          videoEle.pause();
-                                      }
+                                const videoSettings = (selectedSlide.slide as any).videoSettings;
+                                if (!videoSettings) return;
+                                const videoEle = e.currentTarget;
+                                const endTime = videoSettings.endTime;
+                                const startTime = videoSettings.startTime || 0;
+                                if (videoEle.currentTime < startTime - 0.5) videoEle.currentTime = startTime;
+                                if (endTime && videoEle.currentTime >= endTime) {
+                                  if (videoSettings.endAction === "loop") {
+                                    videoEle.currentTime = startTime;
+                                    videoEle.play().catch(console.error);
+                                  } else {
+                                    videoEle.pause();
                                   }
+                                }
                               }}
                             />
                           ) : (
@@ -4711,20 +4711,20 @@ import type { Slide } from "@/types";\n${text}`,
                       controls
                       className={editingContent.content?.displayMode === "center" ? "absolute inset-0 w-full h-full object-contain" : "absolute inset-0 w-full h-full object-cover"}
                       onTimeUpdate={(e) => {
-                          const videoSettings = typeof editingContent.content !== 'string' ? editingContent.content : null;
-                          if (!videoSettings) return;
-                          const videoEle = e.currentTarget;
-                          const endTime = videoSettings.endTime;
-                          const startTime = videoSettings.startTime || 0;
-                          if (videoEle.currentTime < startTime - 0.5) videoEle.currentTime = startTime;
-                          if (endTime && videoEle.currentTime >= endTime) {
-                              if (videoSettings.endAction === "loop") {
-                                  videoEle.currentTime = startTime;
-                                  videoEle.play().catch(console.error);
-                              } else {
-                                  videoEle.pause();
-                              }
+                        const videoSettings = typeof editingContent.content !== 'string' ? editingContent.content : null;
+                        if (!videoSettings) return;
+                        const videoEle = e.currentTarget;
+                        const endTime = videoSettings.endTime;
+                        const startTime = videoSettings.startTime || 0;
+                        if (videoEle.currentTime < startTime - 0.5) videoEle.currentTime = startTime;
+                        if (endTime && videoEle.currentTime >= endTime) {
+                          if (videoSettings.endAction === "loop") {
+                            videoEle.currentTime = startTime;
+                            videoEle.play().catch(console.error);
+                          } else {
+                            videoEle.pause();
                           }
+                        }
                       }}
                     />
                   ) : (
@@ -4887,20 +4887,20 @@ import type { Slide } from "@/types";\n${text}`,
                             controls
                             className={(currentlyDisplayedSlide as any).videoSettings?.displayMode === "center" ? "w-full h-full object-contain rounded-xl bg-black" : "absolute inset-0 w-full h-full object-cover rounded-none"}
                             onTimeUpdate={(e) => {
-                                const videoSettings = (currentlyDisplayedSlide as any).videoSettings;
-                                if (!videoSettings) return;
-                                const videoEle = e.currentTarget;
-                                const endTime = videoSettings.endTime;
-                                const startTime = videoSettings.startTime || 0;
-                                if (videoEle.currentTime < startTime - 0.5) videoEle.currentTime = startTime;
-                                if (endTime && videoEle.currentTime >= endTime) {
-                                    if (videoSettings.endAction === "loop") {
-                                        videoEle.currentTime = startTime;
-                                        videoEle.play().catch(console.error);
-                                    } else {
-                                        videoEle.pause();
-                                    }
+                              const videoSettings = (currentlyDisplayedSlide as any).videoSettings;
+                              if (!videoSettings) return;
+                              const videoEle = e.currentTarget;
+                              const endTime = videoSettings.endTime;
+                              const startTime = videoSettings.startTime || 0;
+                              if (videoEle.currentTime < startTime - 0.5) videoEle.currentTime = startTime;
+                              if (endTime && videoEle.currentTime >= endTime) {
+                                if (videoSettings.endAction === "loop") {
+                                  videoEle.currentTime = startTime;
+                                  videoEle.play().catch(console.error);
+                                } else {
+                                  videoEle.pause();
                                 }
+                              }
                             }}
                           />
                         ) : (
@@ -5302,48 +5302,42 @@ import type { Slide } from "@/types";\n${text}`,
                 >
                   {/* Slide Thumbnails with uniform background and external titles */}
                   {slides.map((slide, index) => {
-                    // Group slides by content type and item to calculate item slide numbers
+                    // Group slides intelligently
                     let itemSlideNumber = 1;
                     let totalItemSlides = 1;
 
-                    if (
+                    // Group by itemId to ensure seamless continuous tracks for media, verses, and bibles
+                    if (slide.itemId) {
+                      const parentItem = serviceItems.find((item) => item.id === slide.itemId);
+                      if (parentItem) {
+                        const sameItemSlides = parentItem.slides || [];
+                        itemSlideNumber = sameItemSlides.findIndex((s: any) => s.id === slide.id) + 1;
+                        totalItemSlides = sameItemSlides.length;
+                      } else {
+                        const sameItemSlides = slides.filter((s: any) => s.itemId === slide.itemId);
+                        itemSlideNumber = sameItemSlides.findIndex((s: any) => s.id === slide.id) + 1;
+                        totalItemSlides = sameItemSlides.length;
+                      }
+                    } else if (
                       slide.type === "verse" ||
                       slide.type === "chorus"
                     ) {
-                      // For songs, group by song name
-                      const songName =
-                        slide.songTitle || slide.title.split(" - ")[0];
+                      const songName = slide.songTitle || slide.title.split(" - ")[0];
                       const sameTypeSlides = slides.filter(
-                        (s) =>
-                          (s.type === "verse" || s.type === "chorus") &&
-                          (s.songTitle || s.title.split(" - ")[0]) ===
-                          songName,
+                        (s) => (s.type === "verse" || s.type === "chorus") && (s.songTitle || s.title.split(" - ")[0]) === songName,
                       );
-                      itemSlideNumber =
-                        sameTypeSlides.findIndex(
-                          (s: any) => s.id === slide.id,
-                        ) + 1;
+                      itemSlideNumber = sameTypeSlides.findIndex((s: any) => s.id === slide.id) + 1;
                       totalItemSlides = sameTypeSlides.length;
                     } else if (slide.type === "bible") {
-                      // For Bible verses, group by chapter
                       const bibleRef = slide.title.split(":")[0];
-                      const bibleSameChapterSlides = slides.filter(
-                        (s) =>
-                          s.type === "bible" &&
-                          s.title.split(":")[0] === bibleRef,
-                      );
-                      itemSlideNumber =
-                        bibleSameChapterSlides.findIndex(
-                          (s: any) => s.id === slide.id,
-                        ) + 1;
+                      const bibleSameChapterSlides = slides.filter((s) => s.type === "bible" && s.title.split(":")[0] === bibleRef);
+                      itemSlideNumber = bibleSameChapterSlides.findIndex((s: any) => s.id === slide.id) + 1;
                       totalItemSlides = bibleSameChapterSlides.length;
                     }
 
-                    // Get item title (song name, bible reference, etc.)
-                    const itemTitle =
-                      slide.songTitle ||
-                      slide.title.split(" - ")[0] ||
-                      slide.title;
+                    // Dynamically get live title from the updated service item to ensure edits reflect instantly
+                    const liveItem = slide.itemId ? serviceItems.find((item: any) => item.id === slide.itemId) : null;
+                    const itemTitle = liveItem ? liveItem.title : (slide.songTitle || slide.title.split(" - ")[0] || slide.title);
 
                     // Determine if this is the first slide of an item (should show title)
                     const isFirstSlideOfItem = itemSlideNumber === 1;
