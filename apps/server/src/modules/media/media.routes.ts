@@ -51,6 +51,30 @@ export const mediaRouter = Router();
 mediaRouter.post('/user-media-assets/upload', protect, memoryUpload.array('files'), uploadMedia); // The frontend uses 'files' for FormData
 mediaRouter.get('/user-media-stats', protect, getUserMediaStats);
 mediaRouter.get('/user-media-assets', protect, listUserMedia);
+// Handle legacy raw R2 urls organically that were pushed to slides before being caught
+mediaRouter.get('/user-media-assets/resolve-r2', async (req, res) => {
+  try {
+    const r2Url = req.query.url as string;
+    if (!r2Url) return res.status(400).json({ message: 'URL required' });
+    
+    // Find the media by fileUrl
+    const { Media } = await import('./media.model.js');
+    const { objectStorage } = await import('./s3.service.js');
+    
+    // Check both Cloud Media and User Media for this exact url
+    const media = await Media.findOne({ fileUrl: r2Url });
+    if (!media || !media.cloudKey) {
+       // if we can't find it, we can't sign it.
+       return res.status(404).json({ message: 'Corresponding media asset not found or lacks cloudKey' });
+    }
+    
+    const signedUrl = await objectStorage.getSignedDownloadUrl(media.cloudKey, 3600);
+    return res.redirect(signedUrl);
+  } catch (error) {
+    console.error('Failed to resolve legacy R2 URL:', error);
+    res.status(500).json({ message: 'Server Error' });
+  }
+});
 mediaRouter.get('/user-media-assets/:id/file', getMediaFile);
 mediaRouter.get('/user-media-assets/:id/thumbnail', getMediaThumbnail);
 mediaRouter.delete('/user-media-assets/:id', deleteMedia);
