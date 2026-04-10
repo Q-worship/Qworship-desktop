@@ -7,14 +7,21 @@ const resolveMediaUrl = (url: string | null | undefined): string | undefined => 
   if (!url) return undefined;
   
   // Exact placeholder matches
-  if (url === "Worship background image" || url === "Inspirational worship video" || url === "Background Image") return undefined;
+  if (url === "Worship background image" || url === "Inspirational worship video" || url === "Background Image" || url === "Ready for content") return undefined;
   
   // Valid URL prefixes
   if (url.startsWith('http://') || url.startsWith('https://')) return url;
   if (url.startsWith('data:') || url.startsWith('blob:')) return url;
   
-  // Relative API paths (handled by Vite proxy in dev)
-  if (url.startsWith('/api/')) return url;
+  // Relative API paths
+  if (url.startsWith('/api/') || url.startsWith('/uploads/')) {
+    const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+    if (url.startsWith('/api') && API_BASE.endsWith('/api')) {
+      return API_BASE.slice(0, -4) + url;
+    }
+    const normalizedPath = url.startsWith('/') ? url : `/${url}`;
+    return API_BASE.replace(/\/$/, '') + normalizedPath;
+  }
   
   // If it doesn't match any known valid prefix, it's likely a generic string/placeholder
   return undefined;
