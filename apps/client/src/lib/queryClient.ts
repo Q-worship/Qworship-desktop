@@ -41,9 +41,15 @@ export const resolveMediaUrl = (url: string | null | undefined): string | undefi
     cleanUrl = cleanUrl.replace('http://localhost:5000/api/', '/api/');
   }
   
-  if (cleanUrl.startsWith('http://') || cleanUrl.startsWith('https://')) return cleanUrl;
   if (cleanUrl.startsWith('data:') || cleanUrl.startsWith('blob:')) return cleanUrl;
   if (cleanUrl.startsWith('/api/') || cleanUrl.startsWith('/uploads/')) return buildUrl(cleanUrl);
+
+  // If a raw unsigned R2 URL somehow got saved to a slide, bounce it to the backend resolver explicitly 
+  if (cleanUrl.includes('.r2.cloudflarestorage.com')) {
+    return buildUrl(`/api/user-media-assets/resolve-r2?url=${encodeURIComponent(cleanUrl)}`);
+  }
+
+  if (cleanUrl.startsWith('http://') || cleanUrl.startsWith('https://')) return cleanUrl;
   return undefined;
 };
 
