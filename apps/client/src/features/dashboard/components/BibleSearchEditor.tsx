@@ -7,6 +7,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
+import { searchOffline, type BibleVersion } from "@/lib/offlineBibleEngine";
 
 interface BibleSearchEditorProps {
   isVisible: boolean;
@@ -58,10 +59,30 @@ export const BibleSearchEditor: React.FC<BibleSearchEditorProps> = ({
     { id: 'ESV', name: 'ESV' },
   ];
 
-  // Search Bible function
+  // Search Bible — offline first, API fallback
   const searchBible = async (reference: string, version: string) => {
     setIsSearching(true);
     try {
+      // 1. Try local IndexedDB first (works 100% offline)
+      const offlineResult = await searchOffline(reference, version.toLowerCase() as BibleVersion);
+
+      if (offlineResult && offlineResult.verses.length > 0) {
+        const passage: BiblePassage = {
+          reference: offlineResult.formattedReference,
+          version: offlineResult.version.toUpperCase(),
+          verses: offlineResult.verses.map(v => ({ number: v.number, text: v.text })),
+        };
+        setSelectedPassage(passage);
+        autoApply(passage);
+        toast({
+          title: "Scripture Found",
+          description: `${passage.reference} (${passage.version}) — offline`,
+          className: "bg-gradient-to-r from-purple-900/90 to-purple-800/90 border-purple-500/30 text-white"
+        });
+        return;
+      }
+
+      // 2. Fallback to API when offline data isn't synced yet
       const response = await fetch(`/api/bible/search?reference=${encodeURIComponent(reference)}&version=${version}`);
       if (!response.ok) {
         const error = await response.json();
@@ -70,57 +91,7 @@ export const BibleSearchEditor: React.FC<BibleSearchEditorProps> = ({
       const data = await response.json();
       if (data?.passage) {
         setSelectedPassage(data.passage);
-        
-        // Auto-apply the Scripture to the service (no manual "Add to Service" step needed)
-        console.log('🔍 Auto-apply check - selectedBibleItemId:', selectedBibleItemId);
-        if (selectedBibleItemId) {
-          console.log('✅ Auto-applying Bible content to service item');
-          // Generate slides inline since the function is defined later
-          const slides = [];
-          
-          if (oneVersePerSlide) {
-            data.passage.verses.forEach((verse: any, index: number) => {
-              slides.push({
-                id: `bible-slide-${index + 1}`,
-                type: 'bible',
-                title: data.passage.reference,
-                content: includeVerseNumbers ? `${verse.number} ${verse.text}` : verse.text,
-                slideNumber: index + 1,
-                reference: showBibleReference !== 'none' ? data.passage.reference : '',
-                version: showBibleVersion !== 'none' ? data.passage.version : ''
-              });
-            });
-          } else {
-            const content = data.passage.verses.map((v: any) => 
-              includeVerseNumbers ? `${v.number} ${v.text}` : v.text
-            ).join(' ');
-            
-            slides.push({
-              id: 'bible-slide-1',
-              type: 'bible',
-              title: data.passage.reference,
-              content,
-              slideNumber: 1,
-              reference: showBibleReference !== 'none' ? data.passage.reference : '',
-              version: showBibleVersion !== 'none' ? data.passage.version : ''
-            });
-          }
-          
-          const updateData = {
-            title: data.passage.reference,
-            bibleReference: data.passage.reference,
-            bibleVersion: data.passage.version,
-            bibleVerses: JSON.stringify(data.passage.verses),
-            content: data.passage.verses.map((v: any) => v.text).join(' '),
-            slides: JSON.stringify(slides)
-          };
-          console.log('📤 Sending Bible update:', updateData);
-          console.log('📤 Generated slides count:', slides.length);
-          updateBibleItem.mutate(updateData);
-        } else {
-          console.log('❌ Not auto-applying: selectedBibleItemId is', selectedBibleItemId);
-        }
-        
+        autoApply(data.passage);
         toast({
           title: "Scripture Found",
           description: `${data.passage.reference} (${data.passage.version})`,
@@ -136,6 +107,47 @@ export const BibleSearchEditor: React.FC<BibleSearchEditorProps> = ({
     } finally {
       setIsSearching(false);
     }
+  };
+
+  const autoApply = (passage: BiblePassage) => {
+    if (!selectedBibleItemId) return;
+    const slides = generateSlidesFromPassage(passage);
+    updateBibleItem.mutate({
+      title: passage.reference,
+      bibleReference: passage.reference,
+      bibleVersion: passage.version,
+      bibleVerses: JSON.stringify(passage.verses),
+      content: passage.verses.map((v: any) => v.text).join(' '),
+      slides: JSON.stringify(slides),
+    });
+  };
+
+  const generateSlidesFromPassage = (passage: BiblePassage) => {
+    const parentItemId = selectedBibleItemId || `bible-${Date.now()}`;
+    const slides: any[] = [];
+    if (oneVersePerSlide) {
+      passage.verses.forEach((verse, index) => {
+        slides.push({
+          id: `slide-${parentItemId}-${index + 1}`,
+          itemId: parentItemId,
+          type: 'bible',
+          title: passage.reference,
+          content: includeVerseNumbers ? `${verse.number} ${verse.text}` : verse.text,
+          slideNumber: index + 1,
+          reference: showBibleReference !== 'none' ? passage.reference : '',
+          version: showBibleVersion !== 'none' ? passage.version : '',
+        });
+      });
+    } else {
+      const content = passage.verses.map(v => includeVerseNumbers ? `${v.number} ${v.text}` : v.text).join(' ');
+      slides.push({
+        id: `slide-${parentItemId}-1`, itemId: parentItemId, type: 'bible',
+        title: passage.reference, content, slideNumber: 1,
+        reference: showBibleReference !== 'none' ? passage.reference : '',
+        version: showBibleVersion !== 'none' ? passage.version : '',
+      });
+    }
+    return slides;
   };
 
   // Update service item with Bible data

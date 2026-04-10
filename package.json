@@ -4,7 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "pnpm --parallel --filter \"./apps/*\" run dev",
+    "dev:desktop": "pnpm --filter \"@qworship/client\" run dev:desktop",
     "build": "pnpm --filter \"./apps/*\" run build",
+    "build:desktop": "pnpm --filter \"@qworship/client\" run build:desktop",
     "lint": "pnpm --filter \"*\" run lint"
   },
   "devDependencies": {

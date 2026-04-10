@@ -1,270 +1,181 @@
-import { useState, useEffect } from "react";
-import { Link, useLocation } from "wouter";
-import { useMutation } from "@tanstack/react-query";
-// import { apiRequest } from "@/lib/queryClient";
-import { useAuthStore } from "@/features/auth/auth.store";
-import { AuthDuplicateEmailModal } from "@/features/auth/components/AuthDuplicateEmailModal";
-import { AuthErrorModal } from "@/features/auth/components/AuthErrorModal";
-import { AuthMarketingCarousel } from "@/features/auth/components/AuthMarketingCarousel";
-import { AuthSignInForm } from "@/features/auth/components/AuthSignInForm";
-import { AuthSignUpForm } from "@/features/auth/components/AuthSignUpForm";
-import qWorshipLogo from "@assets/Group 1_1753834112739.png";
-import qWorshipBrandLogo from "@assets/Group 1_1753867403180.png";
-import qWorshipLogoLarge from "@assets/Group 1_1753835537799.png";
-import { useToast } from "@/hooks/use-toast";
-import { apiRequest } from "@/lib/queryClient";
+import { LogIn } from "lucide-react";
+
+const signinHero = new URL("../../../assets/splash/signin-hero.png", import.meta.url).href;
+
+const QworshipLogo = () => (
+  <div style={{ position: "relative", width: 52, height: 52 }}>
+    <div style={{ position: "absolute", inset: 0, borderRadius: "50%", border: "4px solid #e94d8a" }} />
+    <div style={{ position: "absolute", bottom: 1, right: 1, width: 13, height: 13, borderRadius: "50%", background: "#e94d8a" }} />
+  </div>
+);
 
 export default function SignIn() {
-  const [isSignUp, setIsSignUp] = useState(false);
-  const [, setLocation] = useLocation();
-  const { toast } = useToast();
-  const [showDuplicateEmailModal, setShowDuplicateEmailModal] = useState(false);
-  const [showErrorModal, setShowErrorModal] = useState(false);
-  const [errorModalContent, setErrorModalContent] = useState({
-    title: "",
-    message: "",
-    type: "", // 'empty-fields' or 'invalid-credentials'
-  });
-  const [formData, setFormData] = useState({
-    username: "",
-    password: "",
-  });
-
-  const [signUpData, setSignUpData] = useState({
-    firstName: "",
-    lastName: "",
-    countryCode: "+44",
-    phoneNumber: "",
-    email: "",
-    password: "",
-    agreeToMarketing: false,
-  });
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  const signInMutation = useMutation({
-    mutationFn: async (data: typeof formData) => {
-      const response = await apiRequest("POST", "/api/auth/signin", {
-        username: data.username,
-        password: data.password,
-      });
-      return await response.json();
-    },
-    onSuccess: (response) => {
-      toast({
-        title: "Welcome back!",
-        description: "You have successfully signed in to Q-worship.",
-      });
-      // Store user ID and JWT token for session
-      sessionStorage.setItem("qworship_user_id", response.user.id.toString());
-      localStorage.setItem("token", response.token);
-
-      // Update global Zustand store
-      useAuthStore.getState().setAuth(response.user);
-
-      // Navigate to next step based on user progress
-      setLocation(response.nextStep);
-    },
-    onError: (error: any) => {
-      setErrorModalContent({
-        title: "Sign-in Failed",
-        message:
-          "Invalid credentials. Please check your username and password and try again.",
-        type: "invalid-credentials",
-      });
-      setShowErrorModal(true);
-      console.error("Sign-in error:", error);
-    },
-  });
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-
-    // Check for empty fields
-    if (!formData.username.trim() || !formData.password.trim()) {
-      setErrorModalContent({
-        title: "Missing Information",
-        message: "Please enter both username and password to continue.",
-        type: "empty-fields",
-      });
-      setShowErrorModal(true);
-      return;
+  const handleDesktopAuth = () => {
+    if (window.api && window.api.openWebAuth) {
+      window.api.openWebAuth("https://app.qworship.com/desktop-auth");
+    } else {
+      window.open("https://app.qworship.com/desktop-auth", "_blank");
     }
-
-    signInMutation.mutate(formData);
-  };
-
-  const handleSignUpInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setSignUpData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleCheckboxChange = (checked: boolean) => {
-    setSignUpData((prev) => ({ ...prev, agreeToMarketing: checked }));
-  };
-
-  const handleCountryCodeChange = (value: string) => {
-    setSignUpData((prev) => ({ ...prev, countryCode: value }));
-  };
-
-  const signUpMutation = useMutation({
-    mutationFn: async (data: typeof signUpData) => {
-      const userData = {
-        username: data.email,
-        email: data.email,
-        password: data.password,
-        firstName: data.firstName,
-        lastName: data.lastName,
-        countryCode: data.countryCode,
-        phoneNumber: data.phoneNumber,
-        agreeToMarketing: data.agreeToMarketing,
-        organizationName: null,
-        role: "user",
-        accountType: "free",
-        isActive: true,
-        emailVerified: false,
-      };
-      const response = await apiRequest("POST", "/api/auth/register", userData);
-      return await response.json();
-    },
-    onSuccess: (response) => {
-      toast({
-        title: "Account Created!",
-        description: "Welcome to Q-worship! Please set up your organization.",
-      });
-      // Store user ID in sessionStorage for organization setup
-      sessionStorage.setItem("qworship_user_id", response.user.id.toString());
-      localStorage.setItem("token", response.token);
-
-      // Update global Zustand store
-      useAuthStore.getState().setAuth(response.user);
-
-      // Navigate to organization setup
-      setLocation("/organization-setup");
-    },
-    onError: (error: any) => {
-      console.error("Sign-up error:", error);
-      // The error message format is "400: {\"success\":false,\"error\":\"An account with this email already exists\"}"
-      const errorMessage = error.message || "";
-
-      // Parse the error message to extract the actual error content
-      let isDuplicateEmail = false;
-      try {
-        // Check if the error message contains JSON data
-        if (errorMessage.includes("{") && errorMessage.includes("}")) {
-          const jsonPart = errorMessage.substring(errorMessage.indexOf("{"));
-          const errorData = JSON.parse(jsonPart);
-          if (
-            errorData.error &&
-            errorData.error.toLowerCase().includes("already exists")
-          ) {
-            isDuplicateEmail = true;
-          }
-        }
-      } catch (parseError) {
-        // If JSON parsing fails, check the raw message
-        if (
-          errorMessage.toLowerCase().includes("already exists") ||
-          errorMessage.toLowerCase().includes("duplicate")
-        ) {
-          isDuplicateEmail = true;
-        }
-      }
-
-      if (isDuplicateEmail) {
-        setShowDuplicateEmailModal(true);
-      } else {
-        toast({
-          title: "Sign-up Failed",
-          description:
-            errorMessage ||
-            "There was an error creating your account. Please try again.",
-          variant: "destructive",
-        });
-      }
-    },
-  });
-
-  const handleSignUpSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!signUpData.firstName || !signUpData.email || !signUpData.password) {
-      toast({
-        title: "Missing Information",
-        description: "Please fill in all required fields.",
-        variant: "destructive",
-      });
-      return;
-    }
-    signUpMutation.mutate(signUpData);
   };
 
   return (
-    <div className="min-h-screen bg-black">
-      {/* Main Content */}
-      <div className="flex-1 flex items-center justify-center px-6 pt-24 pb-12">
-        <div className="w-full max-w-6xl mx-auto">
-          <div className="bg-gradient-to-r from-[#5A4B7C] via-[#6B5B95] to-[#7B6BAE] rounded-3xl p-0 overflow-hidden shadow-2xl">
-            <div className="grid grid-cols-1 lg:grid-cols-2 min-h-[600px]">
-              {/* Left Side - Login/SignUp Form */}
-              <div className="bg-gradient-to-br from-[#4A4570] to-[#6B5B95] p-12 flex flex-col justify-center">
-                <div className="max-w-md mx-auto w-full">
-                  {!isSignUp ? (
-                    <AuthSignInForm
-                      formData={formData}
-                      isPending={signInMutation.isPending}
-                      onInputChange={handleInputChange}
-                      onSubmit={handleSubmit}
-                      onSwitchToSignUp={() => setIsSignUp(true)}
-                    />
-                  ) : (
-                    <AuthSignUpForm
-                      signUpData={signUpData}
-                      isPending={signUpMutation.isPending}
-                      onInputChange={handleSignUpInputChange}
-                      onCountryCodeChange={handleCountryCodeChange}
-                      onCheckboxChange={handleCheckboxChange}
-                      onSubmit={handleSignUpSubmit}
-                      onSwitchToSignIn={() => setIsSignUp(false)}
-                    />
-                  )}
-                </div>
-              </div>
+    <div
+      style={{
+        width: "100vw",
+        height: "100vh",
+        display: "flex",
+        overflow: "hidden",
+        fontFamily: "'Inter', 'Segoe UI', system-ui, sans-serif",
+      }}
+    >
+      {/* ── LEFT PANEL ── */}
+      <div
+        style={{
+          flex: "0 0 44%",
+          background: "linear-gradient(160deg, #252044 0%, #1e1a3a 60%, #1a1530 100%)",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          padding: "48px 52px",
+          position: "relative",
+          zIndex: 2,
+        }}
+      >
+        {/* Subtle glow top-left */}
+        <div style={{ position: "absolute", top: -80, left: -80, width: 300, height: 300, borderRadius: "50%", background: "radial-gradient(ellipse, rgba(109,40,217,0.25) 0%, transparent 70%)", pointerEvents: "none" }} />
 
-              {/* Right Side - Marketing Content */}
-              <AuthMarketingCarousel isSignUp={isSignUp} />
-            </div>
+        <h2 style={{ color: "#a78bfa", fontWeight: 700, fontSize: "1.9rem", marginBottom: 14, letterSpacing: "-0.01em" }}>
+          Login
+        </h2>
+
+        <p style={{ color: "rgba(255,255,255,0.55)", fontSize: "0.88rem", lineHeight: 1.65, marginBottom: 44, maxWidth: 340 }}>
+          Thank you for downloading Q-worship. Sign in securely via your browser — one click and you're in.
+        </p>
+
+        {/* IPC status */}
+        {typeof window !== "undefined" && !window.api && (
+          <div style={{ background: "rgba(239,68,68,0.12)", border: "1px solid rgba(239,68,68,0.3)", borderRadius: 8, padding: "8px 12px", marginBottom: 20, fontSize: "0.72rem", color: "#f87171", fontFamily: "monospace" }}>
+            IPC bridge missing — running outside Electron
           </div>
+        )}
+
+        {/* Sign in button */}
+        <button
+          onClick={handleDesktopAuth}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 10,
+            background: "linear-gradient(135deg, #6d28d9, #7c3aed)",
+            color: "#fff",
+            fontWeight: 700,
+            fontSize: "0.95rem",
+            padding: "14px 28px",
+            borderRadius: 10,
+            border: "none",
+            cursor: "pointer",
+            width: "100%",
+            maxWidth: 340,
+            boxShadow: "0 6px 28px rgba(109,40,217,0.45)",
+            transition: "transform 0.15s, opacity 0.15s",
+            letterSpacing: "0.01em",
+          }}
+          onMouseEnter={(e) => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.opacity = "0.92"; }}
+          onMouseLeave={(e) => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.opacity = "1"; }}
+        >
+          <LogIn size={18} />
+          Sign In with Browser
+        </button>
+
+        <p style={{ color: "rgba(255,255,255,0.3)", fontSize: "0.75rem", marginTop: 16, maxWidth: 340 }}>
+          Your browser will return you here automatically once authenticated.
+        </p>
+
+
+      </div>
+
+      {/* ── RIGHT PANEL ── */}
+      <div
+        style={{
+          flex: 1,
+          background: "linear-gradient(135deg, #4c1d95 0%, #6d28d9 40%, #7c3aed 100%)",
+          position: "relative",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          overflow: "hidden",
+          padding: "40px 32px 0",
+        }}
+      >
+        {/* Radial glow */}
+        <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse at 50% 30%, rgba(255,255,255,0.06) 0%, transparent 65%)", pointerEvents: "none" }} />
+
+        {/* Logo + tagline */}
+        <div style={{ position: "relative", zIndex: 2, display: "flex", flexDirection: "column", alignItems: "center", gap: 18, marginBottom: 32 }}>
+          <QworshipLogo />
+          <h1
+            style={{
+              color: "#fff",
+              fontWeight: 800,
+              fontSize: "clamp(1.4rem, 3vw, 1.9rem)",
+              textAlign: "center",
+              maxWidth: 340,
+              lineHeight: 1.3,
+              letterSpacing: "-0.02em",
+              textShadow: "0 2px 20px rgba(0,0,0,0.3)",
+            }}
+          >
+            Changing the way you deliver worship
+          </h1>
+        </div>
+
+        {/* Hero image — centered */}
+        <div
+          style={{
+            position: "relative",
+            zIndex: 2,
+            flex: 1,
+            width: "100%",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: "0 24px 48px",
+          }}
+        >
+          <img
+            src={signinHero}
+            alt="Hands-free Bible in action with live worship"
+            loading="lazy"
+            style={{
+              width: "100%",
+              maxWidth: 480,
+              maxHeight: "calc(100vh - 280px)",
+              objectFit: "contain",
+              display: "block",
+              borderRadius: 12,
+              filter: "drop-shadow(0 8px 40px rgba(0,0,0,0.45))",
+            }}
+          />
+        </div>
+
+        {/* Bottom dots */}
+        <div style={{ position: "absolute", bottom: 28, display: "flex", gap: 8, zIndex: 3 }}>
+          {[0, 1, 2].map((i) => (
+            <div
+              key={i}
+              style={{
+                width: i === 0 ? 22 : 8,
+                height: 8,
+                borderRadius: 10,
+                background: i === 0 ? "#e94d8a" : "rgba(255,255,255,0.35)",
+                transition: "width 0.3s",
+              }}
+            />
+          ))}
         </div>
       </div>
-      {/* Duplicate Email Modal */}
-      <AuthDuplicateEmailModal
-        open={showDuplicateEmailModal}
-        onOpenChange={setShowDuplicateEmailModal}
-        onSignInInstead={() => {
-          setShowDuplicateEmailModal(false);
-          setIsSignUp(false);
-          setFormData((prev) => ({ ...prev, username: signUpData.email }));
-        }}
-        onTryDifferentEmail={() => {
-          setShowDuplicateEmailModal(false);
-          setSignUpData((prev) => ({ ...prev, email: "" }));
-        }}
-      />
-
-      {/* Themed Error Modal */}
-      <AuthErrorModal
-        open={showErrorModal}
-        onOpenChange={setShowErrorModal}
-        title={errorModalContent.title}
-        message={errorModalContent.message}
-        type={errorModalContent.type}
-        onTryAgain={() => setShowErrorModal(false)}
-      />
     </div>
   );
 }

@@ -29,7 +29,7 @@ import { OBSStatusBadge } from "@/features/dashboard/components/OBSStatusBadge";
 import { obsService, OBSSettings } from "@/services/OBSConnectionService";
 import { useToast } from "@/hooks/use-toast";
 import { Toaster } from "@/components/ui/toaster";
-import { AssetsPage } from "@/features/web/pages/AssetsPage";
+import AssetsPage from "@/features/dashboard/pages/AssetsPage";
 import {
   useBibleProjectionStore,
   requestSyncFromOtherWindows,
