@@ -266,7 +266,7 @@ export const SlideGridRenderer = (props: any) => {
                             }
 
                             // Dynamically get live title from the updated service item to ensure edits reflect instantly
-                            const liveItem = slide.itemId ? serviceItems.find(item => item.id === slide.itemId) : null;
+                            const liveItem = slide.itemId ? serviceItems.find((item: any) => item.id === slide.itemId) : null;
                             const itemTitle = liveItem ? liveItem.title : (slide.songTitle || slide.title.split(" - ")[0] || slide.title);
 
                             // Determine if this is the first slide of an item (should show title)
