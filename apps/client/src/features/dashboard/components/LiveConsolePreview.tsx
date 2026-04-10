@@ -3,27 +3,14 @@ import { OBSStatusBadge } from "@/features/dashboard/components/OBSStatusBadge";
 import facebookIcon from "@assets/R (2)_1756733484236.png";
 import instagramIcon from "@assets/1658586823instagram-logo-transparent_1756733484234.png";
 
+import { buildUrl } from "@/lib/queryClient";
+
 const resolveMediaUrl = (url: string | null | undefined): string | undefined => {
   if (!url) return undefined;
-  
-  // Exact placeholder matches
   if (url === "Worship background image" || url === "Inspirational worship video" || url === "Background Image" || url === "Ready for content") return undefined;
-  
-  // Valid URL prefixes
   if (url.startsWith('http://') || url.startsWith('https://')) return url;
   if (url.startsWith('data:') || url.startsWith('blob:')) return url;
-  
-  // Relative API paths
-  if (url.startsWith('/api/') || url.startsWith('/uploads/')) {
-    const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
-    if (url.startsWith('/api') && API_BASE.endsWith('/api')) {
-      return API_BASE.slice(0, -4) + url;
-    }
-    const normalizedPath = url.startsWith('/') ? url : `/${url}`;
-    return API_BASE.replace(/\/$/, '') + normalizedPath;
-  }
-  
-  // If it doesn't match any known valid prefix, it's likely a generic string/placeholder
+  if (url.startsWith('/api/') || url.startsWith('/uploads/')) return buildUrl(url);
   return undefined;
 };
 

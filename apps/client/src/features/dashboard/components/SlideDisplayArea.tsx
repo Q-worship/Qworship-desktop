@@ -1,6 +1,16 @@
 import React from "react";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import qworshipLogo from "@/assets/logo.png";
+import { buildUrl } from "@/lib/queryClient";
+
+const resolveMediaUrl = (url: string | null | undefined): string | undefined => {
+  if (!url) return undefined;
+  if (url === "Worship background image" || url === "Inspirational worship video" || url === "Background Image" || url === "Ready for content") return undefined;
+  if (url.startsWith('http://') || url.startsWith('https://')) return url;
+  if (url.startsWith('data:') || url.startsWith('blob:')) return url;
+  if (url.startsWith('/api/') || url.startsWith('/uploads/')) return buildUrl(url);
+  return undefined;
+};
 
 interface SlideDisplayAreaProps {
   isBuildMode: boolean;
@@ -78,7 +88,10 @@ export const SlideDisplayArea: React.FC<SlideDisplayAreaProps> = ({
             itemBackground.type === "video"
           ) {
             let backgroundUrl = itemBackground.value;
-            if (
+            const resolvedUrl = resolveMediaUrl(backgroundUrl);
+            if (resolvedUrl) {
+              backgroundUrl = resolvedUrl;
+            } else if (
               !backgroundUrl.startsWith("http") &&
               !backgroundUrl.startsWith("data:")
             ) {
@@ -192,7 +205,7 @@ export const SlideDisplayArea: React.FC<SlideDisplayAreaProps> = ({
                   <div className="absolute inset-0 w-full h-full">
                     {(selectedSlide.slide as any).subtype === "video" ? (
                       <video
-                        src={selectedSlide.slide.content && selectedSlide.slide.content !== "Inspirational worship video" ? selectedSlide.slide.content : undefined}
+                        src={resolveMediaUrl(selectedSlide.slide.content) || (selectedSlide.slide.content && selectedSlide.slide.content !== "Inspirational worship video" ? selectedSlide.slide.content : undefined)}
                         autoPlay={(selectedSlide.slide as any).videoSettings?.autoPlay ?? true}
                         loop={(selectedSlide.slide as any).videoSettings?.endAction !== "nothing"}
                         muted playsInline
@@ -216,7 +229,7 @@ export const SlideDisplayArea: React.FC<SlideDisplayAreaProps> = ({
                       />
                     ) : (
                       <img
-                        src={typeof selectedSlide.slide.content === 'string' && selectedSlide.slide.content.length > 5 && selectedSlide.slide.content !== "Worship background image" ? selectedSlide.slide.content : "https://images.unsplash.com/photo-1438232992991-995b7058bbb3?q=80&w=2673&auto=format&fit=crop"}
+                        src={resolveMediaUrl(selectedSlide.slide.content) || (typeof selectedSlide.slide.content === 'string' && selectedSlide.slide.content.length > 5 && selectedSlide.slide.content !== "Worship background image" ? selectedSlide.slide.content : "https://images.unsplash.com/photo-1438232992991-995b7058bbb3?q=80&w=2673&auto=format&fit=crop")}
                         alt={selectedSlide.slide.title || "Media slide"}
                         className="w-full h-full object-cover"
                       />
@@ -339,7 +352,10 @@ export const SlideDisplayArea: React.FC<SlideDisplayAreaProps> = ({
                     itemBackground.type === "video"
                   ) {
                     let backgroundUrl = itemBackground.value;
-                    if (
+                    const resolvedUrl = resolveMediaUrl(backgroundUrl);
+                    if (resolvedUrl) {
+                      backgroundUrl = resolvedUrl;
+                    } else if (
                       !backgroundUrl.startsWith("http") &&
                       !backgroundUrl.startsWith("data:")
                     ) {
@@ -371,7 +387,7 @@ export const SlideDisplayArea: React.FC<SlideDisplayAreaProps> = ({
                     <div className="absolute inset-0 w-full h-full">
                       {(currentlyDisplayedSlide as any).subtype === "video" ? (
                         <video
-                          src={currentlyDisplayedSlide.content && currentlyDisplayedSlide.content !== "Inspirational worship video" ? currentlyDisplayedSlide.content : undefined}
+                          src={resolveMediaUrl(currentlyDisplayedSlide.content) || (currentlyDisplayedSlide.content && currentlyDisplayedSlide.content !== "Inspirational worship video" ? currentlyDisplayedSlide.content : undefined)}
                           autoPlay={(currentlyDisplayedSlide as any).videoSettings?.autoPlay ?? true}
                           loop={(currentlyDisplayedSlide as any).videoSettings?.endAction !== "nothing"}
                           muted playsInline
@@ -395,7 +411,7 @@ export const SlideDisplayArea: React.FC<SlideDisplayAreaProps> = ({
                         />
                       ) : (
                         <img
-                          src={typeof currentlyDisplayedSlide.content === 'string' && currentlyDisplayedSlide.content.length > 5 && currentlyDisplayedSlide.content !== "Worship background image" ? currentlyDisplayedSlide.content : "https://images.unsplash.com/photo-1438232992991-995b7058bbb3?q=80&w=2673&auto=format&fit=crop"}
+                          src={resolveMediaUrl(currentlyDisplayedSlide.content) || (typeof currentlyDisplayedSlide.content === 'string' && currentlyDisplayedSlide.content.length > 5 && currentlyDisplayedSlide.content !== "Worship background image" ? currentlyDisplayedSlide.content : "https://images.unsplash.com/photo-1438232992991-995b7058bbb3?q=80&w=2673&auto=format&fit=crop")}
                           alt={currentlyDisplayedSlide.title || "Media slide"}
                           className="w-full h-full object-cover"
                         />
@@ -519,7 +535,10 @@ export const SlideDisplayArea: React.FC<SlideDisplayAreaProps> = ({
                           background.type === "video"
                         ) {
                           let backgroundUrl = background.value;
-                          if (
+                          const resolvedUrl = resolveMediaUrl(backgroundUrl);
+                          if (resolvedUrl) {
+                            backgroundUrl = resolvedUrl;
+                          } else if (
                             !backgroundUrl.startsWith("http") &&
                             !backgroundUrl.startsWith("data:")
                           ) {
