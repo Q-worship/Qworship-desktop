@@ -13,7 +13,12 @@ export const useSongSync = () => {
       if (!force) {
         const state = await db.syncState.get("songs");
         if (state && state.status === "synced") {
-          return; // Already synced, avoid redundant network overhead
+          const songCount = await db.songs.count();
+          
+          // Verify we didn't just save a corrupted sync state or lose our IndexedDB
+          if (songCount > 0 && (!state.totalVerses || songCount === state.totalVerses)) {
+             return; // Already perfectly synced, avoid redundant network overhead
+          }
         }
       }
 

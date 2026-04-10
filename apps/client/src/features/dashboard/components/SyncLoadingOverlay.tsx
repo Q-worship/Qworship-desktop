@@ -1,58 +1,62 @@
 import React from 'react';
-import { Database, Loader2, ServerCog, Wifi } from "lucide-react";
+import { Database, Loader2, ServerCog, Wifi, CheckCircle2 } from "lucide-react";
 
-export const SyncLoadingOverlay = () => {
+interface SyncLoadingOverlayProps {
+  isSyncing?: boolean;
+  isSuccess?: boolean;
+}
+
+export const SyncLoadingOverlay = ({ isSyncing = true, isSuccess = false }: SyncLoadingOverlayProps) => {
   return (
-    <div className="fixed inset-0 z-[9999] bg-background/80 backdrop-blur-xl flex flex-col items-center justify-center">
-      <div className="relative w-full max-w-md mx-auto p-8 rounded-3xl bg-card/80 backdrop-blur-3xl border border-border shadow-2xl overflow-hidden">
-        {/* Glow Effects */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[200%] h-64 bg-primary/10 rounded-full blur-[80px] pointer-events-none" />
+    <div className="fixed bottom-6 right-6 z-[9999] pointer-events-none w-full max-w-[340px] animate-in slide-in-from-bottom-5 fade-in duration-500">
+      <div className="relative p-5 rounded-2xl bg-card/95 backdrop-blur-xl border border-border shadow-2xl overflow-hidden pointer-events-auto">
+        {/* Top Glow Progress Line */}
+        {!isSuccess && (
+          <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-primary/10 via-primary to-primary/10 animate-pulse" />
+        )}
+        {isSuccess && (
+          <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-emerald-500/10 via-emerald-500 to-emerald-500/10" />
+        )}
         
-        <div className="relative z-10 flex flex-col items-center text-center">
-          <div className="relative mb-8 mt-4">
-            <div className="relative w-24 h-24 rounded-full bg-primary/5 flex items-center justify-center border border-primary/20 shadow-[0_0_40px_rgba(255,255,255,0.05)]">
-              <Database className="w-10 h-10 text-primary animate-pulse" />
-            </div>
-            
-            {/* Smooth spinning gradient ring */}
-            <div className="absolute inset-[-4px] rounded-full border border-transparent border-t-primary/80 animate-spin" style={{ animationDuration: '2s' }} />
-            <div className="absolute inset-[-8px] rounded-full border border-transparent border-t-primary/30 animate-spin" style={{ animationDuration: '3s', animationDirection: 'reverse' }} />
-            
-            <div className="absolute -bottom-2 -right-2 w-10 h-10 rounded-full bg-card border border-border flex items-center justify-center shadow-lg">
-              <Loader2 className="w-5 h-5 text-primary animate-spin" />
-            </div>
+        <div className="relative z-10 flex flex-col">
+          <div className="flex items-center gap-4">
+             <div className="relative w-12 h-12 rounded-full bg-primary/5 border border-primary/10 flex items-center justify-center shrink-0">
+               {isSuccess ? (
+                 <CheckCircle2 className="w-6 h-6 text-emerald-500" />
+               ) : (
+                 <>
+                   <Database className="w-5 h-5 text-primary animate-pulse" />
+                   <div className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-card flex items-center justify-center shadow-sm border border-border">
+                     <Loader2 className="w-3 h-3 text-primary animate-spin" />
+                   </div>
+                 </>
+               )}
+             </div>
+             <div className="flex-1">
+               <h3 className="text-sm font-semibold text-foreground">
+                 {isSuccess ? "Offline Data Ready" : "Synchronizing Library"}
+               </h3>
+               <p className="text-xs text-muted-foreground leading-snug mt-1">
+                 {isSuccess 
+                   ? "All resources are now available for zero-latency offline use." 
+                   : "Downloading datasets for zero-latency performance."}
+               </p>
+             </div>
           </div>
 
-          <h2 className="text-2xl font-bold tracking-tight mb-3 text-foreground">
-            Synchronizing Offline Data
-          </h2>
-          
-          <p className="text-muted-foreground mb-8 text-sm leading-relaxed px-4">
-            Initializing your local database with Bibles and Songs for uncompromising zero-latency performance. 
-            <br />
-            <span className="font-semibold text-primary/80 mt-2 block">This only happens once.</span>
-          </p>
-
-          <div className="w-full flex items-center justify-between text-xs font-semibold text-muted-foreground bg-black/5 dark:bg-black/20 w-fit mx-auto px-8 py-4 rounded-2xl border border-border shadow-inner">
-            <div className="flex flex-col items-center gap-2 relative">
-              <ServerCog className="w-5 h-5 text-primary/50" />
-              <span>Fetching</span>
+          {!isSuccess && (
+            <div className="mt-4 w-full flex items-center justify-between text-[10px] font-semibold text-muted-foreground bg-black/5 dark:bg-black/20 px-4 py-2.5 rounded-lg border border-border/50">
+              <div className="flex items-center gap-1.5">
+                <Wifi className="w-3.5 h-3.5 text-primary/70" />
+                <span>Downloading</span>
+              </div>
+              <div className="flex-1 h-[1px] bg-gradient-to-r from-transparent via-primary/40 to-transparent animate-pulse mx-3" />
+              <div className="flex items-center gap-1.5">
+                <Database className="w-3.5 h-3.5 text-primary" />
+                <span className="text-primary">Saving</span>
+              </div>
             </div>
-            
-            <div className="w-12 h-[2px] bg-gradient-to-r from-primary/10 via-primary/50 to-primary/10 animate-pulse mx-4" />
-            
-            <div className="flex flex-col items-center gap-2 relative">
-              <Wifi className="w-5 h-5 text-primary/70" />
-              <span>Downloading</span>
-            </div>
-            
-            <div className="w-12 h-[2px] bg-gradient-to-r from-primary/10 via-primary/80 to-primary/10 animate-pulse mx-4" />
-            
-            <div className="flex flex-col items-center gap-2 relative">
-              <Database className="w-5 h-5 text-primary drop-shadow-[0_0_8px_rgba(255,255,255,0.2)]" />
-              <span className="text-primary">Saving</span>
-            </div>
-          </div>
+          )}
         </div>
       </div>
     </div>

@@ -7,15 +7,22 @@ export const useBibleSync = () => {
   const [error, setError] = useState<string | null>(null);
 
   const checkAndHydrateTargetVersion = useCallback(
-    async (version: string) => {
+    async (version: string, updateSyncState: boolean = true) => {
       try {
         const state = await db.syncState.get(version);
 
         if (state && state.status === "synced") {
-          return; // Already synced
+          const verseCount = await db.verses.where("version").equals(version).count();
+          
+          // Verify we didn't just save a corrupted sync state or lose our IndexedDB
+          // Ensure verses actually exist, and if we know the expected total, match it.
+          // Fallback to > 0 check for legacy databases that don't have totalVerses
+          if (verseCount > 0 && (!state.totalVerses || verseCount === state.totalVerses)) {
+            return; // Already perfectly synced and data exists
+          }
         }
 
-        setIsSyncing(true);
+        if (updateSyncState) setIsSyncing(true);
         setError(null);
 
         // Record downloading state
@@ -60,16 +67,25 @@ export const useBibleSync = () => {
           syncedAt: Date.now(),
         });
       } finally {
-        setIsSyncing(false);
+        if (updateSyncState) setIsSyncing(false);
       }
     },
     []
   );
 
   const hydrateDefaultVersions = useCallback(async () => {
-    // We sequentially download to avoid choking network/memory on initially massive payload
-    await checkAndHydrateTargetVersion("kjv");
-    await checkAndHydrateTargetVersion("nkjv");
+    setIsSyncing(true);
+    try {
+      // We sequentially download to avoid choking network/memory on initially massive payload
+      await checkAndHydrateTargetVersion("kjv", false);
+      await checkAndHydrateTargetVersion("nkjv", false);
+      await checkAndHydrateTargetVersion("amp", false);
+      await checkAndHydrateTargetVersion("msg", false);
+      await checkAndHydrateTargetVersion("esv", false);
+      await checkAndHydrateTargetVersion("niv", false);
+    } finally {
+      setIsSyncing(false);
+    }
   }, [checkAndHydrateTargetVersion]);
 
   // Hook will auto-hydrate default versions if not found

@@ -66,6 +66,28 @@ const AuthGuard = ({ children }: { children: React.ReactNode }) => {
   const { isSyncing: isSongSyncing } = useSongSync();
 
   const isSyncing = isBibleSyncing || isSongSyncing;
+  const [showSync, setShowSync] = React.useState(false);
+  const [isSuccess, setIsSuccess] = React.useState(false);
+
+  React.useEffect(() => {
+    // Only start tracking sync state once authentication is verified
+    if (!isAuthenticated) return;
+    
+    if (isSyncing) {
+      setShowSync(true);
+      setIsSuccess(false);
+    } else if (showSync && !isSyncing) {
+      // Finished syncing
+      setIsSuccess(true);
+      const timer = setTimeout(() => {
+         setShowSync(false);
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+    // Note: We intentionally only want this to run after hydration is started,
+    // we don't want it to flash true on initial mount if it's already cached.
+    // If both hooks initialize as false, showSync will remain false.
+  }, [isSyncing, isAuthenticated]);
 
   // Instantly dump the IndexedDB offline safehouse into the 0.00ms Memory dictionary
   // ONLY after the initial synchronization completes to prevent thread locking
@@ -78,11 +100,12 @@ const AuthGuard = ({ children }: { children: React.ReactNode }) => {
 
   if (!isAuthenticated) return <Redirect to="/login" />;
   
-  if (isSyncing) {
-    return <SyncLoadingOverlay />;
-  }
-  
-  return <>{children}</>;
+  return (
+    <>
+      {children}
+      {showSync && <SyncLoadingOverlay isSyncing={!isSuccess} isSuccess={isSuccess} />}
+    </>
+  );
 };
 
 const AdminGuard = ({ children }: { children: React.ReactNode }) => {
