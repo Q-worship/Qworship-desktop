@@ -20,6 +20,26 @@ export function buildUrl(path: string): string {
   return API_BASE.replace(/\/$/, '') + normalizedPath;
 }
 
+export const resolveMediaUrl = (url: string | null | undefined): string | undefined => {
+  if (!url) return undefined;
+  if (url === "Worship background image" || url === "Inspirational worship video" || url === "Background Image" || url === "Ready for content") return undefined;
+  
+  // Strip hardcoded UI API origins that might have leaked into Database from previous buggy app clients
+  let cleanUrl = url;
+  if (cleanUrl.startsWith('https://app.qworship.com/api/')) {
+    cleanUrl = cleanUrl.replace('https://app.qworship.com/api/', '/api/');
+  } else if (cleanUrl.startsWith('https://api.qworship.com/api/')) {
+    cleanUrl = cleanUrl.replace('https://api.qworship.com/api/', '/api/');
+  } else if (cleanUrl.startsWith('http://localhost:5000/api/')) {
+    cleanUrl = cleanUrl.replace('http://localhost:5000/api/', '/api/');
+  }
+  
+  if (cleanUrl.startsWith('http://') || cleanUrl.startsWith('https://')) return cleanUrl;
+  if (cleanUrl.startsWith('data:') || cleanUrl.startsWith('blob:')) return cleanUrl;
+  if (cleanUrl.startsWith('/api/') || cleanUrl.startsWith('/uploads/')) return buildUrl(cleanUrl);
+  return undefined;
+};
+
 export async function apiRequest(
   method: string,
   url: string,
