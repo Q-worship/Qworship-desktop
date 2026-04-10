@@ -48,7 +48,7 @@ const memoryUpload = multer({
 export const mediaRouter = Router();
 
 // User Media Routes -> /api/user-media-assets
-mediaRouter.post('/user-media-assets/upload', protect, upload.array('files'), uploadMedia); // The frontend uses 'files' for FormData
+mediaRouter.post('/user-media-assets/upload', protect, memoryUpload.array('files'), uploadMedia); // The frontend uses 'files' for FormData
 mediaRouter.get('/user-media-stats', protect, getUserMediaStats);
 mediaRouter.get('/user-media-assets', protect, listUserMedia);
 mediaRouter.get('/user-media-assets/:id/file', getMediaFile);
