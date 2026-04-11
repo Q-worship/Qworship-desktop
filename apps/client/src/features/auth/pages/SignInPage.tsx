@@ -1,4 +1,7 @@
 import { LogIn } from "lucide-react";
+import React, { useEffect } from "react";
+import { useLocation } from "wouter";
+import { useAuthStore } from "@/features/auth/auth.store";
 
 const signinHero = new URL("../../../assets/splash/signin-hero.png", import.meta.url).href;
 
@@ -10,6 +13,15 @@ const QworshipLogo = () => (
 );
 
 export default function SignIn() {
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const [, setLocation] = useLocation();
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      setLocation("/project-selection");
+    }
+  }, [isAuthenticated, setLocation]);
+
   const handleDesktopAuth = () => {
     if (window.api && window.api.openWebAuth) {
       window.api.openWebAuth("https://app.qworship.com/desktop-auth");

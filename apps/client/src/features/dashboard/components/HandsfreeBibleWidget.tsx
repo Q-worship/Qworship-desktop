@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
@@ -85,6 +85,17 @@ export const HandsfreeBibleWidget: React.FC<HandsfreeBibleWidgetProps> = ({
   onNavigate,
   onVoiceCommand,
 }) => {
+  const [internalVolume, setInternalVolume] = React.useState(0);
+
+  React.useEffect(() => {
+    const handleVolume = (e: any) => {
+      setInternalVolume(e.detail || 0);
+    };
+    window.addEventListener("hfb-volume", handleVolume);
+    return () => window.removeEventListener("hfb-volume", handleVolume);
+  }, []);
+  
+  const displayVolume = volume !== 0 ? volume : internalVolume;
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [showAllVersions, setShowAllVersions] = useState(false);
 
@@ -129,8 +140,8 @@ export const HandsfreeBibleWidget: React.FC<HandsfreeBibleWidgetProps> = ({
                 style={
                   isListeningMode
                     ? {
-                        transform: `scale(${1 + (volume / 100) * 0.5})`,
-                        boxShadow: `0 0 ${volume}px rgba(131, 86, 243, ${Math.min(1, volume / 50)})`,
+                        transform: `scale(${1 + (displayVolume / 100) * 0.5})`,
+                        boxShadow: `0 0 ${displayVolume}px rgba(131, 86, 243, ${Math.min(1, displayVolume / 50)})`,
                       }
                     : {}
                 }>
@@ -280,8 +291,8 @@ export const HandsfreeBibleWidget: React.FC<HandsfreeBibleWidgetProps> = ({
             style={
               isListeningMode
                 ? {
-                    transform: `scale(${1 + (volume / 100) * 0.4})`,
-                    boxShadow: `0 0 ${volume / 1.5}px rgba(131, 86, 243, ${Math.min(1, volume / 50)})`,
+                    transform: `scale(${1 + (displayVolume / 100) * 0.4})`,
+                    boxShadow: `0 0 ${displayVolume / 1.5}px rgba(131, 86, 243, ${Math.min(1, displayVolume / 50)})`,
                   }
                 : {}
             }>

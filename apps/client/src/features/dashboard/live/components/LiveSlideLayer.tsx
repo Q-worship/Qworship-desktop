@@ -3,6 +3,16 @@ import { useLivePresentationState } from "../useLivePresentationState";
 import { buildUrl, resolveMediaUrl } from "@/lib/queryClient";
 
 
+
+const isWindowOpen = (win: any): boolean => {
+  if (!win) return false;
+  try {
+    return !win.closed;
+  } catch (e) {
+    return true; 
+  }
+};
+
 export const LiveSlideLayer: React.FC<ReturnType<typeof useLivePresentationState>> = (props) => {
   const {
     contentFixedArea,
@@ -181,10 +191,10 @@ export const LiveSlideLayer: React.FC<ReturnType<typeof useLivePresentationState
                                 videoEle.pause();
                                 if (videoSettings.endAction === "advance") {
                                     const advanceMsg = { type: 'VIDEO_ENDED_NEXT_SLIDE' };
-                                    if (window.opener && !window.opener.closed) {
-                                        window.opener.postMessage(advanceMsg, window.location.origin);
+                                    if (window.opener && isWindowOpen(window.opener)) {
+                                        window.opener.postMessage(advanceMsg, "*");
                                     } else {
-                                        window.postMessage(advanceMsg, window.location.origin);
+                                        window.postMessage(advanceMsg, "*");
                                     }
                                 }
                             }
@@ -193,10 +203,10 @@ export const LiveSlideLayer: React.FC<ReturnType<typeof useLivePresentationState
                     onEnded={() => {
                         const endAction = (slides[currentSlide - 1] as any).videoSettings?.endAction;
                         if (endAction === "advance") {
-                            if (window.opener && !window.opener.closed) {
-                                window.opener.postMessage({ type: 'VIDEO_ENDED_NEXT_SLIDE' }, window.location.origin);
+                            if (window.opener && isWindowOpen(window.opener)) {
+                                window.opener.postMessage({ type: 'VIDEO_ENDED_NEXT_SLIDE' }, "*");
                             } else {
-                                window.postMessage({ type: 'VIDEO_ENDED_NEXT_SLIDE' }, window.location.origin);
+                                window.postMessage({ type: 'VIDEO_ENDED_NEXT_SLIDE' }, "*");
                             }
                         }
                     }}

@@ -1,4 +1,5 @@
 import React from "react";
+import { isWindowOpen } from "@/utils/windowUtils";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import qworshipLogo from "@/assets/logo.png";
 import { buildUrl, resolveMediaUrl } from "@/lib/queryClient";
@@ -552,7 +553,7 @@ export const SlideDisplayArea: React.FC<SlideDisplayAreaProps> = ({
                         setCurrentSlide(index + 1);
                         setCurrentlyDisplayedSlide(slide);
                         clearZustandProjection();
-                        if (liveWindow && !liveWindow.closed) {
+                        if (liveWindow && isWindowOpen(liveWindow)) {
                           const itemId =
                             slide.itemId || serviceItems[index]?.id;
                           const background = itemId
@@ -567,7 +568,7 @@ export const SlideDisplayArea: React.FC<SlideDisplayAreaProps> = ({
                                 itemId: itemId,
                               },
                             },
-                            window.location.origin,
+                            "*",
                           );
                         }
                       }}

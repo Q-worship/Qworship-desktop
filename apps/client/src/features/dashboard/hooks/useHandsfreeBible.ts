@@ -12,6 +12,16 @@ import { useRawAudioStream } from "@/hooks/useRawAudioStream";
 import { useToast } from "@/hooks/use-toast";
 import { useHFBStore } from "./useHFBStore";
 
+const isWindowOpen = (win: Window | null) => {
+  if (!win) return false;
+  try {
+    return !win.closed;
+  } catch (e) {
+    // Cross-origin proxy throws error but it implies the window is active/open
+    return true;
+  }
+};
+
 interface UseHandsfreeBibleProps {
   liveWindow: Window | null;
   handsfreeBibleButtonRef: MutableRefObject<HTMLElement | null>;
@@ -147,8 +157,8 @@ export const useHandsfreeBible = ({
     }
 
     const currentLiveWindow = liveWindowRef.current;
-    if (currentLiveWindow && !currentLiveWindow.closed) {
-      currentLiveWindow.postMessage(
+    if (isWindowOpen(currentLiveWindow)) {
+      currentLiveWindow!.postMessage(
         {
           type: "BIBLE_VERSE_DISPLAY",
           data: {
@@ -160,7 +170,7 @@ export const useHandsfreeBible = ({
             reference: `${book} ${chapter}:${verseNum}`,
           },
         },
-        window.location.origin,
+        "*",
       );
     }
   };
@@ -263,7 +273,7 @@ export const useHandsfreeBible = ({
     }
   };
 
-  const { isRecording, volume, startRecording, stopRecording } =
+  const { isRecording, startRecording, stopRecording } =
     useRawAudioStream();
 
   // Inactivity Timer
@@ -369,13 +379,13 @@ export const useHandsfreeBible = ({
     };
     localStorage.setItem("handsfreeBibleState", JSON.stringify(widgetState));
 
-    if (liveWindow && !liveWindow.closed) {
-      liveWindow.postMessage(
+    if (isWindowOpen(liveWindow)) {
+      liveWindow!.postMessage(
         {
           type: "BIBLE_WIDGET_SYNC",
           data: widgetState,
         },
-        window.location.origin,
+        "*",
       );
     }
   }, [
@@ -473,13 +483,13 @@ export const useHandsfreeBible = ({
       setIsSleepMode(true);
     }
 
-    if (liveWindow && !liveWindow.closed) {
-      liveWindow.postMessage(
+    if (isWindowOpen(liveWindow)) {
+      liveWindow!.postMessage(
         {
           type: "BIBLE_WIDGET_TOGGLE",
           data: { isOpen: newState },
         },
-        window.location.origin,
+        "*",
       );
     }
   };
@@ -530,7 +540,6 @@ export const useHandsfreeBible = ({
     selectedBibleVersion,
     widgetVerseData,
     widgetFormattedReference,
-    volume,
     toggleHandsfreeBible,
     toggleMicrophone,
     setSelectedBibleVersion,

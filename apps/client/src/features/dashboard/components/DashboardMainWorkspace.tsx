@@ -1,4 +1,5 @@
 import React, { useRef, useState, useMemo, useEffect } from "react";
+import { isWindowOpen } from "@/utils/windowUtils";
 import { useDashboardUI } from "@/features/dashboard/providers/DashboardUIProvider";
 
 import { Input } from "@/components/ui/input";
@@ -5134,7 +5135,7 @@ import type { Slide } from "@/types";\n${text}`,
                         // Clear Bible projection when navigating to slides
                         clearZustandProjection();
                         // Send slide change to live presentation if connected
-                        if (liveWindow && !liveWindow.closed) {
+                        if (liveWindow && isWindowOpen(liveWindow)) {
                           const itemId =
                             slide.itemId || serviceItems[index]?.id;
                           const background = itemId
@@ -5149,7 +5150,7 @@ import type { Slide } from "@/types";\n${text}`,
                                 itemId: itemId,
                               },
                             },
-                            window.location.origin,
+                            "*",
                           );
                         }
                       }}

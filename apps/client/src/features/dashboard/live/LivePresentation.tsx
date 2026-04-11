@@ -32,6 +32,7 @@ import {
   requestSyncFromOtherWindows,
 } from "@/stores/useBibleProjectionStore";
 import {
+
   useDisplayModeStore,
   requestDisplayModeSync,
   type DisplayMode,
@@ -64,6 +65,15 @@ const LiveTimestamp: React.FC = () => {
       </div>
     </div>
   );
+};
+
+const isWindowOpen = (win: any): boolean => {
+  if (!win) return false;
+  try {
+    return !win.closed;
+  } catch (e) {
+    return true; 
+  }
 };
 
 export const LivePresentation = (): JSX.Element => {
@@ -425,25 +435,25 @@ export const LivePresentation = (): JSX.Element => {
     requestSyncFromOtherWindows();
 
     // Also request background and Bible sync from parent window
-    if (window.opener && !window.opener.closed) {
+    if (window.opener && isWindowOpen(window.opener)) {
       console.log(
         "LivePresentation: Requesting background sync from parent window",
       );
       window.opener.postMessage(
         { type: "REQUEST_BACKGROUND_SYNC" },
-        window.location.origin,
+        "*",
       );
 
       // Request Bible projection sync after a brief delay to ensure listeners are ready
       // This ensures new sessions receive any active Bible projection from the parent
       setTimeout(() => {
-        if (window.opener && !window.opener.closed) {
+        if (window.opener && isWindowOpen(window.opener)) {
           console.log(
             "LivePresentation: Requesting Bible projection sync from parent window",
           );
           window.opener.postMessage(
             { type: "REQUEST_BIBLE_SYNC" },
-            window.location.origin,
+            "*",
           );
         }
       }, 500);
@@ -561,7 +571,7 @@ export const LivePresentation = (): JSX.Element => {
     );
 
     // Send message to dashboard about background change
-    if (window.opener && !window.opener.closed) {
+    if (window.opener && isWindowOpen(window.opener)) {
       window.opener.postMessage(
         {
           type: "BACKGROUND_CHANGE_FROM_LIVE",
@@ -572,7 +582,7 @@ export const LivePresentation = (): JSX.Element => {
             backgroundVideo,
           },
         },
-        window.location.origin,
+        "*",
       );
     }
   };
@@ -586,7 +596,7 @@ export const LivePresentation = (): JSX.Element => {
   // Function to apply live settings to presentation
   const applyLiveSettings = (settingChanged?: string) => {
     // Send settings to dashboard for synchronization
-    if (window.opener && !window.opener.closed) {
+    if (window.opener && isWindowOpen(window.opener)) {
       window.opener.postMessage(
         {
           type: "LIVE_SETTINGS_UPDATE",
@@ -619,7 +629,7 @@ export const LivePresentation = (): JSX.Element => {
             socialHandlesSize,
           },
         },
-        window.location.origin,
+        "*",
       );
     }
 
@@ -630,14 +640,14 @@ export const LivePresentation = (): JSX.Element => {
     };
 
     // Notify Live Console to show toast (audience shouldn't see toasts)
-    if (window.opener && !window.opener.closed) {
+    if (window.opener && isWindowOpen(window.opener)) {
       window.opener.postMessage(
         {
           type: "SHOW_TOAST",
           title: "Settings Saved",
           description: getSettingDescription(),
         },
-        window.location.origin,
+        "*",
       );
     }
   };
@@ -1014,7 +1024,7 @@ export const LivePresentation = (): JSX.Element => {
             type: "LIVE_READY",
             data: {},
           },
-          window.location.origin,
+          "*",
         );
       }
     };
@@ -1025,7 +1035,7 @@ export const LivePresentation = (): JSX.Element => {
     const handleMessage = (event: MessageEvent) => {
       console.log("Live presentation: Received message", event.data);
 
-      if (event.origin !== window.location.origin) {
+      if (event.origin !== window.location.origin && event.origin !== "file://" && event.origin !== "null") {
         console.log(
           "Live presentation: Rejecting message from wrong origin:",
           event.origin,
@@ -1138,7 +1148,7 @@ export const LivePresentation = (): JSX.Element => {
           }
 
           // Send state update back to Live Console for preview sync
-          if (window.opener && !window.opener.closed) {
+          if (window.opener && isWindowOpen(window.opener)) {
             window.opener.postMessage(
               {
                 type: "LIVE_STATE_UPDATE",
@@ -1152,7 +1162,7 @@ export const LivePresentation = (): JSX.Element => {
                   },
                 },
               },
-              window.location.origin,
+              "*",
             );
           }
           break;
@@ -1183,7 +1193,7 @@ export const LivePresentation = (): JSX.Element => {
             // Send state update to Live Console for preview sync
             // NOTE: Do NOT include currentSlide to avoid resetting slide position in LiveControlCentre
             // SLIDES_SYNC is for data sync (slides array, backgrounds), not for slide position sync
-            if (window.opener && !window.opener.closed) {
+            if (window.opener && isWindowOpen(window.opener)) {
               window.opener.postMessage(
                 {
                   type: "LIVE_STATE_UPDATE",
@@ -1199,7 +1209,7 @@ export const LivePresentation = (): JSX.Element => {
                     },
                   },
                 },
-                window.location.origin,
+                "*",
               );
             }
           }
@@ -1263,7 +1273,7 @@ export const LivePresentation = (): JSX.Element => {
                 break;
             }
             // Send state update back to Live Console for preview sync with applied values
-            if (window.opener && !window.opener.closed) {
+            if (window.opener && isWindowOpen(window.opener)) {
               window.opener.postMessage(
                 {
                   type: "LIVE_STATE_UPDATE",
@@ -1281,7 +1291,7 @@ export const LivePresentation = (): JSX.Element => {
                     },
                   },
                 },
-                window.location.origin,
+                "*",
               );
             }
           }
@@ -1318,7 +1328,7 @@ export const LivePresentation = (): JSX.Element => {
                 break;
             }
             // Send state update back to Live Console for preview sync (Dashboard format)
-            if (window.opener && !window.opener.closed) {
+            if (window.opener && isWindowOpen(window.opener)) {
               window.opener.postMessage(
                 {
                   type: "LIVE_STATE_UPDATE",
@@ -1344,7 +1354,7 @@ export const LivePresentation = (): JSX.Element => {
                     },
                   },
                 },
-                window.location.origin,
+                "*",
               );
             }
           }
@@ -1363,7 +1373,7 @@ export const LivePresentation = (): JSX.Element => {
               setBackgroundType("video");
               setBackgroundVideo(url);
               // Send state update back to Live Console for preview sync
-              if (window.opener && !window.opener.closed) {
+              if (window.opener && isWindowOpen(window.opener)) {
                 window.opener.postMessage(
                   {
                     type: "LIVE_STATE_UPDATE",
@@ -1376,7 +1386,7 @@ export const LivePresentation = (): JSX.Element => {
                       },
                     },
                   },
-                  window.location.origin,
+                  "*",
                 );
               }
             } else if (
@@ -1386,7 +1396,7 @@ export const LivePresentation = (): JSX.Element => {
               setBackgroundType("image");
               setBackgroundImage(url);
               // Send state update back to Live Console for preview sync
-              if (window.opener && !window.opener.closed) {
+              if (window.opener && isWindowOpen(window.opener)) {
                 window.opener.postMessage(
                   {
                     type: "LIVE_STATE_UPDATE",
@@ -1399,7 +1409,7 @@ export const LivePresentation = (): JSX.Element => {
                       },
                     },
                   },
-                  window.location.origin,
+                  "*",
                 );
               }
             }
@@ -1426,7 +1436,7 @@ export const LivePresentation = (): JSX.Element => {
           }
 
           // Send state update back to Live Console for preview sync
-          if (window.opener && !window.opener.closed) {
+          if (window.opener && isWindowOpen(window.opener)) {
             window.opener.postMessage(
               {
                 type: "LIVE_STATE_UPDATE",
@@ -1444,7 +1454,7 @@ export const LivePresentation = (): JSX.Element => {
                   projectionType: "bible",
                 },
               },
-              window.location.origin,
+              "*",
             );
           }
           break;
@@ -1511,7 +1521,7 @@ export const LivePresentation = (): JSX.Element => {
           }
 
           // Send state update back to Live Console for preview sync
-          if (window.opener && !window.opener.closed) {
+          if (window.opener && isWindowOpen(window.opener)) {
             window.opener.postMessage(
               {
                 type: "LIVE_STATE_UPDATE",
@@ -1521,7 +1531,7 @@ export const LivePresentation = (): JSX.Element => {
                   slideBackgrounds: slideBackgrounds,
                 },
               },
-              window.location.origin,
+              "*",
             );
           }
           break;
@@ -1544,7 +1554,7 @@ export const LivePresentation = (): JSX.Element => {
           setProjectionType("song");
           useDisplayModeStore.getState().setMode("song");
           // Send state update back to Live Console for preview sync
-          if (window.opener && !window.opener.closed) {
+          if (window.opener && isWindowOpen(window.opener)) {
             window.opener.postMessage(
               {
                 type: "LIVE_STATE_UPDATE",
@@ -1558,7 +1568,7 @@ export const LivePresentation = (): JSX.Element => {
                   projectionType: "song",
                 },
               },
-              window.location.origin,
+              "*",
             );
           }
           break;
@@ -1581,7 +1591,7 @@ export const LivePresentation = (): JSX.Element => {
           useDisplayModeStore.getState().setMode("on-screen-bible");
 
           // Send state update back to Live Console for preview sync
-          if (window.opener && !window.opener.closed) {
+          if (window.opener && isWindowOpen(window.opener)) {
             window.opener.postMessage(
               {
                 type: "LIVE_STATE_UPDATE",
@@ -1599,7 +1609,7 @@ export const LivePresentation = (): JSX.Element => {
                   projectionType: "bible",
                 },
               },
-              window.location.origin,
+              "*",
             );
           }
           break;
@@ -1610,7 +1620,7 @@ export const LivePresentation = (): JSX.Element => {
           setProjectionType(null);
           useDisplayModeStore.getState().setMode("none");
           // Send state update back to Live Console for preview sync
-          if (window.opener && !window.opener.closed) {
+          if (window.opener && isWindowOpen(window.opener)) {
             window.opener.postMessage(
               {
                 type: "LIVE_STATE_UPDATE",
@@ -1620,14 +1630,14 @@ export const LivePresentation = (): JSX.Element => {
                   projectionType: null,
                 },
               },
-              window.location.origin,
+              "*",
             );
           }
           break;
         case "REQUEST_STATE_SYNC":
           console.log("Live Console: Requesting state sync");
           // Send full state back to Live Console
-          if (window.opener && !window.opener.closed) {
+          if (window.opener && isWindowOpen(window.opener)) {
             window.opener.postMessage(
               {
                 type: "LIVE_STATE_UPDATE",
@@ -1676,7 +1686,7 @@ export const LivePresentation = (): JSX.Element => {
                   },
                 },
               },
-              window.location.origin,
+              "*",
             );
           }
           break;
@@ -1742,7 +1752,7 @@ export const LivePresentation = (): JSX.Element => {
           if (data.socialHandlesSize !== undefined)
             setSocialHandlesSize(data.socialHandlesSize);
           // Send state update back to Live Console for preview sync with all displaySettings and slideSettings
-          if (window.opener && !window.opener.closed) {
+          if (window.opener && isWindowOpen(window.opener)) {
             window.opener.postMessage(
               {
                 type: "LIVE_STATE_UPDATE",
@@ -1779,7 +1789,7 @@ export const LivePresentation = (): JSX.Element => {
                   },
                 },
               },
-              window.location.origin,
+              "*",
             );
           }
           break;
@@ -1796,7 +1806,7 @@ export const LivePresentation = (): JSX.Element => {
           setAppliedBackgroundVideo(null);
           setHasLiveSettingsBackground(false);
           // Send state update back to Live Console for preview sync
-          if (window.opener && !window.opener.closed) {
+          if (window.opener && isWindowOpen(window.opener)) {
             window.opener.postMessage(
               {
                 type: "LIVE_STATE_UPDATE",
@@ -1809,7 +1819,7 @@ export const LivePresentation = (): JSX.Element => {
                   },
                 },
               },
-              window.location.origin,
+              "*",
             );
           }
           break;
@@ -1834,7 +1844,7 @@ export const LivePresentation = (): JSX.Element => {
           // Users must manually connect via the OBS Control Panel
           if (data.settings.autoConnect && !data.settings.hasPassword) {
             // Send toast to Live Console instead of showing on live screen
-            if (window.opener && !window.opener.closed) {
+            if (window.opener && isWindowOpen(window.opener)) {
               window.opener.postMessage(
                 {
                   type: "SHOW_TOAST",
@@ -1842,7 +1852,7 @@ export const LivePresentation = (): JSX.Element => {
                   description:
                     "Set your OBS password in Settings to enable auto-connect.",
                 },
-                window.location.origin,
+                "*",
               );
             }
           }
@@ -2007,7 +2017,7 @@ export const LivePresentation = (): JSX.Element => {
               }
             }
             // Notify dashboard of slide change with full state
-            if (window.opener && !window.opener.closed) {
+            if (window.opener && isWindowOpen(window.opener)) {
               window.opener.postMessage(
                 {
                   type: "SLIDE_CHANGE_FROM_LIVE",
@@ -2018,7 +2028,7 @@ export const LivePresentation = (): JSX.Element => {
                     background: newBg,
                   },
                 },
-                window.location.origin,
+                "*",
               );
             }
           }
@@ -2088,7 +2098,7 @@ export const LivePresentation = (): JSX.Element => {
               }
             }
             // Notify dashboard of slide change with full state
-            if (window.opener && !window.opener.closed) {
+            if (window.opener && isWindowOpen(window.opener)) {
               window.opener.postMessage(
                 {
                   type: "SLIDE_CHANGE_FROM_LIVE",
@@ -2099,7 +2109,7 @@ export const LivePresentation = (): JSX.Element => {
                     background: newBg,
                   },
                 },
-                window.location.origin,
+                "*",
               );
             }
           }
@@ -3239,7 +3249,7 @@ export const LivePresentation = (): JSX.Element => {
                         }
                       }
                       // Notify dashboard of slide change with full state
-                      if (window.opener && !window.opener.closed) {
+                      if (window.opener && isWindowOpen(window.opener)) {
                         window.opener.postMessage(
                           {
                             type: "SLIDE_CHANGE_FROM_LIVE",
@@ -3250,7 +3260,7 @@ export const LivePresentation = (): JSX.Element => {
                               background: newBg,
                             },
                           },
-                          window.location.origin,
+                          "*",
                         );
                       }
                     }}
@@ -3587,13 +3597,13 @@ export const LivePresentation = (): JSX.Element => {
                   );
 
                   // Send message to dashboard
-                  if (window.opener && !window.opener.closed) {
+                  if (window.opener && isWindowOpen(window.opener)) {
                     window.opener.postMessage(
                       {
                         type: "LIVE_BACKGROUND_CLEARED",
                         data: {},
                       },
-                      window.location.origin,
+                      "*",
                     );
                   }
                 }}
@@ -4506,14 +4516,14 @@ export const LivePresentation = (): JSX.Element => {
                 setIsAssetsModalOpen(false);
 
                 // Send toast to Live Console instead of showing on live screen
-                if (window.opener && !window.opener.closed) {
+                if (window.opener && isWindowOpen(window.opener)) {
                   window.opener.postMessage(
                     {
                       type: "SHOW_TOAST",
                       title: "Background Selected",
                       description: `${assetsModalFilter === "video" ? "Video" : "Image"} background ready to apply - click Apply Background to activate`,
                     },
-                    window.location.origin,
+                    "*",
                   );
                 }
               }}
@@ -4557,7 +4567,7 @@ export const LivePresentation = (): JSX.Element => {
                 setIsLogoAssetsModalOpen(false);
 
                 // Send toast to Live Console instead of showing on live screen
-                if (window.opener && !window.opener.closed) {
+                if (window.opener && isWindowOpen(window.opener)) {
                   window.opener.postMessage(
                     {
                       type: "SHOW_TOAST",
@@ -4565,7 +4575,7 @@ export const LivePresentation = (): JSX.Element => {
                       description:
                         "Logo ready to apply - click Apply Settings to activate",
                     },
-                    window.location.origin,
+                    "*",
                   );
                 }
               }}

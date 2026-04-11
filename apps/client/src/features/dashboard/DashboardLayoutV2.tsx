@@ -42,6 +42,7 @@ import qworshipLogo from "@assets/Group 1_1754122708985.png";
 import qworshipLogoEdit from "@assets/Frame 2085662258_1754172975921.png";
 import { ProfileSettings } from "@/features/dashboard/components/ProfileSettings";
 import { NotificationsModal } from "@/features/dashboard/components/modals/NotificationsModal";
+
 import { SubscriptionManagement } from "@/features/dashboard/components/SubscriptionManagement";
 import { SongbookModal } from "@/features/dashboard/components/SongbookModal";
 import { SongSearchModal } from "@/features/dashboard/components/SongSearchModal";
@@ -99,6 +100,7 @@ import {
   DashboardPresentationProvider,
 } from "@/features/dashboard/providers/DashboardPresentationProvider";
 import { DashboardMainWorkspace } from "@/features/dashboard/components/DashboardMainWorkspace";
+import { isWindowOpen } from "@/utils/windowUtils";
 
 // CloudMediaTab, MyMediaTab, and MediaBrowserContent are imported from ../components/
 
@@ -205,17 +207,31 @@ export const QworshipHomeV2Base = (): JSX.Element => {
           ltProjectScripture(verseText, ref, ver, currentUserId);
         }
         if (mpEnabled) {
-          mpProjectScripture(verseText, ref, ver, currentUserId != null ? String(currentUserId) : null);
+          mpProjectScripture(
+            verseText,
+            ref,
+            ver,
+            currentUserId != null ? String(currentUserId) : null,
+          );
         }
       } else if (!nowProjecting && prevProjecting) {
         if (ltEnabled) ltClear(currentUserId);
-        if (mpEnabled) mpClear(currentUserId != null ? String(currentUserId) : null);
+        if (mpEnabled)
+          mpClear(currentUserId != null ? String(currentUserId) : null);
       }
 
       prevProjecting = nowProjecting;
     });
     return unsubscribe;
-  }, [ltEnabled, ltProjectScripture, ltClear, mpEnabled, mpProjectScripture, mpClear, currentUserId]);
+  }, [
+    ltEnabled,
+    ltProjectScripture,
+    ltClear,
+    mpEnabled,
+    mpProjectScripture,
+    mpClear,
+    currentUserId,
+  ]);
   const [, setLocation] = useLocation();
   const {
     activeTab,
@@ -698,18 +714,33 @@ export const QworshipHomeV2Base = (): JSX.Element => {
     if (item && item.type === "media") {
       // For slideshow/image items with multiple slides, use the currently displayed slide's content
       let mediaUrl: string | undefined;
-      if ((item.subtype === "slideshow" || item.subtype === "image") && item.slides?.length > 0) {
+      if (
+        (item.subtype === "slideshow" || item.subtype === "image") &&
+        item.slides?.length > 0
+      ) {
         // Find which of this item's slides is currently being displayed
         const currentSlideObj = currentlyDisplayedSlide;
-        if (currentSlideObj && item.slides.some((s: any) => s.id === currentSlideObj.id)) {
-          mediaUrl = typeof currentSlideObj.content === "string" ? currentSlideObj.content : undefined;
+        if (
+          currentSlideObj &&
+          item.slides.some((s: any) => s.id === currentSlideObj.id)
+        ) {
+          mediaUrl =
+            typeof currentSlideObj.content === "string"
+              ? currentSlideObj.content
+              : undefined;
         }
         // Fallback to the first slide
         if (!mediaUrl) {
-          mediaUrl = typeof item.slides[0].content === "string" ? item.slides[0].content : undefined;
+          mediaUrl =
+            typeof item.slides[0].content === "string"
+              ? item.slides[0].content
+              : undefined;
         }
       } else {
-        mediaUrl = typeof item.content === "string" ? item.content : item.slides?.[0]?.content;
+        mediaUrl =
+          typeof item.content === "string"
+            ? item.content
+            : item.slides?.[0]?.content;
       }
       if (mediaUrl && typeof mediaUrl === "string") {
         return {
@@ -745,7 +776,7 @@ export const QworshipHomeV2Base = (): JSX.Element => {
     });
 
     // Update live presentation window with new background
-    if (liveWindow && !liveWindow.closed) {
+    if (isWindowOpen(liveWindow)) {
       liveWindow.postMessage(
         {
           type: "BACKGROUND_UPDATE",
@@ -754,7 +785,7 @@ export const QworshipHomeV2Base = (): JSX.Element => {
             itemId: currentItemId,
           },
         },
-        window.location.origin,
+        "*",
       );
     }
 
@@ -832,9 +863,20 @@ export const QworshipHomeV2Base = (): JSX.Element => {
         // Clear slide editor state so the announcement editor shows
         setSelectedSlide(null);
         setIsSlideEditorOpen(false);
-      } else if (parentItem.type === "media" && (parentItem.subtype === "slideshow" || parentItem.subtype === "image" || parentItem.subtype === "video")) {
+      } else if (
+        parentItem.type === "media" &&
+        (parentItem.subtype === "slideshow" ||
+          parentItem.subtype === "image" ||
+          parentItem.subtype === "video")
+      ) {
         setEditingContent(parentItem);
-        setSelectedContentType(parentItem.subtype === "slideshow" ? "slideshow" : parentItem.subtype === "video" ? "video" : "image");
+        setSelectedContentType(
+          parentItem.subtype === "slideshow"
+            ? "slideshow"
+            : parentItem.subtype === "video"
+              ? "video"
+              : "image",
+        );
         setSelectedSlide(null);
         setIsSlideEditorOpen(false);
       } else {
@@ -854,10 +896,15 @@ export const QworshipHomeV2Base = (): JSX.Element => {
       setCurrentSlide(slideIndex + 1);
 
       // Notify live presentation of slide change with background information
-      if (liveWindow && !liveWindow.closed) {
+      if (isWindowOpen(liveWindow)) {
         // For media items (image/slideshow), use the slide's content directly as background
         let slideItemBackground: any = null;
-        if (parentItem.type === "media" && (parentItem.subtype === "image" || parentItem.subtype === "slideshow") && slide.content) {
+        if (
+          parentItem.type === "media" &&
+          (parentItem.subtype === "image" ||
+            parentItem.subtype === "slideshow") &&
+          slide.content
+        ) {
           slideItemBackground = { type: "image", value: slide.content };
         } else {
           slideItemBackground = getItemBackground(parentItem.id);
@@ -876,7 +923,7 @@ export const QworshipHomeV2Base = (): JSX.Element => {
               itemId: parentItem.id,
             },
           },
-          window.location.origin,
+          "*",
         );
       }
 
@@ -1042,7 +1089,8 @@ export const QworshipHomeV2Base = (): JSX.Element => {
       const reference: string =
         slide.bibleReference ?? slide.reference ?? slide.title ?? "";
       const version: string = slide.bibleVersion ?? slide.version ?? "KJV";
-      if (ltEnabled) ltProjectScripture(content, reference, version, currentUserId);
+      if (ltEnabled)
+        ltProjectScripture(content, reference, version, currentUserId);
       if (mpEnabled) mpProjectScripture(content, reference, version, mpUserId);
     } else if (type === "verse" || type === "chorus" || type === "song") {
       const label: string = slide.sectionLabel ?? slide.title ?? "";
@@ -1052,8 +1100,10 @@ export const QworshipHomeV2Base = (): JSX.Element => {
     } else if (type === "announcement") {
       const category: string = slide.category ?? slide.title ?? "";
       const subtitle: string = slide.subtitle ?? "";
-      if (ltEnabled) ltProjectAnnouncement(content, category, subtitle, currentUserId);
-      if (mpEnabled) mpProjectAnnouncement(content, category, subtitle, mpUserId);
+      if (ltEnabled)
+        ltProjectAnnouncement(content, category, subtitle, currentUserId);
+      if (mpEnabled)
+        mpProjectAnnouncement(content, category, subtitle, mpUserId);
     } else {
       if (ltEnabled) ltClear(currentUserId);
       if (mpEnabled) mpClear(mpUserId);
@@ -1093,7 +1143,6 @@ export const QworshipHomeV2Base = (): JSX.Element => {
     handleDragStart,
     setIsListeningMode,
     setDetectedCommands,
-    volume,
     executeNavigation,
   } = useHandsfreeBible({
     liveWindow,
@@ -1134,7 +1183,7 @@ export const QworshipHomeV2Base = (): JSX.Element => {
   // Sync slides and backgrounds to live presentation (core slide data only)
   // NOTE: editorState and titleEditorState are synced separately on blur/explicit save to avoid rapid updates during typing
   useEffect(() => {
-    if (liveWindow && !liveWindow.closed) {
+    if (isWindowOpen(liveWindow)) {
       // Create a stable hash of the full payload for comparison
       // Includes slide IDs, contents, itemId and full background data to detect all meaningful changes
       const payloadKey = JSON.stringify({
@@ -1161,7 +1210,7 @@ export const QworshipHomeV2Base = (): JSX.Element => {
               itemBackgrounds,
             },
           },
-          window.location.origin,
+          "*",
         );
       }
     }
@@ -1171,7 +1220,7 @@ export const QworshipHomeV2Base = (): JSX.Element => {
   const editorSyncDebounceRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
-    if (liveWindow && !liveWindow.closed) {
+    if (isWindowOpen(liveWindow)) {
       // Clear any existing debounce timer
       if (editorSyncDebounceRef.current) {
         clearTimeout(editorSyncDebounceRef.current);
@@ -1187,7 +1236,7 @@ export const QworshipHomeV2Base = (): JSX.Element => {
               editorState,
             },
           },
-          window.location.origin,
+          "*",
         );
       }, 500); // 500ms debounce for editor state
     }
@@ -1293,7 +1342,8 @@ export const QworshipHomeV2Base = (): JSX.Element => {
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const [isProfileSettingsOpen, setIsProfileSettingsOpen] = useState(false);
   const [isSubscriptionOpen, setIsSubscriptionOpen] = useState(false);
-  const [isNotificationsModalOpen, setIsNotificationsModalOpen] = useState(false);
+  const [isNotificationsModalOpen, setIsNotificationsModalOpen] =
+    useState(false);
   const [isSongbookOpen, setIsSongbookOpen] = useState(false);
   const [isSongEditorOpen, setIsSongEditorOpen] = useState(false);
   const [importedSongData, setImportedSongData] = useState<any>(null);
@@ -1530,12 +1580,20 @@ export const QworshipHomeV2Base = (): JSX.Element => {
       }
 
       // Send to live window with background data
-      if (liveWindow && !liveWindow.closed) {
+      if (isWindowOpen(liveWindow)) {
         // For media items (image/slideshow), use the slide's content directly as background
         let slideBackground: any = null;
         if (slideToDisplay?.itemId) {
-          const parentItem = serviceItems.find((i: any) => i.id === slideToDisplay.itemId);
-          if (parentItem && parentItem.type === "media" && (parentItem.subtype === "image" || parentItem.subtype === "slideshow") && slideToDisplay.content) {
+          const parentItem = serviceItems.find(
+            (i: any) => i.id === slideToDisplay.itemId,
+          );
+          if (
+            parentItem &&
+            parentItem.type === "media" &&
+            (parentItem.subtype === "image" ||
+              parentItem.subtype === "slideshow") &&
+            slideToDisplay.content
+          ) {
             slideBackground = { type: "image", value: slideToDisplay.content };
           } else {
             slideBackground = getItemBackground(slideToDisplay.itemId);
@@ -1551,7 +1609,7 @@ export const QworshipHomeV2Base = (): JSX.Element => {
               itemId: slideToDisplay?.itemId,
             },
           },
-          window.location.origin,
+          "*",
         );
       }
     }
@@ -1569,12 +1627,20 @@ export const QworshipHomeV2Base = (): JSX.Element => {
       }
 
       // Send to live window with background data
-      if (liveWindow && !liveWindow.closed) {
+      if (isWindowOpen(liveWindow)) {
         // For media items (image/slideshow), use the slide's content directly as background
         let slideBackground: any = null;
         if (slideToDisplay?.itemId) {
-          const parentItem = serviceItems.find((i: any) => i.id === slideToDisplay.itemId);
-          if (parentItem && parentItem.type === "media" && (parentItem.subtype === "image" || parentItem.subtype === "slideshow") && slideToDisplay.content) {
+          const parentItem = serviceItems.find(
+            (i: any) => i.id === slideToDisplay.itemId,
+          );
+          if (
+            parentItem &&
+            parentItem.type === "media" &&
+            (parentItem.subtype === "image" ||
+              parentItem.subtype === "slideshow") &&
+            slideToDisplay.content
+          ) {
             slideBackground = { type: "image", value: slideToDisplay.content };
           } else {
             slideBackground = getItemBackground(slideToDisplay.itemId);
@@ -1590,7 +1656,7 @@ export const QworshipHomeV2Base = (): JSX.Element => {
               itemId: slideToDisplay?.itemId,
             },
           },
-          window.location.origin,
+          "*",
         );
       }
     }
@@ -1626,14 +1692,24 @@ export const QworshipHomeV2Base = (): JSX.Element => {
     let timerId: NodeJS.Timeout;
 
     if (isLive && currentlyDisplayedSlide?.itemId) {
-      const parentItem = serviceItems.find((item: any) => item.id === currentlyDisplayedSlide.itemId);
-      
-      if (parentItem && parentItem.type === "media" && (parentItem.subtype === "slideshow" || parentItem.subtype === "image")) {
-        const settings = typeof parentItem.content === "object" ? parentItem.content : {};
+      const parentItem = serviceItems.find(
+        (item: any) => item.id === currentlyDisplayedSlide.itemId,
+      );
+
+      if (
+        parentItem &&
+        parentItem.type === "media" &&
+        (parentItem.subtype === "slideshow" || parentItem.subtype === "image")
+      ) {
+        const settings =
+          typeof parentItem.content === "object" ? parentItem.content : {};
         const isAutoAdvance = settings.autoAdvance ?? true;
         const timerSeconds = settings.timer || 5;
 
-        if (isAutoAdvance && (parentItem.slides?.length > 1 || slides.length > 1)) {
+        if (
+          isAutoAdvance &&
+          (parentItem.slides?.length > 1 || slides.length > 1)
+        ) {
           timerId = setTimeout(() => {
             if (currentSlide < totalSlides) {
               const newSlide = currentSlide + 1;
@@ -1641,9 +1717,21 @@ export const QworshipHomeV2Base = (): JSX.Element => {
               const slideToDisplay = slides[newSlide - 1];
               if (slideToDisplay) {
                 setCurrentlyDisplayedSlide(slideToDisplay);
-                if (liveWindow && !liveWindow.closed) {
-                  const slideBackground = slideToDisplay?.itemId ? getItemBackground(slideToDisplay.itemId) : null;
-                  liveWindow.postMessage({ type: "SLIDE_CHANGE", data: { slideNumber: newSlide, slide: slideToDisplay, appliedBackground: slideBackground } }, "*");
+                if (isWindowOpen(liveWindow)) {
+                  const slideBackground = slideToDisplay?.itemId
+                    ? getItemBackground(slideToDisplay.itemId)
+                    : null;
+                  liveWindow.postMessage(
+                    {
+                      type: "SLIDE_CHANGE",
+                      data: {
+                        slideNumber: newSlide,
+                        slide: slideToDisplay,
+                        appliedBackground: slideBackground,
+                      },
+                    },
+                    "*",
+                  );
                 }
               }
             } else {
@@ -1652,9 +1740,21 @@ export const QworshipHomeV2Base = (): JSX.Element => {
               const slideToDisplay = slides[0];
               if (slideToDisplay) {
                 setCurrentlyDisplayedSlide(slideToDisplay);
-                if (liveWindow && !liveWindow.closed) {
-                  const slideBackground = slideToDisplay?.itemId ? getItemBackground(slideToDisplay.itemId) : null;
-                  liveWindow.postMessage({ type: "SLIDE_CHANGE", data: { slideNumber: 1, slide: slideToDisplay, appliedBackground: slideBackground } }, "*");
+                if (isWindowOpen(liveWindow)) {
+                  const slideBackground = slideToDisplay?.itemId
+                    ? getItemBackground(slideToDisplay.itemId)
+                    : null;
+                  liveWindow.postMessage(
+                    {
+                      type: "SLIDE_CHANGE",
+                      data: {
+                        slideNumber: 1,
+                        slide: slideToDisplay,
+                        appliedBackground: slideBackground,
+                      },
+                    },
+                    "*",
+                  );
                 }
               }
             }
@@ -2159,39 +2259,68 @@ export const QworshipHomeV2Base = (): JSX.Element => {
       if (slides) return slides;
       if (existingItem?.type === "announcement") {
         const merged = { ...existingItem, ...(metadata || {}) };
-        const contentStr = typeof newContent === "string" ? newContent : (typeof merged.content === "string" ? merged.content : "");
-        return [{
-          id: existingItem.slides?.[0]?.id || `slide-${itemId}-${Date.now()}`,
-          type: "announcement" as const,
-          title: newTitle,
-          content: contentStr,
-          location: merged.location || "",
-          eventDate: merged.eventDate || "",
-          eventTime: merged.eventTime || "",
-          contact: merged.contact || "",
-          sectionLabel: "Announcement",
-        }];
+        const contentStr =
+          typeof newContent === "string"
+            ? newContent
+            : typeof merged.content === "string"
+              ? merged.content
+              : "";
+        return [
+          {
+            id: existingItem.slides?.[0]?.id || `slide-${itemId}-${Date.now()}`,
+            type: "announcement" as const,
+            title: newTitle,
+            content: contentStr,
+            location: merged.location || "",
+            eventDate: merged.eventDate || "",
+            eventTime: merged.eventTime || "",
+            contact: merged.contact || "",
+            sectionLabel: "Announcement",
+          },
+        ];
       } else if (existingItem?.type === "media") {
         if (existingItem.slides && existingItem.slides.length > 0) {
           // If we already have slides, preserve them and update titles.
-          return existingItem.slides.map((s: any) => ({ ...s, title: newTitle }));
+          return existingItem.slides.map((s: any) => ({
+            ...s,
+            title: newTitle,
+          }));
         }
 
         const merged = { ...existingItem, ...(metadata || {}) };
-        const contentVal = typeof newContent === "string" ? newContent : 
-                           (typeof newContent === "object" && newContent !== null && newContent.url ? newContent.url :
-                           (typeof merged.content === "string" ? merged.content : 
-                           (typeof merged.content === "object" && merged.content !== null && merged.content.url ? merged.content.url : "")));
-                           
-        return [{
-          id: existingItem.slides?.[0]?.id || `slide-${itemId}-${Date.now()}`,
-          type: "media" as const,
-          title: newTitle,
-          content: contentVal,
-          videoSettings: merged.subtype === "video" ? (typeof newContent === 'object' ? newContent : typeof merged.content === 'object' ? merged.content : {}) : undefined,
-          subtype: merged.subtype || "image",
-          sectionLabel: "Media",
-        }];
+        const contentVal =
+          typeof newContent === "string"
+            ? newContent
+            : typeof newContent === "object" &&
+                newContent !== null &&
+                newContent.url
+              ? newContent.url
+              : typeof merged.content === "string"
+                ? merged.content
+                : typeof merged.content === "object" &&
+                    merged.content !== null &&
+                    merged.content.url
+                  ? merged.content.url
+                  : "";
+
+        return [
+          {
+            id: existingItem.slides?.[0]?.id || `slide-${itemId}-${Date.now()}`,
+            type: "media" as const,
+            title: newTitle,
+            content: contentVal,
+            videoSettings:
+              merged.subtype === "video"
+                ? typeof newContent === "object"
+                  ? newContent
+                  : typeof merged.content === "object"
+                    ? merged.content
+                    : {}
+                : undefined,
+            subtype: merged.subtype || "image",
+            sectionLabel: "Media",
+          },
+        ];
       }
       return existingItem?.slides;
     };
@@ -2246,7 +2375,7 @@ export const QworshipHomeV2Base = (): JSX.Element => {
           };
         }
         return item;
-      })
+      }),
     );
 
     // Update editing content
@@ -2267,9 +2396,13 @@ export const QworshipHomeV2Base = (): JSX.Element => {
 
     setCurrentlyDisplayedSlide((prev: any) => {
       if (prev && prev.id) {
-        const itemWithSlide = nextServiceItems.find(i => i.slides?.some((s: any) => s.id === prev.id));
+        const itemWithSlide = nextServiceItems.find((i) =>
+          i.slides?.some((s: any) => s.id === prev.id),
+        );
         if (itemWithSlide) {
-          return itemWithSlide.slides.find((s: any) => s.id === prev.id) || prev;
+          return (
+            itemWithSlide.slides.find((s: any) => s.id === prev.id) || prev
+          );
         }
       }
       return prev;
@@ -2526,7 +2659,10 @@ export const QworshipHomeV2Base = (): JSX.Element => {
     // ACTION 1: Create generic item in selected service section
     const nextSectionItems = {
       ...sectionItems,
-      [selectedServiceSection]: [...(sectionItems[selectedServiceSection] || []), item],
+      [selectedServiceSection]: [
+        ...(sectionItems[selectedServiceSection] || []),
+        item,
+      ],
     };
     setSectionItems(nextSectionItems);
 
@@ -2564,25 +2700,50 @@ export const QworshipHomeV2Base = (): JSX.Element => {
       eventDate: item.eventDate || "",
       eventTime: item.eventTime || "",
       contact: item.contact || "",
-      slides: (item.subtype === "slideshow" || item.subtype === "image") ? (item.slides || []) : [
-        {
-          id: `slide-${item.id}-${Date.now()}`,
-          type: item.type === "song" ? ("song" as const) : item.type === "announcement" ? ("announcement" as const) : item.type === "media" ? ("media" as const) : ("custom" as const),
-          title: item.title,
-          content:
-            item.type === "song" ? "Please select a song" : (typeof item.content === "string" ? item.content : "Ready for content"),
-          sectionLabel: item.type === "song" ? "Song" : item.type === "announcement" ? "Announcement" : item.type === "media" ? "Media" : "Content",
-          ...(item.type === "announcement" ? {
-            location: item.location || "",
-            eventDate: item.eventDate || "",
-            eventTime: item.eventTime || "",
-            contact: item.contact || "",
-          } : {}),
-          ...(item.type === "media" ? {
-            subtype: item.subtype || "image",
-          } : {}),
-        },
-      ],
+      slides:
+        item.subtype === "slideshow" || item.subtype === "image"
+          ? item.slides || []
+          : [
+              {
+                id: `slide-${item.id}-${Date.now()}`,
+                type:
+                  item.type === "song"
+                    ? ("song" as const)
+                    : item.type === "announcement"
+                      ? ("announcement" as const)
+                      : item.type === "media"
+                        ? ("media" as const)
+                        : ("custom" as const),
+                title: item.title,
+                content:
+                  item.type === "song"
+                    ? "Please select a song"
+                    : typeof item.content === "string"
+                      ? item.content
+                      : "Ready for content",
+                sectionLabel:
+                  item.type === "song"
+                    ? "Song"
+                    : item.type === "announcement"
+                      ? "Announcement"
+                      : item.type === "media"
+                        ? "Media"
+                        : "Content",
+                ...(item.type === "announcement"
+                  ? {
+                      location: item.location || "",
+                      eventDate: item.eventDate || "",
+                      eventTime: item.eventTime || "",
+                      contact: item.contact || "",
+                    }
+                  : {}),
+                ...(item.type === "media"
+                  ? {
+                      subtype: item.subtype || "image",
+                    }
+                  : {}),
+              },
+            ],
     };
 
     // Add to serviceItems for slide display
@@ -2625,7 +2786,10 @@ export const QworshipHomeV2Base = (): JSX.Element => {
           id: `item-${item.id}-${Date.now()}`,
           type: "announcement" as const,
           title: item.title || "Announcement",
-          content: typeof item.content === "string" ? item.content : (item.title || "Announcement"),
+          content:
+            typeof item.content === "string"
+              ? item.content
+              : item.title || "Announcement",
           location: item.location || "",
           eventDate: item.eventDate || "",
           eventTime: item.eventTime || "",
@@ -2719,8 +2883,14 @@ export const QworshipHomeV2Base = (): JSX.Element => {
     // Manually compute next section items to pipeline into rebuild
     const nextSectionItems = { ...sectionItems };
     sectionIds.forEach((sectionId) => {
-      const itemWithUniqueId = { ...songItem, id: `song-${songItem.songId}-${sectionId}-${Date.now()}` };
-      nextSectionItems[sectionId] = [...(nextSectionItems[sectionId] || []), itemWithUniqueId];
+      const itemWithUniqueId = {
+        ...songItem,
+        id: `song-${songItem.songId}-${sectionId}-${Date.now()}`,
+      };
+      nextSectionItems[sectionId] = [
+        ...(nextSectionItems[sectionId] || []),
+        itemWithUniqueId,
+      ];
     });
 
     // Rebuild slides to append new song slides using explicit state mapping
@@ -2769,7 +2939,7 @@ export const QworshipHomeV2Base = (): JSX.Element => {
   // Function to rebuild all slides based on service section items order
   const rebuildSlidesFromServiceItems = (
     currentServiceItems = serviceItems,
-    currentSectionItems = sectionItems
+    currentSectionItems = sectionItems,
   ) => {
     // Preserve existing slides from current serviceItems
     const existingSlides: any[] = [];
@@ -2790,7 +2960,7 @@ export const QworshipHomeV2Base = (): JSX.Element => {
         // Guard against `undefined === undefined` match for items without a `songId`
         const itemAlreadyHasSlides = existingSlides.some(
           (slide) =>
-            (item.songId && slide.songId === item.songId) || 
+            (item.songId && slide.songId === item.songId) ||
             slide.id?.includes(item.id) ||
             slide.itemId === item.id,
         );
@@ -2830,7 +3000,10 @@ export const QworshipHomeV2Base = (): JSX.Element => {
             id: `song-${item.id}-${Date.now()}`,
             type: "song" as const,
             title: item.title || "Song",
-            content: typeof item.content === "string" ? item.content : (item.content?.lyrics || item.lyrics || "Ready for lyrics"),
+            content:
+              typeof item.content === "string"
+                ? item.content
+                : item.content?.lyrics || item.lyrics || "Ready for lyrics",
             songId: item.id,
             sectionLabel: "Song",
           };
@@ -2841,7 +3014,10 @@ export const QworshipHomeV2Base = (): JSX.Element => {
             id: `item-${item.id}-${Date.now()}`,
             type: "announcement" as const,
             title: item.title || "Announcement",
-            content: typeof item.content === "string" ? item.content : (item.title || "Announcement"),
+            content:
+              typeof item.content === "string"
+                ? item.content
+                : item.title || "Announcement",
             location: item.location || "",
             eventDate: item.eventDate || "",
             eventTime: item.eventTime || "",
@@ -2855,7 +3031,10 @@ export const QworshipHomeV2Base = (): JSX.Element => {
             id: `item-${item.id}-${Date.now()}`,
             type: "custom" as const,
             title: item.title || "Untitled",
-            content: typeof item.content === "string" ? item.content : (item.title || "Custom Content"),
+            content:
+              typeof item.content === "string"
+                ? item.content
+                : item.title || "Custom Content",
           };
           allSlides.push(singleSlide); // Append to existing slides
         }
@@ -2875,7 +3054,7 @@ export const QworshipHomeV2Base = (): JSX.Element => {
             (item.songId && slide.songId === item.songId) ||
             (item.id && slide.songId === item.id) ||
             slide.id?.includes(item.id) ||
-            slide.itemId === item.id
+            slide.itemId === item.id,
         );
 
         // Add slides property to the item
@@ -2911,12 +3090,12 @@ export const QworshipHomeV2Base = (): JSX.Element => {
       useAuthStore.getState().logout();
 
       // Redirect to login page
-      window.location.href = "/login";
+      setLocation("/login");
     },
     onError: (error) => {
       console.error("Logout failed:", error);
       // Even if logout fails on server, still redirect to login
-      window.location.href = "/login";
+      setLocation("/login");
     },
   });
 
@@ -4675,7 +4854,7 @@ export const QworshipHomeV2Base = (): JSX.Element => {
                   <h2 className="text-white text-2xl font-medium">
                     Hands-free Bible Companion
                   </h2>
-                  {liveWindow && !liveWindow.closed && (
+                  {isWindowOpen(liveWindow) && (
                     <span className="flex items-center gap-1 bg-red-600 text-white text-xs font-bold px-2 py-0.5 rounded animate-pulse">
                       <span className="w-2 h-2 bg-white rounded-full"></span>
                       LIVE
@@ -4911,7 +5090,7 @@ export const QworshipHomeV2Base = (): JSX.Element => {
             >
               <HandsfreeBibleWidget
                 isFullscreen={false}
-                isLive={liveWindow !== null && !liveWindow.closed}
+                isLive={isWindowOpen(liveWindow)}
                 onClose={toggleHandsfreeBible}
                 isListeningMode={isListeningMode}
                 onToggleMicrophone={toggleMicrophone}
@@ -4921,7 +5100,6 @@ export const QworshipHomeV2Base = (): JSX.Element => {
                 setDetectedCommands={setDetectedCommands}
                 verseData={widgetVerseData}
                 formattedReference={widgetFormattedReference}
-                volume={volume}
                 onNavigate={(dir) => executeNavigation("verse_change", dir)}
               />
             </div>
@@ -5487,6 +5665,16 @@ export const QworshipHomeV2Base = (): JSX.Element => {
           setIsImportImageOpen(open);
           if (!open && recentlyUploadedMediaId) {
             // When import modal closes after successful upload,
+
+            const isWindowOpen = (win: Window | null) => {
+              if (!win) return false;
+              try {
+                return !win.closed;
+              } catch (e) {
+                // Cross-origin proxy throws error but it implies the window is active/open
+                return true;
+              }
+            };
             // open the full Assets page with the newly uploaded media pre-selected
             setTimeout(() => {
               setIsBackgroundAssetsModalOpen(true);

@@ -128,7 +128,7 @@ export const SongProjectionWidget: React.FC<SongProjectionWidgetProps> = ({
         console.log('🎵 FRONTEND - Requesting song data from parent window');
         console.log('🎵 FRONTEND - Parent window exists:', !!window.opener);
         console.log('🎵 FRONTEND - Song ID to load:', songId);
-        console.log('🎵 FRONTEND - Origin:', window.location.origin);
+        console.log('🎵 FRONTEND - Origin:', "*");
         
         // Send message to parent window to fetch song data
         const message = {
@@ -138,11 +138,11 @@ export const SongProjectionWidget: React.FC<SongProjectionWidgetProps> = ({
           }
         };
         console.log('🎵 FRONTEND - Sending message:', message);
-        window.opener.postMessage(message, window.location.origin);
+        window.opener.postMessage(message, "*");
         
         // Listen for response from parent window
         const handleMessage = (event: MessageEvent) => {
-          if (event.origin !== window.location.origin) return;
+          if (event.origin !== window.location.origin && event.origin !== "file://" && event.origin !== "null") return;
           
           console.log('🎵 FRONTEND - Received message from parent:', event.data);
           

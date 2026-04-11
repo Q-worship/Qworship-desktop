@@ -1,4 +1,5 @@
 import React from "react";
+import { isWindowOpen } from "@/utils/windowUtils";
 
 import { buildUrl, resolveMediaUrl } from "@/lib/queryClient";
 
@@ -61,7 +62,7 @@ export const SlideGridRenderer = (props: any) => {
                                 // Clear Bible projection when navigating to slides
                                 clearZustandProjection();
                                 // Send slide change to live presentation if connected
-                                if (liveWindow && !liveWindow.closed) {
+                                if (liveWindow && isWindowOpen(liveWindow)) {
                                   const itemId =
                                     slide.itemId || serviceItems[index]?.id;
                                   const background = itemId
@@ -76,7 +77,7 @@ export const SlideGridRenderer = (props: any) => {
                                         itemId: itemId,
                                       },
                                     },
-                                    window.location.origin,
+                                    "*",
                                   );
                                 }
                               }}

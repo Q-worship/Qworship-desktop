@@ -4,6 +4,16 @@ import { useToast } from "@/hooks/use-toast";
 import { useBibleProjectionStore, requestSyncFromOtherWindows } from "@/stores/useBibleProjectionStore";
 import { useDisplayModeStore, requestDisplayModeSync } from "@/stores/useDisplayModeStore";
 
+
+const isWindowOpen = (win: any): boolean => {
+  if (!win) return false;
+  try {
+    return !win.closed;
+  } catch (e) {
+    return true; 
+  }
+};
+
 export function useLivePresentationState() {
   const { toast } = useToast();
   const [currentSlide, setCurrentSlide] = useState(1);
@@ -362,25 +372,25 @@ export function useLivePresentationState() {
     requestSyncFromOtherWindows();
 
     // Also request background and Bible sync from parent window
-    if (window.opener && !window.opener.closed) {
+    if (window.opener && isWindowOpen(window.opener)) {
       console.log(
         "LivePresentation: Requesting background sync from parent window",
       );
       window.opener.postMessage(
         { type: "REQUEST_BACKGROUND_SYNC" },
-        window.location.origin,
+        "*",
       );
 
       // Request Bible projection sync after a brief delay to ensure listeners are ready
       // This ensures new sessions receive any active Bible projection from the parent
       setTimeout(() => {
-        if (window.opener && !window.opener.closed) {
+        if (window.opener && isWindowOpen(window.opener)) {
           console.log(
             "LivePresentation: Requesting Bible projection sync from parent window",
           );
           window.opener.postMessage(
             { type: "REQUEST_BIBLE_SYNC" },
-            window.location.origin,
+            "*",
           );
         }
       }, 500);
@@ -496,7 +506,7 @@ export function useLivePresentationState() {
     );
 
     // Send message to dashboard about background change
-    if (window.opener && !window.opener.closed) {
+    if (window.opener && isWindowOpen(window.opener)) {
       window.opener.postMessage(
         {
           type: "BACKGROUND_CHANGE_FROM_LIVE",
@@ -507,7 +517,7 @@ export function useLivePresentationState() {
             backgroundVideo,
           },
         },
-        window.location.origin,
+        "*",
       );
     }
   };
@@ -521,7 +531,7 @@ export function useLivePresentationState() {
   // Function to apply live settings to presentation
   const applyLiveSettings = (settingChanged?: string) => {
     // Send settings to dashboard for synchronization
-    if (window.opener && !window.opener.closed) {
+    if (window.opener && isWindowOpen(window.opener)) {
       window.opener.postMessage(
         {
           type: "LIVE_SETTINGS_UPDATE",
@@ -554,7 +564,7 @@ export function useLivePresentationState() {
             socialHandlesSize,
           },
         },
-        window.location.origin,
+        "*",
       );
     }
 
@@ -565,14 +575,14 @@ export function useLivePresentationState() {
     };
 
     // Notify Live Console to show toast (audience shouldn't see toasts)
-    if (window.opener && !window.opener.closed) {
+    if (window.opener && isWindowOpen(window.opener)) {
       window.opener.postMessage(
         {
           type: "SHOW_TOAST",
           title: "Settings Saved",
           description: getSettingDescription(),
         },
-        window.location.origin,
+        "*",
       );
     }
   };
@@ -949,7 +959,7 @@ export function useLivePresentationState() {
             type: "LIVE_READY",
             data: {},
           },
-          window.location.origin,
+          "*",
         );
       }
     };
@@ -960,7 +970,7 @@ export function useLivePresentationState() {
     const handleMessage = (event: MessageEvent) => {
       console.log("Live presentation: Received message", event.data);
 
-      if (event.origin !== window.location.origin) {
+      if (event.origin !== window.location.origin && event.origin !== "file://" && event.origin !== "null") {
         console.log(
           "Live presentation: Rejecting message from wrong origin:",
           event.origin,
@@ -1073,7 +1083,7 @@ export function useLivePresentationState() {
           }
 
           // Send state update back to Live Console for preview sync
-          if (window.opener && !window.opener.closed) {
+          if (window.opener && isWindowOpen(window.opener)) {
             window.opener.postMessage(
               {
                 type: "LIVE_STATE_UPDATE",
@@ -1087,7 +1097,7 @@ export function useLivePresentationState() {
                   },
                 },
               },
-              window.location.origin,
+              "*",
             );
           }
           break;
@@ -1118,7 +1128,7 @@ export function useLivePresentationState() {
             // Send state update to Live Console for preview sync
             // NOTE: Do NOT include currentSlide to avoid resetting slide position in LiveControlCentre
             // SLIDES_SYNC is for data sync (slides array, backgrounds), not for slide position sync
-            if (window.opener && !window.opener.closed) {
+            if (window.opener && isWindowOpen(window.opener)) {
               window.opener.postMessage(
                 {
                   type: "LIVE_STATE_UPDATE",
@@ -1134,7 +1144,7 @@ export function useLivePresentationState() {
                     },
                   },
                 },
-                window.location.origin,
+                "*",
               );
             }
           }
@@ -1198,7 +1208,7 @@ export function useLivePresentationState() {
                 break;
             }
             // Send state update back to Live Console for preview sync with applied values
-            if (window.opener && !window.opener.closed) {
+            if (window.opener && isWindowOpen(window.opener)) {
               window.opener.postMessage(
                 {
                   type: "LIVE_STATE_UPDATE",
@@ -1216,7 +1226,7 @@ export function useLivePresentationState() {
                     },
                   },
                 },
-                window.location.origin,
+                "*",
               );
             }
           }
@@ -1253,7 +1263,7 @@ export function useLivePresentationState() {
                 break;
             }
             // Send state update back to Live Console for preview sync (Dashboard format)
-            if (window.opener && !window.opener.closed) {
+            if (window.opener && isWindowOpen(window.opener)) {
               window.opener.postMessage(
                 {
                   type: "LIVE_STATE_UPDATE",
@@ -1279,7 +1289,7 @@ export function useLivePresentationState() {
                     },
                   },
                 },
-                window.location.origin,
+                "*",
               );
             }
           }
@@ -1298,7 +1308,7 @@ export function useLivePresentationState() {
               setBackgroundType("video");
               setBackgroundVideo(url);
               // Send state update back to Live Console for preview sync
-              if (window.opener && !window.opener.closed) {
+              if (window.opener && isWindowOpen(window.opener)) {
                 window.opener.postMessage(
                   {
                     type: "LIVE_STATE_UPDATE",
@@ -1311,7 +1321,7 @@ export function useLivePresentationState() {
                       },
                     },
                   },
-                  window.location.origin,
+                  "*",
                 );
               }
             } else if (
@@ -1321,7 +1331,7 @@ export function useLivePresentationState() {
               setBackgroundType("image");
               setBackgroundImage(url);
               // Send state update back to Live Console for preview sync
-              if (window.opener && !window.opener.closed) {
+              if (window.opener && isWindowOpen(window.opener)) {
                 window.opener.postMessage(
                   {
                     type: "LIVE_STATE_UPDATE",
@@ -1334,7 +1344,7 @@ export function useLivePresentationState() {
                       },
                     },
                   },
-                  window.location.origin,
+                  "*",
                 );
               }
             }
@@ -1361,7 +1371,7 @@ export function useLivePresentationState() {
           }
 
           // Send state update back to Live Console for preview sync
-          if (window.opener && !window.opener.closed) {
+          if (window.opener && isWindowOpen(window.opener)) {
             window.opener.postMessage(
               {
                 type: "LIVE_STATE_UPDATE",
@@ -1379,7 +1389,7 @@ export function useLivePresentationState() {
                   projectionType: "bible",
                 },
               },
-              window.location.origin,
+              "*",
             );
           }
           break;
@@ -1446,7 +1456,7 @@ export function useLivePresentationState() {
           }
 
           // Send state update back to Live Console for preview sync
-          if (window.opener && !window.opener.closed) {
+          if (window.opener && isWindowOpen(window.opener)) {
             window.opener.postMessage(
               {
                 type: "LIVE_STATE_UPDATE",
@@ -1456,7 +1466,7 @@ export function useLivePresentationState() {
                   slideBackgrounds: slideBackgrounds,
                 },
               },
-              window.location.origin,
+              "*",
             );
           }
           break;
@@ -1478,7 +1488,7 @@ export function useLivePresentationState() {
           setProjectionType("song");
           useDisplayModeStore.getState().setMode("song");
           // Send state update back to Live Console for preview sync
-          if (window.opener && !window.opener.closed) {
+          if (window.opener && isWindowOpen(window.opener)) {
             window.opener.postMessage(
               {
                 type: "LIVE_STATE_UPDATE",
@@ -1492,7 +1502,7 @@ export function useLivePresentationState() {
                   projectionType: "song",
                 },
               },
-              window.location.origin,
+              "*",
             );
           }
           break;
@@ -1510,7 +1520,7 @@ export function useLivePresentationState() {
           useDisplayModeStore.getState().setMode("on-screen-bible");
 
           // Send state update back to Live Console for preview sync
-          if (window.opener && !window.opener.closed) {
+          if (window.opener && isWindowOpen(window.opener)) {
             window.opener.postMessage(
               {
                 type: "LIVE_STATE_UPDATE",
@@ -1528,7 +1538,7 @@ export function useLivePresentationState() {
                   projectionType: "bible",
                 },
               },
-              window.location.origin,
+              "*",
             );
           }
           break;
@@ -1543,7 +1553,7 @@ export function useLivePresentationState() {
           setCurrentProjectedSong(null);
           setProjectionType(null);
           // Send state update back to Live Console for preview sync
-          if (window.opener && !window.opener.closed) {
+          if (window.opener && isWindowOpen(window.opener)) {
             window.opener.postMessage(
               {
                 type: "LIVE_STATE_UPDATE",
@@ -1553,14 +1563,14 @@ export function useLivePresentationState() {
                   projectionType: null,
                 },
               },
-              window.location.origin,
+              "*",
             );
           }
           break;
         case "REQUEST_STATE_SYNC":
           console.log("Live Console: Requesting state sync");
           // Send full state back to Live Console
-          if (window.opener && !window.opener.closed) {
+          if (window.opener && isWindowOpen(window.opener)) {
             window.opener.postMessage(
               {
                 type: "LIVE_STATE_UPDATE",
@@ -1609,7 +1619,7 @@ export function useLivePresentationState() {
                   },
                 },
               },
-              window.location.origin,
+              "*",
             );
           }
           break;
@@ -1675,7 +1685,7 @@ export function useLivePresentationState() {
           if (data.socialHandlesSize !== undefined)
             setSocialHandlesSize(data.socialHandlesSize);
           // Send state update back to Live Console for preview sync with all displaySettings and slideSettings
-          if (window.opener && !window.opener.closed) {
+          if (window.opener && isWindowOpen(window.opener)) {
             window.opener.postMessage(
               {
                 type: "LIVE_STATE_UPDATE",
@@ -1712,7 +1722,7 @@ export function useLivePresentationState() {
                   },
                 },
               },
-              window.location.origin,
+              "*",
             );
           }
           break;
@@ -1729,7 +1739,7 @@ export function useLivePresentationState() {
           setAppliedBackgroundVideo(null);
           setHasLiveSettingsBackground(false);
           // Send state update back to Live Console for preview sync
-          if (window.opener && !window.opener.closed) {
+          if (window.opener && isWindowOpen(window.opener)) {
             window.opener.postMessage(
               {
                 type: "LIVE_STATE_UPDATE",
@@ -1742,7 +1752,7 @@ export function useLivePresentationState() {
                   },
                 },
               },
-              window.location.origin,
+              "*",
             );
           }
           break;
@@ -1767,7 +1777,7 @@ export function useLivePresentationState() {
           // Users must manually connect via the OBS Control Panel
           if (data.settings.autoConnect && !data.settings.hasPassword) {
             // Send toast to Live Console instead of showing on live screen
-            if (window.opener && !window.opener.closed) {
+            if (window.opener && isWindowOpen(window.opener)) {
               window.opener.postMessage(
                 {
                   type: "SHOW_TOAST",
@@ -1775,7 +1785,7 @@ export function useLivePresentationState() {
                   description:
                     "Set your OBS password in Settings to enable auto-connect.",
                 },
-                window.location.origin,
+                "*",
               );
             }
           }
@@ -1940,7 +1950,7 @@ export function useLivePresentationState() {
               }
             }
             // Notify dashboard of slide change with full state
-            if (window.opener && !window.opener.closed) {
+            if (window.opener && isWindowOpen(window.opener)) {
               window.opener.postMessage(
                 {
                   type: "SLIDE_CHANGE_FROM_LIVE",
@@ -1951,7 +1961,7 @@ export function useLivePresentationState() {
                     background: newBg,
                   },
                 },
-                window.location.origin,
+                "*",
               );
             }
           }
@@ -2021,7 +2031,7 @@ export function useLivePresentationState() {
               }
             }
             // Notify dashboard of slide change with full state
-            if (window.opener && !window.opener.closed) {
+            if (window.opener && isWindowOpen(window.opener)) {
               window.opener.postMessage(
                 {
                   type: "SLIDE_CHANGE_FROM_LIVE",
@@ -2032,7 +2042,7 @@ export function useLivePresentationState() {
                     background: newBg,
                   },
                 },
-                window.location.origin,
+                "*",
               );
             }
           }

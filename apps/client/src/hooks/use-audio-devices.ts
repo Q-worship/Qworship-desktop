@@ -138,11 +138,16 @@ export function useAudioDevices() {
           const status = await navigator.permissions.query({ name: 'microphone' as PermissionName });
           if (status.state === 'granted') {
             permissionGrantedRef.current = true;
+            await enumerateDevices();
+          } else {
+            setIsLoading(false);
           }
+        } else {
+          setIsLoading(false);
         }
       } catch {
+        setIsLoading(false);
       }
-      await enumerateDevices();
     };
 
     checkPermissionAndEnumerate();

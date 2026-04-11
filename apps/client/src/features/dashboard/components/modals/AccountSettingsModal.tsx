@@ -133,7 +133,7 @@ export function AccountSettingsModal({ isOpen, onClose }: AccountSettingsModalPr
   const handleLogout = async () => {
     try {
       await apiRequest('POST', '/api/auth/logout', {});
-      window.location.href = '/login';
+      setLocation('/login');
     } catch (error) {
       toast({
         title: "Error",

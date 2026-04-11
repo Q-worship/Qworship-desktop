@@ -957,7 +957,7 @@ export function AppHeader({
                     </button>
                     <button
                       onClick={() => {
-                        window.location.href = "/dashboard-help";
+                        setLocation("/dashboard-help");
                         setIsProfileMenuOpen(false);
                       }}
                       className="w-full flex items-center space-x-3 px-3 py-2 text-left hover:bg-gray-700 rounded-lg transition-colors text-white">
