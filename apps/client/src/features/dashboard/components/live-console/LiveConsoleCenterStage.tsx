@@ -394,7 +394,7 @@ export function LiveConsoleCenterStage({ bibleProps, songProps, pacingProps, onC
                                 version: hfbStore.hfbVersion, 
                                 reference: ref 
                              }
-                           }, window.location.origin);
+                           }, "*");
                         }
                       }}
                       className={`flex gap-2 px-3 py-2 rounded-md cursor-pointer transition-colors group ${

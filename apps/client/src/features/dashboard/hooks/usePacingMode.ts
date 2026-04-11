@@ -63,8 +63,7 @@ export function usePacingMode({
       const win = liveWindowRef.current;
       if (win && !win.closed) {
         win.postMessage(
-          { type: 'PACING_LINE_UPDATE', data: { lineIdx } },
-          window.location.origin
+          { type: 'PACING_LINE_UPDATE', data: { lineIdx } }, "*"
         );
       }
 
@@ -77,7 +76,7 @@ export function usePacingMode({
           setPacingProgress(0);
           setActivePacingLineIdx(-1);
           if (win && !win.closed) {
-            win.postMessage({ type: 'PACING_LINE_UPDATE', data: { lineIdx: -1 } }, window.location.origin);
+            win.postMessage({ type: 'PACING_LINE_UPDATE', data: { lineIdx: -1 } }, "*");
           }
         } else {
           // Advance to next section

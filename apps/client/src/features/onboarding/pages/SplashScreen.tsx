@@ -1,5 +1,7 @@
 import React, { useState, useCallback } from "react";
 import { useLocation } from "wouter";
+import { useAuthStore } from "@/features/auth/auth.store";
+import qworshipLogo from "@assets/Group 1_1754122708985.png";
 
 // Lazy-loaded splash images (Vite resolves to hashed URLs)
 const enhanceImg = new URL("../../../assets/splash/Sermon-Record.png", import.meta.url).href;
@@ -88,29 +90,6 @@ const SLIDES: SlideConfig[] = [
 
 // ── Sub-components ──────────────────────────────────────────────────────────
 
-const QworshipLogo = () => (
-  <div style={{ position: "relative", width: 44, height: 44 }}>
-    <div
-      style={{
-        position: "absolute",
-        inset: 0,
-        borderRadius: "50%",
-        border: "3.5px solid #e94d8a",
-      }}
-    />
-    <div
-      style={{
-        position: "absolute",
-        bottom: 1,
-        right: 1,
-        width: 11,
-        height: 11,
-        borderRadius: "50%",
-        background: "#e94d8a",
-      }}
-    />
-  </div>
-);
 
 const CheckItem = ({ text }: { text: string }) => (
   <div style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
@@ -150,6 +129,14 @@ export const SplashScreen = () => {
   const [current, setCurrent] = useState(0);
   const [direction, setDirection] = useState<"right" | "left">("right");
   const [animating, setAnimating] = useState(false);
+
+  // Automatically bypass splash screen if the user is already authenticated
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  React.useEffect(() => {
+    if (isAuthenticated) {
+      setLocation("/project-selection");
+    }
+  }, [isAuthenticated, setLocation]);
 
   const slide = SLIDES[current];
   const isLast = current === SLIDES.length - 1;
@@ -240,7 +227,7 @@ export const SplashScreen = () => {
             paddingBottom: 12,
           }}
         >
-          <QworshipLogo />
+          <img src={qworshipLogo} alt="Q-worship" style={{ width: 44, height: 'auto', objectFit: "contain" }} />
           <h1
             style={{
               color: "#d8b4fe",

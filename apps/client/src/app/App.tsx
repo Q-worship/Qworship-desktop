@@ -124,23 +124,29 @@ function MainPresentationSettingsRoute() {
 import { useDesktopAuth } from "@/hooks/useDesktopAuth";
 import { Loader2 } from "lucide-react";
 
-export const AppRouter = () => {
+const DesktopAuthHandler = () => {
   const { isAuthenticating } = useDesktopAuth();
 
+  if (!isAuthenticating) return null;
+
+  return (
+    <div className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-background/95 backdrop-blur-md animate-in fade-in duration-300">
+      <Loader2 className="w-12 h-12 text-primary animate-spin mb-4" />
+      <h2 className="text-xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-primary to-indigo-400">Authenticating...</h2>
+      <p className="text-muted-foreground text-sm mt-2">Connecting your Qworship account</p>
+    </div>
+  );
+};
+
+export const AppRouter = () => {
   return (
     <Router hook={useHashLocation}>
       <QueryClientProvider client={queryClient}>
         <TooltipProvider>
           <Toaster />
 
-          {/* Global Desktop Authentication Loader overlay */}
-          {isAuthenticating && (
-            <div className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-background/95 backdrop-blur-md animate-in fade-in duration-300">
-              <Loader2 className="w-12 h-12 text-primary animate-spin mb-4" />
-              <h2 className="text-xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-primary to-indigo-400">Authenticating...</h2>
-              <p className="text-muted-foreground text-sm mt-2">Connecting your Qworship account</p>
-            </div>
-          )}
+          {/* Global Desktop Authentication Loader overlay and Deep Link Handler */}
+          <DesktopAuthHandler />
 
           <Switch>
             <Route path="/" component={SplashScreen} />

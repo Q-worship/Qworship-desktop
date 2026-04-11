@@ -112,7 +112,7 @@ export function LiveConsoleBottomStrip({
                     liveWindow.postMessage({
                       type: "BIBLE_VERSE_DISPLAY",
                       data: { book: v.book, chapter: v.chapter, verse: v.verseNum, text: v.verseText, version: v.version, reference: v.reference }
-                    }, window.location.origin);
+                    }, "*");
                   }
                   hfbStore.setHfbCurrentProjected({ reference: v.reference, text: v.verseText, version: v.version });
                   hfbStore.setHfbDetectedVerses(prev => prev.map(d => ({ ...d, isActive: d.id === v.id })));

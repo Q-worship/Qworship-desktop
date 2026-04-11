@@ -1,4 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
+import { isWindowOpen } from "@/utils/windowUtils";
 import { apiRequest } from "@/lib/queryClient";
 
 export const useProjectMutations = ({
@@ -313,7 +314,7 @@ export const useProjectMutations = ({
             }, 300);
 
             // Trigger background update to live presentation if it's open
-            if (liveWindow && !liveWindow.closed) {
+            if (liveWindow && isWindowOpen(liveWindow)) {
               console.log(
                 "🎨 Syncing restored backgrounds to live presentation...",
               );

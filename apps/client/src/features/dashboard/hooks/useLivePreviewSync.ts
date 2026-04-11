@@ -57,7 +57,7 @@ export function useLivePreviewSync({
   // Listen for state updates from live screen to keep preview in sync
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
-      if (event.origin !== window.location.origin) return;
+      if (event.origin !== window.location.origin && event.origin !== "file://" && event.origin !== "null") return;
 
       const { type, data } = event.data || {};
 

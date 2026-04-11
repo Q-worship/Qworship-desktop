@@ -1,4 +1,4 @@
-import { app, BrowserWindow, shell, ipcMain, session } from 'electron';
+import { app, BrowserWindow, shell, ipcMain, session, systemPreferences } from 'electron';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -65,6 +65,14 @@ if (!gotTheLock) {
       const allowed = ['microphone', 'camera', 'media', 'audioCapture', 'videoCapture'];
       return allowed.includes(permission);
     });
+
+    if (process.platform === 'darwin') {
+      // Required on macOS: Natively request OS-level microphone permission to prevent getUserMedia from hanging
+      systemPreferences.askForMediaAccess('microphone').then((granted) => {
+        console.log("OS-level microphone permission granted:", granted);
+      }).catch(err => console.error("OS-level microphone permission error:", err));
+    }
+
     createWindow();
   });
 
@@ -136,13 +144,16 @@ function createWindow() {
 
   // Handle window.open() calls from the renderer
   win.webContents.setWindowOpenHandler(({ url }) => {
-    // Allow internal localhost URLs (e.g. live presentation window) to open as a new Electron window
-    if (url.startsWith('http://localhost') || url.startsWith('http://127.0.0.1')) {
+    // Allow internal localhost URLs (e.g. live presentation window) and file:// URLs in production to open as a new Electron window
+    if (url.startsWith('http://localhost') || url.startsWith('http://127.0.0.1') || url.startsWith('file://')) {
       return {
         action: 'allow',
         overrideBrowserWindowOptions: {
-          fullscreen: true,
-          frame: false,
+          fullscreen: false, // Changed from true so it appears as a distinct window
+          width: 1024,
+          height: 768,
+          frame: true, // Allow user to drag it to an external display
+          title: "Qworship Live Presentation",
           webPreferences: {
             preload: path.join(__dirname, 'preload.cjs'),
             nodeIntegration: false,

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useLocation } from "wouter";
 import AdminManagement from "@/features/super-admin/pages/AdminManagement";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import {
@@ -231,6 +232,7 @@ interface RecentActivity {
 }
 
 export default function SuperAdminSidebar() {
+  const [, setLocation] = useLocation();
   const { toast } = useToast();
   const [dateRange, setDateRange] = useState("30d");
   const [userFilter, setUserFilter] = useState("all");
@@ -1588,7 +1590,7 @@ export default function SuperAdminSidebar() {
               variant="ghost"
               size="sm"
               className={`w-full justify-start ${themeClasses.button}`}
-              onClick={() => (window.location.href = "/")}>
+              onClick={() => setLocation("/")}>
               <LogOut className="h-4 w-4 mr-2" />
               Exit SuperAdmin
             </Button>

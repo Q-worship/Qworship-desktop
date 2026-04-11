@@ -1,4 +1,5 @@
 import React from "react";
+import { isWindowOpen } from "@/utils/windowUtils";
 import { OBSStatusBadge } from "@/features/dashboard/components/OBSStatusBadge";
 import facebookIcon from "@assets/R (2)_1756733484236.png";
 import instagramIcon from "@assets/1658586823instagram-logo-transparent_1756733484234.png";
@@ -194,7 +195,7 @@ export function LiveConsolePreview(props: LiveConsolePreviewProps) {
                             } else {
                                 videoEle.pause();
                                 if (videoSettings.endAction === "advance") {
-                                    window.postMessage({ type: 'VIDEO_ENDED_NEXT_SLIDE' }, window.location.origin);
+                                    window.postMessage({ type: 'VIDEO_ENDED_NEXT_SLIDE' }, "*");
                                 }
                             }
                         }
@@ -202,7 +203,7 @@ export function LiveConsolePreview(props: LiveConsolePreviewProps) {
                     onEnded={() => {
                         const endAction = (currentSlideData as any).videoSettings?.endAction;
                         if (endAction === "advance") {
-                            window.postMessage({ type: 'VIDEO_ENDED_NEXT_SLIDE' }, window.location.origin);
+                            window.postMessage({ type: 'VIDEO_ENDED_NEXT_SLIDE' }, "*");
                         }
                     }}
                   />
@@ -298,14 +299,14 @@ export function LiveConsolePreview(props: LiveConsolePreviewProps) {
         })()}
 
         {/* Ready for content - No active mode selected */}
-        {activeMode === "none" && liveWindow && !liveWindow.closed && (
+        {activeMode === "none" && liveWindow && isWindowOpen(liveWindow) && (
           <div className="text-center text-gray-500">
             <p className="text-xs">Ready for content</p>
             <p className="text-[10px] text-gray-600 mt-1">Select a mode to project</p>
           </div>
         )}
 
-        {(!liveWindow || liveWindow.closed) && (
+        {(!liveWindow || !isWindowOpen(liveWindow)) && (
           <div className="text-center text-gray-600">
             <span className="text-xs">No live screen connected</span>
             <p className="text-[10px] mt-1">Click "GO LIVE" to start</p>

@@ -2,7 +2,8 @@ import { useState, useRef, useCallback } from "react";
 
 export const useRawAudioStream = () => {
   const [isRecording, setIsRecording] = useState(false);
-  const [volume, setVolume] = useState<number>(0);
+  const isRecordingRef = useRef(false);
+  
 
   const audioContextRef = useRef<AudioContext | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
@@ -14,10 +15,10 @@ export const useRawAudioStream = () => {
   const startRecording = useCallback(
     async (onAudioData: (pcmBuffer: Int16Array) => void) => {
       try {
+        console.log("[useRawAudioStream] Requesting microphone access...");
         const stream = await navigator.mediaDevices.getUserMedia({
           audio: {
             channelCount: 1,
-            sampleRate: 48000, // Browser's native high quality
             echoCancellation: true,
             noiseSuppression: true,
           },
@@ -26,9 +27,7 @@ export const useRawAudioStream = () => {
 
         const audioContext = new (
           window.AudioContext || (window as any).webkitAudioContext
-        )({
-          sampleRate: 24000, // Try to force target sample rate if browser supports it
-        });
+        )();
         audioContextRef.current = audioContext;
 
         const source = audioContext.createMediaStreamSource(stream);
@@ -41,8 +40,10 @@ export const useRawAudioStream = () => {
         analyserRef.current = analyser;
 
         const dataArray = new Uint8Array(analyser.frequencyBinCount);
+        isRecordingRef.current = true;
+
         const updateVolume = () => {
-          if (!analyserRef.current || !isRecording) return;
+          if (!analyserRef.current || !isRecordingRef.current) return;
           analyserRef.current.getByteFrequencyData(dataArray);
 
           let sum = 0;
@@ -53,15 +54,15 @@ export const useRawAudioStream = () => {
 
           // Map average (0-255) to a smoother 0-100 percentage for the UI
           const percentage = Math.min(100, Math.max(0, (average / 128) * 100));
-          setVolume(percentage);
+          window.dispatchEvent(new CustomEvent("hfb-volume", { detail: percentage }));
 
           animationFrameRef.current = requestAnimationFrame(updateVolume);
         };
         updateVolume(); // Start the loop
 
-        // --- Raw Audio Processor Setup ---
-        // 4096 buffer size gives us chunks roughly ~170ms long at 24kHz
-        const bufferSize = 4096;
+        // 16384 buffer size drastically reduces ScriptProcessorNode main-thread interruptions
+        // This stops the UI from freezing when React handles WebSocket messages!
+        const bufferSize = 16384;
         const processor = audioContext.createScriptProcessor(bufferSize, 1, 1);
         processorRef.current = processor;
 
@@ -91,18 +92,21 @@ export const useRawAudioStream = () => {
         processor.connect(audioContext.destination);
 
         setIsRecording(true);
+        console.log("[useRawAudioStream] Microphone stream successfully initialized.");
       } catch (err) {
-        console.error("Failed to start raw audio stream:", err);
+        console.error("[useRawAudioStream] Failed to start raw audio stream:", err);
         setIsRecording(false);
+        isRecordingRef.current = false;
         throw err;
       }
     },
-    [isRecording],
+    [],
   );
 
   const stopRecording = useCallback(() => {
     setIsRecording(false);
-    setVolume(0);
+    isRecordingRef.current = false;
+    
 
     if (animationFrameRef.current) {
       cancelAnimationFrame(animationFrameRef.current);
@@ -136,5 +140,5 @@ export const useRawAudioStream = () => {
     }
   }, []);
 
-  return { isRecording, volume, startRecording, stopRecording };
+  return { isRecording, startRecording, stopRecording };
 };

@@ -35,6 +35,7 @@ import {
   requestSyncFromOtherWindows,
 } from "@/stores/useBibleProjectionStore";
 import {
+
   useDisplayModeStore,
   requestDisplayModeSync,
   type DisplayMode,
@@ -67,6 +68,15 @@ const LiveTimestamp: React.FC = () => {
       </div>
     </div>
   );
+};
+
+const isWindowOpen = (win: any): boolean => {
+  if (!win) return false;
+  try {
+    return !win.closed;
+  } catch (e) {
+    return true; 
+  }
 };
 
 export const LivePresentationV2 = (): JSX.Element => {
@@ -465,7 +475,7 @@ export const LivePresentationV2 = (): JSX.Element => {
                         }
                       }
                       // Notify dashboard of slide change with full state
-                      if (window.opener && !window.opener.closed) {
+                      if (window.opener && isWindowOpen(window.opener)) {
                         window.opener.postMessage(
                           {
                             type: "SLIDE_CHANGE_FROM_LIVE",
@@ -476,7 +486,7 @@ export const LivePresentationV2 = (): JSX.Element => {
                               background: newBg,
                             },
                           },
-                          window.location.origin,
+                          "*",
                         );
                       }
                     }}
@@ -813,13 +823,13 @@ export const LivePresentationV2 = (): JSX.Element => {
                   );
 
                   // Send message to dashboard
-                  if (window.opener && !window.opener.closed) {
+                  if (window.opener && isWindowOpen(window.opener)) {
                     window.opener.postMessage(
                       {
                         type: "LIVE_BACKGROUND_CLEARED",
                         data: {},
                       },
-                      window.location.origin,
+                      "*",
                     );
                   }
                 }}
@@ -1732,14 +1742,14 @@ export const LivePresentationV2 = (): JSX.Element => {
                 setIsAssetsModalOpen(false);
 
                 // Send toast to Live Console instead of showing on live screen
-                if (window.opener && !window.opener.closed) {
+                if (window.opener && isWindowOpen(window.opener)) {
                   window.opener.postMessage(
                     {
                       type: "SHOW_TOAST",
                       title: "Background Selected",
                       description: `${assetsModalFilter === "video" ? "Video" : "Image"} background ready to apply - click Apply Background to activate`,
                     },
-                    window.location.origin,
+                    "*",
                   );
                 }
               }}
@@ -1783,7 +1793,7 @@ export const LivePresentationV2 = (): JSX.Element => {
                 setIsLogoAssetsModalOpen(false);
 
                 // Send toast to Live Console instead of showing on live screen
-                if (window.opener && !window.opener.closed) {
+                if (window.opener && isWindowOpen(window.opener)) {
                   window.opener.postMessage(
                     {
                       type: "SHOW_TOAST",
@@ -1791,7 +1801,7 @@ export const LivePresentationV2 = (): JSX.Element => {
                       description:
                         "Logo ready to apply - click Apply Settings to activate",
                     },
-                    window.location.origin,
+                    "*",
                   );
                 }
               }}

@@ -1,4 +1,5 @@
 import React from "react";
+import { isWindowOpen } from "@/utils/windowUtils";
 import { IntegrationsModal } from "@/features/dashboard/components/modals/IntegrationsModal";
 import { PreferencesModal } from "@/features/dashboard/components/modals/PreferencesModal";
 import { DisplaySettingsModal } from "@/features/dashboard/components/modals/DisplaySettingsModal";
@@ -202,7 +203,7 @@ export const ModalsContainer: React.FC<ModalsContainerProps> = (props) => {
           props.setIsLiveConsoleOpen(false);
           // Reset to first slide when closing Live Console
           props.setCurrentSlide(1);
-          if (props.liveWindow && !props.liveWindow.closed) {
+          if (props.liveWindow && isWindowOpen(props.liveWindow)) {
             const slideData = props.slides[0];
             const itemId = slideData?.itemId;
             const background = itemId ? props.itemBackgrounds[itemId] : null;
@@ -211,7 +212,7 @@ export const ModalsContainer: React.FC<ModalsContainerProps> = (props) => {
                 type: "GO_TO_SLIDE",
                 data: { slideIndex: 0, background, itemId },
               },
-              window.location.origin,
+              "*",
             );
           }
         }}
@@ -225,7 +226,7 @@ export const ModalsContainer: React.FC<ModalsContainerProps> = (props) => {
           props.setCurrentSlide(slideNumber);
           // Clear Bible projection when navigating to slides
           props.clearZustandProjection();
-          if (props.liveWindow && !props.liveWindow.closed) {
+          if (props.liveWindow && isWindowOpen(props.liveWindow)) {
             const slideData = props.slides[slideNumber - 1];
             const itemId =
               slideData?.itemId || props.serviceItems[slideNumber - 1]?.id;
@@ -240,7 +241,7 @@ export const ModalsContainer: React.FC<ModalsContainerProps> = (props) => {
                   itemId: itemId,
                 },
               },
-              window.location.origin,
+              "*",
             );
           }
         }}
@@ -250,7 +251,7 @@ export const ModalsContainer: React.FC<ModalsContainerProps> = (props) => {
             props.setCurrentSlide(newSlideNumber);
             // Clear Bible projection when navigating to slides
             props.clearZustandProjection();
-            if (props.liveWindow && !props.liveWindow.closed) {
+            if (props.liveWindow && isWindowOpen(props.liveWindow)) {
               const slideData = props.slides[newSlideNumber - 1];
               const itemId =
                 slideData?.itemId || props.serviceItems[newSlideNumber - 1]?.id;
@@ -265,7 +266,7 @@ export const ModalsContainer: React.FC<ModalsContainerProps> = (props) => {
                     itemId: itemId,
                   },
                 },
-                window.location.origin,
+                "*",
               );
             }
           }
@@ -277,7 +278,7 @@ export const ModalsContainer: React.FC<ModalsContainerProps> = (props) => {
             props.setCurrentSlide(newSlideNumber);
             // Clear Bible projection when navigating to slides
             props.clearZustandProjection();
-            if (props.liveWindow && !props.liveWindow.closed) {
+            if (props.liveWindow && isWindowOpen(props.liveWindow)) {
               const slideData = props.slides[newSlideNumber - 1];
               const itemId =
                 slideData?.itemId || props.serviceItems[newSlideNumber - 1]?.id;
@@ -292,7 +293,7 @@ export const ModalsContainer: React.FC<ModalsContainerProps> = (props) => {
                     itemId: itemId,
                   },
                 },
-                window.location.origin,
+                "*",
               );
             }
           }

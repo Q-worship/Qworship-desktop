@@ -1,4 +1,5 @@
 import { useLiveConsoleStore } from "../../hooks/useLiveConsoleStore";
+import { isWindowOpen } from "@/utils/windowUtils";
 import { useLowerThirdStore } from "@/stores/useLowerThirdStore";
 import { useHFBStore } from "../../hooks/useHFBStore";
 import { Radio, Settings, Image, X, Eye, EyeOff } from "lucide-react";
@@ -90,10 +91,10 @@ export function LiveConsoleRightPanel({ liveWindow }: RightPanelProps) {
                   <div className="text-white font-medium leading-relaxed" style={{ fontSize: '7px', textShadow: '0 2px 4px rgba(0,0,0,0.8)' }}>{store.previewBibleProjection.text}</div>
                 </div>
               )}
-              {!store.previewProjectionType && liveWindow && !liveWindow.closed && (
+              {!store.previewProjectionType && liveWindow && isWindowOpen(liveWindow) && (
                 <div className="text-center text-gray-600"><p style={{ fontSize: '7px' }}>Ready for content</p></div>
               )}
-              {(!liveWindow || liveWindow.closed) && (
+              {(!liveWindow || !isWindowOpen(liveWindow)) && (
                 <div className="text-center text-gray-600"><p style={{ fontSize: '7px' }}>No live screen</p></div>
               )}
             </div>

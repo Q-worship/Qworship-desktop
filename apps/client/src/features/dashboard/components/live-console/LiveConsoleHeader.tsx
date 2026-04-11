@@ -1,4 +1,5 @@
 import { Minimize2, X } from "lucide-react";
+import { isWindowOpen } from "@/utils/windowUtils";
 import { Button } from "@/components/ui/button";
 import qworshipLogo from "@assets/Group 1_1753843572404.png";
 
@@ -16,7 +17,7 @@ export function LiveConsoleHeader({ liveWindow, onClose, setIsMinimized }: Props
         <span className="text-purple-300 font-bold text-lg tracking-wide">Qworship Live Console</span>
       </div>
       <div className="flex items-center gap-3">
-        {liveWindow && !liveWindow.closed && (
+        {liveWindow && isWindowOpen(liveWindow) && (
           <div className="flex items-center gap-1.5">
             <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
             <span className="text-green-400 text-xs font-semibold">LIVE</span>

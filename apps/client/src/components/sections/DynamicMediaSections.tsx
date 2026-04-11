@@ -765,7 +765,7 @@ export const DynamicMediaSections: React.FC<DynamicMediaSectionsProps> = ({
               type: "ASSET_SELECTED_FOR_BACKGROUND",
               assetUrl: assetUrl,
             },
-            window.location.origin,
+            "*",
           );
         }
         return; // Don't proceed with normal selection behavior

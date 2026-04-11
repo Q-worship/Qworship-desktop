@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { isWindowOpen } from "@/utils/windowUtils";
 import { LiveConsoleHeader } from "./live-console/LiveConsoleHeader";
 import { LiveConsoleLeftPanel } from "./live-console/LiveConsoleLeftPanel";
 import { LiveConsoleCenterStage } from "./live-console/LiveConsoleCenterStage";
@@ -40,8 +41,8 @@ export function LiveControlCentre(props: LiveConsoleProps) {
   const state = useLiveConsoleStore();
   
   const sendCommand = (type: string, data?: unknown) => {
-    if (props.liveWindow && !props.liveWindow.closed) {
-      props.liveWindow.postMessage({ type, data }, window.location.origin);
+    if (props.liveWindow && isWindowOpen(props.liveWindow)) {
+      props.liveWindow.postMessage({ type, data }, "*");
     }
   };
 
@@ -184,7 +185,7 @@ export function LiveControlCentre(props: LiveConsoleProps) {
         <div className="flex items-center gap-3">
           <img src={qworshipLogo} alt="Qworship" className="w-6 h-6 object-contain" />
           <span className="text-purple-300 font-bold text-sm tracking-wide">Qworship Live Console</span>
-          {props.liveWindow && !props.liveWindow.closed && (
+          {props.liveWindow && isWindowOpen(props.liveWindow) && (
             <div className="flex items-center gap-1.5">
               <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
               <span className="text-green-400 text-[10px] font-semibold">LIVE</span>

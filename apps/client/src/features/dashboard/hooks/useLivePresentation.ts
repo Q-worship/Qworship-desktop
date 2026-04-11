@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { isWindowOpen } from "@/utils/windowUtils";
 import { useBibleProjectionStore } from "@/stores/useBibleProjectionStore";
 import { useDisplayModeStore } from "@/stores/useDisplayModeStore";
 
@@ -44,7 +45,7 @@ export const useLivePresentation = ({
     localStorage.removeItem("qworship-live-background");
 
     const newWindow = window.open(
-      "/live",
+      "#/live",
       "_blank",
       "fullscreen=yes,scrollbars=no,resizable=no",
     );
@@ -73,7 +74,7 @@ export const useLivePresentation = ({
                 itemBackgrounds,
               },
             },
-            window.location.origin,
+            "*",
           );
 
           const currentSlideData = slides[currentSlide - 1];
@@ -92,7 +93,7 @@ export const useLivePresentation = ({
                 itemId: currentItemId,
               },
             },
-            window.location.origin,
+            "*",
           );
         } catch (error) {
           console.error("Error sending messages to live window:", error);
@@ -120,8 +121,8 @@ export const useLivePresentation = ({
   };
 
   const exitLive = () => {
-    if (liveWindow && !liveWindow.closed) {
-      liveWindow.postMessage({ type: "CLOSE_LIVE" }, window.location.origin);
+    if (liveWindow && isWindowOpen(liveWindow)) {
+      liveWindow.postMessage({ type: "CLOSE_LIVE" }, "*");
       liveWindow.close();
     }
 
@@ -235,7 +236,7 @@ export const useLivePresentation = ({
           song: songWithSections,
           error: null,
         },
-        window.location.origin,
+        "*",
       );
     } catch (error: any) {
       sourceWindow.postMessage(
@@ -245,7 +246,7 @@ export const useLivePresentation = ({
           success: false,
           error: error.message || "Failed to fetch song data",
         },
-        window.location.origin,
+        "*",
       );
     }
   };
@@ -257,7 +258,7 @@ export const useLivePresentation = ({
 
   // Synchronize slides and backgrounds with live window whenever they change
   useEffect(() => {
-    if (isLive && liveWindow && !liveWindow.closed) {
+    if (isLive && liveWindow && isWindowOpen(liveWindow)) {
       // Create a stable hash of the full payload for comparison
       const payloadKey = JSON.stringify({
         slides: slides.map((s) => ({
@@ -289,7 +290,7 @@ export const useLivePresentation = ({
                 itemBackgrounds,
               },
             },
-            window.location.origin,
+            "*",
           );
         } catch (error) {
           console.error("Error syncing slides to live window:", error);
@@ -307,7 +308,7 @@ export const useLivePresentation = ({
 
   // Sync editor formatting state separately with debounce
   useEffect(() => {
-    if (isLive && liveWindow && !liveWindow.closed) {
+    if (isLive && liveWindow && isWindowOpen(liveWindow)) {
       if (editorSyncDebounceRef.current) {
         clearTimeout(editorSyncDebounceRef.current);
       }
@@ -322,7 +323,7 @@ export const useLivePresentation = ({
                 // If there's component-local editorState, it should be passed in Props
               },
             },
-            window.location.origin,
+            "*",
           );
         } catch (error) {
           console.error("Error syncing editor state to live window:", error);
@@ -333,7 +334,7 @@ export const useLivePresentation = ({
 
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
-      if (event.origin !== window.location.origin) return;
+      if (event.origin !== window.location.origin && event.origin !== "file://" && event.origin !== "null") return;
 
       const { type, data } = event.data;
 
@@ -346,7 +347,7 @@ export const useLivePresentation = ({
 
           if (
             liveWindow &&
-            !liveWindow.closed &&
+            isWindowOpen(liveWindow) &&
             slides.length > 0 &&
             changedSlide
           ) {
@@ -369,7 +370,7 @@ export const useLivePresentation = ({
                     itemId: parentItem.id,
                   },
                 },
-                window.location.origin,
+                "*",
               );
             }
           }
@@ -389,13 +390,13 @@ export const useLivePresentation = ({
             const nextSlideNum = currentSlide + 1;
             setCurrentSlide(nextSlideNum);
             
-            if (liveWindow && !liveWindow.closed) {
+            if (liveWindow && isWindowOpen(liveWindow)) {
               liveWindow.postMessage(
                 {
                   type: "SLIDE_CHANGE",
                   data: { slideNumber: nextSlideNum },
                 },
-                window.location.origin,
+                "*",
               );
             }
           }
@@ -404,7 +405,7 @@ export const useLivePresentation = ({
         case "LIVE_SETTINGS_UPDATE":
           break;
         case "LIVE_READY":
-          if (liveWindow && !liveWindow.closed) {
+          if (liveWindow && isWindowOpen(liveWindow)) {
             liveWindow.postMessage(
               {
                 type: "SLIDES_SYNC",
@@ -414,7 +415,7 @@ export const useLivePresentation = ({
                   titleEditorState,
                 },
               },
-              window.location.origin,
+              "*",
             );
 
             liveWindow.postMessage(
@@ -422,7 +423,7 @@ export const useLivePresentation = ({
                 type: "SLIDE_CHANGE",
                 data: { slideNumber: currentSlide },
               },
-              window.location.origin,
+              "*",
             );
 
             const currentItemId = getCurrentItemId();
@@ -436,7 +437,7 @@ export const useLivePresentation = ({
                   itemId: currentItemId,
                 },
               },
-              window.location.origin,
+              "*",
             );
           }
           break;
@@ -446,7 +447,7 @@ export const useLivePresentation = ({
           }
           break;
         case "REQUEST_BACKGROUND_SYNC":
-          if (liveWindow && !liveWindow.closed) {
+          if (liveWindow && isWindowOpen(liveWindow)) {
             const currentItemId = getCurrentItemId();
             const currentBackground = getItemBackground(currentItemId);
 
@@ -458,12 +459,12 @@ export const useLivePresentation = ({
                   itemId: currentItemId,
                 },
               },
-              window.location.origin,
+              "*",
             );
           }
           break;
         case "REQUEST_BIBLE_SYNC":
-          if (liveWindow && !liveWindow.closed) {
+          if (liveWindow && isWindowOpen(liveWindow)) {
             const bibleStore = useBibleProjectionStore.getState();
 
             if (bibleStore.currentVerse && bibleStore.isProjecting) {
@@ -492,7 +493,7 @@ export const useLivePresentation = ({
                     reference: bibleStore.formattedReference,
                   },
                 },
-                window.location.origin,
+                "*",
               );
             }
           }
