@@ -142,6 +142,24 @@ function createWindow() {
     win?.show();
   });
 
+  // ── Crash Detection ──────────────────────────────────────────
+  // Detect when the renderer process crashes or becomes unresponsive
+  win.webContents.on('render-process-gone', (_event, details) => {
+    console.error('⚠️ [RENDERER CRASHED]', details.reason, 'exitCode:', details.exitCode);
+  });
+  win.on('unresponsive', () => {
+    console.error('⚠️ [RENDERER UNRESPONSIVE] The renderer process is not responding');
+  });
+  win.on('responsive', () => {
+    console.log('✅ [RENDERER RESPONSIVE] The renderer process recovered');
+  });
+  win.webContents.on('console-message', (_event, level, message, line, sourceId) => {
+    // Forward renderer console.error messages to main process terminal (level 2 = error)
+    if (level >= 2) {
+      console.error(`🔴 [RENDERER ERROR] ${message} (${sourceId}:${line})`);
+    }
+  });
+
   // Handle window.open() calls from the renderer
   win.webContents.setWindowOpenHandler(({ url }) => {
     // Allow internal localhost URLs (e.g. live presentation window) and file:// URLs in production to open as a new Electron window

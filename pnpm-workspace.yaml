@@ -1,3 +1,9 @@
 packages:
   - "apps/*"
   - "packages/*"
+allowBuilds:
+  core-js: true
+  electron: true
+  es5-ext: true
+  esbuild: true
+  sharp: true
