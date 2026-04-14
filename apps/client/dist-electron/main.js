@@ -1,1 +1,173 @@
-"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const o=require("electron"),s=require("node:path"),w=require("node:url");var c=typeof document<"u"?document.currentScript:null;const d=s.dirname(w.fileURLToPath(typeof document>"u"?require("url").pathToFileURL(__filename).href:c&&c.tagName.toUpperCase()==="SCRIPT"&&c.src||new URL("main.js",document.baseURI).href));process.env.APP_ROOT=s.join(d,"..");const l=process.env.VITE_DEV_SERVER_URL,m=s.join(process.env.APP_ROOT,"dist-electron"),h=s.join(process.env.APP_ROOT,"dist");process.env.VITE_PUBLIC=l?s.join(process.env.APP_ROOT,"public"):h;let n,i=null;const R=o.app.requestSingleInstanceLock();R?(o.app.on("second-instance",(t,e,r)=>{n&&(n.isMinimized()&&n.restore(),n.focus());const a=e.find(u=>u.startsWith("qworship://"));a&&p(a)}),process.defaultApp?process.argv.length>=2&&o.app.setAsDefaultProtocolClient("qworship",process.execPath,[s.resolve(process.argv[1])]):o.app.setAsDefaultProtocolClient("qworship"),o.app.whenReady().then(()=>{o.session.defaultSession.setPermissionRequestHandler((t,e,r)=>{r(["microphone","camera","media","audioCapture","videoCapture"].includes(e))}),o.session.defaultSession.setPermissionCheckHandler((t,e)=>["microphone","camera","media","audioCapture","videoCapture"].includes(e)),process.platform==="darwin"&&o.systemPreferences.askForMediaAccess("microphone").then(t=>{console.log("OS-level microphone permission granted:",t)}).catch(t=>console.error("OS-level microphone permission error:",t)),f()}),o.app.on("open-url",(t,e)=>{t.preventDefault(),o.app.isReady()?p(e):i=e})):o.app.quit();function p(t){console.log("Received deep link:",t),i=t,n&&n.webContents&&n.webContents.send("deep-link-payload",t)}o.ipcMain.on("request-deep-link",()=>{i&&n&&n.webContents&&(n.webContents.send("deep-link-payload",i),i=null)});o.ipcMain.on("open-external-url",(t,e)=>{e&&(e.startsWith("http://")||e.startsWith("https://"))&&o.shell.openExternal(e)});function f(){const{session:t}=require("electron");t.defaultSession.setPermissionRequestHandler((e,r,a)=>{a(["microphone","camera","media","audioCapture","videoCapture"].includes(r))}),t.defaultSession.setPermissionCheckHandler((e,r)=>["microphone","camera","media","audioCapture","videoCapture"].includes(r)),n=new o.BrowserWindow({width:1200,height:800,minWidth:800,minHeight:600,show:!1,titleBarStyle:"hiddenInset",icon:s.join(process.env.VITE_PUBLIC,"favicon.ico"),webPreferences:{preload:s.join(d,"preload.cjs"),nodeIntegration:!1,contextIsolation:!0,webviewTag:!0}}),n.on("ready-to-show",()=>{n==null||n.show()}),n.webContents.setWindowOpenHandler(({url:e})=>e.startsWith("http://localhost")||e.startsWith("http://127.0.0.1")||e.startsWith("file://")?{action:"allow",overrideBrowserWindowOptions:{fullscreen:!1,width:1024,height:768,frame:!0,title:"Qworship Live Presentation",webPreferences:{preload:s.join(d,"preload.cjs"),nodeIntegration:!1,contextIsolation:!0}}}:((e.startsWith("http:")||e.startsWith("https:"))&&o.shell.openExternal(e),{action:"deny"})),l?n.loadURL(l):n.loadFile(s.join(h,"index.html")),n.webContents.on("did-finish-load",()=>{i&&(p(i),i=null)})}o.app.on("window-all-closed",()=>{process.platform!=="darwin"&&(o.app.quit(),n=null)});o.app.on("activate",()=>{o.BrowserWindow.getAllWindows().length===0&&f()});exports.MAIN_DIST=m;exports.RENDERER_DIST=h;exports.VITE_DEV_SERVER_URL=l;
+"use strict";
+Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
+const electron = require("electron");
+const path = require("node:path");
+const node_url = require("node:url");
+var _documentCurrentScript = typeof document !== "undefined" ? document.currentScript : null;
+const __dirname$1 = path.dirname(node_url.fileURLToPath(typeof document === "undefined" ? require("url").pathToFileURL(__filename).href : _documentCurrentScript && _documentCurrentScript.tagName.toUpperCase() === "SCRIPT" && _documentCurrentScript.src || new URL("main.js", document.baseURI).href));
+process.env.APP_ROOT = path.join(__dirname$1, "..");
+const VITE_DEV_SERVER_URL = process.env["VITE_DEV_SERVER_URL"];
+const MAIN_DIST = path.join(process.env.APP_ROOT, "dist-electron");
+const RENDERER_DIST = path.join(process.env.APP_ROOT, "dist");
+process.env.VITE_PUBLIC = VITE_DEV_SERVER_URL ? path.join(process.env.APP_ROOT, "public") : RENDERER_DIST;
+let win;
+let deepLinkUrl = null;
+const gotTheLock = electron.app.requestSingleInstanceLock();
+if (!gotTheLock) {
+  electron.app.quit();
+} else {
+  electron.app.on("second-instance", (event, commandLine, workingDirectory) => {
+    if (win) {
+      if (win.isMinimized()) win.restore();
+      win.focus();
+    }
+    const uri = commandLine.find((arg) => arg.startsWith("qworship://"));
+    if (uri) {
+      handleProtocolUri(uri);
+    }
+  });
+  if (process.defaultApp) {
+    if (process.argv.length >= 2) {
+      electron.app.setAsDefaultProtocolClient("qworship", process.execPath, [path.resolve(process.argv[1])]);
+    }
+  } else {
+    electron.app.setAsDefaultProtocolClient("qworship");
+  }
+  electron.app.whenReady().then(() => {
+    electron.session.defaultSession.setPermissionRequestHandler((_wc, permission, callback) => {
+      const allowed = ["microphone", "camera", "media", "audioCapture", "videoCapture"];
+      callback(allowed.includes(permission));
+    });
+    electron.session.defaultSession.setPermissionCheckHandler((_wc, permission) => {
+      const allowed = ["microphone", "camera", "media", "audioCapture", "videoCapture"];
+      return allowed.includes(permission);
+    });
+    if (process.platform === "darwin") {
+      electron.systemPreferences.askForMediaAccess("microphone").then((granted) => {
+        console.log("OS-level microphone permission granted:", granted);
+      }).catch((err) => console.error("OS-level microphone permission error:", err));
+    }
+    createWindow();
+  });
+  electron.app.on("open-url", (event, url) => {
+    event.preventDefault();
+    if (electron.app.isReady()) {
+      handleProtocolUri(url);
+    } else {
+      deepLinkUrl = url;
+    }
+  });
+}
+function handleProtocolUri(url) {
+  console.log("Received deep link:", url);
+  deepLinkUrl = url;
+  if (win && win.webContents) {
+    win.webContents.send("deep-link-payload", url);
+  }
+}
+electron.ipcMain.on("request-deep-link", () => {
+  if (deepLinkUrl && win && win.webContents) {
+    win.webContents.send("deep-link-payload", deepLinkUrl);
+    deepLinkUrl = null;
+  }
+});
+electron.ipcMain.on("open-external-url", (_event, url) => {
+  if (url && (url.startsWith("http://") || url.startsWith("https://"))) {
+    electron.shell.openExternal(url);
+  }
+});
+function createWindow() {
+  const { session: session2 } = require("electron");
+  session2.defaultSession.setPermissionRequestHandler((_webContents, permission, callback) => {
+    const allowed = ["microphone", "camera", "media", "audioCapture", "videoCapture"];
+    callback(allowed.includes(permission));
+  });
+  session2.defaultSession.setPermissionCheckHandler((_webContents, permission) => {
+    const allowed = ["microphone", "camera", "media", "audioCapture", "videoCapture"];
+    return allowed.includes(permission);
+  });
+  win = new electron.BrowserWindow({
+    width: 1200,
+    height: 800,
+    minWidth: 800,
+    minHeight: 600,
+    show: false,
+    // Don't show immediately to prevent white flash
+    titleBarStyle: "hiddenInset",
+    icon: path.join(process.env.VITE_PUBLIC, "favicon.ico"),
+    webPreferences: {
+      preload: path.join(__dirname$1, "preload.cjs"),
+      nodeIntegration: false,
+      contextIsolation: true,
+      webviewTag: true
+      // Necessary if they use <webview> for pricing
+    }
+  });
+  win.on("ready-to-show", () => {
+    win == null ? void 0 : win.show();
+  });
+  win.webContents.on("render-process-gone", (_event, details) => {
+    console.error("⚠️ [RENDERER CRASHED]", details.reason, "exitCode:", details.exitCode);
+  });
+  win.on("unresponsive", () => {
+    console.error("⚠️ [RENDERER UNRESPONSIVE] The renderer process is not responding");
+  });
+  win.on("responsive", () => {
+    console.log("✅ [RENDERER RESPONSIVE] The renderer process recovered");
+  });
+  win.webContents.on("console-message", (_event, level, message, line, sourceId) => {
+    if (level >= 2) {
+      console.error(`🔴 [RENDERER ERROR] ${message} (${sourceId}:${line})`);
+    }
+  });
+  win.webContents.setWindowOpenHandler(({ url }) => {
+    if (url.startsWith("http://localhost") || url.startsWith("http://127.0.0.1") || url.startsWith("file://")) {
+      return {
+        action: "allow",
+        overrideBrowserWindowOptions: {
+          fullscreen: false,
+          // Changed from true so it appears as a distinct window
+          width: 1024,
+          height: 768,
+          frame: true,
+          // Allow user to drag it to an external display
+          title: "Qworship Live Presentation",
+          webPreferences: {
+            preload: path.join(__dirname$1, "preload.cjs"),
+            nodeIntegration: false,
+            contextIsolation: true
+          }
+        }
+      };
+    }
+    if (url.startsWith("http:") || url.startsWith("https:")) {
+      electron.shell.openExternal(url);
+    }
+    return { action: "deny" };
+  });
+  if (VITE_DEV_SERVER_URL) {
+    win.loadURL(VITE_DEV_SERVER_URL);
+  } else {
+    win.loadFile(path.join(RENDERER_DIST, "index.html"));
+  }
+  win.webContents.on("did-finish-load", () => {
+    if (deepLinkUrl) {
+      handleProtocolUri(deepLinkUrl);
+      deepLinkUrl = null;
+    }
+  });
+}
+electron.app.on("window-all-closed", () => {
+  if (process.platform !== "darwin") {
+    electron.app.quit();
+    win = null;
+  }
+});
+electron.app.on("activate", () => {
+  if (electron.BrowserWindow.getAllWindows().length === 0) {
+    createWindow();
+  }
+});
+exports.MAIN_DIST = MAIN_DIST;
+exports.RENDERER_DIST = RENDERER_DIST;
+exports.VITE_DEV_SERVER_URL = VITE_DEV_SERVER_URL;

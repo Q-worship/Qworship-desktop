@@ -3,12 +3,11 @@ import { useState, useRef, useCallback } from "react";
 export const useRawAudioStream = () => {
   const [isRecording, setIsRecording] = useState(false);
   const isRecordingRef = useRef(false);
-  
 
   const audioContextRef = useRef<AudioContext | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
   const sourceRef = useRef<MediaStreamAudioSourceNode | null>(null);
-  const processorRef = useRef<ScriptProcessorNode | null>(null);
+  const workletNodeRef = useRef<AudioWorkletNode | null>(null);
   const analyserRef = useRef<AnalyserNode | null>(null);
   const animationFrameRef = useRef<number | null>(null);
 
@@ -60,39 +59,31 @@ export const useRawAudioStream = () => {
         };
         updateVolume(); // Start the loop
 
-        // 16384 buffer size drastically reduces ScriptProcessorNode main-thread interruptions
-        // This stops the UI from freezing when React handles WebSocket messages!
-        const bufferSize = 16384;
-        const processor = audioContext.createScriptProcessor(bufferSize, 1, 1);
-        processorRef.current = processor;
+        // --- AudioWorklet Setup ---
+        // AudioWorkletNode runs in a dedicated audio thread, unlike the deprecated
+        // ScriptProcessorNode which ran on the main thread and caused native
+        // ACCESS_VIOLATION crashes (0xC0000005) in Electron on Windows.
+        await audioContext.audioWorklet.addModule('/pcm-processor.js');
 
-        processor.onaudioprocess = (e) => {
-          const inputData = e.inputBuffer.getChannelData(0); // Float32Array (-1.0 to 1.0)
+        const workletNode = new AudioWorkletNode(audioContext, 'pcm-processor');
+        workletNodeRef.current = workletNode;
 
-          // Downsample and convert to PCM16
-          // If the audioContext is running at 48kHz, but we need 24kHz, we skip every 2nd sample
-          const inputSampleRate = audioContext.sampleRate;
-          const targetSampleRate = 24000;
-          const ratio = Math.floor(inputSampleRate / targetSampleRate);
-          const step = ratio > 0 ? ratio : 1;
-
-          const pcm16 = new Int16Array(Math.floor(inputData.length / step));
-
-          let outIndex = 0;
-          for (let i = 0; i < inputData.length; i += step) {
-            let s = Math.max(-1, Math.min(1, inputData[i]));
-            // Convert to 16-bit PCM integer
-            pcm16[outIndex++] = s < 0 ? s * 0x8000 : s * 0x7fff;
+        // Receive PCM16 data from the audio thread
+        workletNode.port.onmessage = (event) => {
+          if (isRecordingRef.current) {
+            const pcm16 = event.data instanceof Int16Array
+              ? event.data
+              : new Int16Array(event.data);
+            onAudioData(pcm16);
           }
-
-          onAudioData(pcm16);
         };
 
-        source.connect(processor);
-        processor.connect(audioContext.destination);
+        source.connect(workletNode);
+        // Connect to destination to keep the audio graph alive
+        workletNode.connect(audioContext.destination);
 
         setIsRecording(true);
-        console.log("[useRawAudioStream] Microphone stream successfully initialized.");
+        console.log("[useRawAudioStream] Microphone stream initialized with AudioWorklet.");
       } catch (err) {
         console.error("[useRawAudioStream] Failed to start raw audio stream:", err);
         setIsRecording(false);
@@ -106,17 +97,16 @@ export const useRawAudioStream = () => {
   const stopRecording = useCallback(() => {
     setIsRecording(false);
     isRecordingRef.current = false;
-    
 
     if (animationFrameRef.current) {
       cancelAnimationFrame(animationFrameRef.current);
       animationFrameRef.current = null;
     }
 
-    if (processorRef.current) {
-      processorRef.current.disconnect();
-      processorRef.current.onaudioprocess = null;
-      processorRef.current = null;
+    if (workletNodeRef.current) {
+      workletNodeRef.current.port.close();
+      workletNodeRef.current.disconnect();
+      workletNodeRef.current = null;
     }
 
     if (analyserRef.current) {

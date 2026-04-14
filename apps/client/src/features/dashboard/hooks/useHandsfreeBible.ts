@@ -11,6 +11,10 @@ import { useRealtimeSocket } from "@/hooks/useRealtimeSocket";
 import { useRawAudioStream } from "@/hooks/useRawAudioStream";
 import { useToast } from "@/hooks/use-toast";
 import { useHFBStore } from "./useHFBStore";
+import { db } from "@/lib/db";
+import type { BibleVersion } from "@/lib/offlineBibleEngine";
+
+const ALL_VERSIONS: BibleVersion[] = ['kjv', 'nkjv', 'niv', 'esv', 'amp', 'msg', 'gn'];
 
 const isWindowOpen = (win: Window | null) => {
   if (!win) return false;
@@ -21,6 +25,39 @@ const isWindowOpen = (win: Window | null) => {
     return true;
   }
 };
+
+/**
+ * Fetch ALL Bible versions for a given book+chapter+verse range from IndexedDB.
+ * Returns multi-version verse objects: [{ verse, kjv, nkjv, niv, ... }]
+ * Used for offline navigation so we don't need a server roundtrip.
+ */
+async function fetchMultiVersionVerses(book: string, chapter: number, verseStart: number, verseEnd?: number) {
+  const allVersionData = await Promise.all(
+    ALL_VERSIONS.map(async (v) => {
+      const verses = await db.verses
+        .where('[version+book+chapter]')
+        .equals([v, book, chapter])
+        .sortBy('verse');
+      return { version: v, verses };
+    })
+  );
+
+  const anyVerses = allVersionData.find(d => d.verses.length > 0)?.verses || [];
+  const relevantVerseNums = anyVerses
+    .filter(v => v.verse >= verseStart && (verseEnd ? v.verse <= verseEnd : v.verse === verseStart))
+    .map(v => v.verse);
+
+  if (relevantVerseNums.length === 0) return [];
+
+  return relevantVerseNums.map(verseNum => {
+    const entry: Record<string, any> = { verse: verseNum };
+    for (const { version, verses } of allVersionData) {
+      const found = verses.find(v => v.verse === verseNum);
+      entry[version] = found?.text || '';
+    }
+    return entry;
+  });
+}
 
 interface UseHandsfreeBibleProps {
   liveWindow: Window | null;
@@ -145,7 +182,7 @@ export const useHandsfreeBible = ({
     
     // Set all other detected verses to inactive
     useHFBStore.getState().setHfbDetectedVerses(prev => 
-      prev.map(d => ({ ...d, isActive: d.id === Date.now() })) // This handles new addition logic
+      prev.map(d => ({ ...d, isActive: d.id === Date.now() }))
     );
     useHFBStore.getState().setHfbCurrentProjected({ reference: `${book} ${chapter}:${verseNum}`, text, version: effectiveVersion });
     
@@ -175,6 +212,8 @@ export const useHandsfreeBible = ({
     }
   };
 
+  // Offline navigation: compute next/prev verse/chapter and look up from IndexedDB
+  // (No server roundtrip needed for navigation commands)
   const executeNavigation = async (
     commandType: string,
     direction: "next" | "previous" | undefined,
@@ -200,7 +239,6 @@ export const useHandsfreeBible = ({
 
     setDetectedCommands(commandText);
 
-    // We need to fetch the next/previous verse using the current context
     const currentContext = currentVerseContextRef.current;
     console.log("[HandsfreeBible] executeNavigation triggered", {
       commandType,
@@ -220,59 +258,50 @@ export const useHandsfreeBible = ({
       return;
     }
 
-    console.log(
-      "[HandsfreeBible] Fetching from API with context:",
-      currentContext,
-    );
-    try {
-      const response = await fetch("/api/bible/voice-command", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          text: commandText,
-          currentBook: currentContext.book,
-          currentChapter: currentContext.chapter,
-          currentVerse: currentContext.verse,
-          currentVersion:
-            (currentContext as any).version ||
-            selectedBibleVersion.toLowerCase(),
-          commandType,
-          direction,
-          targetVerse,
-          offset,
-        }),
-      });
+    let newBook = currentContext.book;
+    let newChapter = currentContext.chapter;
+    let newVerse = currentContext.verse;
 
-      console.log("[HandsfreeBible] Fetch status:", response.status);
-      if (response.ok) {
-        const data = await response.json();
-        console.log("[HandsfreeBible] Navigation API response:", data);
-        if (data.success && data.result) {
-          handleBibleMatch({
-            result: data.result,
-            commandType: data.commandType,
-          });
-        } else {
-          console.warn("[HandsfreeBible] Navigation failed:", data.error);
-        }
+    if (commandType === "verse_change") {
+      newVerse = direction === "next" ? newVerse + 1 : Math.max(1, newVerse - 1);
+    } else if (commandType === "chapter_change") {
+      newChapter = direction === "next" ? newChapter + 1 : Math.max(1, newChapter - 1);
+      newVerse = 1;
+    } else if (commandType === "jump_to_verse" && targetVerse) {
+      newVerse = targetVerse;
+    } else if (commandType === "jump_relative" && offset) {
+      newVerse = Math.max(1, newVerse + offset);
+    } else if (commandType === "last_verse") {
+      const vKey = selectedBibleVersion.toLowerCase();
+      const chapterVerses = await db.verses
+        .where('[version+book+chapter]')
+        .equals([vKey, newBook, newChapter])
+        .sortBy('verse');
+      if (chapterVerses.length > 0) {
+        newVerse = chapterVerses[chapterVerses.length - 1].verse;
+      }
+    }
+
+    console.log("[HandsfreeBible] Navigating offline to:", { newBook, newChapter, newVerse });
+
+    try {
+      const multiVersionVerses = await fetchMultiVersionVerses(newBook, newChapter, newVerse);
+      if (multiVersionVerses.length > 0) {
+        handleBibleMatch({
+          result: { book: newBook, chapter: newChapter, verses: multiVersionVerses },
+          commandType: "lookup",
+        });
       } else {
-        console.error(
-          "[HandsfreeBible] Navigation fetch failed. Status:",
-          response.status,
-        );
-        const errorText = await response.text();
-        console.error("[HandsfreeBible] Error body:", errorText);
+        console.warn("[HandsfreeBible] No verses found for navigation target:", { newBook, newChapter, newVerse });
       }
     } catch (error) {
-      console.error(
-        "[HandsfreeBible] Error executing navigation command:",
-        error,
-      );
+      console.error("[HandsfreeBible] Error executing offline navigation:", error);
     }
   };
 
+  // ──────────────────────────────────────────────────────────────
+  // Audio capture via getUserMedia (works in Electron)
+  // ──────────────────────────────────────────────────────────────
   const { isRecording, startRecording, stopRecording } =
     useRawAudioStream();
 
@@ -298,6 +327,11 @@ export const useHandsfreeBible = ({
     }, INACTIVITY_TIMEOUT_MS);
   }, [clearInactivityTimer, stopRecording]);
 
+  // ──────────────────────────────────────────────────────────────
+  // Server-based transcription via WebSocket
+  // (Electron can't use webkitSpeechRecognition — it requires
+  //  Google's cloud service which is stripped from Chromium.)
+  // ──────────────────────────────────────────────────────────────
   const { connect, disconnect, sendPCMData, isConnected } = useRealtimeSocket({
     onBibleMatch: (data: any) => {
       resetInactivityTimer();
@@ -516,6 +550,7 @@ export const useHandsfreeBible = ({
         setDetectedCommands("Listening...");
         resetInactivityTimer();
       } catch (err) {
+        console.error("[HandsfreeBible] Microphone access failed:", err);
         setIsListeningMode(false);
         setMicrophoneStatus("Error");
         setDetectedCommands("Failed to access microphone");

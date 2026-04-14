@@ -16,7 +16,7 @@ interface ContinuousSpeechProps {
   onSleepCommand?: () => void;
   onWakeCommand?: () => void;
   onVersionChange?: (version: string) => void;
-  onNavigation?: (commandType: string, direction: "next" | "previous") => void;
+  onNavigation?: (commandType: string, direction: "next" | "previous", targetVerse?: number, offset?: number) => void;
   onError?: (error: string) => void;
 }
 
@@ -91,7 +91,7 @@ export const useContinuousSpeech = ({
           }
           break;
         case 'jump_to_verse':
-          onNavigation?.('jump_to_verse', 'next');
+          onNavigation?.('jump_to_verse', 'next', command.targetVerse);
           break;
         case 'sleep':
           onSleepCommand?.();
