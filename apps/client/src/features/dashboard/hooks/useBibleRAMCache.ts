@@ -1,5 +1,4 @@
 import { create } from 'zustand';
-import { db } from '../../../lib/db';
 
 export interface MemoryVerse {
   number: number;
@@ -31,28 +30,43 @@ export const useBibleRAMCache = create<RAMCacheStore>((set, get) => ({
     
     set({ isBooting: true });
     try {
-      console.log("⚡ [RAM Cache] Booting 0ms Dictionary...");
+      console.log("⚡ [RAM Cache] Booting 0ms Dictionary from static assets...");
       const startTime = performance.now();
       
-      // Pull all offline verses natively
-      const allVerses = await db.verses.toArray();
-      
+      const versionsToLoad = ['kjv', 'nkjv', 'amp', 'msg', 'esv', 'niv'];
       const dict: BibleDictionary = {};
+      let totalVerses = 0;
 
-      for (const v of allVerses) {
-        const vKey = v.version;
-        const bKey = v.book;
-        const cKey = v.chapter;
+      // Map through all local bundles parallelly 
+      await Promise.all(
+        versionsToLoad.map(async (version) => {
+          try {
+            const response = await fetch(`/data/bibles/${version}.json`);
+            if (response.ok) {
+              const versionVerses = await response.json();
+              totalVerses += versionVerses.length;
+              
+              for (const v of versionVerses) {
+                const bKey = v.book;
+                const cKey = v.chapter;
 
-        if (!dict[vKey]) dict[vKey] = {};
-        if (!dict[vKey][bKey]) dict[vKey][bKey] = {};
-        if (!dict[vKey][bKey][cKey]) dict[vKey][bKey][cKey] = [];
+                if (!dict[version]) dict[version] = {};
+                if (!dict[version][bKey]) dict[version][bKey] = {};
+                if (!dict[version][bKey][cKey]) dict[version][bKey][cKey] = [];
 
-        dict[vKey][bKey][cKey].push({
-          number: v.verse,
-          text: v.text,
-        });
-      }
+                dict[version][bKey][cKey].push({
+                  number: v.verse,
+                  text: v.text,
+                });
+              }
+            } else {
+               console.warn(`[RAM Cache] Missing static asset for ${version}.`);
+            }
+          } catch (e) {
+            console.error(`[RAM Cache] Failed to load static asset for ${version}`, e);
+          }
+        })
+      );
 
       // Sort chapters once so O(1) retrieval retains order natively
       for (const vKey of Object.keys(dict)) {
@@ -64,7 +78,7 @@ export const useBibleRAMCache = create<RAMCacheStore>((set, get) => ({
       }
 
       const endTime = performance.now();
-      console.log(`⚡ [RAM Cache] Successfully mapped ${allVerses.length} verses into active memory in ${(endTime - startTime).toFixed(2)}ms`);
+      console.log(`⚡ [RAM Cache] Successfully mapped ${totalVerses} verses into active memory in ${(endTime - startTime).toFixed(2)}ms`);
       
       set({ dictionary: dict, isBooted: true, isBooting: false });
     } catch (e) {

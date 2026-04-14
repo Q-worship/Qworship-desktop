@@ -114,31 +114,34 @@ export const useHFBStore = create<HFBStore>((set) => ({
         return;
       }
 
-      // 1. Try to fetch from Local IndexedDB
+      // 1. Try to fetch from Local Pre-packaged JSON (if RAM missed it)
       const startTime = performance.now();
-      const localVerses = await db.verses
-        .where({ version: vKey, book: book, chapter })
-        .toArray();
-      const endTime = performance.now();
+      try {
+        const response = await fetch(`/data/bibles/${vKey}.json`);
+        if (response.ok) {
+           const versionVerses = await response.json();
+           const chapterVerses = versionVerses.filter((v: any) => v.book === book && v.chapter === chapter);
+           
+           if (chapterVerses.length > 0) {
+              chapterVerses.sort((a: any, b: any) => a.verse - b.verse);
+              const mappedVerses = chapterVerses.map((v: any) => ({
+                 number: v.verse,
+                 text: v.text || '',
+              }));
 
-      if (localVerses && localVerses.length > 0) {
-        // Sort verses to ensure correct order
-        localVerses.sort((a: any, b: any) => a.verse - b.verse);
-        
-        const mappedVerses = localVerses.map((v: any) => ({
-          number: v.verse,
-          text: v.text || '',
-        }));
-
-        set({ hfbChapterVerses: mappedVerses, hfbChapterLoading: false });
-        if (highlightVerse !== undefined) {
-           set({ hfbActiveVerseNum: highlightVerse });
+              set({ hfbChapterVerses: mappedVerses, hfbChapterLoading: false });
+              if (highlightVerse !== undefined) {
+                 set({ hfbActiveVerseNum: highlightVerse });
+              }
+              console.log(`🚀 [Static JSON HFB] Fetched ${book} ${chapter} (${vKey}) directly from disk in ${(performance.now() - startTime).toFixed(2)}ms`);
+              return; // Success, skip cloud fallback
+           }
         }
-        console.log(`🚀 [IndexedDB HFB] Fetched ${book} ${chapter} (${vKey}) locally in ${(endTime - startTime).toFixed(2)}ms`);
-        return; // Success, skip cloud fallback
+      } catch (err) {
+         console.warn(`[Static JSON] Fetch failed or missing. Falling back to Cloud...`);
       }
-
-      console.warn(`[Local DB] Verses not found for ${book} ${chapter} (${vKey}). Falling back to Cloud API...`);
+      
+      console.warn(`[Static JSON] Verses not found for ${book} ${chapter} (${vKey}). Falling back to Cloud API...`);
       
       // 2. Fallback to Cloud MongoDB API if local sync failed or isn't complete
       const resp = await fetch("/api/bible/search", {

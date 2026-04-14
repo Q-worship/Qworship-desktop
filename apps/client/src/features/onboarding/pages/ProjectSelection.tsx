@@ -17,8 +17,8 @@ import {
 } from "lucide-react";
 import qworshipLogo from "@assets/Group 1_1754122708985.png";
 
-interface Presentation {
-  id: number;
+export interface Presentation {
+  id: number | string;
   name: string;
   description: string;
   presentationDate: string;
@@ -27,6 +27,8 @@ interface Presentation {
   slideCount: number;
   status: string;
 }
+
+import { useProjectsOffline } from "@/hooks/useProjectsOffline";
 
 export function ProjectSelection() {
   const [, setLocation] = useLocation();
@@ -75,17 +77,15 @@ export function ProjectSelection() {
     setNewPresentationDate(formattedDate);
   }, []);
 
-  // Fetch user presentations
-  const { data: presentationsData, isLoading: presentationsLoading } = useQuery(
-    {
-      queryKey: ["/api/presentations"],
-      enabled: !!user,
-    },
-  );
+  // Fetch user presentations & mutations via Offline Sync Hook
+  const { 
+    presentations: rawPresentations, 
+    isLoading: presentationsLoading,
+    createPresentationMutation,
+    loadPresentationMutation 
+  } = useProjectsOffline(user);
 
-  const presentations: Presentation[] =
-    (presentationsData as { presentations?: Presentation[] })?.presentations ||
-    [];
+  const presentations: Presentation[] = rawPresentations as any[];
 
   // Filter presentations based on search
   const filteredPresentations = presentations.filter(
@@ -96,92 +96,52 @@ export function ProjectSelection() {
         .includes(searchQuery.toLowerCase()),
   );
 
-  // Create new presentation mutation
-  const createPresentationMutation = useMutation({
-    mutationFn: async (presentationData: {
-      name: string;
-      presentationDate?: string;
-      description?: string;
-    }) => {
-      const response = await apiRequest(
-        "POST",
-        "/api/presentations",
-        presentationData,
-      );
-      return await response.json();
-    },
-    onSuccess: (data) => {
-      // Store selected presentation in session
-      sessionStorage.setItem(
-        "qworship_current_presentation_id",
-        data.presentation.id.toString(),
-      );
-      sessionStorage.setItem(
-        "qworship_current_presentation_name",
-        data.presentation.name,
-      );
-
-      toast({
-        title: "New Presentation Created",
-        description: `"${data.presentation.name}" is ready for content.`,
-      });
-
-      // Redirect to dashboard
-      setLocation("/dashboard");
-    },
-    onError: (error: any) => {
-      toast({
-        title: "Error",
-        description: error.message || "Failed to create presentation",
-        variant: "destructive",
-      });
-    },
-  });
-
-  // Load existing presentation mutation
-  const loadPresentationMutation = useMutation({
-    mutationFn: async (presentationId: string | number) => {
-      const response = await apiRequest(
-        "GET",
-        `/api/presentations/${presentationId}`,
-      );
-      return await response.json();
-    },
-    onSuccess: (data) => {
-      // Store the complete presentation data in session storage for the dashboard to load
-      sessionStorage.setItem(
-        "qworship_current_presentation_id",
-        data.presentation.id.toString(),
-      );
-      sessionStorage.setItem(
-        "qworship_current_presentation_name",
-        data.presentation.name,
-      );
-
-      // Store the complete service data for immediate loading when dashboard opens
-      if (data.presentation.serviceData) {
-        sessionStorage.setItem(
-          "qworship_presentation_to_load",
-          JSON.stringify(data.presentation),
-        );
+  const handleCreateMutate = (data: any) => {
+    createPresentationMutation.mutate(data, {
+      onSuccess: (resData) => {
+        sessionStorage.setItem("qworship_current_presentation_id", resData.presentation.id.toString());
+        sessionStorage.setItem("qworship_current_presentation_name", resData.presentation.name);
+        toast({
+          title: "New Presentation Created",
+          description: `"${resData.presentation.name}" is ready for content.`,
+        });
+        setLocation("/dashboard");
+      },
+      onError: (err: any) => {
+        toast({ title: "Error", description: err.message || "Failed to create presentation", variant: "destructive" });
       }
+    });
+  };
 
-      toast({
-        title: "Project Opened",
-        description: `"${data.presentation.name}" has been loaded successfully.`,
-      });
+  const handleLoadMutate = (id: any) => {
+    toast({
+      title: "Loading Project...",
+      description: "Preparing your workspace, please wait.",
+    });
 
-      // Redirect to dashboard
-      setLocation("/dashboard");
-    },
-    onError: (error: any) => {
-      toast({
-        title: "Load Error",
-        description: error.message || "Failed to load presentation",
-        variant: "destructive",
-      });
-    },
-  });
+    loadPresentationMutation.mutate(id, {
+      onSuccess: (resData) => {
+        sessionStorage.setItem("qworship_current_presentation_id", resData.presentation.id.toString());
+        sessionStorage.setItem("qworship_current_presentation_name", resData.presentation.name);
+        
+        if (resData.presentation.serviceData) {
+          let dataStringToUse = typeof resData.presentation.serviceData === 'string' 
+              ? resData.presentation.serviceData 
+              : JSON.stringify(resData.presentation);
+              
+          sessionStorage.setItem("qworship_presentation_to_load", dataStringToUse);
+        }
+        toast({
+          title: "Project Opened",
+          description: `"${resData.presentation.name}" has been loaded successfully.`,
+        });
+        setLocation("/dashboard");
+      },
+      onError: (err: any) => {
+        toast({ title: "Load Error", description: err.message || "Failed to load presentation", variant: "destructive" });
+      }
+    });
+  };
 
   // Handle creating new presentation
   const handleCreateNewPresentation = () => {
@@ -195,7 +155,7 @@ export function ProjectSelection() {
     }
 
     const now = new Date();
-    createPresentationMutation.mutate({
+    handleCreateMutate({
       name: newPresentationName.trim(),
       presentationDate: newPresentationDate || now.toISOString().split("T")[0],
       description: `New presentation created on ${now.toLocaleDateString()}`,
@@ -205,9 +165,7 @@ export function ProjectSelection() {
   // Handle opening existing presentation
   const handleOpenPresentation = (presentation: Presentation) => {
     console.log("🔄 OPENING PROJECT FROM SELECTION PAGE:", presentation.name);
-
-    // Load the complete presentation data first, then redirect
-    loadPresentationMutation.mutate(presentation.id);
+    handleLoadMutate(presentation.id);
   };
 
   // Format date for display

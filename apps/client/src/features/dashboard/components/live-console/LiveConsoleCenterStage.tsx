@@ -331,7 +331,28 @@ export function LiveConsoleCenterStage({ bibleProps, songProps, pacingProps, onC
                   onClick={() => {
                      hfbStore.setHfbVersion(v);
                      if (hfbStore.hfbBookName && hfbStore.hfbChapter) {
-                        hfbStore.fetchHFBChapter(hfbStore.hfbBookName, hfbStore.hfbChapter, v, hfbStore.hfbActiveVerseNum ?? undefined);
+                        hfbStore.fetchHFBChapter(hfbStore.hfbBookName, hfbStore.hfbChapter, v, hfbStore.hfbActiveVerseNum ?? undefined).then(() => {
+                           const state = useHFBStore.getState();
+                           const activeNum = state.hfbActiveVerseNum;
+                           if (activeNum !== null && liveWindow) {
+                              const activeVerse = state.hfbChapterVerses.find((verse) => verse.number === activeNum);
+                              if (activeVerse) {
+                                 const ref = `${state.hfbBookName} ${state.hfbChapter}:${activeVerse.number}`;
+                                 state.setHfbCurrentProjected({ reference: ref, text: activeVerse.text, version: v });
+                                 liveWindow.postMessage({
+                                   type: "BIBLE_VERSE_DISPLAY",
+                                   data: { 
+                                      book: state.hfbBookName, 
+                                      chapter: state.hfbChapter, 
+                                      verse: activeVerse.number, 
+                                      text: activeVerse.text, 
+                                      version: v, 
+                                      reference: ref 
+                                   }
+                                 }, "*");
+                              }
+                           }
+                        });
                      }
                   }}
                   className={`flex-1 py-1.5 text-[11px] font-bold rounded transition-all tracking-wide ${

@@ -122,22 +122,44 @@ function createWindow() {
   });
   win.webContents.setWindowOpenHandler(({ url }) => {
     if (url.startsWith("http://localhost") || url.startsWith("http://127.0.0.1") || url.startsWith("file://")) {
-      return {
-        action: "allow",
-        overrideBrowserWindowOptions: {
-          fullscreen: false,
-          // Changed from true so it appears as a distinct window
+      const { screen } = require("electron");
+      const displays = screen.getAllDisplays();
+      const externalDisplay = displays.find((display) => {
+        return display.bounds.x !== 0 || display.bounds.y !== 0;
+      });
+      let windowOptions = {
+        title: "Qworship Live Presentation",
+        webPreferences: {
+          preload: path.join(__dirname$1, "preload.cjs"),
+          nodeIntegration: false,
+          contextIsolation: true
+        }
+      };
+      if (externalDisplay) {
+        windowOptions = {
+          ...windowOptions,
+          x: externalDisplay.bounds.x,
+          y: externalDisplay.bounds.y,
+          width: externalDisplay.bounds.width,
+          height: externalDisplay.bounds.height,
+          fullscreen: true,
+          frame: false,
+          alwaysOnTop: false
+        };
+      } else {
+        windowOptions = {
+          ...windowOptions,
           width: 1024,
           height: 768,
+          fullscreen: false,
           frame: true,
-          // Allow user to drag it to an external display
-          title: "Qworship Live Presentation",
-          webPreferences: {
-            preload: path.join(__dirname$1, "preload.cjs"),
-            nodeIntegration: false,
-            contextIsolation: true
-          }
-        }
+          resizable: true,
+          maximizable: true
+        };
+      }
+      return {
+        action: "allow",
+        overrideBrowserWindowOptions: windowOptions
       };
     }
     if (url.startsWith("http:") || url.startsWith("https:")) {

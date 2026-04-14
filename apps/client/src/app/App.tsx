@@ -54,10 +54,10 @@ const AuthGuard = ({ children }: { children: React.ReactNode }) => {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   
   // Hydrate the IndexedDB background caches once authenticated
-  const { isSyncing: isBibleSyncing } = useBibleSync();
+  // const { isSyncing: isBibleSyncing } = useBibleSync(); // Deprecated: Bibles are statically synced via /public JSONs
   const { isSyncing: isSongSyncing } = useSongSync();
 
-  const isSyncing = isBibleSyncing || isSongSyncing;
+  const isSyncing = isSongSyncing;
   const [showSync, setShowSync] = React.useState(false);
   const [isSuccess, setIsSuccess] = React.useState(false);
 

@@ -58,29 +58,34 @@ export function useInlineBibleBrowser({ onProjectVerse }: UseInlineBibleBrowserP
         return p;
       }
 
-      // 1. Try Local IndexedDB fetching
+      // 1. Try fetching directly from bundled static assets
       const startTime = performance.now();
-      const localVerses = await db.verses
-        .where({ version: vKey, book: bookName, chapter })
-        .toArray();
-      const endTime = performance.now();
+      try {
+        const response = await fetch(`/data/bibles/${vKey}.json`);
+        if (response.ok) {
+           const versionVerses = await response.json();
+           const chapterVerses = versionVerses.filter((v: any) => v.book === bookName && v.chapter === chapter);
+           
+           if (chapterVerses.length > 0) {
+              chapterVerses.sort((a: any, b: any) => a.verse - b.verse);
+              const mappedVerses: BibleVerse[] = chapterVerses.map((v: any) => ({
+                 number: v.verse,
+                 text: v.text || '',
+              }));
 
-      if (localVerses && localVerses.length > 0) {
-        localVerses.sort((a: any, b: any) => a.verse - b.verse);
-        const mappedVerses: BibleVerse[] = localVerses.map((v: any) => ({
-          number: v.verse,
-          text: v.text || '',
-        }));
-
-        const p: BiblePassage = {
-          book: bookName, chapter, verses: mappedVerses,
-          version: version.toUpperCase(),
-          reference: `${bookName} ${chapter}`,
-        };
-        setBiblePassage(p);
-        setBibleIsLoading(false);
-        console.log(`🚀 [IndexedDB] Fetched ${bookName} ${chapter} (${vKey}) locally in ${(endTime - startTime).toFixed(2)}ms`);
-        return p;
+              const p: BiblePassage = {
+                 book: bookName, chapter, verses: mappedVerses,
+                 version: version.toUpperCase(),
+                 reference: `${bookName} ${chapter}`,
+              };
+              setBiblePassage(p);
+              setBibleIsLoading(false);
+              console.log(`🚀 [Static JSON] Fetched ${bookName} ${chapter} (${vKey}) locally from disk in ${(performance.now() - startTime).toFixed(2)}ms`);
+              return p;
+           }
+        }
+      } catch (err) {
+         console.warn(`[Static JSON] Fetch failed or missing. Falling back to Cloud...`);
       }
 
       // 2. Fallback to Cloud API

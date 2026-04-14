@@ -83,10 +83,27 @@ export const useHandsfreeBible = ({
   const [detectedCommands, setDetectedCommands] = useState(
     "No commands detected",
   );
+  
+  const hfbStoreVersion = useHFBStore((state) => state.hfbVersion);
+  
+  useEffect(() => {
+    if (hfbStoreVersion && hfbStoreVersion !== selectedBibleVersion) {
+      setSelectedBibleVersion(hfbStoreVersion);
+      setZustandBibleVersion(hfbStoreVersion);
+    }
+  }, [hfbStoreVersion]);
+
   const [widgetPosition, setWidgetPosition] = useState({ x: 100, y: 100 });
   const [isDragging, setIsDragging] = useState(false);
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
   const [microphoneStatus, setMicrophoneStatus] = useState("Idle");
+
+  const handleSetBibleVersion = useCallback((version: string) => {
+    const normalized = version.toUpperCase();
+    setSelectedBibleVersion(normalized);
+    setZustandBibleVersion(normalized);
+    useHFBStore.getState().setHfbVersion(normalized);
+  }, [setZustandBibleVersion]);
 
   const [hasBeenDragged, setHasBeenDragged] = useState(false);
   const [isWidgetVisible, setIsWidgetVisible] = useState(false);
@@ -136,6 +153,7 @@ export const useHandsfreeBible = ({
     if (data.commandType === "version_change" && data.requestedVersion) {
       const newVersion = data.requestedVersion.toUpperCase();
       setSelectedBibleVersion(newVersion);
+      useHFBStore.getState().setHfbVersion(newVersion);
     }
 
     const effectiveVersion =
@@ -369,6 +387,7 @@ export const useHandsfreeBible = ({
       const normalized = version.toUpperCase();
       setSelectedBibleVersion(normalized);
       setZustandBibleVersion(normalized);
+      useHFBStore.getState().setHfbVersion(normalized);
       setDetectedCommands(`Switched to ${normalized}`);
     },
     onNavigation: (commandType, direction, targetVerse, offset) => {
@@ -577,7 +596,7 @@ export const useHandsfreeBible = ({
     widgetFormattedReference,
     toggleHandsfreeBible,
     toggleMicrophone,
-    setSelectedBibleVersion,
+    setSelectedBibleVersion: handleSetBibleVersion,
     handleDragStart,
     setIsListeningMode,
     setDetectedCommands,

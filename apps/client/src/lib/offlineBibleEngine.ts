@@ -7,6 +7,7 @@
 
 import Fuse from 'fuse.js';
 import { db } from './db';
+import { useBibleRAMCache } from '../features/dashboard/hooks/useBibleRAMCache';
 
 export type BibleVersion = 'kjv' | 'nkjv' | 'niv' | 'esv' | 'amp' | 'msg' | 'gn';
 
@@ -288,23 +289,21 @@ export function parseVoiceCommand(text: string, defaultVersion: BibleVersion = '
 }
 
 // ============================================================
-// IndexedDB lookup — zero network
+// RAM Cache lookup — zero network, zero disk I/O
 // ============================================================
 export async function lookupOffline(ref: BibleReference): Promise<OfflineBibleResult | null> {
   try {
-    let verses = await db.verses
-      .where('[version+book+chapter]')
-      .equals([ref.version, ref.book, ref.chapter])
-      .sortBy('verse');
-
-    if (!verses.length) return null;
-
-    const filtered = verses.filter(v =>
-      v.verse >= ref.verseStart && (ref.verseEnd ? v.verse <= ref.verseEnd : true)
+    const memVerses = useBibleRAMCache.getState().getChapter(ref.version.toLowerCase(), ref.book, ref.chapter);
+    if (!memVerses || memVerses.length === 0) return null;
+    
+    // Filter verses
+    const filtered = memVerses.filter((v: any) =>
+      v.number >= ref.verseStart && (ref.verseEnd ? v.number <= ref.verseEnd : true)
     );
+    
     if (!filtered.length) return null;
 
-    const bookDisplay = filtered[0].book;
+    const bookDisplay = ref.book;
     const refStr = ref.verseEnd
       ? `${bookDisplay} ${ref.chapter}:${ref.verseStart}-${ref.verseEnd}`
       : ref.verseStart > 1
@@ -314,7 +313,7 @@ export async function lookupOffline(ref: BibleReference): Promise<OfflineBibleRe
     return {
       book: bookDisplay,
       chapter: ref.chapter,
-      verses: filtered.map(v => ({ number: v.verse, text: v.text })),
+      verses: filtered.map((v: any) => ({ number: v.number, text: v.text })),
       version: ref.version,
       formattedReference: refStr,
     };

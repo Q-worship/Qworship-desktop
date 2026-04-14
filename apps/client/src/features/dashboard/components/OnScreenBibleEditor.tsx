@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { SearchIcon, InfoIcon, Bold, Italic, Underline, Strikethrough, AlignLeft, AlignCenter, AlignRight, Undo2, Redo2, ChevronDown, Palette } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
+import { searchOffline, type BibleVersion } from '../../../lib/offlineBibleEngine';
 
 interface OnScreenBibleEditorProps {
   content: any;
@@ -61,19 +62,28 @@ export const OnScreenBibleEditor: React.FC<OnScreenBibleEditorProps> = ({
     setIsSearching(true);
 
     try {
-      const response = await fetch(`/api/bible/search?reference=${encodeURIComponent(searchInput.trim())}&version=${activeVersion.toLowerCase()}`);
+      let bibleVerses: any[] = [];
+      let combinedText = '';
+
+      // 1. Try Zero Latency Offline RAM Engine
+      const offlinePassage = await searchOffline(searchInput.trim(), activeVersion.toLowerCase() as BibleVersion);
       
-      if (response.ok) {
-        const data = await response.json();
-        
-        if (data?.success && data?.passage) {
-          const result = data.passage;
-          
-          // Create bible verses array
-          const bibleVerses = result.verses.map((v: any) => ({
-            number: v.number,
-            text: v.text
-          }));
+      if (offlinePassage && offlinePassage.verses && offlinePassage.verses.length > 0) {
+          bibleVerses = offlinePassage.verses.map(v => ({ number: v.number, text: v.text }));
+          combinedText = offlinePassage.verses.map(v => v.text).join(' ');
+      } else {
+          // 2. Fallback to Cloud 
+          const response = await fetch(`/api/bible/search?reference=${encodeURIComponent(searchInput.trim())}&version=${activeVersion.toLowerCase()}`);
+          if (response.ok) {
+            const data = await response.json();
+            if (data?.success && data?.passage && data.passage.verses) {
+                bibleVerses = data.passage.verses.map((v: any) => ({ number: v.number, text: v.text }));
+                combinedText = data.passage.verses.map((v: any) => v.text).join(' ');
+            }
+          }
+      }
+
+      if (bibleVerses.length > 0) {
           
           // Generate slides first
           const parentItemId = content?.id || `bible-${Date.now()}`;
@@ -120,7 +130,7 @@ export const OnScreenBibleEditor: React.FC<OnScreenBibleEditorProps> = ({
             version: activeVersion,
             bibleVerses: bibleVerses,
             title: searchInput.trim(),
-            content: result.verses.map((v: any) => v.text).join(' '),
+            content: combinedText,
             referenceDisplay: showBibleReference,
             versionDisplay: showBibleVersion,
             oneVersePerSlide,
@@ -148,11 +158,8 @@ export const OnScreenBibleEditor: React.FC<OnScreenBibleEditorProps> = ({
             className: "bg-gradient-to-r from-purple-900/90 to-purple-800/90 border-purple-500/30 text-white"
           });
         } else {
-          throw new Error('Scripture not found');
+          throw new Error('Scripture not found locally or in cloud.');
         }
-      } else {
-        throw new Error('Failed to search Bible');
-      }
     } catch (error) {
       toast({
         title: "Scripture Not Found",
@@ -178,21 +185,28 @@ export const OnScreenBibleEditor: React.FC<OnScreenBibleEditorProps> = ({
       setIsSearching(true);
       
       try {
-        const response = await fetch(`/api/bible/search?reference=${encodeURIComponent(searchInput.trim())}&version=${version.toLowerCase()}`);
+        let bibleVerses: any[] = [];
+        let combinedText = '';
+  
+        // 1. Try Zero Latency Offline RAM Engine
+        const offlinePassage = await searchOffline(searchInput.trim(), version.toLowerCase() as BibleVersion);
         
-        if (response.ok) {
-          const data = await response.json();
-          
-          if (data?.success && data?.passage) {
-            const result = data.passage;
-            
-            // Create bible verses array with new translation
-            const bibleVerses = result.verses.map((v: any) => ({
-              number: v.number,
-              text: v.text
-            }));
-            
-            // Generate updated slides with new translation
+        if (offlinePassage && offlinePassage.verses && offlinePassage.verses.length > 0) {
+            bibleVerses = offlinePassage.verses.map(v => ({ number: v.number, text: v.text }));
+            combinedText = offlinePassage.verses.map(v => v.text).join(' ');
+        } else {
+            // 2. Fallback to Cloud 
+            const response = await fetch(`/api/bible/search?reference=${encodeURIComponent(searchInput.trim())}&version=${version.toLowerCase()}`);
+            if (response.ok) {
+              const data = await response.json();
+              if (data?.success && data?.passage && data.passage.verses) {
+                  bibleVerses = data.passage.verses.map((v: any) => ({ number: v.number, text: v.text }));
+                  combinedText = data.passage.verses.map((v: any) => v.text).join(' ');
+              }
+            }
+        }
+
+        if (bibleVerses.length > 0) {
             const parentItemId = content?.id || `bible-${Date.now()}`;
             const slides: any[] = [];
             if (oneVersePerSlide) {
@@ -237,7 +251,7 @@ export const OnScreenBibleEditor: React.FC<OnScreenBibleEditorProps> = ({
               version: version,
               bibleVerses: bibleVerses,
               title: searchInput.trim(),
-              content: result.verses.map((v: any) => v.text).join(' '),
+              content: combinedText,
               referenceDisplay: showBibleReference,
               versionDisplay: showBibleVersion,
               oneVersePerSlide,
@@ -259,8 +273,13 @@ export const OnScreenBibleEditor: React.FC<OnScreenBibleEditorProps> = ({
               description: `Changed to ${version} translation`,
               className: "bg-gradient-to-r from-purple-900/90 to-purple-800/90 border-purple-500/30 text-white"
             });
+          } else {
+            toast({
+              title: "Translation Unavailable",
+              description: `Could not load the ${version} translation locally or from cloud.`,
+              variant: "destructive"
+            });
           }
-        }
       } catch (error) {
         console.error('Error changing Bible version:', error);
         toast({
