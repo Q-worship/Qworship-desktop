@@ -232,8 +232,9 @@ class WhisperService extends node_events.EventEmitter {
     this.isProcessing = true;
     this.speechDetectedSinceLastInference = false;
     try {
-      const audioData = new Float32Array(this.audioBuffer.buffer, 0, this.bufferWritePos);
-      const audioCopy = new Float32Array(audioData);
+      const audioCopy = new Float32Array(this.MAX_BUFFER_SAMPLES);
+      const activeSlice = new Float32Array(this.audioBuffer.buffer, 0, this.bufferWritePos);
+      audioCopy.set(activeSlice);
       if (isFinal) {
         this.resetBuffer();
         this.vad.reset();
