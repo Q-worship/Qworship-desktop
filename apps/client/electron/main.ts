@@ -23,6 +23,7 @@ export const RENDERER_DIST = path.join(process.env.APP_ROOT, 'dist');
 process.env.VITE_PUBLIC = VITE_DEV_SERVER_URL ? path.join(process.env.APP_ROOT, 'public') : RENDERER_DIST;
 
 let win: BrowserWindow | null;
+let liveWin: BrowserWindow | null = null; // Reference to the live projection window
 let deepLinkUrl: string | null = null;
 
 // Force single instance application
@@ -106,6 +107,40 @@ ipcMain.on('open-external-url', (_event, url) => {
   if (url && (url.startsWith('http://') || url.startsWith('https://'))) {
     shell.openExternal(url);
   }
+});
+
+// ── Live Window IPC Relay ────────────────────────────────────────────────────
+// When the renderer opens the live window via window.open(), Electron gives us
+// a hook in setWindowOpenHandler. We capture the WebContents there and store
+// the BrowserWindow so the Main Process can relay IPC messages.
+
+// Dashboard → Main → Live Window (outbound relay)
+ipcMain.on('project-slide', (_event, data) => {
+  liveWin?.webContents.send('project-slide', data);
+});
+
+ipcMain.on('project-bible-verse', (_event, data) => {
+  liveWin?.webContents.send('project-bible-verse', data);
+});
+
+ipcMain.on('clear-projection', (_event, data) => {
+  liveWin?.webContents.send('clear-projection', data);
+});
+
+ipcMain.on('close-live', () => {
+  if (liveWin && !liveWin.isDestroyed()) {
+    liveWin.webContents.send('close-live');
+    liveWin.close();
+  }
+});
+
+// Live Window → Main → Dashboard (inbound relay for slide changes from the live window)
+ipcMain.on('live-slide-changed', (_event, data) => {
+  win?.webContents.send('live-slide-changed', data);
+});
+
+ipcMain.on('live-ready', () => {
+  win?.webContents.send('live-ready');
 });
 
 function createWindow() {
@@ -217,6 +252,16 @@ function createWindow() {
       shell.openExternal(url);
     }
     return { action: 'deny' };
+  });
+
+  // Capture the live BrowserWindow reference once it is created
+  win.webContents.on('did-create-window', (childWin) => {
+    liveWin = childWin;
+    // Native closed event — no more setInterval polling in the renderer!
+    childWin.on('closed', () => {
+      liveWin = null;
+      win?.webContents.send('live-window-closed');
+    });
   });
 
   if (VITE_DEV_SERVER_URL) {

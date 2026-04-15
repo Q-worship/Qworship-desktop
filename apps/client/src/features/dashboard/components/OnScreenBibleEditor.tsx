@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { SearchIcon, InfoIcon, Bold, Italic, Underline, Strikethrough, AlignLeft, AlignCenter, AlignRight, Undo2, Redo2, ChevronDown, Palette } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 import { searchOffline, type BibleVersion } from '../../../lib/offlineBibleEngine';
+import { useBibleRAMCache } from '../hooks/useBibleRAMCache';
 
 interface OnScreenBibleEditorProps {
   content: any;
@@ -64,6 +65,9 @@ export const OnScreenBibleEditor: React.FC<OnScreenBibleEditorProps> = ({
     try {
       let bibleVerses: any[] = [];
       let combinedText = '';
+
+      // Ensure the requested version is in RAM before searching
+      await useBibleRAMCache.getState().ensureVersionLoaded(activeVersion.toLowerCase());
 
       // 1. Try Zero Latency Offline RAM Engine
       const offlinePassage = await searchOffline(searchInput.trim(), activeVersion.toLowerCase() as BibleVersion);
@@ -188,6 +192,9 @@ export const OnScreenBibleEditor: React.FC<OnScreenBibleEditorProps> = ({
         let bibleVerses: any[] = [];
         let combinedText = '';
   
+        // Ensure the requested version is in RAM before searching
+        await useBibleRAMCache.getState().ensureVersionLoaded(version.toLowerCase());
+
         // 1. Try Zero Latency Offline RAM Engine
         const offlinePassage = await searchOffline(searchInput.trim(), version.toLowerCase() as BibleVersion);
         

@@ -41,6 +41,9 @@ export function useInlineBibleBrowser({ onProjectVerse }: UseInlineBibleBrowserP
       const verseEnd = bookData?.verses[chapter - 1] ?? 150;
       const vKey = version.toLowerCase() as any;
 
+      // Ensure the requested version is in RAM before checking the cache
+      await useBibleRAMCache.getState().ensureVersionLoaded(vKey);
+
       // 0. Try RAM Cache Fetching (0.00ms latency)
       const memStartTime = performance.now();
       const ramVerses = useBibleRAMCache.getState().getChapter(vKey, bookName, chapter);
@@ -180,6 +183,9 @@ export function useInlineBibleBrowser({ onProjectVerse }: UseInlineBibleBrowserP
     setBibleSearchError(null);
     try {
       const version = selBibleVersion.toLowerCase() as BibleVersion;
+
+      // Ensure the requested version is loaded into RAM before searching
+      await useBibleRAMCache.getState().ensureVersionLoaded(version);
 
       // 1. Try offline IndexedDB first
       const offlineResult = await searchOffline(bibleSearch.trim(), version);

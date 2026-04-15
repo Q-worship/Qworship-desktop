@@ -11,6 +11,7 @@ const MAIN_DIST = path.join(process.env.APP_ROOT, "dist-electron");
 const RENDERER_DIST = path.join(process.env.APP_ROOT, "dist");
 process.env.VITE_PUBLIC = VITE_DEV_SERVER_URL ? path.join(process.env.APP_ROOT, "public") : RENDERER_DIST;
 let win;
+let liveWin = null;
 let deepLinkUrl = null;
 const gotTheLock = electron.app.requestSingleInstanceLock();
 if (!gotTheLock) {
@@ -75,6 +76,27 @@ electron.ipcMain.on("open-external-url", (_event, url) => {
   if (url && (url.startsWith("http://") || url.startsWith("https://"))) {
     electron.shell.openExternal(url);
   }
+});
+electron.ipcMain.on("project-slide", (_event, data) => {
+  liveWin == null ? void 0 : liveWin.webContents.send("project-slide", data);
+});
+electron.ipcMain.on("project-bible-verse", (_event, data) => {
+  liveWin == null ? void 0 : liveWin.webContents.send("project-bible-verse", data);
+});
+electron.ipcMain.on("clear-projection", (_event, data) => {
+  liveWin == null ? void 0 : liveWin.webContents.send("clear-projection", data);
+});
+electron.ipcMain.on("close-live", () => {
+  if (liveWin && !liveWin.isDestroyed()) {
+    liveWin.webContents.send("close-live");
+    liveWin.close();
+  }
+});
+electron.ipcMain.on("live-slide-changed", (_event, data) => {
+  win == null ? void 0 : win.webContents.send("live-slide-changed", data);
+});
+electron.ipcMain.on("live-ready", () => {
+  win == null ? void 0 : win.webContents.send("live-ready");
 });
 function createWindow() {
   const { session: session2 } = require("electron");
@@ -166,6 +188,13 @@ function createWindow() {
       electron.shell.openExternal(url);
     }
     return { action: "deny" };
+  });
+  win.webContents.on("did-create-window", (childWin) => {
+    liveWin = childWin;
+    childWin.on("closed", () => {
+      liveWin = null;
+      win == null ? void 0 : win.webContents.send("live-window-closed");
+    });
   });
   if (VITE_DEV_SERVER_URL) {
     win.loadURL(VITE_DEV_SERVER_URL);

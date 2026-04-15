@@ -10,6 +10,8 @@ export const useRawAudioStream = () => {
   const workletNodeRef = useRef<AudioWorkletNode | null>(null);
   const analyserRef = useRef<AnalyserNode | null>(null);
   const animationFrameRef = useRef<number | null>(null);
+  // Throttle: only dispatch hfb-volume at ~12fps (every 80ms) to avoid 60fps CPU wake-ups
+  const lastVolumeDispatchRef = useRef<number>(0);
 
   const startRecording = useCallback(
     async (onAudioData: (pcmBuffer: Int16Array) => void) => {
@@ -43,17 +45,23 @@ export const useRawAudioStream = () => {
 
         const updateVolume = () => {
           if (!analyserRef.current || !isRecordingRef.current) return;
-          analyserRef.current.getByteFrequencyData(dataArray);
 
-          let sum = 0;
-          for (let i = 0; i < dataArray.length; i++) {
-            sum += dataArray[i];
+          const now = performance.now();
+          // Only dispatch the UI event at ~12fps (every 80ms) to avoid 60fps CPU thrashing
+          if (now - lastVolumeDispatchRef.current >= 80) {
+            analyserRef.current.getByteFrequencyData(dataArray);
+
+            let sum = 0;
+            for (let i = 0; i < dataArray.length; i++) {
+              sum += dataArray[i];
+            }
+            const average = sum / dataArray.length;
+
+            // Map average (0-255) to a smoother 0-100 percentage for the UI
+            const percentage = Math.min(100, Math.max(0, (average / 128) * 100));
+            window.dispatchEvent(new CustomEvent("hfb-volume", { detail: percentage }));
+            lastVolumeDispatchRef.current = now;
           }
-          const average = sum / dataArray.length;
-
-          // Map average (0-255) to a smoother 0-100 percentage for the UI
-          const percentage = Math.min(100, Math.max(0, (average / 128) * 100));
-          window.dispatchEvent(new CustomEvent("hfb-volume", { detail: percentage }));
 
           animationFrameRef.current = requestAnimationFrame(updateVolume);
         };

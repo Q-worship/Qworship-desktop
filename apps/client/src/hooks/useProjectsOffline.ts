@@ -22,9 +22,7 @@ export const useProjectsOffline = (user: any) => {
   // 1. Load Local Database instantly on mount
   const loadLocalDb = useCallback(async () => {
     try {
-      const all = await db.presentations.toArray();
-      // Sort desc by updated
-      all.sort((a, b) => new Date(b.updatedAt || 0).getTime() - new Date(a.updatedAt || 0).getTime());
+      const all = await db.presentations.orderBy('updatedAt').reverse().toArray();
       setOfflinePresentations(all);
     } catch(e) {
       console.error("[Offline Projects] Error loading from Dexie:", e);
@@ -56,39 +54,48 @@ export const useProjectsOffline = (user: any) => {
            // Ensure we don't wipe out offline-created pending projects
            const pendingLocal = await db.presentations.where('syncPending').equals(1).toArray();
            
-           // Push pending local projects to the server dynamically
+           // Push pending local projects to the server as a single bulk request
            if (pendingLocal.length > 0) {
-               console.log(`[Offline Projects] Pushing ${pendingLocal.length} cached offline projects to cloud...`);
-               for (const cp of pendingLocal) {
-                   try {
-                       const postRes = await apiRequest("POST", "/api/presentations", cp);
-                       if (postRes.ok) {
-                           const postData = await postRes.json();
-                           // Cloud issued a real ID. 
-                           // Delete the local UUID version and save the real one
-                           await db.presentations.delete(cp.id);
-                           await db.presentations.put({ ...postData.presentation, syncPending: 0 });
+               console.log(`[Offline Projects] Bulk-syncing ${pendingLocal.length} cached offline projects to cloud...`);
+               try {
+                   const bulkRes = await apiRequest("POST", "/api/presentations/bulk", { presentations: pendingLocal });
+                   if (bulkRes.ok) {
+                       const bulkData = await bulkRes.json();
+                       if (bulkData.created && bulkData.created.length > 0) {
+                           // Single atomic Dexie transaction: delete all temp IDs, insert real ones
+                           await db.transaction('rw', db.presentations, async () => {
+                               for (const entry of bulkData.created) {
+                                   await db.presentations.delete(entry.localId);
+                                   await db.presentations.put({ ...entry.presentation, syncPending: 0 });
+                               }
+                           });
+                           console.log(`[Offline Projects] Successfully synced ${bulkData.created.length} projects to cloud.`);
                        }
-                   } catch (e) {
-                       console.warn("[Offline Projects] Failed to push project to cloud, will retry later.", e);
                    }
+               } catch (e) {
+                   console.warn("[Offline Projects] Bulk sync failed, will retry on next reconnect.", e);
                }
            }
            
            await db.transaction('rw', db.presentations, async () => {
-             // We can clear non-pending if we want perfect sync, or just upsert them
-             const existing = await db.presentations.toArray();
-             const existingMap = new Map(existing.map(p => [p.id, p]));
-             
-             // Upsert remotes, saving serviceData if it exists locally
-             for (const rp of remoteProjects) {
-                 const localEquivalent = existingMap.get(rp.id);
-                 if (localEquivalent && localEquivalent.serviceData) {
-                    rp.serviceData = localEquivalent.serviceData;
-                 }
-                 await db.presentations.put(rp);
-             }
-           });
+              const existing = await db.presentations.toArray();
+              const existingMap = new Map(existing.map(p => [p.id, p]));
+              // Collect IDs of projects still awaiting cloud sync — these take priority
+              const pendingIds = new Set(existing.filter(p => p.syncPending === 1).map(p => p.id));
+
+              // Upsert remotes, but never overwrite a project that hasn't synced yet
+              for (const rp of remoteProjects) {
+                  if (pendingIds.has(rp.id)) {
+                      console.log(`[Offline Projects] Skipping hydration for pending project: ${rp.name}`);
+                      continue;
+                  }
+                  const localEquivalent = existingMap.get(rp.id);
+                  if (localEquivalent && localEquivalent.serviceData) {
+                     rp.serviceData = localEquivalent.serviceData;
+                  }
+                  await db.presentations.put(rp);
+              }
+            });
            
            loadLocalDb();
         }
