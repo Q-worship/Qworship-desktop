@@ -8,21 +8,34 @@ class PCMProcessor extends AudioWorkletProcessor {
 
     const inputData = input[0]; // Float32Array (-1.0 to 1.0)
 
-    // Downsample to 24kHz and convert Float32 → PCM16
-    const ratio = Math.max(1, Math.floor(sampleRate / 24000));
+    // Downsample to 16kHz and convert Float32 → PCM16
+    // whisper.cpp requires 16kHz mono audio for inference
+    const ratio = Math.max(1, Math.floor(sampleRate / 16000));
     const outputLength = Math.floor(inputData.length / ratio);
     const pcm16 = new Int16Array(outputLength);
 
     let outIndex = 0;
-    for (let i = 0; i < inputData.length && outIndex < outputLength; i += ratio) {
+    let maxFloat = 0;
+    for (
+      let i = 0;
+      i < inputData.length && outIndex < outputLength;
+      i += ratio
+    ) {
+      if (Math.abs(inputData[i]) > maxFloat) maxFloat = Math.abs(inputData[i]);
       const s = Math.max(-1, Math.min(1, inputData[i]));
-      pcm16[outIndex++] = s < 0 ? s * 0x8000 : s * 0x7FFF;
+      pcm16[outIndex++] = s < 0 ? s * 0x8000 : s * 0x7fff;
     }
 
-    // Transfer the buffer to the main thread (zero-copy)
-    this.port.postMessage(pcm16, [pcm16.buffer]);
+    // Transfer the raw ArrayBuffer and diagnostic volume
+    this.port.postMessage(
+      {
+        buffer: pcm16.buffer,
+        maxFloat: maxFloat,
+      },
+      [pcm16.buffer],
+    );
     return true;
   }
 }
 
-registerProcessor('pcm-processor', PCMProcessor);
+registerProcessor("pcm-processor", PCMProcessor);

@@ -1,67 +1,68 @@
 "use strict";
 const electron = require("electron");
-electron.contextBridge.exposeInMainWorld(
-  "api",
-  {
-    onDeepLinkPayload: (callback) => {
-      const subscription = (_event, data) => callback(data);
-      electron.ipcRenderer.on("deep-link-payload", subscription);
-      return () => electron.ipcRenderer.removeListener("deep-link-payload", subscription);
+electron.contextBridge.exposeInMainWorld("api", {
+  onDeepLinkPayload: (callback) => {
+    const subscription = (_event, data) => callback(data);
+    electron.ipcRenderer.on("deep-link-payload", subscription);
+    return () =>
+      electron.ipcRenderer.removeListener("deep-link-payload", subscription);
+  },
+  // Allows the React app to request the deep link if it booted before main sent it
+  requestInitialDeepLink: () => {
+    electron.ipcRenderer.send("request-deep-link");
+  },
+  openWebAuth: (url) => {
+    electron.ipcRenderer.send("open-external-url", url);
+  },
+  // ── Whisper / Hands-Free Bible IPC ──────────────────────────
+  whisper: {
+    /** Send a PCM16 audio chunk to the main process WhisperService */
+    sendAudioChunk: (pcm16Buffer) => {
+      electron.ipcRenderer.send("hfb:audio-chunk", pcm16Buffer);
     },
-    // Allows the React app to request the deep link if it booted before main sent it
-    requestInitialDeepLink: () => {
-      electron.ipcRenderer.send("request-deep-link");
+    /** Tell the main process to start listening for audio */
+    startListening: () => {
+      electron.ipcRenderer.send("hfb:start-listening");
     },
-    openWebAuth: (url) => {
-      electron.ipcRenderer.send("open-external-url", url);
-    }
-  }
-);
-electron.contextBridge.exposeInMainWorld(
-  "electronLive",
-  {
-    // Outbound: dashboard sends these to the live window via main
-    projectSlide: (data) => electron.ipcRenderer.send("project-slide", data),
-    projectBibleVerse: (data) => electron.ipcRenderer.send("project-bible-verse", data),
-    clearProjection: (data) => electron.ipcRenderer.send("clear-projection", data),
-    closeLive: () => electron.ipcRenderer.send("close-live"),
-    notifyReady: () => electron.ipcRenderer.send("live-ready"),
-    notifySlideChanged: (data) => electron.ipcRenderer.send("live-slide-changed", data),
-    // Inbound: subscribe to events sent from main to this window
-    onProjectSlide: (callback) => {
-      const fn = (_, data) => callback(data);
-      electron.ipcRenderer.on("project-slide", fn);
-      return () => electron.ipcRenderer.removeListener("project-slide", fn);
+    /** Tell the main process to stop listening */
+    stopListening: () => {
+      electron.ipcRenderer.send("hfb:stop-listening");
     },
-    onProjectBibleVerse: (callback) => {
-      const fn = (_, data) => callback(data);
-      electron.ipcRenderer.on("project-bible-verse", fn);
-      return () => electron.ipcRenderer.removeListener("project-bible-verse", fn);
+    /** Get the current whisper engine status */
+    getStatus: () => {
+      return electron.ipcRenderer.invoke("hfb:get-status");
     },
-    onClearProjection: (callback) => {
-      const fn = (_, data) => callback(data);
-      electron.ipcRenderer.on("clear-projection", fn);
-      return () => electron.ipcRenderer.removeListener("clear-projection", fn);
+    /** Listen for partial transcript events from the main process */
+    onTranscriptPartial: (callback) => {
+      const handler = (_event, text) => callback(text);
+      electron.ipcRenderer.on("hfb:transcript-partial", handler);
+      return () =>
+        electron.ipcRenderer.removeListener("hfb:transcript-partial", handler);
     },
-    onCloseLive: (callback) => {
-      const fn = () => callback();
-      electron.ipcRenderer.on("close-live", fn);
-      return () => electron.ipcRenderer.removeListener("close-live", fn);
+    /** Listen for final transcript events from the main process */
+    onTranscriptFinal: (callback) => {
+      const handler = (_event, text) => callback(text);
+      electron.ipcRenderer.on("hfb:transcript-final", handler);
+      return () =>
+        electron.ipcRenderer.removeListener("hfb:transcript-final", handler);
     },
-    onLiveReady: (callback) => {
-      const fn = () => callback();
-      electron.ipcRenderer.on("live-ready", fn);
-      return () => electron.ipcRenderer.removeListener("live-ready", fn);
+    /** Listen for whisper engine status changes */
+    onStatusChange: (callback) => {
+      const handler = (_event, status, message) => callback(status, message);
+      electron.ipcRenderer.on("hfb:status-change", handler);
+      return () =>
+        electron.ipcRenderer.removeListener("hfb:status-change", handler);
     },
-    onLiveSlideChanged: (callback) => {
-      const fn = (_, data) => callback(data);
-      electron.ipcRenderer.on("live-slide-changed", fn);
-      return () => electron.ipcRenderer.removeListener("live-slide-changed", fn);
+    /** Listen for model download progress */
+    onModelDownloadProgress: (callback) => {
+      const handler = (_event, percent, downloadedMB, totalMB) =>
+        callback(percent, downloadedMB, totalMB);
+      electron.ipcRenderer.on("hfb:model-download-progress", handler);
+      return () =>
+        electron.ipcRenderer.removeListener(
+          "hfb:model-download-progress",
+          handler,
+        );
     },
-    onLiveWindowClosed: (callback) => {
-      const fn = () => callback();
-      electron.ipcRenderer.on("live-window-closed", fn);
-      return () => electron.ipcRenderer.removeListener("live-window-closed", fn);
-    }
-  }
-);
+  },
+});

@@ -189,31 +189,21 @@ export const OnScreenBibleEditor: React.FC<OnScreenBibleEditorProps> = ({
       setIsSearching(true);
       
       try {
-        let bibleVerses: any[] = [];
-        let combinedText = '';
-  
-        // Ensure the requested version is in RAM before searching
-        await useBibleRAMCache.getState().ensureVersionLoaded(version.toLowerCase());
-
-        // 1. Try Zero Latency Offline RAM Engine
-        const offlinePassage = await searchOffline(searchInput.trim(), version.toLowerCase() as BibleVersion);
+        const response = await fetch(`/api/bible/search?reference=${encodeURIComponent(searchInput.trim())}&version=${version.toLowerCase()}`);
         
-        if (offlinePassage && offlinePassage.verses && offlinePassage.verses.length > 0) {
-            bibleVerses = offlinePassage.verses.map(v => ({ number: v.number, text: v.text }));
-            combinedText = offlinePassage.verses.map(v => v.text).join(' ');
-        } else {
-            // 2. Fallback to Cloud 
-            const response = await fetch(`/api/bible/search?reference=${encodeURIComponent(searchInput.trim())}&version=${version.toLowerCase()}`);
-            if (response.ok) {
-              const data = await response.json();
-              if (data?.success && data?.passage && data.passage.verses) {
-                  bibleVerses = data.passage.verses.map((v: any) => ({ number: v.number, text: v.text }));
-                  combinedText = data.passage.verses.map((v: any) => v.text).join(' ');
-              }
-            }
-        }
-
-        if (bibleVerses.length > 0) {
+        if (response.ok) {
+          const data = await response.json();
+          
+          if (data?.success && data?.passage) {
+            const result = data.passage;
+            
+            // Create bible verses array with new translation
+            const bibleVerses = result.verses.map((v: any) => ({
+              number: v.number,
+              text: v.text
+            }));
+            
+            // Generate updated slides with new translation
             const parentItemId = content?.id || `bible-${Date.now()}`;
             const slides: any[] = [];
             if (oneVersePerSlide) {

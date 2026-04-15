@@ -25,7 +25,10 @@ import { useAuthStore } from "@/features/auth/auth.store";
 import { BibleWorkspace } from "@/features/bible-reader/components/BibleWorkspace";
 import AssetsPage from "@/features/dashboard/pages/AssetsPage";
 import HelpSupportPage from "@/features/dashboard/pages/HelpSupportPage";
-import { LowerThirdEditorPage, LowerThirdSettingsPage } from "@/features/lowerThird";
+import {
+  LowerThirdEditorPage,
+  LowerThirdSettingsPage,
+} from "@/features/lowerThird";
 import { MainPresentationSettingsPage } from "@/features/mainPresentation";
 import SuperAdminSidebar from "@/features/super-admin/components/SuperAdminSidebar";
 
@@ -49,22 +52,21 @@ const PresentationsMock = () => (
   </div>
 );
 
-
 const AuthGuard = ({ children }: { children: React.ReactNode }) => {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
-  
+
   // Hydrate the IndexedDB background caches once authenticated
-  // const { isSyncing: isBibleSyncing } = useBibleSync(); // Deprecated: Bibles are statically synced via /public JSONs
+  const { isSyncing: isBibleSyncing } = useBibleSync();
   const { isSyncing: isSongSyncing } = useSongSync();
 
-  const isSyncing = isSongSyncing;
+  const isSyncing = isBibleSyncing || isSongSyncing;
   const [showSync, setShowSync] = React.useState(false);
   const [isSuccess, setIsSuccess] = React.useState(false);
 
   React.useEffect(() => {
     // Only start tracking sync state once authentication is verified
     if (!isAuthenticated) return;
-    
+
     if (isSyncing) {
       setShowSync(true);
       setIsSuccess(false);
@@ -72,7 +74,7 @@ const AuthGuard = ({ children }: { children: React.ReactNode }) => {
       // Finished syncing
       setIsSuccess(true);
       const timer = setTimeout(() => {
-         setShowSync(false);
+        setShowSync(false);
       }, 3000);
       return () => clearTimeout(timer);
     }
@@ -91,11 +93,13 @@ const AuthGuard = ({ children }: { children: React.ReactNode }) => {
   }, [isAuthenticated, isSyncing]);
 
   if (!isAuthenticated) return <Redirect to="/login" />;
-  
+
   return (
     <>
       {children}
-      {showSync && <SyncLoadingOverlay isSyncing={!isSuccess} isSuccess={isSuccess} />}
+      {showSync && (
+        <SyncLoadingOverlay isSyncing={!isSuccess} isSuccess={isSuccess} />
+      )}
     </>
   );
 };
@@ -103,10 +107,11 @@ const AuthGuard = ({ children }: { children: React.ReactNode }) => {
 const AdminGuard = ({ children }: { children: React.ReactNode }) => {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const user = useAuthStore((state) => state.user);
-  
+
   if (!isAuthenticated) return <Redirect to="/admin/login" />;
-  if (user?.role !== 'admin' && user?.role !== 'superadmin') return <Redirect to="/dashboard" />;
-  
+  if (user?.role !== "admin" && user?.role !== "superadmin")
+    return <Redirect to="/dashboard" />;
+
   return <>{children}</>;
 };
 
@@ -118,7 +123,9 @@ function LowerThirdSettingsRoute() {
 }
 function MainPresentationSettingsRoute() {
   const [, navigate] = useLocation();
-  return <MainPresentationSettingsPage onClose={() => navigate("/dashboard")} />;
+  return (
+    <MainPresentationSettingsPage onClose={() => navigate("/dashboard")} />
+  );
 }
 
 import { useDesktopAuth } from "@/hooks/useDesktopAuth";
@@ -132,8 +139,12 @@ const DesktopAuthHandler = () => {
   return (
     <div className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-background/95 backdrop-blur-md animate-in fade-in duration-300">
       <Loader2 className="w-12 h-12 text-primary animate-spin mb-4" />
-      <h2 className="text-xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-primary to-indigo-400">Authenticating...</h2>
-      <p className="text-muted-foreground text-sm mt-2">Connecting your Qworship account</p>
+      <h2 className="text-xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-primary to-indigo-400">
+        Authenticating...
+      </h2>
+      <p className="text-muted-foreground text-sm mt-2">
+        Connecting your Qworship account
+      </p>
     </div>
   );
 };
@@ -155,48 +166,69 @@ export const AppRouter = () => {
             <Route path="/signup" component={SignInPage} />
             <Route path="/admin/login" component={AdminSignInPage} />
 
-          {/* Standalone authenticated routes like Super Admin */}
-          <Route path="/super-admin">
-            <AdminGuard>
-              <SuperAdminSidebar />
-            </AdminGuard>
-          </Route>
+            {/* Standalone authenticated routes like Super Admin */}
+            <Route path="/super-admin">
+              <AdminGuard>
+                <SuperAdminSidebar />
+              </AdminGuard>
+            </Route>
 
-          {/* Live Presentation (Audience View) */}
-          <Route path="/live">
-            <AuthGuard>
-              <LivePresentationV2 />
-            </AuthGuard>
-          </Route>
+            {/* Live Presentation (Audience View) */}
+            <Route path="/live">
+              <AuthGuard>
+                <LivePresentationV2 />
+              </AuthGuard>
+            </Route>
 
-          <Route>
-            <AuthGuard>
-              <AppLayout>
-                <Switch>
-                  <Route path="/organization-setup" component={OrganizationSetup} />
-                  <Route path="/project-selection" component={ProjectSelection} />
-                  <Route path="/dashboard" component={QworshipHomeV2Wrapper} />
-                  <Route path="/bible" component={BibleWorkspace} />
-                  <Route path="/songs" component={SongsMock} />
-                  <Route path="/presentations" component={PresentationsMock} />
-                  <Route path="/dashboard-assets" component={AssetsPage} />
-                  <Route path="/dashboard-help" component={HelpSupportPage} />
-                  <Route path="/lower-third-settings" component={LowerThirdSettingsRoute} />
-                  <Route path="/lower-third-editor/:templateId" component={LowerThirdEditorPage} />
-                  <Route path="/main-presentation-settings" component={MainPresentationSettingsRoute} />
+            <Route>
+              <AuthGuard>
+                <AppLayout>
+                  <Switch>
+                    <Route
+                      path="/organization-setup"
+                      component={OrganizationSetup}
+                    />
+                    <Route
+                      path="/project-selection"
+                      component={ProjectSelection}
+                    />
+                    <Route
+                      path="/dashboard"
+                      component={QworshipHomeV2Wrapper}
+                    />
+                    <Route path="/bible" component={BibleWorkspace} />
+                    <Route path="/songs" component={SongsMock} />
+                    <Route
+                      path="/presentations"
+                      component={PresentationsMock}
+                    />
+                    <Route path="/dashboard-assets" component={AssetsPage} />
+                    <Route path="/dashboard-help" component={HelpSupportPage} />
+                    <Route
+                      path="/lower-third-settings"
+                      component={LowerThirdSettingsRoute}
+                    />
+                    <Route
+                      path="/lower-third-editor/:templateId"
+                      component={LowerThirdEditorPage}
+                    />
+                    <Route
+                      path="/main-presentation-settings"
+                      component={MainPresentationSettingsRoute}
+                    />
 
-                  <Route>
-                    <div className="text-center py-20 text-muted-foreground flex items-center justify-center font-bold text-2xl h-full">
-                      404 - Page not found in workspace
-                    </div>
-                  </Route>
-                </Switch>
-              </AppLayout>
-            </AuthGuard>
-          </Route>
-        </Switch>
-      </TooltipProvider>
-    </QueryClientProvider>
+                    <Route>
+                      <div className="text-center py-20 text-muted-foreground flex items-center justify-center font-bold text-2xl h-full">
+                        404 - Page not found in workspace
+                      </div>
+                    </Route>
+                  </Switch>
+                </AppLayout>
+              </AuthGuard>
+            </Route>
+          </Switch>
+        </TooltipProvider>
+      </QueryClientProvider>
     </Router>
   );
 };

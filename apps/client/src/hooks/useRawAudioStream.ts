@@ -17,18 +17,37 @@ export const useRawAudioStream = () => {
     async (onAudioData: (pcmBuffer: Int16Array) => void) => {
       try {
         console.log("[useRawAudioStream] Requesting microphone access...");
+        let audioConstraints: any = {
+          channelCount: 1,
+          echoCancellation: true,
+          noiseSuppression: true,
+        };
+
+        try {
+          const selectedDeviceId = localStorage.getItem(
+            "qworship-audio-device",
+          );
+          if (selectedDeviceId && selectedDeviceId !== "default") {
+            audioConstraints.deviceId = { exact: selectedDeviceId };
+          }
+        } catch (e) {
+          console.warn(
+            "[useRawAudioStream] Failed to read audio device setting from localStorage",
+            e,
+          );
+        }
+
         const stream = await navigator.mediaDevices.getUserMedia({
-          audio: {
-            channelCount: 1,
-            echoCancellation: true,
-            noiseSuppression: true,
-          },
+          audio: audioConstraints,
         });
         streamRef.current = stream;
 
         const audioContext = new (
           window.AudioContext || (window as any).webkitAudioContext
         )();
+        if (audioContext.state === "suspended") {
+          await audioContext.resume();
+        }
         audioContextRef.current = audioContext;
 
         const source = audioContext.createMediaStreamSource(stream);
@@ -45,23 +64,19 @@ export const useRawAudioStream = () => {
 
         const updateVolume = () => {
           if (!analyserRef.current || !isRecordingRef.current) return;
+          analyserRef.current.getByteFrequencyData(dataArray);
 
-          const now = performance.now();
-          // Only dispatch the UI event at ~12fps (every 80ms) to avoid 60fps CPU thrashing
-          if (now - lastVolumeDispatchRef.current >= 80) {
-            analyserRef.current.getByteFrequencyData(dataArray);
-
-            let sum = 0;
-            for (let i = 0; i < dataArray.length; i++) {
-              sum += dataArray[i];
-            }
-            const average = sum / dataArray.length;
-
-            // Map average (0-255) to a smoother 0-100 percentage for the UI
-            const percentage = Math.min(100, Math.max(0, (average / 128) * 100));
-            window.dispatchEvent(new CustomEvent("hfb-volume", { detail: percentage }));
-            lastVolumeDispatchRef.current = now;
+          let sum = 0;
+          for (let i = 0; i < dataArray.length; i++) {
+            sum += dataArray[i];
           }
+          const average = sum / dataArray.length;
+
+          // Map average (0-255) to a smoother 0-100 percentage for the UI
+          const percentage = Math.min(100, Math.max(0, (average / 128) * 100));
+          window.dispatchEvent(
+            new CustomEvent("hfb-volume", { detail: percentage }),
+          );
 
           animationFrameRef.current = requestAnimationFrame(updateVolume);
         };
@@ -71,29 +86,55 @@ export const useRawAudioStream = () => {
         // AudioWorkletNode runs in a dedicated audio thread, unlike the deprecated
         // ScriptProcessorNode which ran on the main thread and caused native
         // ACCESS_VIOLATION crashes (0xC0000005) in Electron on Windows.
-        await audioContext.audioWorklet.addModule('/pcm-processor.js');
+        await audioContext.audioWorklet.addModule("/pcm-processor.js");
 
-        const workletNode = new AudioWorkletNode(audioContext, 'pcm-processor');
+        const workletNode = new AudioWorkletNode(audioContext, "pcm-processor");
         workletNodeRef.current = workletNode;
 
+        let _feChunkCounter = 0;
         // Receive PCM16 data from the audio thread
         workletNode.port.onmessage = (event) => {
           if (isRecordingRef.current) {
-            const pcm16 = event.data instanceof Int16Array
-              ? event.data
-              : new Int16Array(event.data);
+            const rawBuffer = event.data.buffer || event.data;
+            const pcm16 =
+              rawBuffer instanceof Int16Array
+                ? rawBuffer
+                : new Int16Array(rawBuffer);
+
+            if (_feChunkCounter++ % 100 === 0) {
+              let feMax = 0;
+              for (let i = 0; i < pcm16.length; i++) {
+                if (Math.abs(pcm16[i]) > feMax) feMax = Math.abs(pcm16[i]);
+              }
+              console.log(
+                `[Frontend] Audio chunk #${_feChunkCounter}. PCMPeak: ${feMax}/32768, FloatPeak: ${event.data.maxFloat}`,
+              );
+            }
+
             onAudioData(pcm16);
           }
         };
 
         source.connect(workletNode);
-        // Connect to destination to keep the audio graph alive
-        workletNode.connect(audioContext.destination);
+
+        // Connect to destination to keep the audio graph alive in Chrome
+        // We use a GainNode set to 0 so we don't trigger Acoustic Echo Cancellation
+        // which physically zeroes out the Float32 array coming into the worklet!
+        const deadGain = audioContext.createGain();
+        deadGain.gain.value = 0;
+        workletNode.connect(deadGain);
+        deadGain.connect(audioContext.destination);
+        (audioContext as any).__deadGain = deadGain; // Hang onto it so it isn't GC'd
 
         setIsRecording(true);
-        console.log("[useRawAudioStream] Microphone stream initialized with AudioWorklet.");
+        console.log(
+          "[useRawAudioStream] Microphone stream initialized with AudioWorklet.",
+        );
       } catch (err) {
-        console.error("[useRawAudioStream] Failed to start raw audio stream:", err);
+        console.error(
+          "[useRawAudioStream] Failed to start raw audio stream:",
+          err,
+        );
         setIsRecording(false);
         isRecordingRef.current = false;
         throw err;

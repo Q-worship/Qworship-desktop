@@ -39,30 +39,6 @@ export const useLivePresentation = ({
   const { clearProjection: clearZustandProjection } = useBibleProjectionStore();
   const { setMode: setDisplayMode } = useDisplayModeStore();
 
-  // Helper: prefer Electron IPC when available, fall back to postMessage for web
-  const sendToLive = (liveWin: Window | null, type: string, data?: any) => {
-    const electronLive = (window as any).electronLive;
-    if (electronLive) {
-      // Route through Main Process IPC for the three critical projection channels
-      if (type === 'project-slide' || type === 'SLIDE_CHANGE') {
-        electronLive.projectSlide(data);
-        return;
-      }
-      if (type === 'project-bible-verse' || type === 'PROJECT_BIBLE_VERSE') {
-        electronLive.projectBibleVerse(data);
-        return;
-      }
-      if (type === 'clear-projection' || type === 'CLEAR_PROJECTION') {
-        electronLive.clearProjection(data);
-        return;
-      }
-    }
-    // Fallback: postMessage for all other types (or when running in browser)
-    if (liveWin && !liveWin.closed) {
-      liveWin.postMessage({ type, data }, '*');
-    }
-  };
-
   const goLive = () => {
     clearZustandProjection();
     setDisplayMode("slides");
@@ -129,28 +105,15 @@ export const useLivePresentation = ({
       setTimeout(sendInitialData, 1000);
       setTimeout(sendInitialData, 2000);
 
-      // Use native IPC closed event if available — eliminates the 1s polling loop
-      const electronLive = (window as any).electronLive;
-      if (electronLive?.onLiveWindowClosed) {
-        const unsub = electronLive.onLiveWindowClosed(() => {
-          setDisplayMode('none');
+      const checkClosed = setInterval(() => {
+        if (newWindow.closed) {
+          setDisplayMode("none");
           clearZustandProjection();
           setIsLive(false);
           setLiveWindow(null);
-          unsub();
-        });
-      } else {
-        // Fallback for browser/web context
-        const checkClosed = setInterval(() => {
-          if (newWindow.closed) {
-            setDisplayMode('none');
-            clearZustandProjection();
-            setIsLive(false);
-            setLiveWindow(null);
-            clearInterval(checkClosed);
-          }
-        }, 1000);
-      }
+          clearInterval(checkClosed);
+        }
+      }, 1000);
     } else {
       console.error("Failed to open live presentation window - popup blocked?");
       alert("Please allow popups for this site to use live presentation mode");
@@ -158,11 +121,8 @@ export const useLivePresentation = ({
   };
 
   const exitLive = () => {
-    const electronLive = (window as any).electronLive;
-    if (electronLive) {
-      electronLive.closeLive();
-    } else if (liveWindow && isWindowOpen(liveWindow)) {
-      liveWindow.postMessage({ type: 'CLOSE_LIVE' }, '*');
+    if (liveWindow && isWindowOpen(liveWindow)) {
+      liveWindow.postMessage({ type: "CLOSE_LIVE" }, "*");
       liveWindow.close();
     }
 
@@ -374,7 +334,12 @@ export const useLivePresentation = ({
 
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
-      if (event.origin !== window.location.origin && event.origin !== "file://" && event.origin !== "null") return;
+      if (
+        event.origin !== window.location.origin &&
+        event.origin !== "file://" &&
+        event.origin !== "null"
+      )
+        return;
 
       const { type, data } = event.data;
 
@@ -429,7 +394,7 @@ export const useLivePresentation = ({
           if (currentSlide < slides.length) {
             const nextSlideNum = currentSlide + 1;
             setCurrentSlide(nextSlideNum);
-            
+
             if (liveWindow && isWindowOpen(liveWindow)) {
               liveWindow.postMessage(
                 {
