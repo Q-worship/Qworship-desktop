@@ -15,6 +15,10 @@ import { app } from 'electron';
 
 /** Known model metadata for validation and download */
 const MODEL_REGISTRY: Record<string, { url: string; expectedSizeMB: number }> = {
+  'ggml-tiny.en.bin': {
+    url: 'https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-tiny.en.bin',
+    expectedSizeMB: 75,
+  },
   'ggml-small.en.bin': {
     url: 'https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-small.en.bin',
     expectedSizeMB: 466,

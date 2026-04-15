@@ -115,7 +115,6 @@ class VADDetector {
   }
 }
 let Whisper = null;
-const BIBLE_INITIAL_PROMPT = "Genesis, Exodus, Leviticus, Numbers, Deuteronomy, Joshua, Judges, Ruth, 1 Samuel, 2 Samuel, 1 Kings, 2 Kings, 1 Chronicles, 2 Chronicles, Ezra, Nehemiah, Esther, Job, Psalms, Proverbs, Ecclesiastes, Song of Solomon, Isaiah, Jeremiah, Lamentations, Ezekiel, Daniel, Hosea, Joel, Amos, Obadiah, Jonah, Micah, Nahum, Habakkuk, Zephaniah, Haggai, Zechariah, Malachi, Matthew, Mark, Luke, John, Acts, Romans, 1 Corinthians, 2 Corinthians, Galatians, Ephesians, Philippians, Colossians, 1 Thessalonians, 2 Thessalonians, 1 Timothy, 2 Timothy, Titus, Philemon, Hebrews, James, 1 Peter, 2 Peter, 1 John, 2 John, 3 John, Jude, Revelation. Chapter, verse, next, previous, switch to, KJV, NKJV, NIV, ESV, Amplified.";
 class WhisperService extends node_events.EventEmitter {
   constructor() {
     super();
@@ -249,16 +248,25 @@ class WhisperService extends node_events.EventEmitter {
         this.resetBuffer();
         this.vad.reset();
       }
+      const startTime = Date.now();
       console.log(`[WhisperService] C++ Engine chunk dispatched. Samples: ${audioCopy.length}, Duration: ${(audioCopy.length / 16e3).toFixed(1)}s`);
       const task = await this.whisper.transcribe(audioCopy, {
         language: "en",
-        initial_prompt: BIBLE_INITIAL_PROMPT
+        n_threads: 4,
+        single_segment: true,
+        no_context: true,
+        no_timestamps: true
+        // initial_prompt removed — it was causing 60s+ decode times on CPU
       });
       task.on("transcribed", (segment) => {
         console.log(`[WhisperService-C++] Segment: "${segment.text}"`);
       });
-      const result = await task.result;
-      console.log(`[WhisperService] C++ Engine resolved.`);
+      const timeoutPromise = new Promise(
+        (_, reject) => setTimeout(() => reject(new Error("Whisper inference timed out after 30s")), 3e4)
+      );
+      const result = await Promise.race([task.result, timeoutPromise]);
+      const elapsed = Date.now() - startTime;
+      console.log(`[WhisperService] C++ Engine resolved in ${elapsed}ms.`);
       const transcript = this.extractTranscript(result);
       if (transcript && transcript.trim().length > 0) {
         const cleaned = transcript.trim();
@@ -322,6 +330,10 @@ class WhisperService extends node_events.EventEmitter {
   }
 }
 const MODEL_REGISTRY = {
+  "ggml-tiny.en.bin": {
+    url: "https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-tiny.en.bin",
+    expectedSizeMB: 75
+  },
   "ggml-small.en.bin": {
     url: "https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-small.en.bin",
     expectedSizeMB: 466
@@ -447,7 +459,7 @@ let win;
 let deepLinkUrl = null;
 const whisperService = new WhisperService();
 const modelManager = new WhisperModelManager();
-const DEFAULT_MODEL = "ggml-small.en.bin";
+const DEFAULT_MODEL = "ggml-tiny.en.bin";
 const gotTheLock = electron.app.requestSingleInstanceLock();
 if (!gotTheLock) {
   electron.app.quit();

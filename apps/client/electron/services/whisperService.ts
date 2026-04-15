@@ -234,13 +234,18 @@ export class WhisperService extends EventEmitter {
         this.vad.reset();
       }
 
+      const startTime = Date.now();
       console.log(`[WhisperService] C++ Engine chunk dispatched. Samples: ${audioCopy.length}, Duration: ${(audioCopy.length / 16000).toFixed(1)}s`);
       
       // Use the persistent pre-loaded instance — safe now that the
       // setInterval concurrent-call bug has been removed.
       const task = await this.whisper.transcribe(audioCopy, {
         language: 'en',
-        initial_prompt: BIBLE_INITIAL_PROMPT,
+        n_threads: 4,
+        single_segment: true,
+        no_context: true,
+        no_timestamps: true,
+        // initial_prompt removed — it was causing 60s+ decode times on CPU
       });
 
       // Hook into the native C++ stream for real-time partial results
@@ -248,8 +253,14 @@ export class WhisperService extends EventEmitter {
         console.log(`[WhisperService-C++] Segment: "${segment.text}"`);
       });
 
-      const result = await task.result;
-      console.log(`[WhisperService] C++ Engine resolved.`);
+      // Race: wait for result or timeout after 30 seconds
+      const timeoutPromise = new Promise<never>((_, reject) =>
+        setTimeout(() => reject(new Error('Whisper inference timed out after 30s')), 30000)
+      );
+
+      const result = await Promise.race([task.result, timeoutPromise]);
+      const elapsed = Date.now() - startTime;
+      console.log(`[WhisperService] C++ Engine resolved in ${elapsed}ms.`);
 
       // Extract transcript text from result
       const transcript = this.extractTranscript(result);

@@ -32,7 +32,7 @@ let deepLinkUrl: string | null = null;
 // ── Whisper Instances ────────────────────────────────────────────
 const whisperService = new WhisperService();
 const modelManager = new WhisperModelManager();
-const DEFAULT_MODEL = 'ggml-small.en.bin';
+const DEFAULT_MODEL = 'ggml-tiny.en.bin';
 
 // Force single instance application
 const gotTheLock = app.requestSingleInstanceLock();
