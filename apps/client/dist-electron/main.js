@@ -104,7 +104,6 @@ class VADDetector {
   }
 }
 let Whisper = null;
-const BIBLE_INITIAL_PROMPT = "Genesis, Exodus, Leviticus, Numbers, Deuteronomy, Joshua, Judges, Ruth, 1 Samuel, 2 Samuel, 1 Kings, 2 Kings, 1 Chronicles, 2 Chronicles, Ezra, Nehemiah, Esther, Job, Psalms, Proverbs, Ecclesiastes, Song of Solomon, Isaiah, Jeremiah, Lamentations, Ezekiel, Daniel, Hosea, Joel, Amos, Obadiah, Jonah, Micah, Nahum, Habakkuk, Zephaniah, Haggai, Zechariah, Malachi, Matthew, Mark, Luke, John, Acts, Romans, 1 Corinthians, 2 Corinthians, Galatians, Ephesians, Philippians, Colossians, 1 Thessalonians, 2 Thessalonians, 1 Timothy, 2 Timothy, Titus, Philemon, Hebrews, James, 1 Peter, 2 Peter, 1 John, 2 John, 3 John, Jude, Revelation. Chapter, verse, next, previous, switch to, KJV, NKJV, NIV, ESV, Amplified.";
 class WhisperService extends node_events.EventEmitter {
   constructor() {
     super();
@@ -239,10 +238,13 @@ class WhisperService extends node_events.EventEmitter {
         this.resetBuffer();
         this.vad.reset();
       }
-      console.log(`[WhisperService] C++ Engine chunk dispatched... `);
+      console.log(`[WhisperService] C++ Engine chunk dispatched. Language: EN.`);
       const task = await this.whisper.transcribe(audioCopy, {
-        language: "en",
-        initial_prompt: BIBLE_INITIAL_PROMPT
+        language: "en"
+        // initial_prompt temporarily disabled to test if it's breaking the C++ wrapper
+      });
+      task.on("transcribed", (segment) => {
+        console.log(`[WhisperService-C++] Extracted chunk: "${segment.text}"`);
       });
       const result = await task.result;
       console.log(`[WhisperService] C++ Engine resolved.`);

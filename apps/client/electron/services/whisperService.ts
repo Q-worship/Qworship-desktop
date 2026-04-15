@@ -231,10 +231,15 @@ export class WhisperService extends EventEmitter {
         this.vad.reset();
       }
 
-      console.log(`[WhisperService] C++ Engine chunk dispatched... `);
+      console.log(`[WhisperService] C++ Engine chunk dispatched. Language: EN.`);
       const task = await this.whisper.transcribe(audioCopy, {
         language: 'en',
-        initial_prompt: BIBLE_INITIAL_PROMPT,
+        // initial_prompt temporarily disabled to test if it's breaking the C++ wrapper
+      });
+
+      // Hook into the native C++ stream!
+      task.on('transcribed', (segment: any) => {
+        console.log(`[WhisperService-C++] Extracted chunk: "${segment.text}"`);
       });
 
       const result = await task.result;
