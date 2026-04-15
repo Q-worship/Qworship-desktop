@@ -7,7 +7,7 @@ import React, {
 } from "react";
 import { useDisplayModeStore } from "@/stores/useDisplayModeStore";
 import { useBibleProjectionStore } from "@/stores/useBibleProjectionStore";
-import { useRealtimeSocket } from "@/hooks/useRealtimeSocket";
+import { useLocalWhisper } from "@/hooks/useLocalWhisper";
 import { useRawAudioStream } from "@/hooks/useRawAudioStream";
 import { useToast } from "@/hooks/use-toast";
 import { useHFBStore } from "./useHFBStore";
@@ -328,11 +328,10 @@ export const useHandsfreeBible = ({
   }, [clearInactivityTimer, stopRecording]);
 
   // ──────────────────────────────────────────────────────────────
-  // Server-based transcription via WebSocket
-  // (Electron can't use webkitSpeechRecognition — it requires
-  //  Google's cloud service which is stripped from Chromium.)
+  // Local offline transcription via whisper.cpp in the Main Process.
+  // Audio is sent over IPC and processed locally — no server needed.
   // ──────────────────────────────────────────────────────────────
-  const { connect, disconnect, sendPCMData, isConnected } = useRealtimeSocket({
+  const { connect, disconnect, sendPCMData, isConnected } = useLocalWhisper({
     onBibleMatch: (data: any) => {
       resetInactivityTimer();
       handleBibleMatch(data);

@@ -2,6 +2,10 @@ import { app, BrowserWindow, shell, ipcMain, session, systemPreferences } from '
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
+// ── Whisper / HFB Services ──────────────────────────────────────
+import { WhisperService } from './services/whisperService';
+import { WhisperModelManager } from './services/whisperModelManager';
+
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 // The built directory structure
@@ -24,6 +28,11 @@ process.env.VITE_PUBLIC = VITE_DEV_SERVER_URL ? path.join(process.env.APP_ROOT, 
 
 let win: BrowserWindow | null;
 let deepLinkUrl: string | null = null;
+
+// ── Whisper Instances ────────────────────────────────────────────
+const whisperService = new WhisperService();
+const modelManager = new WhisperModelManager();
+const DEFAULT_MODEL = 'ggml-small.en.bin';
 
 // Force single instance application
 const gotTheLock = app.requestSingleInstanceLock();
@@ -55,7 +64,7 @@ if (!gotTheLock) {
     app.setAsDefaultProtocolClient('qworship');
   }
 
-  app.whenReady().then(() => {
+  app.whenReady().then(async () => {
     // Grant microphone permission automatically so webkitSpeechRecognition doesn't hang
     session.defaultSession.setPermissionRequestHandler((_wc, permission, callback) => {
       const allowed = ['microphone', 'camera', 'media', 'audioCapture', 'videoCapture'];
@@ -74,6 +83,11 @@ if (!gotTheLock) {
     }
 
     createWindow();
+
+    // ── Initialize Whisper Model (non-blocking) ──────────────
+    initializeWhisper().catch((err) => {
+      console.error('[Main] Whisper initialization failed:', err);
+    });
   });
 
   // Handle protocol on macOS
@@ -87,6 +101,80 @@ if (!gotTheLock) {
   });
 }
 
+// ── Whisper Initialization ─────────────────────────────────────
+async function initializeWhisper() {
+  try {
+    // Download model if not present (sends progress to renderer)
+    const modelPath = await modelManager.ensureModelExists(DEFAULT_MODEL, (progress) => {
+      if (win && win.webContents) {
+        win.webContents.send('hfb:model-download-progress', progress.percent, progress.downloadedMB, progress.totalMB);
+      }
+    });
+
+    // Load the model into memory
+    await whisperService.initialize(modelPath);
+
+    // Forward whisper events to renderer
+    whisperService.on('transcript-partial', (text: string) => {
+      if (win && win.webContents) {
+        win.webContents.send('hfb:transcript-partial', text);
+      }
+    });
+
+    whisperService.on('transcript-final', (text: string) => {
+      if (win && win.webContents) {
+        win.webContents.send('hfb:transcript-final', text);
+      }
+    });
+
+    whisperService.on('status-change', (status: string, message?: string) => {
+      if (win && win.webContents) {
+        win.webContents.send('hfb:status-change', status, message);
+      }
+    });
+
+    console.log('[Main] Whisper initialized successfully');
+  } catch (err) {
+    console.error('[Main] Failed to initialize Whisper:', err);
+  }
+}
+
+// ── Whisper IPC Handlers ───────────────────────────────────────
+let _audioChunkCount = 0;
+ipcMain.on('hfb:audio-chunk', (_event, rawData: any) => {
+  // Electron IPC serializes ArrayBuffers into Node.js Buffer / Uint8Array objects.
+  // We must use the .buffer property.
+  const pcm16 = new Int16Array(
+    rawData.buffer || rawData, 
+    rawData.byteOffset || 0, 
+    (rawData.byteLength || rawData.length) / 2
+  );
+
+  if (_audioChunkCount++ % 100 === 0) {
+    let maxAmplitude = 0;
+    for(let i=0; i < pcm16.length; i++) {
+        const val = Math.abs(pcm16[i]);
+        if(val > maxAmplitude) maxAmplitude = val;
+    }
+    console.log(`[Main] Audio chunk #${_audioChunkCount}. Peak amplitude: ${maxAmplitude}/32768`);
+  }
+  
+  whisperService.feedAudioChunk(pcm16);
+});
+
+ipcMain.on('hfb:start-listening', () => {
+  whisperService.startListening();
+});
+
+ipcMain.on('hfb:stop-listening', () => {
+  whisperService.stopListening();
+});
+
+ipcMain.handle('hfb:get-status', () => {
+  return whisperService.getStatus();
+});
+
+// ── Deep Link Handlers ─────────────────────────────────────────
 function handleProtocolUri(url: string) {
   console.log('Received deep link:', url);
   deepLinkUrl = url; // ALWAYS save it so the renderer can fetch it safely anytime
@@ -154,10 +242,9 @@ function createWindow() {
     console.log('✅ [RENDERER RESPONSIVE] The renderer process recovered');
   });
   win.webContents.on('console-message', (_event, level, message, line, sourceId) => {
-    // Forward renderer console.error messages to main process terminal (level 2 = error)
-    if (level >= 2) {
-      console.error(`🔴 [RENDERER ERROR] ${message} (${sourceId}:${line})`);
-    }
+    // Forward all renderer console messages to main process terminal to diagnose the silent data death
+    const prefix = level >= 2 ? '🔴 [RENDERER ERROR]' : '🔵 [RENDERER LOG]';
+    console.log(`${prefix} ${message} (${sourceId}:${line})`);
   });
 
   // Handle window.open() calls from the renderer
@@ -203,7 +290,10 @@ function createWindow() {
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
-    app.quit();
+    // Shut down whisper before quitting
+    whisperService.shutdown().finally(() => {
+      app.quit();
+    });
     win = null;
   }
 });
