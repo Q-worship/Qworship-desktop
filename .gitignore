@@ -18,3 +18,7 @@ apps/server/uploads/
 .env.*
 apps/server/uploads/presentations/
 apps/server/uploads/presentations/*
+
+# Whisper model binaries (auto-downloaded at runtime)
+apps/client/models/*.bin
+apps/client/models/*.onnx
