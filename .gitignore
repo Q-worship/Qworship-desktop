@@ -22,3 +22,5 @@ apps/server/uploads/presentations/*
 # Whisper model binaries (auto-downloaded at runtime)
 apps/client/models/*.bin
 apps/client/models/*.onnx
+
+#now the user downloads the models manually, we leave the md file though    
