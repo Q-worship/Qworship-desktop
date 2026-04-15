@@ -80,4 +80,28 @@ contextBridge.exposeInMainWorld("api", {
         ipcRenderer.removeListener("hfb:model-download-progress", handler);
     },
   },
+  
+  // ── Live Presentation IPC ─────────────────────────────────
+  live: {
+    sendSync: (payload: any) => {
+      ipcRenderer.send("live:message", payload);
+    },
+    onMessage: (callback: (payload: any) => void) => {
+      const handler = (_event: any, payload: any) => callback(payload);
+      ipcRenderer.on("live:message", handler);
+      return () => ipcRenderer.removeListener("live:message", handler);
+    },
+    onWindowClosed: (callback: () => void) => {
+      const handler = () => callback();
+      ipcRenderer.on("live:window-closed", handler);
+      return () => ipcRenderer.removeListener("live:window-closed", handler);
+    }
+  },
+  
+  // ── Bible SQLite IPC ──────────────────────────────────────
+  bible: {
+    getChapter: (version: string, book: string, chapter: number) => {
+      return ipcRenderer.invoke("hfb:get-bible-chapter", version, book, chapter);
+    }
+  }
 });

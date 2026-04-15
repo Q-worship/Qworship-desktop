@@ -205,6 +205,10 @@ export const OnScreenBibleEditor: React.FC<OnScreenBibleEditorProps> = ({
             
             // Generate updated slides with new translation
             const parentItemId = content?.id || `bible-${Date.now()}`;
+            const combinedText = bibleVerses.map((v: any) => 
+              includeVerseNumbers ? `${v.number} ${v.text}` : v.text
+            ).join(' ');
+            
             const slides: any[] = [];
             if (oneVersePerSlide) {
               bibleVerses.forEach((verse: any, index: number) => {
@@ -222,16 +226,12 @@ export const OnScreenBibleEditor: React.FC<OnScreenBibleEditorProps> = ({
                 });
               });
             } else {
-              const allContent = bibleVerses.map((v: any) => 
-                includeVerseNumbers ? `${v.number} ${v.text}` : v.text
-              ).join(' ');
-              
               slides.push({
                 id: `slide-${parentItemId}-1`,
                 itemId: parentItemId,
                 type: 'bible',
                 title: searchInput.trim(),
-                content: allContent,
+                content: combinedText,
                 slideNumber: 1,
                 reference: showBibleReference !== 'none' ? searchInput.trim() : '',
                 version: showBibleVersion !== 'none' ? version : '',
@@ -277,6 +277,7 @@ export const OnScreenBibleEditor: React.FC<OnScreenBibleEditorProps> = ({
               variant: "destructive"
             });
           }
+        }
       } catch (error) {
         console.error('Error changing Bible version:', error);
         toast({

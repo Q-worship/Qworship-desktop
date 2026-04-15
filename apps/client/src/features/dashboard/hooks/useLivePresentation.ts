@@ -55,6 +55,14 @@ export const useLivePresentation = ({
       setIsLive(true);
       setIsInPreview(false);
 
+      const sendToLive = (payload: any) => {
+         if ((window as any).api?.live) {
+            (window as any).api.live.sendSync(payload);
+         } else if (newWindow) {
+            newWindow.postMessage(payload, "*");
+         }
+      };
+
       const sendInitialData = () => {
         if (slides.length === 0) {
           console.warn(
@@ -64,18 +72,10 @@ export const useLivePresentation = ({
         }
 
         try {
-          newWindow.postMessage(
-            {
-              type: "SLIDES_SYNC",
-              data: {
-                slides,
-                totalSlides,
-                titleEditorState,
-                itemBackgrounds,
-              },
-            },
-            "*",
-          );
+          sendToLive({
+            type: "SLIDES_SYNC",
+            data: { slides, totalSlides, titleEditorState, itemBackgrounds },
+          });
 
           const currentSlideData = slides[currentSlide - 1];
           const currentItemId =
@@ -84,17 +84,14 @@ export const useLivePresentation = ({
             ? itemBackgrounds[currentItemId]
             : null;
 
-          newWindow.postMessage(
-            {
-              type: "SLIDE_CHANGE",
-              data: {
-                slideNumber: currentSlide,
-                background: currentBackground,
-                itemId: currentItemId,
-              },
+          sendToLive({
+            type: "SLIDE_CHANGE",
+            data: {
+              slideNumber: currentSlide,
+              background: currentBackground,
+              itemId: currentItemId,
             },
-            "*",
-          );
+          });
         } catch (error) {
           console.error("Error sending messages to live window:", error);
         }
@@ -105,15 +102,18 @@ export const useLivePresentation = ({
       setTimeout(sendInitialData, 1000);
       setTimeout(sendInitialData, 2000);
 
-      const checkClosed = setInterval(() => {
-        if (newWindow.closed) {
-          setDisplayMode("none");
-          clearZustandProjection();
-          setIsLive(false);
-          setLiveWindow(null);
-          clearInterval(checkClosed);
-        }
-      }, 1000);
+      // Only poll for closed window if Native IPC is disabled
+      if (!(window as any).api?.live) {
+        const checkClosed = setInterval(() => {
+          if (newWindow.closed) {
+            setDisplayMode("none");
+            clearZustandProjection();
+            setIsLive(false);
+            setLiveWindow(null);
+            clearInterval(checkClosed);
+          }
+        }, 1000);
+      }
     } else {
       console.error("Failed to open live presentation window - popup blocked?");
       alert("Please allow popups for this site to use live presentation mode");
@@ -121,7 +121,9 @@ export const useLivePresentation = ({
   };
 
   const exitLive = () => {
-    if (liveWindow && isWindowOpen(liveWindow)) {
+    if ((window as any).api?.live) {
+      (window as any).api.live.sendSync({ type: "CLOSE_LIVE" });
+    } else if (liveWindow && isWindowOpen(liveWindow)) {
       liveWindow.postMessage({ type: "CLOSE_LIVE" }, "*");
       liveWindow.close();
     }
@@ -228,26 +230,31 @@ export const useLivePresentation = ({
         sections: sections,
       };
 
-      sourceWindow.postMessage(
-        {
-          type: "SONG_DATA_RESPONSE",
-          songId: songId,
-          success: true,
-          song: songWithSections,
-          error: null,
-        },
-        "*",
-      );
+      const payload = {
+        type: "SONG_DATA_RESPONSE",
+        songId: songId,
+        success: true,
+        song: songWithSections,
+        error: null,
+      };
+      
+      if ((window as any).api?.live) {
+        (window as any).api.live.sendSync(payload);
+      } else {
+        sourceWindow.postMessage(payload, "*");
+      }
     } catch (error: any) {
-      sourceWindow.postMessage(
-        {
-          type: "SONG_DATA_RESPONSE",
-          songId: songId,
-          success: false,
-          error: error.message || "Failed to fetch song data",
-        },
-        "*",
-      );
+      const errorPayload = {
+        type: "SONG_DATA_RESPONSE",
+        songId: songId,
+        success: false,
+        error: error.message || "Failed to fetch song data",
+      };
+      if ((window as any).api?.live) {
+        (window as any).api.live.sendSync(errorPayload);
+      } else {
+        sourceWindow.postMessage(errorPayload, "*");
+      }
     }
   };
 
@@ -280,18 +287,15 @@ export const useLivePresentation = ({
       if (payloadKey !== lastSentSlidesRef.current) {
         lastSentSlidesRef.current = payloadKey;
         try {
-          liveWindow.postMessage(
-            {
-              type: "SLIDES_SYNC",
-              data: {
-                slides,
-                totalSlides,
-                titleEditorState,
-                itemBackgrounds,
-              },
-            },
-            "*",
-          );
+          const payload = {
+            type: "SLIDES_SYNC",
+            data: { slides, totalSlides, titleEditorState, itemBackgrounds },
+          };
+          if ((window as any).api?.live) {
+            (window as any).api.live.sendSync(payload);
+          } else {
+            liveWindow.postMessage(payload, "*");
+          }
         } catch (error) {
           console.error("Error syncing slides to live window:", error);
         }
@@ -315,16 +319,15 @@ export const useLivePresentation = ({
 
       editorSyncDebounceRef.current = setTimeout(() => {
         try {
-          liveWindow.postMessage(
-            {
-              type: "EDITOR_STATE_SYNC",
-              data: {
-                titleEditorState,
-                // If there's component-local editorState, it should be passed in Props
-              },
-            },
-            "*",
-          );
+          const payload = {
+            type: "EDITOR_STATE_SYNC",
+            data: { titleEditorState },
+          };
+          if ((window as any).api?.live) {
+             (window as any).api.live.sendSync(payload);
+          } else {
+             liveWindow.postMessage(payload, "*");
+          }
         } catch (error) {
           console.error("Error syncing editor state to live window:", error);
         }
@@ -486,20 +489,23 @@ export const useLivePresentation = ({
                 bibleStore.currentVerse.kjv ||
                 "";
 
-              liveWindow.postMessage(
-                {
-                  type: "BIBLE_VERSE_DISPLAY",
-                  data: {
-                    book: bibleStore.currentVerse.book,
-                    chapter: bibleStore.currentVerse.chapter,
-                    verse: bibleStore.currentVerse.verse,
-                    text: text,
-                    version: bibleStore.bibleVersion,
-                    reference: bibleStore.formattedReference,
-                  },
+              const payload = {
+                type: "BIBLE_VERSE_DISPLAY",
+                data: {
+                  book: bibleStore.currentVerse.book,
+                  chapter: bibleStore.currentVerse.chapter,
+                  verse: bibleStore.currentVerse.verse,
+                  text: text,
+                  version: bibleStore.bibleVersion,
+                  reference: bibleStore.formattedReference,
                 },
-                "*",
-              );
+              };
+              
+              if ((window as any).api?.live) {
+                  (window as any).api.live.sendSync(payload);
+              } else {
+                  liveWindow.postMessage(payload, "*");
+              }
             }
           }
           break;
@@ -507,7 +513,32 @@ export const useLivePresentation = ({
     };
 
     window.addEventListener("message", handleMessage);
-    return () => window.removeEventListener("message", handleMessage);
+    
+    // Set up IPC receiver if Native API exists
+    let unsubscribeIpc: (() => void) | undefined;
+    let unsubscribeClosed: (() => void) | undefined;
+    if ((window as any).api?.live) {
+      unsubscribeIpc = (window as any).api.live.onMessage((payload: any) => {
+         handleMessage({ 
+           origin: window.location.origin, 
+           data: payload, 
+           source: liveWindow 
+         } as any);
+      });
+      
+      unsubscribeClosed = (window as any).api.live.onWindowClosed(() => {
+        setDisplayMode("none");
+        clearZustandProjection();
+        setIsLive(false);
+        setLiveWindow(null);
+      });
+    }
+
+    return () => {
+      window.removeEventListener("message", handleMessage);
+      if (unsubscribeIpc) unsubscribeIpc();
+      if (unsubscribeClosed) unsubscribeClosed();
+    };
   }, [
     liveWindow,
     slides,

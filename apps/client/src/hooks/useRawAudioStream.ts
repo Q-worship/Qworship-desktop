@@ -74,12 +74,28 @@ export const useRawAudioStream = () => {
 
           // Map average (0-255) to a smoother 0-100 percentage for the UI
           const percentage = Math.min(100, Math.max(0, (average / 128) * 100));
-          window.dispatchEvent(
-            new CustomEvent("hfb-volume", { detail: percentage }),
-          );
+          
+          const now = performance.now();
+          // Throttle to ~12fps (80ms) to save CPU
+          if (now - lastVolumeDispatchRef.current > 80) {
+            // VAD gate: Only dispatch if there's actual sound, or if we need to drop the meter back down to 0
+            if (percentage > 1 || (getVolumeRef() > 0)) {
+              window.dispatchEvent(
+                new CustomEvent("hfb-volume", { detail: percentage }),
+              );
+              lastVolumeDispatchRef.current = now;
+              // Keep an internal track of the last dispatched to allow dropping to 0
+              if (!(window as any).__lastVolume) (window as any).__lastVolume = 0;
+              (window as any).__lastVolume = percentage;
+            }
+          }
 
           animationFrameRef.current = requestAnimationFrame(updateVolume);
         };
+        
+        // Helper
+        const getVolumeRef = () => (window as any).__lastVolume || 0;
+        
         updateVolume(); // Start the loop
 
         // --- AudioWorklet Setup ---

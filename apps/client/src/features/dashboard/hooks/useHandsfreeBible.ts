@@ -616,6 +616,13 @@ export const useHandsfreeBible = ({
     }
   };
 
+  const handleSetBibleVersion = (version: string) => {
+    const normalized = version.toUpperCase();
+    setSelectedBibleVersion(normalized);
+    setZustandBibleVersion(normalized);
+    useHFBStore.getState().setHfbVersion(normalized);
+  };
+
   return {
     isHandsfreeBibleOpen,
     isWidgetVisible,

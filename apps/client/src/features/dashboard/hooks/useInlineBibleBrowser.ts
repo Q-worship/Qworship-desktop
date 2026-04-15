@@ -61,25 +61,35 @@ export function useInlineBibleBrowser({
         const verseEnd = bookData?.verses[chapter - 1] ?? 150;
         const vKey = version.toLowerCase() as any;
 
-        // 0. Try RAM Cache Fetching (0.00ms latency)
-        const memStartTime = performance.now();
-        const ramVerses = useBibleRAMCache
-          .getState()
-          .getChapter(vKey, bookName, chapter);
-        const memEndTime = performance.now();
+        // 0. Try Native SQLite Fetching (0.00ms latency, zero RAM)
+        const sqliteStartTime = performance.now();
+        let cachedVerses: any = null;
+        if ((window as any).api?.bible) {
+           try {
+             cachedVerses = await (window as any).api.bible.getChapter(vKey, bookName, chapter);
+           } catch(e) {
+             console.warn("[BibleBrowser] SQLite query failed", e);
+           }
+        }
+        const sqliteEndTime = performance.now();
 
-        if (ramVerses && ramVerses.length > 0) {
+        // 0.1 Fallback to RAM Cache if not on Electron Native
+        if (!cachedVerses || cachedVerses.length === 0) {
+           cachedVerses = useBibleRAMCache.getState().getChapter(vKey, bookName, chapter);
+        }
+
+        if (cachedVerses && cachedVerses.length > 0) {
           const p: BiblePassage = {
             book: bookName,
             chapter,
-            verses: ramVerses as BibleVerse[],
+            verses: cachedVerses as BibleVerse[],
             version: version.toUpperCase(),
             reference: `${bookName} ${chapter}`,
           };
           setBiblePassage(p);
           setBibleIsLoading(false);
           console.log(
-            `🚀 [RAM CACHE] Fetched ${bookName} ${chapter} (${vKey}) in ${(memEndTime - memStartTime).toFixed(2)}ms`,
+            `🚀 [Bible Engine] Fetched ${bookName} ${chapter} (${vKey}) in ${(sqliteEndTime - sqliteStartTime).toFixed(2)}ms`,
           );
           return p;
         }

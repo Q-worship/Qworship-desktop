@@ -4,8 +4,7 @@ electron.contextBridge.exposeInMainWorld("api", {
   onDeepLinkPayload: (callback) => {
     const subscription = (_event, data) => callback(data);
     electron.ipcRenderer.on("deep-link-payload", subscription);
-    return () =>
-      electron.ipcRenderer.removeListener("deep-link-payload", subscription);
+    return () => electron.ipcRenderer.removeListener("deep-link-payload", subscription);
   },
   // Allows the React app to request the deep link if it booted before main sent it
   requestInitialDeepLink: () => {
@@ -36,33 +35,47 @@ electron.contextBridge.exposeInMainWorld("api", {
     onTranscriptPartial: (callback) => {
       const handler = (_event, text) => callback(text);
       electron.ipcRenderer.on("hfb:transcript-partial", handler);
-      return () =>
-        electron.ipcRenderer.removeListener("hfb:transcript-partial", handler);
+      return () => electron.ipcRenderer.removeListener("hfb:transcript-partial", handler);
     },
     /** Listen for final transcript events from the main process */
     onTranscriptFinal: (callback) => {
       const handler = (_event, text) => callback(text);
       electron.ipcRenderer.on("hfb:transcript-final", handler);
-      return () =>
-        electron.ipcRenderer.removeListener("hfb:transcript-final", handler);
+      return () => electron.ipcRenderer.removeListener("hfb:transcript-final", handler);
     },
     /** Listen for whisper engine status changes */
     onStatusChange: (callback) => {
       const handler = (_event, status, message) => callback(status, message);
       electron.ipcRenderer.on("hfb:status-change", handler);
-      return () =>
-        electron.ipcRenderer.removeListener("hfb:status-change", handler);
+      return () => electron.ipcRenderer.removeListener("hfb:status-change", handler);
     },
     /** Listen for model download progress */
     onModelDownloadProgress: (callback) => {
-      const handler = (_event, percent, downloadedMB, totalMB) =>
-        callback(percent, downloadedMB, totalMB);
+      const handler = (_event, percent, downloadedMB, totalMB) => callback(percent, downloadedMB, totalMB);
       electron.ipcRenderer.on("hfb:model-download-progress", handler);
-      return () =>
-        electron.ipcRenderer.removeListener(
-          "hfb:model-download-progress",
-          handler,
-        );
-    },
+      return () => electron.ipcRenderer.removeListener("hfb:model-download-progress", handler);
+    }
   },
+  // ── Live Presentation IPC ─────────────────────────────────
+  live: {
+    sendSync: (payload) => {
+      electron.ipcRenderer.send("live:message", payload);
+    },
+    onMessage: (callback) => {
+      const handler = (_event, payload) => callback(payload);
+      electron.ipcRenderer.on("live:message", handler);
+      return () => electron.ipcRenderer.removeListener("live:message", handler);
+    },
+    onWindowClosed: (callback) => {
+      const handler = () => callback();
+      electron.ipcRenderer.on("live:window-closed", handler);
+      return () => electron.ipcRenderer.removeListener("live:window-closed", handler);
+    }
+  },
+  // ── Bible SQLite IPC ──────────────────────────────────────
+  bible: {
+    getChapter: (version, book, chapter) => {
+      return electron.ipcRenderer.invoke("hfb:get-bible-chapter", version, book, chapter);
+    }
+  }
 });

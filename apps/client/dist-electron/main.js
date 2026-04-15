@@ -6,29 +6,21 @@ var __getOwnPropNames = Object.getOwnPropertyNames;
 var __getProtoOf = Object.getPrototypeOf;
 var __hasOwnProp = Object.prototype.hasOwnProperty;
 var __copyProps = (to, from, except, desc) => {
-  if ((from && typeof from === "object") || typeof from === "function") {
+  if (from && typeof from === "object" || typeof from === "function") {
     for (let key of __getOwnPropNames(from))
       if (!__hasOwnProp.call(to, key) && key !== except)
-        __defProp(to, key, {
-          get: () => from[key],
-          enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable,
-        });
+        __defProp(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable });
   }
   return to;
 };
-var __toESM = (mod, isNodeMode, target) => (
-  (target = mod != null ? __create(__getProtoOf(mod)) : {}),
-  __copyProps(
-    // If the importer is in node compatibility mode or this is not an ESM
-    // file that has been converted to a CommonJS file using a Babel-
-    // compatible transform (i.e. "__esModule" has not been set), then set
-    // "default" to the CommonJS "module.exports" for node compatibility.
-    isNodeMode || !mod || !mod.__esModule
-      ? __defProp(target, "default", { value: mod, enumerable: true })
-      : target,
-    mod,
-  )
-);
+var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(
+  // If the importer is in node compatibility mode or this is not an ESM
+  // file that has been converted to a CommonJS file using a Babel-
+  // compatible transform (i.e. "__esModule" has not been set), then set
+  // "default" to the CommonJS "module.exports" for node compatibility.
+  isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target,
+  mod
+));
 Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
 const electron = require("electron");
 const path = require("node:path");
@@ -36,8 +28,8 @@ const node_url = require("node:url");
 const node_events = require("node:events");
 const fs = require("node:fs");
 const https = require("node:https");
-var _documentCurrentScript =
-  typeof document !== "undefined" ? document.currentScript : null;
+const Database = require("better-sqlite3");
+var _documentCurrentScript = typeof document !== "undefined" ? document.currentScript : null;
 class VADDetector {
   constructor(options = {}) {
     this.speaking = false;
@@ -61,8 +53,7 @@ class VADDetector {
     if (this.rmsHistory.length > this.RMS_WINDOW_SIZE) {
       this.rmsHistory.shift();
     }
-    const smoothedRMS =
-      this.rmsHistory.reduce((a, b) => a + b, 0) / this.rmsHistory.length;
+    const smoothedRMS = this.rmsHistory.reduce((a, b) => a + b, 0) / this.rmsHistory.length;
     const now = Date.now();
     this.lastProcessTime = now;
     if (!this.speaking) {
@@ -79,10 +70,7 @@ class VADDetector {
       } else {
         this.silenceStartMs = null;
       }
-      if (
-        this.silenceStartMs !== null &&
-        now - this.silenceStartMs >= this.silenceTimeoutMs
-      ) {
+      if (this.silenceStartMs !== null && now - this.silenceStartMs >= this.silenceTimeoutMs) {
         this.speaking = false;
         this.silenceStartMs = null;
         this._endOfUtteranceTriggered = true;
@@ -128,8 +116,7 @@ class VADDetector {
   }
 }
 let Whisper = null;
-const BIBLE_INITIAL_PROMPT =
-  "Genesis, Exodus, Luke, Psalms, Matthew, John, Revelation, chapter, verse.";
+const BIBLE_INITIAL_PROMPT = "Genesis, Exodus, Luke, Psalms, Matthew, John, Revelation, chapter, verse.";
 class WhisperService extends node_events.EventEmitter {
   constructor() {
     super();
@@ -148,7 +135,7 @@ class WhisperService extends node_events.EventEmitter {
       onsetThreshold: 0.01,
       offsetThreshold: 6e-3,
       silenceTimeoutMs: 1500,
-      sampleRate: 16e3,
+      sampleRate: 16e3
     });
   }
   /** Get current engine status */
@@ -183,10 +170,7 @@ class WhisperService extends node_events.EventEmitter {
    */
   startListening() {
     if (this.status !== "ready") {
-      console.warn(
-        "[WhisperService] Cannot start listening — status:",
-        this.status,
-      );
+      console.warn("[WhisperService] Cannot start listening — status:", this.status);
       return;
     }
     this.isListening = true;
@@ -228,10 +212,7 @@ class WhisperService extends node_events.EventEmitter {
     const spaceLeft = this.MAX_BUFFER_SAMPLES - this.bufferWritePos;
     const samplesToWrite = Math.min(float32.length, spaceLeft);
     if (samplesToWrite > 0) {
-      this.audioBuffer.set(
-        float32.subarray(0, samplesToWrite),
-        this.bufferWritePos,
-      );
+      this.audioBuffer.set(float32.subarray(0, samplesToWrite), this.bufferWritePos);
       this.bufferWritePos += samplesToWrite;
     }
     if (this.bufferWritePos >= this.MAX_BUFFER_SAMPLES) {
@@ -240,9 +221,7 @@ class WhisperService extends node_events.EventEmitter {
     if (this.vad.isEndOfUtterance() && this.speechDetectedSinceLastInference) {
       if (this.isProcessing) {
         this._pendingInference = true;
-        console.log(
-          "[WhisperService] End-of-utterance queued (inference in progress)",
-        );
+        console.log("[WhisperService] End-of-utterance queued (inference in progress)");
       } else {
         this.tryRunInference(true);
       }
@@ -256,9 +235,7 @@ class WhisperService extends node_events.EventEmitter {
     if (this.isProcessing) return;
     if (this.bufferWritePos < this.MIN_INFERENCE_SAMPLES) return;
     if (!this.speechDetectedSinceLastInference && !isFinal) return;
-    console.log(
-      `[WhisperService] VAD Triggered Inference (isFinal: ${isFinal}). Samples: ${this.bufferWritePos}`,
-    );
+    console.log(`[WhisperService] VAD Triggered Inference (isFinal: ${isFinal}). Samples: ${this.bufferWritePos}`);
     this.runInference(isFinal).catch((err) => {
       console.error("[WhisperService] Inference error:", err);
     });
@@ -271,36 +248,27 @@ class WhisperService extends node_events.EventEmitter {
     this.isProcessing = true;
     this.speechDetectedSinceLastInference = false;
     try {
-      const audioData = new Float32Array(
-        this.audioBuffer.buffer,
-        0,
-        this.bufferWritePos,
-      );
+      const audioData = new Float32Array(this.audioBuffer.buffer, 0, this.bufferWritePos);
       const audioCopy = new Float32Array(audioData);
       if (isFinal) {
         this.resetBuffer();
         this.vad.reset();
       }
       const startTime = Date.now();
-      console.log(
-        `[WhisperService] C++ Engine chunk dispatched. Samples: ${audioCopy.length}, Duration: ${(audioCopy.length / 16e3).toFixed(1)}s`,
-      );
+      console.log(`[WhisperService] C++ Engine chunk dispatched. Samples: ${audioCopy.length}, Duration: ${(audioCopy.length / 16e3).toFixed(1)}s`);
       const task = await this.whisper.transcribe(audioCopy, {
         language: "en",
         n_threads: 4,
         single_segment: true,
         no_context: true,
         no_timestamps: true,
-        initial_prompt: BIBLE_INITIAL_PROMPT,
+        initial_prompt: BIBLE_INITIAL_PROMPT
       });
       task.on("transcribed", (segment) => {
         console.log(`[WhisperService-C++] Segment: "${segment.text}"`);
       });
-      const timeoutPromise = new Promise((_, reject) =>
-        setTimeout(
-          () => reject(new Error("Whisper inference timed out after 30s")),
-          3e4,
-        ),
+      const timeoutPromise = new Promise(
+        (_, reject) => setTimeout(() => reject(new Error("Whisper inference timed out after 30s")), 3e4)
       );
       const result = await Promise.race([task.result, timeoutPromise]);
       const elapsed = Date.now() - startTime;
@@ -320,10 +288,7 @@ class WhisperService extends node_events.EventEmitter {
       console.error("[WhisperService] Inference failed:", err);
     } finally {
       this.isProcessing = false;
-      if (
-        this._pendingInference &&
-        this.bufferWritePos >= this.MIN_INFERENCE_SAMPLES
-      ) {
+      if (this._pendingInference && this.bufferWritePos >= this.MIN_INFERENCE_SAMPLES) {
         this._pendingInference = false;
         console.log("[WhisperService] Draining queued inference...");
         this.tryRunInference(true);
@@ -380,16 +345,16 @@ class WhisperService extends node_events.EventEmitter {
 const MODEL_REGISTRY = {
   "ggml-tiny.en.bin": {
     url: "https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-tiny.en.bin",
-    expectedSizeMB: 75,
+    expectedSizeMB: 75
   },
   "ggml-small.en.bin": {
     url: "https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-small.en.bin",
-    expectedSizeMB: 466,
+    expectedSizeMB: 466
   },
   "ggml-base.en.bin": {
     url: "https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-base.en.bin",
-    expectedSizeMB: 142,
-  },
+    expectedSizeMB: 142
+  }
 };
 class WhisperModelManager {
   constructor() {
@@ -423,30 +388,20 @@ class WhisperModelManager {
   async ensureModelExists(modelName, onProgress) {
     const modelPath = this.getModelPath(modelName);
     if (this.isModelDownloaded(modelName)) {
-      console.log(
-        `[WhisperModelManager] Model "${modelName}" already exists at ${modelPath}`,
-      );
+      console.log(`[WhisperModelManager] Model "${modelName}" already exists at ${modelPath}`);
       return modelPath;
     }
     const registry = MODEL_REGISTRY[modelName];
     if (!registry) {
-      throw new Error(
-        `[WhisperModelManager] Unknown model: "${modelName}". Available: ${Object.keys(MODEL_REGISTRY).join(", ")}`,
-      );
+      throw new Error(`[WhisperModelManager] Unknown model: "${modelName}". Available: ${Object.keys(MODEL_REGISTRY).join(", ")}`);
     }
-    console.log(
-      `[WhisperModelManager] Downloading "${modelName}" from ${registry.url}...`,
-    );
+    console.log(`[WhisperModelManager] Downloading "${modelName}" from ${registry.url}...`);
     await this.downloadFile(registry.url, modelPath, onProgress);
     if (!this.isModelDownloaded(modelName)) {
       if (fs.existsSync(modelPath)) fs.unlinkSync(modelPath);
-      throw new Error(
-        `[WhisperModelManager] Downloaded model "${modelName}" failed integrity check`,
-      );
+      throw new Error(`[WhisperModelManager] Downloaded model "${modelName}" failed integrity check`);
     }
-    console.log(
-      `[WhisperModelManager] Model "${modelName}" downloaded successfully`,
-    );
+    console.log(`[WhisperModelManager] Model "${modelName}" downloaded successfully`);
     return modelPath;
   }
   /** Download a file with progress reporting, following redirects */
@@ -459,21 +414,11 @@ class WhisperModelManager {
           return;
         }
         const urlObj = new URL(requestUrl);
-        const requestModule =
-          urlObj.protocol === "https:" ? https : require("node:http");
+        const requestModule = urlObj.protocol === "https:" ? https : require("node:http");
         const req = requestModule.get(requestUrl, (res) => {
-          if (
-            res.statusCode >= 300 &&
-            res.statusCode < 400 &&
-            res.headers.location
-          ) {
-            const redirectUrl = new URL(
-              res.headers.location,
-              requestUrl,
-            ).toString();
-            console.log(
-              `[WhisperModelManager] Following redirect to ${redirectUrl}`,
-            );
+          if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
+            const redirectUrl = new URL(res.headers.location, requestUrl).toString();
+            console.log(`[WhisperModelManager] Following redirect to ${redirectUrl}`);
             makeRequest(redirectUrl, redirectCount + 1);
             return;
           }
@@ -490,10 +435,9 @@ class WhisperModelManager {
             fileStream.write(chunk);
             if (onProgress && totalBytes > 0) {
               onProgress({
-                percent: Math.round((downloadedBytes / totalBytes) * 100),
-                downloadedMB:
-                  Math.round((downloadedBytes / (1024 * 1024)) * 10) / 10,
-                totalMB: Math.round(totalMB * 10) / 10,
+                percent: Math.round(downloadedBytes / totalBytes * 100),
+                downloadedMB: Math.round(downloadedBytes / (1024 * 1024) * 10) / 10,
+                totalMB: Math.round(totalMB * 10) / 10
               });
             }
           });
@@ -518,27 +462,62 @@ class WhisperModelManager {
     });
   }
 }
-const __dirname$1 = path.dirname(
-  node_url.fileURLToPath(
-    typeof document === "undefined"
-      ? require("url").pathToFileURL(__filename).href
-      : (_documentCurrentScript &&
-          _documentCurrentScript.tagName.toUpperCase() === "SCRIPT" &&
-          _documentCurrentScript.src) ||
-          new URL("main.js", document.baseURI).href,
-  ),
-);
+class BibleSQLiteService {
+  constructor() {
+    this.db = null;
+    this.isLoaded = false;
+  }
+  async initialize(publicPath) {
+    try {
+      const dbPath = path.join(publicPath, "data", "bibles", "bible.db");
+      if (!fs.existsSync(dbPath)) {
+        console.warn(`[BibleSQLite] SQLite database not found at ${dbPath}. Falling back to RAM cache.`);
+        return false;
+      }
+      this.db = new Database(dbPath, { readonly: true });
+      this.isLoaded = true;
+      console.log(`[BibleSQLite] Initialized successfully from ${dbPath}`);
+      return true;
+    } catch (err) {
+      console.error("[BibleSQLite] Initialization failed:", err);
+      return false;
+    }
+  }
+  getChapter(version, book, chapter) {
+    if (!this.isLoaded || !this.db) return null;
+    try {
+      const stmt = this.db.prepare(`
+        SELECT number, text 
+        FROM verses 
+        WHERE version = ? AND book = ? AND chapter = ?
+        ORDER BY number ASC
+      `);
+      return stmt.all(version.toLowerCase(), book, chapter);
+    } catch (err) {
+      console.error(`[BibleSQLite] Failed to query chapter ${version} ${book} ${chapter}:`, err);
+      return null;
+    }
+  }
+  close() {
+    if (this.db) {
+      this.db.close();
+      this.db = null;
+      this.isLoaded = false;
+    }
+  }
+}
+const __dirname$1 = path.dirname(node_url.fileURLToPath(typeof document === "undefined" ? require("url").pathToFileURL(__filename).href : _documentCurrentScript && _documentCurrentScript.tagName.toUpperCase() === "SCRIPT" && _documentCurrentScript.src || new URL("main.js", document.baseURI).href));
 process.env.APP_ROOT = path.join(__dirname$1, "..");
 const VITE_DEV_SERVER_URL = process.env["VITE_DEV_SERVER_URL"];
 const MAIN_DIST = path.join(process.env.APP_ROOT, "dist-electron");
 const RENDERER_DIST = path.join(process.env.APP_ROOT, "dist");
-process.env.VITE_PUBLIC = VITE_DEV_SERVER_URL
-  ? path.join(process.env.APP_ROOT, "public")
-  : RENDERER_DIST;
+process.env.VITE_PUBLIC = VITE_DEV_SERVER_URL ? path.join(process.env.APP_ROOT, "public") : RENDERER_DIST;
 let win;
+let liveWindow = null;
 let deepLinkUrl = null;
 const whisperService = new WhisperService();
 const modelManager = new WhisperModelManager();
+const bibleService = new BibleSQLiteService();
 const DEFAULT_MODEL = "ggml-tiny.en.bin";
 const gotTheLock = electron.app.requestSingleInstanceLock();
 if (!gotTheLock) {
@@ -557,7 +536,7 @@ if (!gotTheLock) {
   if (process.defaultApp) {
     if (process.argv.length >= 2) {
       electron.app.setAsDefaultProtocolClient("qworship", process.execPath, [
-        path.resolve(process.argv[1]),
+        path.resolve(process.argv[1])
       ]);
     }
   } else {
@@ -571,34 +550,32 @@ if (!gotTheLock) {
           "camera",
           "media",
           "audioCapture",
-          "videoCapture",
+          "videoCapture"
         ];
         callback(allowed.includes(permission));
-      },
+      }
     );
-    electron.session.defaultSession.setPermissionCheckHandler(
-      (_wc, permission) => {
-        const allowed = [
-          "microphone",
-          "camera",
-          "media",
-          "audioCapture",
-          "videoCapture",
-        ];
-        return allowed.includes(permission);
-      },
-    );
+    electron.session.defaultSession.setPermissionCheckHandler((_wc, permission) => {
+      const allowed = [
+        "microphone",
+        "camera",
+        "media",
+        "audioCapture",
+        "videoCapture"
+      ];
+      return allowed.includes(permission);
+    });
     if (process.platform === "darwin") {
-      electron.systemPreferences
-        .askForMediaAccess("microphone")
-        .then((granted) => {
-          console.log("OS-level microphone permission granted:", granted);
-        })
-        .catch((err) =>
-          console.error("OS-level microphone permission error:", err),
-        );
+      electron.systemPreferences.askForMediaAccess("microphone").then((granted) => {
+        console.log("OS-level microphone permission granted:", granted);
+      }).catch(
+        (err) => console.error("OS-level microphone permission error:", err)
+      );
     }
     createWindow();
+    bibleService.initialize(process.env.VITE_PUBLIC).catch((err) => {
+      console.error("[Main] Bible SQLite initialization failed:", err);
+    });
     initializeWhisper().catch((err) => {
       console.error("[Main] Whisper initialization failed:", err);
     });
@@ -622,10 +599,10 @@ async function initializeWhisper() {
             "hfb:model-download-progress",
             progress.percent,
             progress.downloadedMB,
-            progress.totalMB,
+            progress.totalMB
           );
         }
-      },
+      }
     );
     await whisperService.initialize(modelPath);
     whisperService.on("transcript-partial", (text) => {
@@ -653,7 +630,7 @@ electron.ipcMain.on("hfb:audio-chunk", (_event, rawData) => {
   const pcm16 = new Int16Array(
     rawData.buffer || rawData,
     rawData.byteOffset || 0,
-    (rawData.byteLength || rawData.length) / 2,
+    (rawData.byteLength || rawData.length) / 2
   );
   if (_audioChunkCount++ % 100 === 0) {
     let maxAmplitude = 0;
@@ -662,7 +639,7 @@ electron.ipcMain.on("hfb:audio-chunk", (_event, rawData) => {
       if (val > maxAmplitude) maxAmplitude = val;
     }
     console.log(
-      `[Main] Audio chunk #${_audioChunkCount}. Peak amplitude: ${maxAmplitude}/32768`,
+      `[Main] Audio chunk #${_audioChunkCount}. Peak amplitude: ${maxAmplitude}/32768`
     );
   }
   whisperService.feedAudioChunk(pcm16);
@@ -675,6 +652,9 @@ electron.ipcMain.on("hfb:stop-listening", () => {
 });
 electron.ipcMain.handle("hfb:get-status", () => {
   return whisperService.getStatus();
+});
+electron.ipcMain.handle("hfb:get-bible-chapter", (_event, version, book, chapter) => {
+  return bibleService.getChapter(version, book, chapter);
 });
 function handleProtocolUri(url) {
   console.log("Received deep link:", url);
@@ -694,6 +674,17 @@ electron.ipcMain.on("open-external-url", (_event, url) => {
     electron.shell.openExternal(url);
   }
 });
+electron.ipcMain.on("live:message", (event, payload) => {
+  if (win && event.sender === win.webContents) {
+    if (liveWindow && !liveWindow.isDestroyed()) {
+      liveWindow.webContents.send("live:message", payload);
+    }
+  } else if (liveWindow && event.sender === liveWindow.webContents) {
+    if (win && !win.isDestroyed()) {
+      win.webContents.send("live:message", payload);
+    }
+  }
+});
 function createWindow() {
   const { session: session2 } = require("electron");
   session2.defaultSession.setPermissionRequestHandler(
@@ -703,10 +694,10 @@ function createWindow() {
         "camera",
         "media",
         "audioCapture",
-        "videoCapture",
+        "videoCapture"
       ];
       callback(allowed.includes(permission));
-    },
+    }
   );
   session2.defaultSession.setPermissionCheckHandler(
     (_webContents, permission) => {
@@ -715,10 +706,10 @@ function createWindow() {
         "camera",
         "media",
         "audioCapture",
-        "videoCapture",
+        "videoCapture"
       ];
       return allowed.includes(permission);
-    },
+    }
   );
   win = new electron.BrowserWindow({
     width: 1200,
@@ -733,9 +724,9 @@ function createWindow() {
       preload: path.join(__dirname$1, "preload.cjs"),
       nodeIntegration: false,
       contextIsolation: true,
-      webviewTag: true,
+      webviewTag: true
       // Necessary if they use <webview> for pricing
-    },
+    }
   });
   win.on("ready-to-show", () => {
     win == null ? void 0 : win.show();
@@ -745,30 +736,35 @@ function createWindow() {
       "⚠️ [RENDERER CRASHED]",
       details.reason,
       "exitCode:",
-      details.exitCode,
+      details.exitCode
     );
   });
   win.on("unresponsive", () => {
     console.error(
-      "⚠️ [RENDERER UNRESPONSIVE] The renderer process is not responding",
+      "⚠️ [RENDERER UNRESPONSIVE] The renderer process is not responding"
     );
   });
   win.on("responsive", () => {
     console.log("✅ [RENDERER RESPONSIVE] The renderer process recovered");
+  });
+  win.webContents.on("did-create-window", (childWindow, details) => {
+    liveWindow = childWindow;
+    childWindow.on("closed", () => {
+      liveWindow = null;
+      if (win && !win.isDestroyed()) {
+        win.webContents.send("live:window-closed");
+      }
+    });
   });
   win.webContents.on(
     "console-message",
     (_event, level, message, line, sourceId) => {
       const prefix = level >= 2 ? "🔴 [RENDERER ERROR]" : "🔵 [RENDERER LOG]";
       console.log(`${prefix} ${message} (${sourceId}:${line})`);
-    },
+    }
   );
   win.webContents.setWindowOpenHandler(({ url }) => {
-    if (
-      url.startsWith("http://localhost") ||
-      url.startsWith("http://127.0.0.1") ||
-      url.startsWith("file://")
-    ) {
+    if (url.startsWith("http://localhost") || url.startsWith("http://127.0.0.1") || url.startsWith("file://")) {
       return {
         action: "allow",
         overrideBrowserWindowOptions: {
@@ -782,9 +778,9 @@ function createWindow() {
           webPreferences: {
             preload: path.join(__dirname$1, "preload.cjs"),
             nodeIntegration: false,
-            contextIsolation: true,
-          },
-        },
+            contextIsolation: true
+          }
+        }
       };
     }
     if (url.startsWith("http:") || url.startsWith("https:")) {

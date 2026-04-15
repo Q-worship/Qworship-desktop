@@ -604,10 +604,36 @@ export async function lookupOffline(
   ref: BibleReference,
 ): Promise<OfflineBibleResult | null> {
   try {
-    let verses = await db.verses
-      .where("[version+book+chapter]")
-      .equals([ref.version, ref.book, ref.chapter])
-      .sortBy("verse");
+    let verses: any[] = [];
+    
+    // First Priority: Native SQLite Engine
+    if ((window as any).api?.bible) {
+      try {
+        const sqliteVerses = await (window as any).api.bible.getChapter(
+          ref.version,
+          ref.book,
+          ref.chapter,
+        );
+        if (sqliteVerses && sqliteVerses.length > 0) {
+          // sqlite verses have {number, text}
+          verses = sqliteVerses.map((v: any) => ({
+            verse: v.number,
+            text: v.text,
+            book: ref.book,
+          }));
+        }
+      } catch (e) {
+        console.warn("[OfflineBible] SQLite query failed, falling back.", e);
+      }
+    }
+
+    // Fallback: IndexedDB / Dexie
+    if (verses.length === 0) {
+      verses = await db.verses
+        .where("[version+book+chapter]")
+        .equals([ref.version, ref.book, ref.chapter])
+        .sortBy("verse");
+    }
 
     if (!verses.length) return null;
 
@@ -618,7 +644,7 @@ export async function lookupOffline(
     );
     if (!filtered.length) return null;
 
-    const bookDisplay = filtered[0].book;
+    const bookDisplay = filtered[0].book || ref.book;
     const refStr = ref.verseEnd
       ? `${bookDisplay} ${ref.chapter}:${ref.verseStart}-${ref.verseEnd}`
       : ref.verseStart > 1

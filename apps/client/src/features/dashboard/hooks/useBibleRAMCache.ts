@@ -47,6 +47,12 @@ export const useBibleRAMCache = create<RAMCacheStore>((set, get) => ({
     // Already loaded — instant return
     if (state.loadedVersions.has(v)) return;
 
+    // Check if Native SQLite is available. If it is, loading to RAM JS is redundant!
+    if ((window as any).api?.bible) {
+      set((s) => ({ loadedVersions: new Set([...s.loadedVersions, v]) }));
+      return;
+    }
+
     // Already being loaded by a concurrent call — wait briefly and return
     if (state.loadingVersions.has(v)) {
       // Simple poll: wait up to 5s for concurrent load to finish

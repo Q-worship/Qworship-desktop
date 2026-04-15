@@ -12,6 +12,7 @@ import { fileURLToPath } from "node:url";
 // ── Whisper / HFB Services ──────────────────────────────────────
 import { WhisperService } from "./services/whisperService";
 import { WhisperModelManager } from "./services/whisperModelManager";
+import { BibleSQLiteService } from "./services/bibleSqliteService";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -36,11 +37,13 @@ process.env.VITE_PUBLIC = VITE_DEV_SERVER_URL
   : RENDERER_DIST;
 
 let win: BrowserWindow | null;
+let liveWindow: BrowserWindow | null = null;
 let deepLinkUrl: string | null = null;
 
 // ── Whisper Instances ────────────────────────────────────────────
 const whisperService = new WhisperService();
 const modelManager = new WhisperModelManager();
+const bibleService = new BibleSQLiteService();
 const DEFAULT_MODEL = "ggml-tiny.en.bin";
 
 // Force single instance application
@@ -113,6 +116,11 @@ if (!gotTheLock) {
     }
 
     createWindow();
+
+    // Initialize Bible SQLite (non-blocking)
+    bibleService.initialize(process.env.VITE_PUBLIC as string).catch(err => {
+      console.error("[Main] Bible SQLite initialization failed:", err);
+    });
 
     // ── Initialize Whisper Model (non-blocking) ──────────────
     initializeWhisper().catch((err) => {
@@ -214,6 +222,10 @@ ipcMain.handle("hfb:get-status", () => {
   return whisperService.getStatus();
 });
 
+ipcMain.handle("hfb:get-bible-chapter", (_event, version: string, book: string, chapter: number) => {
+  return bibleService.getChapter(version, book, chapter);
+});
+
 // ── Deep Link Handlers ─────────────────────────────────────────
 function handleProtocolUri(url: string) {
   console.log("Received deep link:", url);
@@ -233,6 +245,21 @@ ipcMain.on("request-deep-link", () => {
 ipcMain.on("open-external-url", (_event, url) => {
   if (url && (url.startsWith("http://") || url.startsWith("https://"))) {
     shell.openExternal(url);
+  }
+});
+
+ipcMain.on("live:message", (event, payload) => {
+  // If the message comes from the main window, send it to the live window
+  if (win && event.sender === win.webContents) {
+    if (liveWindow && !liveWindow.isDestroyed()) {
+      liveWindow.webContents.send("live:message", payload);
+    }
+  } 
+  // If from the live window, send to main window
+  else if (liveWindow && event.sender === liveWindow.webContents) {
+    if (win && !win.isDestroyed()) {
+      win.webContents.send("live:message", payload);
+    }
   }
 });
 
@@ -304,6 +331,18 @@ function createWindow() {
   win.on("responsive", () => {
     console.log("✅ [RENDERER RESPONSIVE] The renderer process recovered");
   });
+  
+  win.webContents.on('did-create-window', (childWindow, details) => {
+    // We assume any created window from main is the live presentation window
+    liveWindow = childWindow;
+    childWindow.on('closed', () => {
+      liveWindow = null;
+      if (win && !win.isDestroyed()) {
+        win.webContents.send('live:window-closed');
+      }
+    });
+  });
+
   win.webContents.on(
     "console-message",
     (_event, level, message, line, sourceId) => {
