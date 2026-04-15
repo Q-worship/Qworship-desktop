@@ -359,10 +359,14 @@ const PATTERNS = [
   /^([a-z]+(?:\s+[a-z]+)?)\s+(\d+)[:.:](\d+)(?:\s*[-–]\s*(\d+))?$/i,
   // "John chapter 3 verse 16"
   /^([a-z]+(?:\s+[a-z]+)?)\s+chapter\s+(\d+)\s+verse\s+(\d+)(?:\s+(?:to|through)\s+(\d+))?$/i,
+  // "1 John chapter 3 verse 16" (numbered + voice)
+  /^(\d)\s*([a-z]+(?:\s+[a-z]+)?)\s+chapter\s+(\d+)\s+verse\s+(\d+)(?:\s+(?:to|through)\s+(\d+))?$/i,
   // "1 John 3 16"  (space format numbered)
   /^(\d)\s*([a-z]+)\s+(\d+)\s+(\d+)$/i,
   // "John 3 16"  (space format)
   /^([a-z]+(?:\s+[a-z]+)?)\s+(\d+)\s+(\d+)$/i,
+  // "John verse 5" (chapter-less, defaults to chapter 1)
+  /^([a-z]+(?:\s+[a-z]+)?)\s+verse\s+(\d+)$/i,
   // "John 3" (chapter only)
   /^([a-z]+(?:\s+[a-z]+)?)\s+(\d+)$/i,
   // "1 John 3" (numbered chapter only)
@@ -410,7 +414,8 @@ const WORD_NUMS: Record<string, number> = {
 };
 
 function convertWordNumbers(text: string): string {
-  return text.replace(/\b([a-z]+(?:\s+[a-z]+)?)\b/gi, (match) => {
+  // Match single words only — greedy two-word matching swallows "five is" as one token
+  return text.replace(/\b([a-z]+)\b/gi, (match) => {
     const lower = match.toLowerCase();
     if (WORD_NUMS[lower] !== undefined) return String(WORD_NUMS[lower]);
     return match;
@@ -420,12 +425,38 @@ function convertWordNumbers(text: string): string {
 // ============================================================
 // Main parser
 // ============================================================
+
+/**
+ * Pre-process raw Whisper transcripts to fix common STT artifacts
+ * before feeding into the regex-based parser.
+ */
+function normalizeTranscript(raw: string): string {
+  let t = raw;
+  // Strip punctuation (commas, periods, etc.)
+  t = t.replace(/[.,!?;:]+/g, " ");
+  // Strip Whisper hallucination filler words that never appear in Bible references
+  // IMPORTANT: Do NOT include words that are book aliases (saw, sam, jon, etc.)
+  // or navigation keywords (go, back, next, etc.)
+  t = t.replace(
+    /\b(true|false|was|were|are|been|being|um|uh|just|really|actually|basically|okay|ok|yeah|very|much|also|too)\b/gi,
+    "",
+  );
+  // "chapter 5 is 5"  →  "chapter 5 verse 5"
+  // "chapter 5 and 6" →  "chapter 5 verse 6"
+  // "chapter 5 or 6"  →  "chapter 5 verse 6"
+  // "chapter 5 was 5"  → "chapter 5 verse 5"
+  t = t.replace(/(\d+)\s+(?:is|and|or|was|versus)\s+(\d+)/gi, "$1 verse $2");
+  // Collapse multiple spaces
+  t = t.replace(/\s+/g, " ").trim();
+  return t;
+}
+
 export function parseVoiceCommand(
   text: string,
   defaultVersion: BibleVersion = "kjv",
 ): ParsedVoiceCommand {
   const original = text.trim();
-  const normalized = convertWordNumbers(original).trim();
+  const normalized = normalizeTranscript(convertWordNumbers(original)).trim();
   const lower = normalized.toLowerCase();
 
   // Navigation
