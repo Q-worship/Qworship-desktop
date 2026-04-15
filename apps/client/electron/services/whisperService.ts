@@ -17,19 +17,11 @@ import { VADDetector } from './vadDetector';
 // Vite bundling issues. The actual import happens in initialize().
 let Whisper: any = null;
 
-/** Bible book names used as initial_prompt to bias Whisper recognition */
-const BIBLE_INITIAL_PROMPT =
-  'Genesis, Exodus, Leviticus, Numbers, Deuteronomy, Joshua, Judges, Ruth, ' +
-  '1 Samuel, 2 Samuel, 1 Kings, 2 Kings, 1 Chronicles, 2 Chronicles, ' +
-  'Ezra, Nehemiah, Esther, Job, Psalms, Proverbs, Ecclesiastes, ' +
-  'Song of Solomon, Isaiah, Jeremiah, Lamentations, Ezekiel, Daniel, ' +
-  'Hosea, Joel, Amos, Obadiah, Jonah, Micah, Nahum, Habakkuk, ' +
-  'Zephaniah, Haggai, Zechariah, Malachi, Matthew, Mark, Luke, John, ' +
-  'Acts, Romans, 1 Corinthians, 2 Corinthians, Galatians, Ephesians, ' +
-  'Philippians, Colossians, 1 Thessalonians, 2 Thessalonians, ' +
-  '1 Timothy, 2 Timothy, Titus, Philemon, Hebrews, James, ' +
-  '1 Peter, 2 Peter, 1 John, 2 John, 3 John, Jude, Revelation. ' +
-  'Chapter, verse, next, previous, switch to, KJV, NKJV, NIV, ESV, Amplified.';
+/**
+ * Short initial_prompt to bias Whisper toward Bible vocabulary.
+ * Kept very short (<20 tokens) to avoid slowing down CPU inference.
+ */
+const BIBLE_INITIAL_PROMPT = 'Genesis, Exodus, Luke, Psalms, Matthew, John, Revelation, chapter, verse.';
 
 export type WhisperStatus = 'uninitialized' | 'loading' | 'ready' | 'processing' | 'error';
 
@@ -61,11 +53,8 @@ export class WhisperService extends EventEmitter {
   /** Is an inference currently running? */
   private isProcessing: boolean = false;
 
-  /** Timer for periodic inference during speech */
-  private inferenceTimer: NodeJS.Timeout | null = null;
-
-  /** Interval between inference runs during speech (ms) */
-  private readonly INFERENCE_INTERVAL_MS = 1200;
+  /** Queue flag: an end-of-utterance arrived while processing */
+  private _pendingInference: boolean = false;
 
   /** Track whether speech was detected since last inference */
   private speechDetectedSinceLastInference: boolean = false;
@@ -192,7 +181,13 @@ export class WhisperService extends EventEmitter {
 
     // Check for end of utterance (silence timeout reached)
     if (this.vad.isEndOfUtterance() && this.speechDetectedSinceLastInference) {
-      this.tryRunInference(true);
+      if (this.isProcessing) {
+        // Queue it — we'll drain after the current inference finishes
+        this._pendingInference = true;
+        console.log('[WhisperService] End-of-utterance queued (inference in progress)');
+      } else {
+        this.tryRunInference(true);
+      }
     }
   }
 
@@ -245,7 +240,7 @@ export class WhisperService extends EventEmitter {
         single_segment: true,
         no_context: true,
         no_timestamps: true,
-        // initial_prompt removed — it was causing 60s+ decode times on CPU
+        initial_prompt: BIBLE_INITIAL_PROMPT,
       });
 
       // Hook into the native C++ stream for real-time partial results
@@ -279,6 +274,15 @@ export class WhisperService extends EventEmitter {
       console.error('[WhisperService] Inference failed:', err);
     } finally {
       this.isProcessing = false;
+
+      // Drain the queue: if an end-of-utterance arrived while we were busy, process it now
+      if (this._pendingInference && this.bufferWritePos >= this.MIN_INFERENCE_SAMPLES) {
+        this._pendingInference = false;
+        console.log('[WhisperService] Draining queued inference...');
+        this.tryRunInference(true);
+      } else {
+        this._pendingInference = false;
+      }
     }
   }
 

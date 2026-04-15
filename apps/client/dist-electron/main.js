@@ -115,6 +115,7 @@ class VADDetector {
   }
 }
 let Whisper = null;
+const BIBLE_INITIAL_PROMPT = "Genesis, Exodus, Luke, Psalms, Matthew, John, Revelation, chapter, verse.";
 class WhisperService extends node_events.EventEmitter {
   constructor() {
     super();
@@ -126,8 +127,7 @@ class WhisperService extends node_events.EventEmitter {
     this.MIN_INFERENCE_SAMPLES = 16e3 * 0.8;
     this.isListening = false;
     this.isProcessing = false;
-    this.inferenceTimer = null;
-    this.INFERENCE_INTERVAL_MS = 1200;
+    this._pendingInference = false;
     this.speechDetectedSinceLastInference = false;
     this.audioBuffer = new Float32Array(this.MAX_BUFFER_SAMPLES);
     this.vad = new VADDetector({
@@ -218,7 +218,12 @@ class WhisperService extends node_events.EventEmitter {
       this.tryRunInference(true);
     }
     if (this.vad.isEndOfUtterance() && this.speechDetectedSinceLastInference) {
-      this.tryRunInference(true);
+      if (this.isProcessing) {
+        this._pendingInference = true;
+        console.log("[WhisperService] End-of-utterance queued (inference in progress)");
+      } else {
+        this.tryRunInference(true);
+      }
     }
   }
   /**
@@ -255,8 +260,8 @@ class WhisperService extends node_events.EventEmitter {
         n_threads: 4,
         single_segment: true,
         no_context: true,
-        no_timestamps: true
-        // initial_prompt removed — it was causing 60s+ decode times on CPU
+        no_timestamps: true,
+        initial_prompt: BIBLE_INITIAL_PROMPT
       });
       task.on("transcribed", (segment) => {
         console.log(`[WhisperService-C++] Segment: "${segment.text}"`);
@@ -282,6 +287,13 @@ class WhisperService extends node_events.EventEmitter {
       console.error("[WhisperService] Inference failed:", err);
     } finally {
       this.isProcessing = false;
+      if (this._pendingInference && this.bufferWritePos >= this.MIN_INFERENCE_SAMPLES) {
+        this._pendingInference = false;
+        console.log("[WhisperService] Draining queued inference...");
+        this.tryRunInference(true);
+      } else {
+        this._pendingInference = false;
+      }
     }
   }
   /**
