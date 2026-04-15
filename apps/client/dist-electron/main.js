@@ -34,6 +34,7 @@ class VADDetector {
     this.speaking = false;
     this.silenceStartMs = null;
     this.lastProcessTime = 0;
+    this._endOfUtteranceTriggered = false;
     this.rmsHistory = [];
     this.RMS_WINDOW_SIZE = 8;
     this.onsetThreshold = options.onsetThreshold ?? 0.01;
@@ -58,6 +59,7 @@ class VADDetector {
       if (smoothedRMS >= this.onsetThreshold) {
         this.speaking = true;
         this.silenceStartMs = null;
+        this._endOfUtteranceTriggered = false;
       }
     } else {
       if (smoothedRMS < this.offsetThreshold) {
@@ -70,6 +72,7 @@ class VADDetector {
       if (this.silenceStartMs !== null && now - this.silenceStartMs >= this.silenceTimeoutMs) {
         this.speaking = false;
         this.silenceStartMs = null;
+        this._endOfUtteranceTriggered = true;
       }
     }
   }
@@ -82,15 +85,23 @@ class VADDetector {
     if (!this.silenceStartMs || this.speaking === false) return 0;
     return Date.now() - this.silenceStartMs;
   }
-  /** Whether the silence timeout has been reached (end of utterance) */
+  /**
+   * Whether the silence timeout has been reached (end of utterance).
+   * This is a CONSUMABLE flag — it returns true exactly once after the
+   * silence timeout fires, then resets itself.
+   */
   isEndOfUtterance() {
-    if (this.silenceStartMs === null) return false;
-    return Date.now() - this.silenceStartMs >= this.silenceTimeoutMs;
+    if (this._endOfUtteranceTriggered) {
+      this._endOfUtteranceTriggered = false;
+      return true;
+    }
+    return false;
   }
   /** Reset all state */
   reset() {
     this.speaking = false;
     this.silenceStartMs = null;
+    this._endOfUtteranceTriggered = false;
     this.rmsHistory = [];
   }
   /** Compute Root Mean Square of a Float32 audio buffer */
@@ -104,11 +115,13 @@ class VADDetector {
   }
 }
 let Whisper = null;
+const BIBLE_INITIAL_PROMPT = "Genesis, Exodus, Leviticus, Numbers, Deuteronomy, Joshua, Judges, Ruth, 1 Samuel, 2 Samuel, 1 Kings, 2 Kings, 1 Chronicles, 2 Chronicles, Ezra, Nehemiah, Esther, Job, Psalms, Proverbs, Ecclesiastes, Song of Solomon, Isaiah, Jeremiah, Lamentations, Ezekiel, Daniel, Hosea, Joel, Amos, Obadiah, Jonah, Micah, Nahum, Habakkuk, Zephaniah, Haggai, Zechariah, Malachi, Matthew, Mark, Luke, John, Acts, Romans, 1 Corinthians, 2 Corinthians, Galatians, Ephesians, Philippians, Colossians, 1 Thessalonians, 2 Thessalonians, 1 Timothy, 2 Timothy, Titus, Philemon, Hebrews, James, 1 Peter, 2 Peter, 1 John, 2 John, 3 John, Jude, Revelation. Chapter, verse, next, previous, switch to, KJV, NKJV, NIV, ESV, Amplified.";
 class WhisperService extends node_events.EventEmitter {
   constructor() {
     super();
     this.whisper = null;
     this.status = "uninitialized";
+    this.modelPath = "";
     this.bufferWritePos = 0;
     this.MAX_BUFFER_SAMPLES = 16e3 * 30;
     this.MIN_INFERENCE_SAMPLES = 16e3 * 0.8;
@@ -141,6 +154,7 @@ class WhisperService extends node_events.EventEmitter {
         const smartWhisper = await import("smart-whisper");
         Whisper = smartWhisper.Whisper;
       }
+      this.modelPath = modelPath;
       this.whisper = new Whisper(modelPath, { gpu: false });
       this.setStatus("ready");
       console.log("[WhisperService] Model loaded successfully");
@@ -163,9 +177,6 @@ class WhisperService extends node_events.EventEmitter {
     this.resetBuffer();
     this.vad.reset();
     this.speechDetectedSinceLastInference = false;
-    this.inferenceTimer = setInterval(() => {
-      this.tryRunInference(false);
-    }, this.INFERENCE_INTERVAL_MS);
     console.log("[WhisperService] Started listening");
   }
   /**
@@ -232,20 +243,19 @@ class WhisperService extends node_events.EventEmitter {
     this.isProcessing = true;
     this.speechDetectedSinceLastInference = false;
     try {
-      const audioCopy = new Float32Array(this.MAX_BUFFER_SAMPLES);
-      const activeSlice = new Float32Array(this.audioBuffer.buffer, 0, this.bufferWritePos);
-      audioCopy.set(activeSlice);
+      const audioData = new Float32Array(this.audioBuffer.buffer, 0, this.bufferWritePos);
+      const audioCopy = new Float32Array(audioData);
       if (isFinal) {
         this.resetBuffer();
         this.vad.reset();
       }
-      console.log(`[WhisperService] C++ Engine chunk dispatched. Language: EN.`);
+      console.log(`[WhisperService] C++ Engine chunk dispatched. Samples: ${audioCopy.length}, Duration: ${(audioCopy.length / 16e3).toFixed(1)}s`);
       const task = await this.whisper.transcribe(audioCopy, {
-        language: "en"
-        // initial_prompt temporarily disabled to test if it's breaking the C++ wrapper
+        language: "en",
+        initial_prompt: BIBLE_INITIAL_PROMPT
       });
       task.on("transcribed", (segment) => {
-        console.log(`[WhisperService-C++] Extracted chunk: "${segment.text}"`);
+        console.log(`[WhisperService-C++] Segment: "${segment.text}"`);
       });
       const result = await task.result;
       console.log(`[WhisperService] C++ Engine resolved.`);

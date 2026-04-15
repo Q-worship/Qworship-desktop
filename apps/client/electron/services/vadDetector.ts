@@ -27,6 +27,12 @@ export class VADDetector {
   private silenceStartMs: number | null = null;
   private lastProcessTime: number = 0;
 
+  /**
+   * Flag set exactly once when the silence timeout fires.
+   * Consumed (read-once) by `isEndOfUtterance()`.
+   */
+  private _endOfUtteranceTriggered: boolean = false;
+
   /** Rolling average of recent RMS values (smoothing) */
   private rmsHistory: number[] = [];
   private readonly RMS_WINDOW_SIZE = 8;
@@ -58,6 +64,7 @@ export class VADDetector {
       if (smoothedRMS >= this.onsetThreshold) {
         this.speaking = true;
         this.silenceStartMs = null;
+        this._endOfUtteranceTriggered = false;
       }
     } else {
       // Currently speaking — check for offset
@@ -74,6 +81,7 @@ export class VADDetector {
       if (this.silenceStartMs !== null && (now - this.silenceStartMs) >= this.silenceTimeoutMs) {
         this.speaking = false;
         this.silenceStartMs = null;
+        this._endOfUtteranceTriggered = true; // Signal to the caller BEFORE we clear state!
       }
     }
   }
@@ -89,16 +97,24 @@ export class VADDetector {
     return Date.now() - this.silenceStartMs;
   }
 
-  /** Whether the silence timeout has been reached (end of utterance) */
+  /**
+   * Whether the silence timeout has been reached (end of utterance).
+   * This is a CONSUMABLE flag — it returns true exactly once after the
+   * silence timeout fires, then resets itself.
+   */
   isEndOfUtterance(): boolean {
-    if (this.silenceStartMs === null) return false;
-    return (Date.now() - this.silenceStartMs) >= this.silenceTimeoutMs;
+    if (this._endOfUtteranceTriggered) {
+      this._endOfUtteranceTriggered = false;
+      return true;
+    }
+    return false;
   }
 
   /** Reset all state */
   reset(): void {
     this.speaking = false;
     this.silenceStartMs = null;
+    this._endOfUtteranceTriggered = false;
     this.rmsHistory = [];
   }
 

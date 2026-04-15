@@ -103,8 +103,7 @@ export class WhisperService extends EventEmitter {
       }
 
       this.modelPath = modelPath;
-      // We no longer keep a long-lived this.whisper alive.
-      // We will instantiate one dynamically per inference to prevent C++ GGML pointer crashes.
+      this.whisper = new Whisper(modelPath, { gpu: false });
       this.setStatus('ready');
       console.log('[WhisperService] Model loaded successfully');
     } catch (err: any) {
@@ -129,10 +128,9 @@ export class WhisperService extends EventEmitter {
     this.vad.reset();
     this.speechDetectedSinceLastInference = false;
 
-    // Start periodic inference timer
-    this.inferenceTimer = setInterval(() => {
-      this.tryRunInference(false);
-    }, this.INFERENCE_INTERVAL_MS);
+    // We explicitly DO NOT trigger periodic partial inference!
+    // Repeatedly hammering `smart-whisper` with growing arrays while speaking
+    // causes native GGML graph reallocation segfaults and thread exhaustion.
 
     console.log('[WhisperService] Started listening');
   }
@@ -218,17 +216,17 @@ export class WhisperService extends EventEmitter {
    * Run whisper.cpp inference on the current audio buffer.
    */
   private async runInference(isFinal: boolean): Promise<void> {
-    if (this.isProcessing || !this.modelPath || !Whisper) return;
+    if (!this.whisper || this.isProcessing) return;
 
     this.isProcessing = true;
     this.speechDetectedSinceLastInference = false;
 
     try {
-      // ALWAYS allocate a fixed 30-second array to prevent smart-whisper
-      // GGML graph reallocation segfaults on consecutive chunks of differing sizes.
-      const audioCopy = new Float32Array(this.MAX_BUFFER_SAMPLES);
-      const activeSlice = new Float32Array(this.audioBuffer.buffer, 0, this.bufferWritePos);
-      audioCopy.set(activeSlice);
+      // Create a precisely sized copy of the actively recorded audio
+      // to avoid passing massive silent arrays which cause whisper to hallucinate/hang.
+      // (The `activeWhisper.free()` handles the GGML segfault safely).
+      const audioData = new Float32Array(this.audioBuffer.buffer, 0, this.bufferWritePos);
+      const audioCopy = new Float32Array(audioData);
 
       if (isFinal) {
         // Clear buffer after capturing the data for final segment
@@ -236,27 +234,22 @@ export class WhisperService extends EventEmitter {
         this.vad.reset();
       }
 
-      console.log(`[WhisperService] C++ Engine chunk dispatched. Language: EN.`);
+      console.log(`[WhisperService] C++ Engine chunk dispatched. Samples: ${audioCopy.length}, Duration: ${(audioCopy.length / 16000).toFixed(1)}s`);
       
-      // Instantiate a completely isolated native instance for this specific inference 
-      // preventing GGML thread/graph state corruption!
-      const activeWhisper = new Whisper(this.modelPath, { gpu: false });
-      
-      const task = await activeWhisper.transcribe(audioCopy, {
+      // Use the persistent pre-loaded instance — safe now that the
+      // setInterval concurrent-call bug has been removed.
+      const task = await this.whisper.transcribe(audioCopy, {
         language: 'en',
-        // initial_prompt temporarily disabled to test if it's breaking the C++ wrapper
+        initial_prompt: BIBLE_INITIAL_PROMPT,
       });
 
-      // Hook into the native C++ stream!
+      // Hook into the native C++ stream for real-time partial results
       task.on('transcribed', (segment: any) => {
-        console.log(`[WhisperService-C++] Extracted chunk: "${segment.text}"`);
+        console.log(`[WhisperService-C++] Segment: "${segment.text}"`);
       });
 
       const result = await task.result;
       console.log(`[WhisperService] C++ Engine resolved.`);
-      
-      // Immediately free and clean up the native references
-      await activeWhisper.free();
 
       // Extract transcript text from result
       const transcript = this.extractTranscript(result);
