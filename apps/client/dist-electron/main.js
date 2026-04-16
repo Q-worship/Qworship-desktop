@@ -109,8 +109,9 @@ class WhisperService extends node_events.EventEmitter {
     this.speechDetectedSinceLastInference = false;
     this.audioBuffer = new Float32Array(this.MAX_BUFFER_SAMPLES);
     this.vad = new VADDetector({
-      onsetThreshold: 0.01,
-      offsetThreshold: 6e-3,
+      onsetThreshold: 8e-4,
+      // Very quiet threshold to capture un-gained laptop raw audio
+      offsetThreshold: 3e-4,
       silenceTimeoutMs: 1500,
       sampleRate: 16e3
     });

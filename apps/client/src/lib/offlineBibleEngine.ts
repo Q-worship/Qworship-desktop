@@ -558,34 +558,48 @@ export function parseVoiceCommand(
     };
   }
 
-  // Last resort: extract a book name from anywhere in the text and guess chapter/verse
-  const strip = (s: string) =>
-    s
-      .toLowerCase()
-      .replace(/\b(chapter|verse|go to|read|open|turn to|book of|the)\b/g, "")
-      .replace(/\s+/g, " ")
-      .trim();
-  const stripped = strip(normalized);
-  const numMatches = [...stripped.matchAll(/\d+/g)];
+  // Last resort: Invincible substring scanner for Books + Numbers
+  // This bypasses Whisper hallucinations like "Show me John 3.16. John 3.16."
+  const numMatches = [...normalized.matchAll(/\d+/g)];
   if (numMatches.length >= 1) {
-    const wordPart = stripped.replace(/\d+/g, "").trim();
-    if (wordPart.length >= 2) {
-      const book = resolveBook(wordPart);
-      if (book) {
-        const chapter = numMatches[0] ? parseInt(numMatches[0][0]) : 1;
-        const verseStart = numMatches[1] ? parseInt(numMatches[1][0]) : 1;
-        return {
-          originalText: original,
-          commandType: "lookup",
-          confidence: 0.7,
-          parsedReference: {
-            book,
-            chapter,
-            verseStart,
-            version: defaultVersion,
-          },
-        };
-      }
+    let matchedBook: string | null = null;
+    // Sort aliases by length descending so "1 samuel" matches before "samuel"
+    const sortedAliases = Object.keys(BOOK_ALIASES).sort((a, b) => b.length - a.length);
+    
+    for (const alias of sortedAliases) {
+        // use word boundaries to prevent "am" matching inside "james"
+        if (new RegExp(`\\b${alias}\\b`, 'i').test(lower)) {
+             matchedBook = BOOK_ALIASES[alias];
+             break;
+        }
+    }
+    
+    if (!matchedBook) {
+        // Fallback to fuzzy search on the text words
+        const words = lower.split(' ').filter(w => !/\d/.test(w) && w.length > 2);
+        for (const w of words) {
+            const fuzzy = resolveBook(w);
+            if (fuzzy) {
+                matchedBook = fuzzy;
+                break;
+            }
+        }
+    }
+
+    if (matchedBook) {
+      const chapter = parseInt(numMatches[0][0]);
+      const verseStart = numMatches[1] ? parseInt(numMatches[1][0]) : 1;
+      return {
+        originalText: original,
+        commandType: "lookup",
+        confidence: 0.8,
+        parsedReference: {
+          book: matchedBook,
+          chapter,
+          verseStart,
+          version: defaultVersion,
+        },
+      };
     }
   }
 

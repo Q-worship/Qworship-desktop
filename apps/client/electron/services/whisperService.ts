@@ -32,8 +32,8 @@ export class WhisperService extends EventEmitter {
     super();
     this.audioBuffer = new Float32Array(this.MAX_BUFFER_SAMPLES);
     this.vad = new VADDetector({
-      onsetThreshold: 0.01,
-      offsetThreshold: 0.006,
+      onsetThreshold: 0.0008, // Very quiet threshold to capture un-gained laptop raw audio
+      offsetThreshold: 0.0003,
       silenceTimeoutMs: 1500,
       sampleRate: 16000,
     });

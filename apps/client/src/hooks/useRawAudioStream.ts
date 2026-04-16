@@ -19,8 +19,8 @@ export const useRawAudioStream = () => {
         console.log("[useRawAudioStream] Requesting microphone access...");
         let audioConstraints: any = {
           channelCount: 1,
-          echoCancellation: false,
-          noiseSuppression: false,
+          echoCancellation: true,
+          noiseSuppression: true,
           autoGainControl: false,
         };
 

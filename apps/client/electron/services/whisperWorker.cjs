@@ -13,7 +13,12 @@ process.on('message', async (msg) => {
   try {
     if (msg.type === 'init') {
       console.log('[WhisperWorker] Initializing smart-whisper with model:', msg.modelPath);
-      instance = new Whisper(msg.modelPath, { gpu: false }); // CPU fallback or safely isolated GPU
+      instance = new Whisper(msg.modelPath, { 
+        gpu: false, 
+        offload: 0,
+        flash_attn: false,
+        dtw: 0
+      }); // Overwrite uninitialized struct garbage
       process.send({ type: 'ready' });
     }
     
@@ -21,7 +26,12 @@ process.on('message', async (msg) => {
       console.log('[WhisperWorker] Received transcribe IPC payload. Buffer size bytes:', msg.buffer.data ? msg.buffer.data.length : msg.buffer.length);
       
       const nodeBuf = Buffer.isBuffer(msg.buffer) ? msg.buffer : Buffer.from(msg.buffer.data || msg.buffer);
-      const float32 = new Float32Array(nodeBuf.buffer, nodeBuf.byteOffset, nodeBuf.length / 4);
+      
+      // FIX 3: Reconstruct the Float32Array securely from a raw ArrayBuffer 
+      // Prevents N-API reading from Node's GC-pooled memory bounds
+      const cleanBuffer = new ArrayBuffer(nodeBuf.length);
+      new Uint8Array(cleanBuffer).set(nodeBuf);
+      const float32 = new Float32Array(cleanBuffer);
 
       let maxAmp = 0;
       for (let i = 0; i < float32.length; i++) {
@@ -29,7 +39,7 @@ process.on('message', async (msg) => {
          if (abs > maxAmp) maxAmp = abs;
       }
       
-      if (maxAmp < 0.005) { // Peak amplitude < 164/32768 (standard room noise floor)
+      if (maxAmp < 0.0005) { // Lower silence gate to allow quiet mics
           console.log(`[WhisperWorker] Dropping chunk: Audio is pure silence (Peak: ${maxAmp.toFixed(5)})`);
           process.send({ type: 'transcript-partial', text: '' });
           process.send({ type: 'transcript-final', text: '' });
@@ -41,6 +51,16 @@ process.on('message', async (msg) => {
         language: 'en',
         n_threads: 4,
         initial_prompt: BIBLE_INITIAL_PROMPT,
+        // Overwrite standard ABI struct garbage variables that cause infinite length decoder locks:
+        max_len: 400,
+        no_timestamps: false,
+        single_segment: false,
+        print_realtime: false,
+        print_progress: false,
+        translate: false,
+        no_context: true,
+        beam_size: 1,
+        temperature: 0.0,
       });
 
       task.on('transcribed', (segment) => {
@@ -52,7 +72,7 @@ process.on('message', async (msg) => {
       console.log('[WhisperWorker] Task scheduled, awaiting result...');
       const result = await Promise.race([
         task.result,
-        new Promise((_, reject) => setTimeout(() => reject(new Error('INFERENCE_TIMEOUT: C++ engine hung')), 15000))
+        new Promise((_, reject) => setTimeout(() => reject(new Error('INFERENCE_TIMEOUT: C++ engine hung for 60s')), 60000))
       ]);
       console.log('[WhisperWorker] Task resolved!');
       try {
