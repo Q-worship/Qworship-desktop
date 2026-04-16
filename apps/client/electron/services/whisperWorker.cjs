@@ -18,15 +18,15 @@ process.on('message', async (msg) => {
     }
     
     if (msg.type === 'transcribe' && instance) {
-      // Decode Float32Array from base64 if sent as buffer, or rebuild from raw array
-      const float32 = new Float32Array(msg.buffer);
+      console.log('[WhisperWorker] Received transcribe IPC payload. Buffer size bytes:', msg.buffer.data ? msg.buffer.data.length : msg.buffer.length);
       
+      const nodeBuf = Buffer.isBuffer(msg.buffer) ? msg.buffer : Buffer.from(msg.buffer.data || msg.buffer);
+      const float32 = new Float32Array(nodeBuf.buffer, nodeBuf.byteOffset, nodeBuf.length / 4);
+      
+      console.log('[WhisperWorker] Starting instance.transcribe...');
       const task = await instance.transcribe(float32, {
         language: 'en',
         n_threads: 4,
-        single_segment: true,
-        no_context: true,
-        no_timestamps: true,
         initial_prompt: BIBLE_INITIAL_PROMPT,
       });
 
@@ -36,13 +36,24 @@ process.on('message', async (msg) => {
         }
       });
 
+      console.log('[WhisperWorker] Task scheduled, awaiting result...');
       const result = await task.result;
-      const transcript = typeof result === 'string' ? result : 
-                         (Array.isArray(result) ? result.map(s => s.text).join(' ') : 
-                         (result.segments ? result.segments.map(s => s.text).join(' ') : result.text));
+      console.log('[WhisperWorker] Task resolved! Raw result payload:', JSON.stringify(result).substring(0, 500));
+      
+      let transcript = '';
+      if (typeof result === 'string') {
+          transcript = result;
+      } else if (Array.isArray(result)) {
+          transcript = result.map(s => s.text || '').join(' ');
+      } else if (result && typeof result === 'object') {
+          transcript = result.text || (result.segments ? result.segments.map(s => s.text).join(' ') : '');
+      }
                          
-      if (transcript && transcript.trim()) {
-        process.send({ type: 'transcript-final', text: transcript.trim() });
+      const safeTranscript = transcript || '';
+      console.log(`[WhisperWorker] Final transcript string: "${safeTranscript.trim()}"`);
+      
+      if (safeTranscript.trim()) {
+        process.send({ type: 'transcript-final', text: safeTranscript.trim() });
       }
     }
     

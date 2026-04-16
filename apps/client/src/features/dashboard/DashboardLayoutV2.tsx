@@ -1365,7 +1365,8 @@ export const QworshipHomeV2Base = (): JSX.Element => {
   }, [queryClient]);
 
   // Extract songs from the API response structure: {success: true, songs: [...]}
-  const savedSongs = songsData?.songs || [];
+  const defaultEmptySongsArray = React.useMemo(() => [], []);
+  const savedSongs = songsData?.songs || defaultEmptySongsArray;
 
   const debouncedSongSearchTerm = useDebounce(songSearchTerm, 300);
 

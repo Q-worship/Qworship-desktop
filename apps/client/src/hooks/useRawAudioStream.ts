@@ -19,8 +19,9 @@ export const useRawAudioStream = () => {
         console.log("[useRawAudioStream] Requesting microphone access...");
         let audioConstraints: any = {
           channelCount: 1,
-          echoCancellation: true,
-          noiseSuppression: true,
+          echoCancellation: false,
+          noiseSuppression: false,
+          autoGainControl: false,
         };
 
         try {
@@ -42,9 +43,10 @@ export const useRawAudioStream = () => {
         });
         streamRef.current = stream;
 
+        const audioContextOptions: AudioContextOptions = { sampleRate: 16000 };
         const audioContext = new (
           window.AudioContext || (window as any).webkitAudioContext
-        )();
+        )(audioContextOptions);
         if (audioContext.state === "suspended") {
           await audioContext.resume();
         }

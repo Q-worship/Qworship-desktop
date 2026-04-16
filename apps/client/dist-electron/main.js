@@ -125,18 +125,19 @@ class WhisperService extends node_events.EventEmitter {
   spawnWorker() {
     return new Promise((resolve, reject) => {
       try {
-        const workerPath = electron.app.isPackaged ? path.join(process.resourcesPath, "app.asar.unpacked", "apps", "client", "electron", "services", "whisperWorker.cjs") : path.join(electron.app.getAppPath(), "electron", "services", "whisperWorker.cjs");
+        const workerPath = electron.app.isPackaged ? path.join(process.resourcesPath, "app.asar.unpacked", "dist-electron", "whisperWorker.cjs") : path.join(electron.app.getAppPath(), "dist-electron", "whisperWorker.cjs");
         this.workerProcess = node_child_process.fork(workerPath, [], {
           stdio: ["inherit", "inherit", "inherit", "ipc"]
         });
         this.workerProcess.on("message", (msg) => {
-          if (msg.type === "ready") resolve();
+          if (msg.type === "ready") this.setStatus("ready");
           if (msg.type === "transcript-partial") this.emit("transcript-partial", msg.text);
           if (msg.type === "transcript-final") this.emit("transcript-final", msg.text);
           if (msg.type === "error") {
             console.error("[WhisperService] Worker Error:", msg.message);
           }
         });
+        resolve();
         this.workerProcess.on("exit", (code, signal) => {
           console.warn(`[WhisperService] Isolated target restarted... (exit code: ${code})`);
           this.workerProcess = null;
@@ -160,7 +161,6 @@ class WhisperService extends node_events.EventEmitter {
       this.modelPath = modelPath;
       await this.spawnWorker();
       (_a = this.workerProcess) == null ? void 0 : _a.send({ type: "init", modelPath: this.modelPath });
-      this.setStatus("ready");
       console.log("[WhisperService] Native addon securely sandboxed!");
     } catch (err) {
       this.setStatus("error", err.message);
@@ -228,8 +228,7 @@ class WhisperService extends node_events.EventEmitter {
       }
       this.workerProcess.send({
         type: "transcribe",
-        buffer: Array.from(audioCopy)
-        // Sending as raw array is safe across IPC 
+        buffer: Buffer.from(audioCopy.buffer)
       });
     } catch (err) {
       console.error("[WhisperService] Inference serialization failed:", err);

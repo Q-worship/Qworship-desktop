@@ -52,21 +52,23 @@ export class WhisperService extends EventEmitter {
     return new Promise((resolve, reject) => {
       try {
         const workerPath = app.isPackaged 
-            ? path.join(process.resourcesPath, 'app.asar.unpacked', 'apps', 'client', 'electron', 'services', 'whisperWorker.cjs') 
-            : path.join(app.getAppPath(), 'electron', 'services', 'whisperWorker.cjs');
+            ? path.join(process.resourcesPath, 'app.asar.unpacked', 'dist-electron', 'whisperWorker.cjs') 
+            : path.join(app.getAppPath(), 'dist-electron', 'whisperWorker.cjs');
             
         this.workerProcess = fork(workerPath, [], {
           stdio: ['inherit', 'inherit', 'inherit', 'ipc']
         });
 
         this.workerProcess.on('message', (msg: any) => {
-          if (msg.type === 'ready') resolve();
+          if (msg.type === 'ready') this.setStatus('ready');
           if (msg.type === 'transcript-partial') this.emit('transcript-partial', msg.text);
           if (msg.type === 'transcript-final') this.emit('transcript-final', msg.text);
           if (msg.type === 'error') {
              console.error('[WhisperService] Worker Error:', msg.message);
           }
         });
+
+        resolve();
 
         this.workerProcess.on('exit', (code, signal) => {
           console.warn(`[WhisperService] Isolated target restarted... (exit code: ${code})`);
@@ -93,7 +95,6 @@ export class WhisperService extends EventEmitter {
       await this.spawnWorker();
       this.workerProcess?.send({ type: 'init', modelPath: this.modelPath });
       
-      this.setStatus('ready');
       console.log('[WhisperService] Native addon securely sandboxed!');
     } catch (err: any) {
       this.setStatus('error', err.message);
@@ -177,10 +178,10 @@ export class WhisperService extends EventEmitter {
         this.vad.reset();
       }
 
-      // Send to isolated worker!
+      // Send to isolated worker via binary Buffer!
       this.workerProcess.send({
           type: 'transcribe',
-          buffer: Array.from(audioCopy) // Sending as raw array is safe across IPC 
+          buffer: Buffer.from(audioCopy.buffer) 
       });
 
     } catch (err) {

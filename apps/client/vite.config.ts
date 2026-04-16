@@ -35,6 +35,20 @@ export default defineConfig({
           },
         },
       },
+      {
+        entry: "electron/services/whisperWorker.cjs",
+        vite: {
+          build: {
+            rollupOptions: {
+              external: ["better-sqlite3", "smart-whisper"],
+              output: {
+                format: "cjs",
+                entryFileNames: "whisperWorker.cjs",
+              },
+            },
+          },
+        },
+      },
     ]),
   ],
   resolve: {
