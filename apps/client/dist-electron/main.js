@@ -1,31 +1,10 @@
 "use strict";
-var __create = Object.create;
-var __defProp = Object.defineProperty;
-var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
-var __getOwnPropNames = Object.getOwnPropertyNames;
-var __getProtoOf = Object.getPrototypeOf;
-var __hasOwnProp = Object.prototype.hasOwnProperty;
-var __copyProps = (to, from, except, desc) => {
-  if (from && typeof from === "object" || typeof from === "function") {
-    for (let key of __getOwnPropNames(from))
-      if (!__hasOwnProp.call(to, key) && key !== except)
-        __defProp(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable });
-  }
-  return to;
-};
-var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(
-  // If the importer is in node compatibility mode or this is not an ESM
-  // file that has been converted to a CommonJS file using a Babel-
-  // compatible transform (i.e. "__esModule" has not been set), then set
-  // "default" to the CommonJS "module.exports" for node compatibility.
-  isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target,
-  mod
-));
 Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
 const electron = require("electron");
 const path = require("node:path");
 const node_url = require("node:url");
 const node_events = require("node:events");
+const node_child_process = require("node:child_process");
 const fs = require("node:fs");
 const https = require("node:https");
 const Database = require("better-sqlite3");
@@ -115,12 +94,10 @@ class VADDetector {
     return Math.sqrt(sum / samples.length);
   }
 }
-let Whisper = null;
-const BIBLE_INITIAL_PROMPT = "Genesis, Exodus, Luke, Psalms, Matthew, John, Revelation, chapter, verse.";
 class WhisperService extends node_events.EventEmitter {
   constructor() {
     super();
-    this.whisper = null;
+    this.workerProcess = null;
     this.status = "uninitialized";
     this.modelPath = "";
     this.bufferWritePos = 0;
@@ -138,67 +115,73 @@ class WhisperService extends node_events.EventEmitter {
       sampleRate: 16e3
     });
   }
-  /** Get current engine status */
   getStatus() {
     return this.status;
   }
-  /**
-   * Initialize the whisper engine and load the model.
-   * This should be called once during app startup.
-   */
-  async initialize(modelPath) {
-    if (this.status === "ready" || this.status === "loading") return;
-    this.setStatus("loading", `Loading model: ${modelPath}`);
-    try {
-      if (!Whisper) {
-        const smartWhisper = await import("smart-whisper");
-        Whisper = smartWhisper.Whisper;
+  setStatus(status, message) {
+    this.status = status;
+    this.emit("status-change", status, message);
+  }
+  spawnWorker() {
+    return new Promise((resolve, reject) => {
+      try {
+        const workerPath = electron.app.isPackaged ? path.join(process.resourcesPath, "app.asar.unpacked", "apps", "client", "electron", "services", "whisperWorker.cjs") : path.join(electron.app.getAppPath(), "electron", "services", "whisperWorker.cjs");
+        this.workerProcess = node_child_process.fork(workerPath, [], {
+          stdio: ["inherit", "inherit", "inherit", "ipc"]
+        });
+        this.workerProcess.on("message", (msg) => {
+          if (msg.type === "ready") resolve();
+          if (msg.type === "transcript-partial") this.emit("transcript-partial", msg.text);
+          if (msg.type === "transcript-final") this.emit("transcript-final", msg.text);
+          if (msg.type === "error") {
+            console.error("[WhisperService] Worker Error:", msg.message);
+          }
+        });
+        this.workerProcess.on("exit", (code, signal) => {
+          console.warn(`[WhisperService] Isolated target restarted... (exit code: ${code})`);
+          this.workerProcess = null;
+          if (this.isListening) {
+            this.spawnWorker().then(() => {
+              var _a;
+              (_a = this.workerProcess) == null ? void 0 : _a.send({ type: "init", modelPath: this.modelPath });
+            });
+          }
+        });
+      } catch (err) {
+        reject(err);
       }
+    });
+  }
+  async initialize(modelPath) {
+    var _a;
+    if (this.status === "ready" || this.status === "loading") return;
+    this.setStatus("loading", `Loading model into isolated memory: ${modelPath}`);
+    try {
       this.modelPath = modelPath;
-      this.whisper = new Whisper(modelPath, { gpu: false });
+      await this.spawnWorker();
+      (_a = this.workerProcess) == null ? void 0 : _a.send({ type: "init", modelPath: this.modelPath });
       this.setStatus("ready");
-      console.log("[WhisperService] Model loaded successfully");
+      console.log("[WhisperService] Native addon securely sandboxed!");
     } catch (err) {
       this.setStatus("error", err.message);
-      console.error("[WhisperService] Failed to load model:", err);
-      throw err;
     }
   }
-  /**
-   * Start listening for audio input.
-   * Begins the inference timer and VAD processing.
-   */
   startListening() {
-    if (this.status !== "ready") {
-      console.warn("[WhisperService] Cannot start listening — status:", this.status);
-      return;
-    }
+    if (this.status !== "ready") return;
     this.isListening = true;
-    this.resetBuffer();
+    this.bufferWritePos = 0;
     this.vad.reset();
     this.speechDetectedSinceLastInference = false;
-    console.log("[WhisperService] Started listening");
+    console.log("[WhisperService] Started isolated listening pipeline.");
   }
-  /**
-   * Stop listening and process any remaining audio.
-   */
   async stopListening() {
     this.isListening = false;
-    if (this.inferenceTimer) {
-      clearInterval(this.inferenceTimer);
-      this.inferenceTimer = null;
-    }
     if (this.bufferWritePos >= this.MIN_INFERENCE_SAMPLES) {
       await this.runInference(true);
     }
-    this.resetBuffer();
+    this.bufferWritePos = 0;
     this.vad.reset();
-    console.log("[WhisperService] Stopped listening");
   }
-  /**
-   * Feed a chunk of PCM16 audio data at 16kHz.
-   * Called by the IPC handler for each audio worklet message.
-   */
   feedAudioChunk(pcm16) {
     if (!this.isListening) return;
     const float32 = new Float32Array(pcm16.length);
@@ -221,139 +204,64 @@ class WhisperService extends node_events.EventEmitter {
     if (this.vad.isEndOfUtterance() && this.speechDetectedSinceLastInference) {
       if (this.isProcessing) {
         this._pendingInference = true;
-        console.log("[WhisperService] End-of-utterance queued (inference in progress)");
       } else {
         this.tryRunInference(true);
       }
     }
   }
-  /**
-   * Attempt to run inference if conditions are met.
-   * @param isFinal Whether this is a final segment (end of utterance or forced)
-   */
   tryRunInference(isFinal) {
     if (this.isProcessing) return;
     if (this.bufferWritePos < this.MIN_INFERENCE_SAMPLES) return;
     if (!this.speechDetectedSinceLastInference && !isFinal) return;
-    console.log(`[WhisperService] VAD Triggered Inference (isFinal: ${isFinal}). Samples: ${this.bufferWritePos}`);
-    this.runInference(isFinal).catch((err) => {
-      console.error("[WhisperService] Inference error:", err);
-    });
+    this.runInference(isFinal);
   }
-  /**
-   * Run whisper.cpp inference on the current audio buffer.
-   */
   async runInference(isFinal) {
-    if (!this.whisper || this.isProcessing) return;
+    if (!this.workerProcess || this.isProcessing) return;
     this.isProcessing = true;
     this.speechDetectedSinceLastInference = false;
     try {
       const audioData = new Float32Array(this.audioBuffer.buffer, 0, this.bufferWritePos);
       const audioCopy = new Float32Array(audioData);
       if (isFinal) {
-        this.resetBuffer();
+        this.bufferWritePos = 0;
         this.vad.reset();
       }
-      const startTime = Date.now();
-      console.log(`[WhisperService] C++ Engine chunk dispatched. Samples: ${audioCopy.length}, Duration: ${(audioCopy.length / 16e3).toFixed(1)}s`);
-      const task = await this.whisper.transcribe(audioCopy, {
-        language: "en",
-        n_threads: 4,
-        single_segment: true,
-        no_context: true,
-        no_timestamps: true,
-        initial_prompt: BIBLE_INITIAL_PROMPT
+      this.workerProcess.send({
+        type: "transcribe",
+        buffer: Array.from(audioCopy)
+        // Sending as raw array is safe across IPC 
       });
-      task.on("transcribed", (segment) => {
-        console.log(`[WhisperService-C++] Segment: "${segment.text}"`);
-      });
-      const timeoutPromise = new Promise(
-        (_, reject) => setTimeout(() => reject(new Error("Whisper inference timed out after 30s")), 3e4)
-      );
-      const result = await Promise.race([task.result, timeoutPromise]);
-      const elapsed = Date.now() - startTime;
-      console.log(`[WhisperService] C++ Engine resolved in ${elapsed}ms.`);
-      const transcript = this.extractTranscript(result);
-      if (transcript && transcript.trim().length > 0) {
-        const cleaned = transcript.trim();
-        if (isFinal) {
-          this.emit("transcript-final", cleaned);
-          console.log("[WhisperService] Final transcript:", cleaned);
-        } else {
-          this.emit("transcript-partial", cleaned);
-          console.log("[WhisperService] Partial transcript:", cleaned);
-        }
-      }
     } catch (err) {
-      console.error("[WhisperService] Inference failed:", err);
+      console.error("[WhisperService] Inference serialization failed:", err);
     } finally {
-      this.isProcessing = false;
-      if (this._pendingInference && this.bufferWritePos >= this.MIN_INFERENCE_SAMPLES) {
-        this._pendingInference = false;
-        console.log("[WhisperService] Draining queued inference...");
-        this.tryRunInference(true);
-      } else {
-        this._pendingInference = false;
-      }
+      setTimeout(() => {
+        this.isProcessing = false;
+        if (this._pendingInference && this.bufferWritePos >= this.MIN_INFERENCE_SAMPLES) {
+          this._pendingInference = false;
+          this.tryRunInference(true);
+        }
+      }, 100);
     }
   }
-  /**
-   * Extract plain text from whisper transcription result.
-   * smart-whisper returns segments with text and timestamps.
-   */
-  extractTranscript(result) {
-    if (typeof result === "string") return result;
-    if (Array.isArray(result)) {
-      return result.map((seg) => seg.text || seg).join(" ");
-    }
-    if (result && typeof result === "object") {
-      if (result.text) return result.text;
-      if (result.segments) {
-        return result.segments.map((seg) => seg.text || "").join(" ");
-      }
-    }
-    return String(result || "");
-  }
-  /** Reset the audio buffer */
-  resetBuffer() {
-    this.bufferWritePos = 0;
-  }
-  /** Update status and emit event */
-  setStatus(status, message) {
-    this.status = status;
-    this.emit("status-change", status, message);
-  }
-  /** Shut down the whisper engine and free resources */
   async shutdown() {
-    this.isListening = false;
-    if (this.inferenceTimer) {
-      clearInterval(this.inferenceTimer);
-      this.inferenceTimer = null;
-    }
-    if (this.whisper) {
-      try {
-        await this.whisper.free();
-      } catch (err) {
-        console.error("[WhisperService] Error during shutdown:", err);
-      }
-      this.whisper = null;
+    await this.stopListening();
+    if (this.workerProcess) {
+      this.workerProcess.send({ type: "shutdown" });
+      this.workerProcess = null;
     }
     this.setStatus("uninitialized");
-    console.log("[WhisperService] Shut down");
   }
 }
 const MODEL_REGISTRY = {
   "ggml-tiny.en.bin": {
+    // kept for backward compatibility if user doesn't update immediately
     url: "https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-tiny.en.bin",
     expectedSizeMB: 75
   },
-  "ggml-small.en.bin": {
-    url: "https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-small.en.bin",
-    expectedSizeMB: 466
-  },
-  "ggml-base.en.bin": {
-    url: "https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-base.en.bin",
-    expectedSizeMB: 142
+  "ggml-tiny.en-q5_1.gguf": {
+    url: "https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-tiny.en-q5_1.bin",
+    // the gguf file hosted here is named .bin originally or wait
+    expectedSizeMB: 31
   }
 };
 class WhisperModelManager {

@@ -1,0 +1,44 @@
+{
+  "SPDXID": "SPDXRef-DOCUMENT",
+  "spdxVersion": "SPDX-2.3",
+  "name": "SBOM-SPDX-whisper-cpp-1.8.4",
+  "creationInfo": {
+    "created": "2026-03-19T08:40:13Z",
+    "creators": [
+      "Tool: https://github.com/Homebrew/brew"
+    ]
+  },
+  "dataLicense": "CC0-1.0",
+  "documentNamespace": "https://formulae.brew.sh/spdx/whisper-cpp-1.8.4.json",
+  "documentDescribes": [
+    "SPDXRef-Archive-whisper-cpp-src"
+  ],
+  "files": [],
+  "packages": [
+    {
+      "SPDXID": "SPDXRef-Archive-whisper-cpp-src",
+      "name": "whisper-cpp",
+      "versionInfo": "1.8.4",
+      "filesAnalyzed": false,
+      "licenseDeclared": "NOASSERTION",
+      "builtDate": "2026-03-19 08:40:13 UTC",
+      "licenseConcluded": "MIT",
+      "downloadLocation": "https://github.com/ggml-org/whisper.cpp/archive/refs/tags/v1.8.4.tar.gz",
+      "copyrightText": "NOASSERTION",
+      "externalRefs": [],
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "b26f30e52c095ccb75da40b168437736605eb280de57381887bf9e2b65f31e66"
+        }
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "spdxElementId": "SPDXRef-File-whisper-cpp",
+      "relationshipType": "PACKAGE_OF",
+      "relatedSpdxElement": "SPDXRef-Archive-whisper-cpp-src"
+    }
+  ]
+}

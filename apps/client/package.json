@@ -54,13 +54,13 @@
     "dexie": "^4.4.2",
     "dexie-react-hooks": "^4.4.0",
     "fuse.js": "^7.3.0",
-    "smart-whisper": "^0.8.1",
     "lucide-react": "^0.320.0",
     "obs-websocket-js": "^5.0.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.50.0",
     "recharts": "^3.8.1",
+    "smart-whisper": "^0.8.1",
     "tailwind-merge": "^2.2.1",
     "tailwindcss-animate": "^1.0.7",
     "vaul": "^0.8.9",
@@ -95,7 +95,17 @@
         "from": "models/",
         "to": "models",
         "filter": [
-          "**/*.bin"
+          "**/*.bin",
+          "**/*.gguf"
+        ]
+      }
+    ],
+    "extraFiles": [
+      {
+        "from": "bin/${os}",
+        "to": "bin",
+        "filter": [
+          "*"
         ]
       }
     ],

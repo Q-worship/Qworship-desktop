@@ -14,7 +14,7 @@ export default defineConfig({
         vite: {
           build: {
             rollupOptions: {
-              external: ["smart-whisper", "better-sqlite3"],
+              external: ["better-sqlite3", "smart-whisper"],
             },
           },
         },
