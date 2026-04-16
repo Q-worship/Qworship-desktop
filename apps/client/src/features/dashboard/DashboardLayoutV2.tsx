@@ -487,7 +487,8 @@ export const QworshipHomeV2Base = (): JSX.Element => {
       // Don't retry if it's an authentication error
       if (
         error?.message?.includes("401") ||
-        error?.message?.includes("Not authenticated")
+        error?.message?.includes("Not authenticated") ||
+        !navigator.onLine
       ) {
         return false;
       }
@@ -1365,7 +1366,7 @@ export const QworshipHomeV2Base = (): JSX.Element => {
   }, [queryClient]);
 
   // Extract songs from the API response structure: {success: true, songs: [...]}
-  const savedSongs = songsData?.songs || [];
+  const savedSongs = useMemo(() => songsData?.songs || [], [songsData?.songs]);
 
   const debouncedSongSearchTerm = useDebounce(songSearchTerm, 300);
 

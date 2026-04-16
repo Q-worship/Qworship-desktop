@@ -10,8 +10,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 // ── Whisper / HFB Services ──────────────────────────────────────
-import { WhisperService } from "./services/whisperService";
-import { WhisperModelManager } from "./services/whisperModelManager";
+import { VoskService } from "./services/voskService";
 import { BibleSQLiteService } from "./services/bibleSqliteService";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -41,10 +40,8 @@ let liveWindow: BrowserWindow | null = null;
 let deepLinkUrl: string | null = null;
 
 // ── Whisper Instances ────────────────────────────────────────────
-const whisperService = new WhisperService();
-const modelManager = new WhisperModelManager();
+const sttService = new VoskService();
 const bibleService = new BibleSQLiteService();
-const DEFAULT_MODEL = "ggml-tiny.en.bin";
 
 // Force single instance application
 const gotTheLock = app.requestSingleInstanceLock();
@@ -122,9 +119,9 @@ if (!gotTheLock) {
       console.error("[Main] Bible SQLite initialization failed:", err);
     });
 
-    // ── Initialize Whisper Model (non-blocking) ──────────────
-    initializeWhisper().catch((err) => {
-      console.error("[Main] Whisper initialization failed:", err);
+    // ── Initialize Vosk STT (non-blocking) ──────────────
+    initializeVosk().catch((err) => {
+      console.error("[Main] Vosk initialization failed:", err);
     });
   });
 
@@ -139,87 +136,44 @@ if (!gotTheLock) {
   });
 }
 
-// ── Whisper Initialization ─────────────────────────────────────
-async function initializeWhisper() {
+// ── Vosk Initialization ─────────────────────────────────────
+async function initializeVosk() {
   try {
-    // Download model if not present (sends progress to renderer)
-    const modelPath = await modelManager.ensureModelExists(
-      DEFAULT_MODEL,
-      (progress) => {
-        if (win && win.webContents) {
-          win.webContents.send(
-            "hfb:model-download-progress",
-            progress.percent,
-            progress.downloadedMB,
-            progress.totalMB,
-          );
-        }
-      },
-    );
-
-    // Load the model into memory
-    await whisperService.initialize(modelPath);
-
-    // Forward whisper events to renderer
-    whisperService.on("transcript-partial", (text: string) => {
-      if (win && win.webContents) {
-        win.webContents.send("hfb:transcript-partial", text);
-      }
-    });
-
-    whisperService.on("transcript-final", (text: string) => {
-      if (win && win.webContents) {
-        win.webContents.send("hfb:transcript-final", text);
-      }
-    });
-
-    whisperService.on("status-change", (status: string, message?: string) => {
-      if (win && win.webContents) {
-        win.webContents.send("hfb:status-change", status, message);
-      }
-    });
-
-    console.log("[Main] Whisper initialized successfully");
+    sttService.initialize();
+    
+    // We send a success message to renderer directly since our Vosk implementation
+    // pushes statuses directly to the webContents within the service
+    // However, for initialization we just log it:
+    console.log("[Main] Vosk STT initialized successfully");
   } catch (err) {
-    console.error("[Main] Failed to initialize Whisper:", err);
+    console.error("[Main] Failed to initialize Vosk:", err);
   }
 }
 
-// ── Whisper IPC Handlers ───────────────────────────────────────
+// ── Vosk IPC Handlers ───────────────────────────────────────
 let _audioChunkCount = 0;
-ipcMain.on("hfb:audio-chunk", (_event, rawData: any) => {
-  // Electron IPC serializes ArrayBuffers into Node.js Buffer / Uint8Array objects.
-  // We must use the .buffer property.
-  const pcm16 = new Int16Array(
-    rawData.buffer || rawData,
-    rawData.byteOffset || 0,
-    (rawData.byteLength || rawData.length) / 2,
-  );
-
+ipcMain.on("hfb:audio-chunk", (event, rawData: any) => {
+  const arrayBuffer = rawData.buffer || rawData;
   if (_audioChunkCount++ % 100 === 0) {
-    let maxAmplitude = 0;
-    for (let i = 0; i < pcm16.length; i++) {
-      const val = Math.abs(pcm16[i]);
-      if (val > maxAmplitude) maxAmplitude = val;
-    }
-    console.log(
-      `[Main] Audio chunk #${_audioChunkCount}. Peak amplitude: ${maxAmplitude}/32768`,
-    );
+    console.log(`[Main] Audio chunk #${_audioChunkCount} dispatched to Vosk`);
   }
-
-  whisperService.feedAudioChunk(pcm16);
+  if (win) {
+    sttService.feedAudioChunk(win, arrayBuffer);
+  }
 });
 
 ipcMain.on("hfb:start-listening", () => {
-  whisperService.startListening();
+  if (win) sttService.startListening(win);
 });
 
 ipcMain.on("hfb:stop-listening", () => {
-  whisperService.stopListening();
+  if (win) sttService.stopListening(win);
 });
 
 ipcMain.handle("hfb:get-status", () => {
-  return whisperService.getStatus();
+  // VoskService internally keeps status, but for simplified IPC
+  // we just return a static string because the events handle UI updates
+  return "active";
 });
 
 ipcMain.handle("hfb:get-bible-chapter", (_event, version: string, book: string, chapter: number) => {

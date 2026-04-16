@@ -16,9 +16,9 @@ contextBridge.exposeInMainWorld("api", {
     ipcRenderer.send("open-external-url", url);
   },
 
-  // ── Whisper / Hands-Free Bible IPC ──────────────────────────
-  whisper: {
-    /** Send a PCM16 audio chunk to the main process WhisperService */
+  // ── STT / Hands-Free Bible IPC ──────────────────────────
+  stt: {
+    /** Send a PCM16 audio array buffer to the main process VoskService */
     sendAudioChunk: (pcm16Buffer: ArrayBuffer) => {
       ipcRenderer.send("hfb:audio-chunk", pcm16Buffer);
     },
@@ -33,7 +33,7 @@ contextBridge.exposeInMainWorld("api", {
       ipcRenderer.send("hfb:stop-listening");
     },
 
-    /** Get the current whisper engine status */
+    /** Get the current STT engine status */
     getStatus: () => {
       return ipcRenderer.invoke("hfb:get-status");
     },
@@ -41,43 +41,24 @@ contextBridge.exposeInMainWorld("api", {
     /** Listen for partial transcript events from the main process */
     onTranscriptPartial: (callback: (text: string) => void) => {
       const handler = (_event: any, text: string) => callback(text);
-      ipcRenderer.on("hfb:transcript-partial", handler);
+      ipcRenderer.on("stt:transcript:partial", handler);
       return () =>
-        ipcRenderer.removeListener("hfb:transcript-partial", handler);
+        ipcRenderer.removeListener("stt:transcript:partial", handler);
     },
 
     /** Listen for final transcript events from the main process */
     onTranscriptFinal: (callback: (text: string) => void) => {
       const handler = (_event: any, text: string) => callback(text);
-      ipcRenderer.on("hfb:transcript-final", handler);
-      return () => ipcRenderer.removeListener("hfb:transcript-final", handler);
+      ipcRenderer.on("stt:transcript:final", handler);
+      return () => ipcRenderer.removeListener("stt:transcript:final", handler);
     },
 
-    /** Listen for whisper engine status changes */
+    /** Listen for engine status changes */
     onStatusChange: (callback: (status: string, message?: string) => void) => {
       const handler = (_event: any, status: string, message?: string) =>
         callback(status, message);
-      ipcRenderer.on("hfb:status-change", handler);
-      return () => ipcRenderer.removeListener("hfb:status-change", handler);
-    },
-
-    /** Listen for model download progress */
-    onModelDownloadProgress: (
-      callback: (
-        percent: number,
-        downloadedMB: number,
-        totalMB: number,
-      ) => void,
-    ) => {
-      const handler = (
-        _event: any,
-        percent: number,
-        downloadedMB: number,
-        totalMB: number,
-      ) => callback(percent, downloadedMB, totalMB);
-      ipcRenderer.on("hfb:model-download-progress", handler);
-      return () =>
-        ipcRenderer.removeListener("hfb:model-download-progress", handler);
+      ipcRenderer.on("stt:status", handler);
+      return () => ipcRenderer.removeListener("stt:status", handler);
     },
   },
   

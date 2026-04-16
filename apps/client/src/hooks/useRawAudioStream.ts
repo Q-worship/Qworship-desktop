@@ -44,7 +44,7 @@ export const useRawAudioStream = () => {
 
         const audioContext = new (
           window.AudioContext || (window as any).webkitAudioContext
-        )();
+        )({ sampleRate: 16000 });
         if (audioContext.state === "suspended") {
           await audioContext.resume();
         }
@@ -108,26 +108,36 @@ export const useRawAudioStream = () => {
         workletNodeRef.current = workletNode;
 
         let _feChunkCounter = 0;
+        let accumulator = new Int16Array(8192); // ~500ms block
+        let accumIndex = 0;
+
         // Receive PCM16 data from the audio thread
         workletNode.port.onmessage = (event) => {
-          if (isRecordingRef.current) {
-            const rawBuffer = event.data.buffer || event.data;
-            const pcm16 =
-              rawBuffer instanceof Int16Array
-                ? rawBuffer
-                : new Int16Array(rawBuffer);
+          if (!isRecordingRef.current) return;
+          
+          const rawBuffer = event.data.buffer || event.data;
+          const pcm16 = rawBuffer instanceof Int16Array ? rawBuffer : new Int16Array(rawBuffer);
 
-            if (_feChunkCounter++ % 100 === 0) {
-              let feMax = 0;
-              for (let i = 0; i < pcm16.length; i++) {
-                if (Math.abs(pcm16[i]) > feMax) feMax = Math.abs(pcm16[i]);
-              }
-              console.log(
-                `[Frontend] Audio chunk #${_feChunkCounter}. PCMPeak: ${feMax}/32768, FloatPeak: ${event.data.maxFloat}`,
-              );
+          // Append to chunk accumulator buffer to dramatically reduce IPC spam and blocking native FFI calls
+          for (let i = 0; i < pcm16.length; i++) {
+             if (accumIndex < accumulator.length) {
+                accumulator[accumIndex++] = pcm16[i];
+             }
+          }
+
+          if (accumIndex >= accumulator.length) {
+             onAudioData(accumulator.slice()); // flush
+             accumIndex = 0;
+          }
+
+          if (_feChunkCounter++ % 100 === 0) {
+            let feMax = 0;
+            for (let i = 0; i < pcm16.length; i++) {
+              if (Math.abs(pcm16[i]) > feMax) feMax = Math.abs(pcm16[i]);
             }
-
-            onAudioData(pcm16);
+            console.log(
+              `[Frontend] Audio chunk #${_feChunkCounter}. PCMPeak: ${feMax}/32768, FloatPeak: ${event.data?.maxFloat || 0}`,
+            );
           }
         };
 

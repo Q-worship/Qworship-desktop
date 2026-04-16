@@ -13,9 +13,9 @@ electron.contextBridge.exposeInMainWorld("api", {
   openWebAuth: (url) => {
     electron.ipcRenderer.send("open-external-url", url);
   },
-  // ── Whisper / Hands-Free Bible IPC ──────────────────────────
-  whisper: {
-    /** Send a PCM16 audio chunk to the main process WhisperService */
+  // ── STT / Hands-Free Bible IPC ──────────────────────────
+  stt: {
+    /** Send a PCM16 audio array buffer to the main process VoskService */
     sendAudioChunk: (pcm16Buffer) => {
       electron.ipcRenderer.send("hfb:audio-chunk", pcm16Buffer);
     },
@@ -27,33 +27,27 @@ electron.contextBridge.exposeInMainWorld("api", {
     stopListening: () => {
       electron.ipcRenderer.send("hfb:stop-listening");
     },
-    /** Get the current whisper engine status */
+    /** Get the current STT engine status */
     getStatus: () => {
       return electron.ipcRenderer.invoke("hfb:get-status");
     },
     /** Listen for partial transcript events from the main process */
     onTranscriptPartial: (callback) => {
       const handler = (_event, text) => callback(text);
-      electron.ipcRenderer.on("hfb:transcript-partial", handler);
-      return () => electron.ipcRenderer.removeListener("hfb:transcript-partial", handler);
+      electron.ipcRenderer.on("stt:transcript:partial", handler);
+      return () => electron.ipcRenderer.removeListener("stt:transcript:partial", handler);
     },
     /** Listen for final transcript events from the main process */
     onTranscriptFinal: (callback) => {
       const handler = (_event, text) => callback(text);
-      electron.ipcRenderer.on("hfb:transcript-final", handler);
-      return () => electron.ipcRenderer.removeListener("hfb:transcript-final", handler);
+      electron.ipcRenderer.on("stt:transcript:final", handler);
+      return () => electron.ipcRenderer.removeListener("stt:transcript:final", handler);
     },
-    /** Listen for whisper engine status changes */
+    /** Listen for engine status changes */
     onStatusChange: (callback) => {
       const handler = (_event, status, message) => callback(status, message);
-      electron.ipcRenderer.on("hfb:status-change", handler);
-      return () => electron.ipcRenderer.removeListener("hfb:status-change", handler);
-    },
-    /** Listen for model download progress */
-    onModelDownloadProgress: (callback) => {
-      const handler = (_event, percent, downloadedMB, totalMB) => callback(percent, downloadedMB, totalMB);
-      electron.ipcRenderer.on("hfb:model-download-progress", handler);
-      return () => electron.ipcRenderer.removeListener("hfb:model-download-progress", handler);
+      electron.ipcRenderer.on("stt:status", handler);
+      return () => electron.ipcRenderer.removeListener("stt:status", handler);
     }
   },
   // ── Live Presentation IPC ─────────────────────────────────

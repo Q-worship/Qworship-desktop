@@ -27,8 +27,8 @@ interface LocalWhisperProps {
   ) => void;
 }
 
-/** Type for the preload-exposed whisper API */
-interface WhisperAPI {
+/** Type for the preload-exposed STT API */
+interface SttAPI {
   sendAudioChunk: (pcm16Buffer: ArrayBuffer) => void;
   startListening: () => void;
   stopListening: () => void;
@@ -36,13 +36,12 @@ interface WhisperAPI {
   onTranscriptPartial: (callback: (text: string) => void) => () => void;
   onTranscriptFinal: (callback: (text: string) => void) => () => void;
   onStatusChange: (callback: (status: string, message?: string) => void) => () => void;
-  onModelDownloadProgress: (callback: (percent: number, downloadedMB: number, totalMB: number) => void) => () => void;
 }
 
-/** Access the whisper API exposed via preload */
-function getWhisperAPI(): WhisperAPI | null {
+/** Access the STT API exposed via preload */
+function getSttAPI(): SttAPI | null {
   const api = (window as any).api;
-  return api?.whisper ?? null;
+  return api?.stt ?? null;
 }
 
 // ── Sleep / Wake patterns ────────────────────────────────────────
@@ -208,31 +207,31 @@ export const useLocalWhisper = ({
    * Sets up IPC listeners for transcription events.
    */
   const connect = useCallback(() => {
-    const whisperAPI = getWhisperAPI();
-    if (!whisperAPI) {
-      console.warn('[useLocalWhisper] Whisper API not available (not running in Electron?)');
+    const sttAPI = getSttAPI();
+    if (!sttAPI) {
+      console.warn('[useLocalWhisper] STT API not available (not running in Electron?)');
       return;
     }
 
     // Set up IPC event listeners
-    const unsubPartial = whisperAPI.onTranscriptPartial((text) => {
+    const unsubPartial = sttAPI.onTranscriptPartial((text) => {
       callbacks.current.onPartialTranscript?.(text);
     });
 
-    const unsubFinal = whisperAPI.onTranscriptFinal((text) => {
+    const unsubFinal = sttAPI.onTranscriptFinal((text) => {
       callbacks.current.onFinalTranscript?.(text);
       processTranscript(text);
     });
 
-    const unsubStatus = whisperAPI.onStatusChange((status, message) => {
-      console.log('[useLocalWhisper] Whisper status:', status, message);
+    const unsubStatus = sttAPI.onStatusChange((status, message) => {
+      console.log('[useLocalWhisper] STT status:', status, message);
       setIsConnected(status === 'ready');
     });
 
     cleanupRef.current = [unsubPartial, unsubFinal, unsubStatus];
 
     // Tell main process to start listening
-    whisperAPI.startListening();
+    sttAPI.startListening();
     setIsConnected(true);
   }, [processTranscript]);
 
@@ -240,9 +239,9 @@ export const useLocalWhisper = ({
    * Disconnect from the local whisper engine.
    */
   const disconnect = useCallback(() => {
-    const whisperAPI = getWhisperAPI();
-    if (whisperAPI) {
-      whisperAPI.stopListening();
+    const sttAPI = getSttAPI();
+    if (sttAPI) {
+      sttAPI.stopListening();
     }
 
     // Clean up IPC listeners
@@ -257,10 +256,10 @@ export const useLocalWhisper = ({
    * Drop-in replacement for the old WebSocket `sendPCMData`.
    */
   const sendPCMData = useCallback((pcmBuffer: Int16Array) => {
-    const whisperAPI = getWhisperAPI();
-    if (whisperAPI) {
+    const sttAPI = getSttAPI();
+    if (sttAPI) {
       // Transfer the ArrayBuffer to the main process
-      whisperAPI.sendAudioChunk(pcmBuffer.buffer as ArrayBuffer);
+      sttAPI.sendAudioChunk(pcmBuffer.buffer as ArrayBuffer);
     }
   }, []);
 

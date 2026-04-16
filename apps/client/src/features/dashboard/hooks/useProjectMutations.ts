@@ -1,6 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import { isWindowOpen } from "@/utils/windowUtils";
 import { apiRequest } from "@/lib/queryClient";
+import { db } from "@/lib/db";
 
 export const useProjectMutations = ({
   toast,
@@ -53,7 +54,33 @@ export const useProjectMutations = ({
     mutationFn: async (presentationId: string | number) => {
       console.log("📥 === LOADING COMPLETE Q-WORSHIP SERVICE BUNDLE ===");
       console.log("📥 Presentation ID:", presentationId);
+      
+      const loadLocally = async () => {
+         // Attempt exact match
+         let lp = await db.presentations.get(presentationId);
+         
+         if (!lp && !isNaN(Number(presentationId))) {
+             lp = await db.presentations.get(Number(presentationId));
+         }
+         if (!lp && typeof presentationId === 'number') {
+             lp = await db.presentations.get(String(presentationId));
+         }
+
+         if (lp) { 
+           // If it was cached from Dashboard loading earlier, it should have `serviceData` populated.
+           // However it might be a newly created offline project which just has empty serviceData.
+           // Regardless, we return it formatted exactly like the API
+           return { success: true, presentation: lp, isOffline: true }; 
+         }
+         throw new Error("You are offline and this project has not been fully cached.");
+      };
+
       try {
+        // If navigator states offline, don't even wait for the fetch timeout
+        if (!navigator.onLine) {
+            return await loadLocally();
+        }
+
         const response = await apiRequest(
           "GET",
           `/api/presentations/${presentationId}`,
@@ -63,8 +90,18 @@ export const useProjectMutations = ({
         }
         const result = await response.json();
         console.log("📥 API Response received:", result);
+        
+        // Maintain local IndexedDB cache of the project bundle payload to ensure future offline support
+        if (result && result.presentation) {
+           await db.presentations.update(presentationId, { serviceData: JSON.stringify(result.presentation) }).catch(() => {});
+        }
+        
         return result;
-      } catch (error) {
+      } catch (error: any) {
+        if (error.message === "Failed to fetch" || error.name === "TypeError" || String(error).includes("Network") || !navigator.onLine) {
+           console.warn("⚠️ [Offline Projects] Cloud unreachable, loading project from local cache.", error);
+           return await loadLocally();
+        }
         console.error("❌ FAILED TO LOAD SERVICE BUNDLE:", error);
         throw error;
       }
