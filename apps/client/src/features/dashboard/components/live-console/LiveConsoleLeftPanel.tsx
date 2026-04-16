@@ -11,17 +11,11 @@ interface LeftPanelProps {
   bibleProps: any;
   songProps: any;
   liveWindow: Window | null;
+  hfb: any;
 }
 
-export function LiveConsoleLeftPanel({ bibleProps, songProps, liveWindow }: LeftPanelProps) {
+export function LiveConsoleLeftPanel({ bibleProps, songProps, liveWindow, hfb }: LeftPanelProps) {
   const store = useLiveConsoleStore();
-  const dummyRef = useRef<HTMLElement | null>(null);
-  
-  // Initialize HFB hook for the left panel 
-  const hfb = useHandsfreeBible({
-    liveWindow,
-    handsfreeBibleButtonRef: dummyRef,
-  });
 
   const hfbStore = useHFBStore();
   const transcriptEndRef = useRef<HTMLDivElement>(null);

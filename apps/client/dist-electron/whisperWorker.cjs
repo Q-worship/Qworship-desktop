@@ -5,6 +5,7 @@ const { Whisper } = require$$0;
 let instance = null;
 const BIBLE_INITIAL_PROMPT = "Genesis, Exodus, Luke, Psalms, Matthew, John, Revelation, chapter, verse.";
 process.on("message", async (msg) => {
+  var _a;
   try {
     if (msg.type === "init") {
       console.log("[WhisperWorker] Initializing smart-whisper with model:", msg.modelPath);
@@ -28,20 +29,26 @@ process.on("message", async (msg) => {
       });
       console.log("[WhisperWorker] Task scheduled, awaiting result...");
       const result = await task.result;
-      console.log("[WhisperWorker] Task resolved! Raw result payload:", JSON.stringify(result).substring(0, 500));
+      console.log("[WhisperWorker] Task resolved!");
+      try {
+        console.log("[WhisperWorker] Raw result payload:", (_a = JSON.stringify(result)) == null ? void 0 : _a.substring(0, 500));
+      } catch (e) {
+      }
       let transcript = "";
-      if (typeof result === "string") {
+      if (!result || typeof result === "object" && Object.keys(result).length === 0) {
+        transcript = "";
+      } else if (typeof result === "string") {
         transcript = result;
       } else if (Array.isArray(result)) {
         transcript = result.map((s) => s.text || "").join(" ");
       } else if (result && typeof result === "object") {
         transcript = result.text || (result.segments ? result.segments.map((s) => s.text).join(" ") : "");
       }
-      const safeTranscript = transcript || "";
+      let safeTranscript = transcript || "";
+      safeTranscript = safeTranscript.replace(/\[BLANK_AUDIO\]/g, "");
+      safeTranscript = safeTranscript.replace(/\(BLANK_AUDIO\)/g, "");
       console.log(`[WhisperWorker] Final transcript string: "${safeTranscript.trim()}"`);
-      if (safeTranscript.trim()) {
-        process.send({ type: "transcript-final", text: safeTranscript.trim() });
-      }
+      process.send({ type: "transcript-final", text: safeTranscript.trim() });
     }
     if (msg.type === "shutdown" && instance) {
       await instance.free();

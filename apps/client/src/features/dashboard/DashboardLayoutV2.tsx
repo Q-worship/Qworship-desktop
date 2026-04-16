@@ -5739,6 +5739,7 @@ export const QworshipHomeV2Base = (): JSX.Element => {
         editingModalProjectId={editingModalProjectId}
         modalProjectNameInputRef={modalProjectNameInputRef}
         editingModalProjectName={editingModalProjectName}
+        hfb={{ toggleMicrophone, isListeningMode, toggleHandsfreeBible }}
         setEditingModalProjectName={setEditingModalProjectName}
         handleModalProjectNameKeyDown={handleModalProjectNameKeyDown}
         saveModalProjectName={saveModalProjectName}

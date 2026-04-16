@@ -100,6 +100,7 @@ interface ModalsContainerProps {
   toggleHandsfreeBible: () => void;
   setIsSongbookOpen: (open: boolean) => void;
   setIsBackgroundAssetsModalOpen: (open: boolean) => void;
+  hfb: any;
 }
 
 export const ModalsContainer: React.FC<ModalsContainerProps> = (props) => {
@@ -222,6 +223,7 @@ export const ModalsContainer: React.FC<ModalsContainerProps> = (props) => {
         slides={props.slides}
         serviceItems={props.serviceItems}
         itemBackgrounds={props.itemBackgrounds}
+        hfb={props.hfb}
         onGoToSlide={(slideNumber) => {
           props.setCurrentSlide(slideNumber);
           // Clear Bible projection when navigating to slides

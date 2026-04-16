@@ -62,9 +62,13 @@ export class WhisperService extends EventEmitter {
         this.workerProcess.on('message', (msg: any) => {
           if (msg.type === 'ready') this.setStatus('ready');
           if (msg.type === 'transcript-partial') this.emit('transcript-partial', msg.text);
-          if (msg.type === 'transcript-final') this.emit('transcript-final', msg.text);
+          if (msg.type === 'transcript-final') {
+             this.emit('transcript-final', msg.text);
+             this.finalizeInferenceLock();
+          }
           if (msg.type === 'error') {
              console.error('[WhisperService] Worker Error:', msg.message);
+             this.finalizeInferenceLock();
           }
         });
 
@@ -73,6 +77,8 @@ export class WhisperService extends EventEmitter {
         this.workerProcess.on('exit', (code, signal) => {
           console.warn(`[WhisperService] Isolated target restarted... (exit code: ${code})`);
           this.workerProcess = null;
+          this.isProcessing = false; // MUST unlock queue on restart!
+          this._pendingInference = false;
           // Silent automatic recovery removes crash UI loop
           if (this.isListening) {
               this.spawnWorker().then(() => {
@@ -186,14 +192,15 @@ export class WhisperService extends EventEmitter {
 
     } catch (err) {
       console.error('[WhisperService] Inference serialization failed:', err);
-    } finally {
-        setTimeout(() => {
-          this.isProcessing = false;
-          if (this._pendingInference && this.bufferWritePos >= this.MIN_INFERENCE_SAMPLES) {
-            this._pendingInference = false;
-            this.tryRunInference(true);
-          }
-        }, 100);
+      this.finalizeInferenceLock();
+    }
+  }
+
+  private finalizeInferenceLock() {
+    this.isProcessing = false;
+    if (this._pendingInference && this.bufferWritePos >= this.MIN_INFERENCE_SAMPLES) {
+      this._pendingInference = false;
+      this.tryRunInference(true);
     }
   }
 
