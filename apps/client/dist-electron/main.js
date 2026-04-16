@@ -90,7 +90,8 @@ class Recognizer {
 class VoskService {
   constructor() {
     this.model = null;
-    this.recognizer = null;
+    this.commandRecognizer = null;
+    this.transcriptRecognizer = null;
     this.isListening = false;
   }
   initialize() {
@@ -114,7 +115,7 @@ class VoskService {
     }
     if (this.isListening) return;
     const VOSK_GRAMMAR = [
-      // Bible Books
+      // Bible Books (Removed unknown vocab, added phonetic split words)
       "genesis",
       "exodus",
       "leviticus",
@@ -147,10 +148,7 @@ class VoskService {
       "jonah",
       "micah",
       "nahum",
-      "habakkuk",
       "zephaniah",
-      "haggai",
-      "zechariah",
       "malachi",
       "matthew",
       "mark",
@@ -159,11 +157,7 @@ class VoskService {
       "acts",
       "romans",
       "corinthians",
-      "galatians",
       "ephesians",
-      "philippians",
-      "colossians",
-      "thessalonians",
       "timothy",
       "titus",
       "philemon",
@@ -172,6 +166,21 @@ class VoskService {
       "peter",
       "jude",
       "revelation",
+      // Phonetic overrides for books missing from Vosk dictionary (habakkuk, haggai, zechariah, galatians, philippians, colossians, thessalonians)
+      "have",
+      "a",
+      "cook",
+      "hag",
+      "eye",
+      "zachariah",
+      "gal",
+      "asians",
+      "filipinos",
+      "phillip",
+      "collisions",
+      "tess",
+      "salon",
+      "ians",
       // Words that replace numbers in books
       "first",
       "second",
@@ -208,24 +217,32 @@ class VoskService {
       "hundred",
       "thousand",
       // Control Commands & Glue
-      "go to",
+      "go",
+      "to",
       "verse",
       "chapter",
       "search",
-      "hands free",
+      "hands",
+      "free",
       "open",
       "sleep",
-      "wake up",
-      "stop listening",
+      "wake",
+      "up",
+      "stop",
+      "listening",
       "pause",
-      "be quiet",
-      "shut up",
+      "be",
+      "quiet",
+      "shut",
       "mute",
       "resume",
-      "unmute",
       "listen",
-      "start listening",
+      "start",
       "bible",
+      "show",
+      "me",
+      "turn",
+      "read",
       "next",
       "previous",
       "last",
@@ -235,63 +252,83 @@ class VoskService {
       "backward",
       "and",
       "through",
-      "to",
       "of",
       "the",
       "i",
       "m",
       "am",
-      // English Translation Versions
-      "kjv",
-      "nkjv",
+      // English Translation Versions (Phonetic equivalents for kjv, nkjv, esv)
+      "k",
+      "j",
+      "v",
+      "n",
+      "e",
+      "s",
       "amp",
       "msg",
-      "esv",
       "niv",
-      "king james",
+      "king",
+      "james",
       "version",
       "amplified",
       "message",
-      "english standard",
-      "new international",
+      "english",
+      "standard",
+      "new",
+      "international",
       // Out-of-vocabulary fallback to prevent crashes on sneezing
       "[unk]"
     ];
-    this.recognizer = new Recognizer({
+    this.commandRecognizer = new Recognizer({
       model: this.model,
       sampleRate: 16e3,
       grammar: VOSK_GRAMMAR
     });
+    this.transcriptRecognizer = new Recognizer({
+      model: this.model,
+      sampleRate: 16e3
+    });
     this.isListening = true;
     window.webContents.send("stt:status", "ready", "Vosk listening");
-    console.log("[VoskService] Started listening");
+    console.log("[VoskService] Started dual-stream listening");
   }
   stopListening(window) {
     if (!this.isListening) return;
     this.isListening = false;
-    if (this.recognizer) {
-      const finalRes = this.recognizer.finalResult();
+    if (this.commandRecognizer) {
+      this.commandRecognizer.free();
+      this.commandRecognizer = null;
+    }
+    if (this.transcriptRecognizer) {
+      const finalRes = this.transcriptRecognizer.finalResult();
       if (finalRes && finalRes.text) {
         window.webContents.send("stt:transcript:final", finalRes.text);
       }
-      this.recognizer.free();
-      this.recognizer = null;
+      this.transcriptRecognizer.free();
+      this.transcriptRecognizer = null;
     }
     window.webContents.send("stt:status", "idle");
     console.log("[VoskService] Stopped listening");
   }
   feedAudioChunk(window, arrayBuffer) {
-    if (!this.isListening || !this.recognizer) return;
+    if (!this.isListening || !this.commandRecognizer || !this.transcriptRecognizer) return;
     try {
       const pcm16Buffer = Buffer.from(arrayBuffer);
-      const isFinal = this.recognizer.acceptWaveform(pcm16Buffer);
-      if (isFinal) {
-        const result = this.recognizer.result();
+      const isCommandFinal = this.commandRecognizer.acceptWaveform(pcm16Buffer);
+      if (isCommandFinal) {
+        const result = this.commandRecognizer.result();
+        if (result && result.text) {
+          window.webContents.send("stt:command:final", result.text);
+        }
+      }
+      const isTranscriptFinal = this.transcriptRecognizer.acceptWaveform(pcm16Buffer);
+      if (isTranscriptFinal) {
+        const result = this.transcriptRecognizer.result();
         if (result && result.text) {
           window.webContents.send("stt:transcript:final", result.text);
         }
       } else {
-        const partial = this.recognizer.partialResult();
+        const partial = this.transcriptRecognizer.partialResult();
         if (partial && partial.partial) {
           window.webContents.send("stt:transcript:partial", partial.partial);
         }
@@ -301,9 +338,13 @@ class VoskService {
     }
   }
   destroy() {
-    if (this.recognizer) {
-      this.recognizer.free();
-      this.recognizer = null;
+    if (this.commandRecognizer) {
+      this.commandRecognizer.free();
+      this.commandRecognizer = null;
+    }
+    if (this.transcriptRecognizer) {
+      this.transcriptRecognizer.free();
+      this.transcriptRecognizer = null;
     }
     if (this.model) {
       this.model.free();

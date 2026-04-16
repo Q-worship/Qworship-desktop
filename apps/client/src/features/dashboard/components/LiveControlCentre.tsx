@@ -34,6 +34,7 @@ export interface LiveConsoleProps {
   onOpenOBS?: () => void;
   onOpenSettings?: () => void;
   onGoToSlide?: (slideIndex: number) => void;
+  hfb?: any;
 }
 
 export function LiveControlCentre(props: LiveConsoleProps) {
@@ -220,7 +221,7 @@ export function LiveControlCentre(props: LiveConsoleProps) {
         <LiveConsoleHeader liveWindow={props.liveWindow} onClose={props.onClose} setIsMinimized={setIsMinimized} />
 
         <div className="flex flex-1 overflow-hidden" style={{ minHeight: 0 }}>
-          <LiveConsoleLeftPanel bibleProps={bibleProps} songProps={songProps} liveWindow={props.liveWindow} />
+          <LiveConsoleLeftPanel bibleProps={bibleProps} songProps={songProps} liveWindow={props.liveWindow} hfb={props.hfb} />
           <LiveConsoleCenterStage bibleProps={bibleProps} songProps={songProps} pacingProps={pacingProps} onClearProjection={handleClearProjection} liveWindow={props.liveWindow} />
           <LiveConsoleRightPanel liveWindow={props.liveWindow} />
         </div>

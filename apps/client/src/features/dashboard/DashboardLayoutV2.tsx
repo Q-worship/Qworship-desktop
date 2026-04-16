@@ -1126,6 +1126,11 @@ export const QworshipHomeV2Base = (): JSX.Element => {
     currentUserId,
   ]);
 
+  const hfb = useHandsfreeBible({
+    liveWindow,
+    handsfreeBibleButtonRef,
+  });
+
   const {
     isHandsfreeBibleOpen,
     isWidgetVisible,
@@ -1145,10 +1150,7 @@ export const QworshipHomeV2Base = (): JSX.Element => {
     setIsListeningMode,
     setDetectedCommands,
     executeNavigation,
-  } = useHandsfreeBible({
-    liveWindow,
-    handsfreeBibleButtonRef,
-  });
+  } = hfb;
 
   const [showListStyleDropdown, setShowListStyleDropdown] = useState(false);
   const listDropdownRef = useRef<HTMLDivElement>(null);
@@ -5721,6 +5723,7 @@ export const QworshipHomeV2Base = (): JSX.Element => {
       />
 
       <ModalsContainer
+        hfb={hfb}
         isOpenModalOpen={isOpenModalOpen}
         setIsOpenModalOpen={setIsOpenModalOpen}
         projectSearchQuery={projectSearchQuery}

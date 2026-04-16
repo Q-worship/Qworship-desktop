@@ -277,6 +277,18 @@ const BOOK_ALIASES: Record<string, string> = {
   jame: "James",
   revelations: "Revelation",
   revelacion: "Revelation",
+  // ── Vosk Phonetic Chunk Aliases (for missing dictionary words) ──
+  "have a cook": "Habakkuk",
+  "have a book": "Habakkuk",
+  "hag eye": "Haggai",
+  "zachariah": "Zechariah",
+  "zack": "Zechariah",
+  "gal asians": "Galatians",
+  "filipinos": "Philippians",
+  "phillip": "Philippians",
+  "collisions": "Colossians",
+  "tess salon ians": "Thessalonians",
+  "tess": "Thessalonians",
 };
 
 const ALL_CANONICAL_BOOKS = [...new Set(Object.values(BOOK_ALIASES))];
@@ -334,7 +346,42 @@ const VERSION_MAP: Record<string, BibleVersion> = {
 };
 
 function resolveVersion(raw: string): BibleVersion | null {
-  return VERSION_MAP[raw.toLowerCase().trim()] || null;
+  switch (raw.toLowerCase().trim()) {
+    case "kjv":
+    case "k j v":
+    case "king james":
+    case "king james version":
+      return "kjv";
+    case "nkjv":
+    case "n k j v":
+    case "new king james":
+    case "new king james version":
+      return "nkjv";
+    case "niv":
+    case "new international":
+    case "new international version":
+      return "niv";
+    case "esv":
+    case "e s v":
+    case "english standard":
+    case "english standard version":
+      return "esv";
+    case "amp":
+    case "amplified":
+    case "amplified bible":
+      return "amp";
+    case "msg":
+    case "message":
+    case "the message":
+      return "msg";
+    case "gn":
+    case "gnt":
+    case "good news":
+    case "good news bible":
+      return "gn";
+    default:
+      return null;
+  }
 }
 
 // ============================================================
@@ -349,7 +396,7 @@ const NAV_NEXT_CH =
 const NAV_PREV_CH =
   /^(previous chapter|prev chapter|chapter back|last chapter|prior chapter)$/i;
 const VERSION_SWITCH =
-  /(?:show me|switch to|use|change to|in the|read in|give me)?\s*(kjv|nkjv|niv|esv|amp|msg|gn|gnt|amplified|king james|new king james|english standard|new international|good news|the message|message)\s*(version|translation|bible)?$/i;
+  /(?:show me|switch to|use|change to|in the|read in|give me)?\s*(k j v|kjv|n k j v|nkjv|niv|e s v|esv|amp|msg|gn|gnt|amplified|king james|new king james|english standard|new international|good news|the message|message)\s*(version|translation|bible)?$/i;
 
 // Reference patterns (handle both typed and voice)
 const PATTERNS = [
@@ -439,6 +486,11 @@ function normalizeTranscript(raw: string): string {
   // or navigation keywords (go, back, next, etc.)
   t = t.replace(
     /\b(true|false|was|were|are|been|being|um|uh|just|really|actually|basically|okay|ok|yeah|very|much|also|too)\b/gi,
+    "",
+  );
+  // Strip common voice commands that precede a bible reference so the regex ^ anchors still match
+  t = t.replace(
+    /^(?:show me|turn to|go to|read|open|find|search for|look up)\s+/gi,
     "",
   );
   // "chapter 5 is 5"  →  "chapter 5 verse 5"

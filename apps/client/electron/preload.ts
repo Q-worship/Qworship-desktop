@@ -53,12 +53,18 @@ contextBridge.exposeInMainWorld("api", {
       return () => ipcRenderer.removeListener("stt:transcript:final", handler);
     },
 
-    /** Listen for engine status changes */
     onStatusChange: (callback: (status: string, message?: string) => void) => {
       const handler = (_event: any, status: string, message?: string) =>
         callback(status, message);
       ipcRenderer.on("stt:status", handler);
       return () => ipcRenderer.removeListener("stt:status", handler);
+    },
+
+    /** Listen for command transcript events from the highly accurate stream */
+    onCommandFinal: (callback: (text: string) => void) => {
+      const handler = (_event: any, text: string) => callback(text);
+      ipcRenderer.on("stt:command:final", handler);
+      return () => ipcRenderer.removeListener("stt:command:final", handler);
     },
   },
   

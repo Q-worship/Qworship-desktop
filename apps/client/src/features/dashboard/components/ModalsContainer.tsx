@@ -100,6 +100,7 @@ interface ModalsContainerProps {
   toggleHandsfreeBible: () => void;
   setIsSongbookOpen: (open: boolean) => void;
   setIsBackgroundAssetsModalOpen: (open: boolean) => void;
+  hfb?: any;
 }
 
 export const ModalsContainer: React.FC<ModalsContainerProps> = (props) => {
@@ -198,6 +199,7 @@ export const ModalsContainer: React.FC<ModalsContainerProps> = (props) => {
       />
       {/* Live Console Modal */}
       <LiveControlCentre
+        hfb={props.hfb}
         isOpen={props.isLiveConsoleOpen}
         onClose={() => {
           props.setIsLiveConsoleOpen(false);

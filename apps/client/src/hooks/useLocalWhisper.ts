@@ -35,6 +35,7 @@ interface SttAPI {
   getStatus: () => Promise<string>;
   onTranscriptPartial: (callback: (text: string) => void) => () => void;
   onTranscriptFinal: (callback: (text: string) => void) => () => void;
+  onCommandFinal?: (callback: (text: string) => void) => () => void;
   onStatusChange: (callback: (status: string, message?: string) => void) => () => void;
 }
 
@@ -214,21 +215,32 @@ export const useLocalWhisper = ({
     }
 
     // Set up IPC event listeners
+    // 1. UI Transcript Stream (Free-form conversational speech)
     const unsubPartial = sttAPI.onTranscriptPartial((text) => {
-      callbacks.current.onPartialTranscript?.(text);
+      const cleanedText = text.replace(/\[unk\]/gi, '').trim();
+      callbacks.current.onPartialTranscript?.(cleanedText);
     });
 
     const unsubFinal = sttAPI.onTranscriptFinal((text) => {
-      callbacks.current.onFinalTranscript?.(text);
-      processTranscript(text);
+      const cleanedText = text.replace(/\[unk\]/gi, '').trim();
+      callbacks.current.onFinalTranscript?.(cleanedText);
     });
+
+    // 2. Command Stream (Strict grammar limits for 99% precise extraction)
+    let unsubCommand: (() => void) | undefined;
+    if (sttAPI.onCommandFinal) {
+      unsubCommand = sttAPI.onCommandFinal((text) => {
+        const cleanedText = text.replace(/\[unk\]/gi, '').trim();
+        processTranscript(cleanedText);
+      });
+    }
 
     const unsubStatus = sttAPI.onStatusChange((status, message) => {
       console.log('[useLocalWhisper] STT status:', status, message);
       setIsConnected(status === 'ready');
     });
 
-    cleanupRef.current = [unsubPartial, unsubFinal, unsubStatus];
+    cleanupRef.current = [unsubPartial, unsubFinal, unsubCommand, unsubStatus].filter(Boolean) as (() => void)[];
 
     // Tell main process to start listening
     sttAPI.startListening();

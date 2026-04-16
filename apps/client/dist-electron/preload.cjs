@@ -43,11 +43,16 @@ electron.contextBridge.exposeInMainWorld("api", {
       electron.ipcRenderer.on("stt:transcript:final", handler);
       return () => electron.ipcRenderer.removeListener("stt:transcript:final", handler);
     },
-    /** Listen for engine status changes */
     onStatusChange: (callback) => {
       const handler = (_event, status, message) => callback(status, message);
       electron.ipcRenderer.on("stt:status", handler);
       return () => electron.ipcRenderer.removeListener("stt:status", handler);
+    },
+    /** Listen for command transcript events from the highly accurate stream */
+    onCommandFinal: (callback) => {
+      const handler = (_event, text) => callback(text);
+      electron.ipcRenderer.on("stt:command:final", handler);
+      return () => electron.ipcRenderer.removeListener("stt:command:final", handler);
     }
   },
   // ── Live Presentation IPC ─────────────────────────────────
