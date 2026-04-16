@@ -97,9 +97,6 @@ const AuthGuard = ({ children }: { children: React.ReactNode }) => {
   return (
     <>
       {children}
-      {showSync && (
-        <SyncLoadingOverlay isSyncing={!isSuccess} isSuccess={isSuccess} />
-      )}
     </>
   );
 };

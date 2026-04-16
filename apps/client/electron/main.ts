@@ -5,6 +5,7 @@ import {
   ipcMain,
   session,
   systemPreferences,
+  protocol,
 } from "electron";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -43,6 +44,11 @@ let deepLinkUrl: string | null = null;
 const sttService = new VoskService();
 const bibleService = new BibleSQLiteService();
 
+// Force protocol privileges so file:// allows secure constraints like getUserMedia APIs in packaging before app fires 'ready'
+protocol.registerSchemesAsPrivileged([
+  { scheme: 'file', privileges: { secure: true, bypassCSP: true, corsEnabled: true, supportFetchAPI: true } }
+]);
+
 // Force single instance application
 const gotTheLock = app.requestSingleInstanceLock();
 
@@ -77,28 +83,9 @@ if (!gotTheLock) {
 
   app.whenReady().then(async () => {
     // Grant microphone permission automatically so webkitSpeechRecognition doesn't hang
-    session.defaultSession.setPermissionRequestHandler(
-      (_wc, permission, callback) => {
-        const allowed = [
-          "microphone",
-          "camera",
-          "media",
-          "audioCapture",
-          "videoCapture",
-        ];
-        callback(allowed.includes(permission));
-      },
-    );
-    session.defaultSession.setPermissionCheckHandler((_wc, permission) => {
-      const allowed = [
-        "microphone",
-        "camera",
-        "media",
-        "audioCapture",
-        "videoCapture",
-      ];
-      return allowed.includes(permission);
-    });
+    session.defaultSession.setPermissionRequestHandler((_wc, _permission, callback) => callback(true));
+    session.defaultSession.setPermissionCheckHandler(() => true);
+    session.defaultSession.setDevicePermissionHandler(() => true);
 
     if (process.platform === "darwin") {
       // Required on macOS: Natively request OS-level microphone permission to prevent getUserMedia from hanging
@@ -221,30 +208,9 @@ function createWindow() {
   // Grant microphone (and camera) permissions automatically so webkitSpeechRecognition
   // does not hang waiting for a system dialog that Electron never shows in dev mode.
   const { session } = require("electron");
-  session.defaultSession.setPermissionRequestHandler(
-    (_webContents, permission, callback) => {
-      const allowed = [
-        "microphone",
-        "camera",
-        "media",
-        "audioCapture",
-        "videoCapture",
-      ];
-      callback(allowed.includes(permission));
-    },
-  );
-  session.defaultSession.setPermissionCheckHandler(
-    (_webContents, permission) => {
-      const allowed = [
-        "microphone",
-        "camera",
-        "media",
-        "audioCapture",
-        "videoCapture",
-      ];
-      return allowed.includes(permission);
-    },
-  );
+  session.defaultSession.setPermissionRequestHandler((_wc, _permission, callback) => callback(true));
+  session.defaultSession.setPermissionCheckHandler(() => true);
+  session.defaultSession.setDevicePermissionHandler(() => true);
 
   win = new BrowserWindow({
     width: 1200,
@@ -353,12 +319,15 @@ function createWindow() {
 
 app.on("window-all-closed", () => {
   if (process.platform !== "darwin") {
-    // Shut down whisper before quitting
-    whisperService.shutdown().finally(() => {
-      app.quit();
-    });
+    // Shut down STT before quitting
+    sttService.destroy();
+    app.quit();
     win = null;
   }
+});
+
+app.on("will-quit", () => {
+  sttService.destroy();
 });
 
 app.on("activate", () => {

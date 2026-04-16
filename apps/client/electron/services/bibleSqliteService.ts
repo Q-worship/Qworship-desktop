@@ -10,7 +10,13 @@ export class BibleSQLiteService {
 
   async initialize(publicPath: string): Promise<boolean> {
     try {
-      const dbPath = path.join(publicPath, 'data', 'bibles', 'bible.db');
+      let dbPath = path.join(publicPath, 'data', 'bibles', 'bible.db');
+      
+      // better-sqlite3 uses native C++ bindings which cannot read inside Electron's virtual .asar archive.
+      // We must explicitly point it to the unpacked version of the file on the real filesystem.
+      if (dbPath.includes('app.asar') && !dbPath.includes('app.asar.unpacked')) {
+        dbPath = dbPath.replace('app.asar', 'app.asar.unpacked');
+      }
       
       if (!fs.existsSync(dbPath)) {
         console.warn(`[BibleSQLite] SQLite database not found at ${dbPath}. Falling back to RAM cache.`);
