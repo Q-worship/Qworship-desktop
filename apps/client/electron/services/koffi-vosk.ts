@@ -9,7 +9,12 @@ const koffi = _require('koffi');
 let voskDir = '';
 if (app.isPackaged) {
     if (process.resourcesPath) {
-        voskDir = path.join(process.resourcesPath, 'app.asar.unpacked', 'node_modules', 'vosk');
+        const fs = require('fs');
+        const possiblePaths = [
+            path.join(process.resourcesPath, 'app.asar.unpacked', 'node_modules', 'vosk'),
+            path.join(process.resourcesPath, 'app.asar.unpacked', 'apps', 'client', 'node_modules', 'vosk')
+        ];
+        voskDir = possiblePaths.find(p => fs.existsSync(p)) || possiblePaths[0];
     }
 } else {
     voskDir = path.dirname(_require.resolve('vosk/package.json'));

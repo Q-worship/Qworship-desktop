@@ -96,8 +96,9 @@
       ]
     },
     "asarUnpack": [
-      "node_modules/vosk/**",
-      "node_modules/better-sqlite3/**",
+      "**/node_modules/vosk/**/*",
+      "**/node_modules/better-sqlite3/**/*",
+      "**/node_modules/koffi/**/*",
       "dist/data/bibles/bible.db"
     ],
     "extraResources": [

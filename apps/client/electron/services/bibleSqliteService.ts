@@ -7,7 +7,12 @@ import { app } from 'electron';
 // which gets blocked by macOS Hardened Runtime/Gatekeeper.
 const getSqliteModule = () => {
   if (app.isPackaged) {
-    const unpackedPath = path.join(process.resourcesPath, 'app.asar.unpacked', 'node_modules', 'better-sqlite3');
+    const fs = require('fs');
+    const possiblePaths = [
+      path.join(process.resourcesPath, 'app.asar.unpacked', 'node_modules', 'better-sqlite3'),
+      path.join(process.resourcesPath, 'app.asar.unpacked', 'apps', 'client', 'node_modules', 'better-sqlite3')
+    ];
+    const unpackedPath = possiblePaths.find(p => fs.existsSync(p)) || possiblePaths[0];
     return require(unpackedPath);
   }
   return require('better-sqlite3');
