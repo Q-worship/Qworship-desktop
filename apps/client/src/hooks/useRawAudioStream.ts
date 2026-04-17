@@ -102,7 +102,7 @@ export const useRawAudioStream = () => {
         // AudioWorkletNode runs in a dedicated audio thread, unlike the deprecated
         // ScriptProcessorNode which ran on the main thread and caused native
         // ACCESS_VIOLATION crashes (0xC0000005) in Electron on Windows.
-        await audioContext.audioWorklet.addModule("/pcm-processor.js");
+        await audioContext.audioWorklet.addModule("./pcm-processor.js");
 
         const workletNode = new AudioWorkletNode(audioContext, "pcm-processor");
         workletNodeRef.current = workletNode;

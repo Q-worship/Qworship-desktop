@@ -602,14 +602,14 @@ export const useHandsfreeBible = ({
         setMicrophoneStatus("Listening");
         setDetectedCommands("Listening...");
         resetInactivityTimer();
-      } catch (err) {
+      } catch (err: any) {
         console.error("[HandsfreeBible] Microphone access failed:", err);
         setIsListeningMode(false);
         setMicrophoneStatus("Error");
         setDetectedCommands("Failed to access microphone");
         toast({
           title: "Microphone Error",
-          description: "Please allow microphone access to use voice commands.",
+          description: err?.message || "Please allow microphone access to use voice commands.",
           variant: "destructive",
         });
       }

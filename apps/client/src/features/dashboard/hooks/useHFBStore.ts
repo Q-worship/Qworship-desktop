@@ -114,6 +114,31 @@ export const useHFBStore = create<HFBStore>((set) => ({
         return;
       }
 
+      // 0.5 Try Native SQLite Engine (Electron IPC Offline-First)
+      if ((window as any).api?.bible) {
+        try {
+          const sqliteVerses = await (window as any).api.bible.getChapter(
+            vKey,
+            book,
+            chapter
+          );
+          if (sqliteVerses && sqliteVerses.length > 0) {
+            const mappedVerses = sqliteVerses.map((v: any) => ({
+                 number: parseInt(v.number) || v.number,
+                 text: v.text || '',
+            }));
+            set({ hfbChapterVerses: mappedVerses, hfbChapterLoading: false });
+            if (highlightVerse !== undefined) {
+               set({ hfbActiveVerseNum: highlightVerse });
+            }
+            console.log(`🚀 [SQLite HFB] Fetched ${book} ${chapter} (${vKey}) via IPC directly`);
+            return;
+          }
+        } catch (e) {
+            console.warn("[HFB Store] SQLite fallback failed:", e);
+        }
+      }
+
       // 1. Try to fetch from Local Pre-packaged JSON (if RAM missed it)
       const startTime = performance.now();
       try {
