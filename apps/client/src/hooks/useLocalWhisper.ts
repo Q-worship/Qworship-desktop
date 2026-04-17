@@ -47,7 +47,7 @@ function getSttAPI(): SttAPI | null {
 
 // ── Sleep / Wake patterns ────────────────────────────────────────
 const SLEEP_PATTERNS = [
-  /\b(go to sleep|sleep|stop listening|pause|be quiet|shut up|mute)\b/i,
+  /\b(go to sleep|sleep|stop listening|pause|be quiet|shut up|mute|thank you|amen|dismiss)\b/i,
 ];
 const WAKE_PATTERNS = [
   /\b(wake up|i'?m ready|bible|start listening|resume|unmute|listen)\b/i,

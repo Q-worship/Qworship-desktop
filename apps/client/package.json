@@ -49,16 +49,13 @@
     "@tanstack/react-query": "^5.90.21",
     "axios": "^1.13.6",
     "better-sqlite3": "^9.6.0",
-    "bindings": "^1.5.0",
     "canvas-txt": "^4.1.1",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
     "date-fns": "^3.6.0",
     "dexie": "^4.4.2",
     "dexie-react-hooks": "^4.4.0",
-    "file-uri-to-path": "2",
     "fuse.js": "^7.3.0",
-    "koffi": "^2.16.0",
     "lucide-react": "^0.320.0",
     "obs-websocket-js": "^5.0.3",
     "react": "^18.2.0",
@@ -68,7 +65,7 @@
     "tailwind-merge": "^2.2.1",
     "tailwindcss-animate": "^1.0.7",
     "vaul": "^0.8.9",
-    "vosk": "^0.3.39",
+    "smart-whisper": "^0.8.1",
     "words-to-numbers": "^1.5.1",
     "wouter": "^3.9.0",
     "zod": "^3.22.4",
@@ -98,17 +95,14 @@
       ]
     },
     "asarUnpack": [
-      "**/node_modules/vosk/**/*",
+      "**/node_modules/smart-whisper/**/*",
       "**/node_modules/better-sqlite3/**/*",
-      "**/node_modules/koffi/**/*",
-      "**/node_modules/bindings/**/*",
-      "**/node_modules/file-uri-to-path/**/*",
       "dist/data/bibles/bible.db"
     ],
     "extraResources": [
       {
-        "from": "assets/vosk-model",
-        "to": "vosk-model",
+        "from": "models",
+        "to": "models",
         "filter": [
           "**/*"
         ]

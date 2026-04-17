@@ -358,6 +358,7 @@ function resolveVersion(raw: string): BibleVersion | null {
     case "new king james version":
       return "nkjv";
     case "niv":
+    case "n i v":
     case "new international":
     case "new international version":
       return "niv";
@@ -367,15 +368,19 @@ function resolveVersion(raw: string): BibleVersion | null {
     case "english standard version":
       return "esv";
     case "amp":
+    case "a m p":
     case "amplified":
     case "amplified bible":
       return "amp";
     case "msg":
+    case "m s g":
     case "message":
     case "the message":
       return "msg";
     case "gn":
+    case "g n":
     case "gnt":
+    case "g n t":
     case "good news":
     case "good news bible":
       return "gn";
@@ -396,7 +401,7 @@ const NAV_NEXT_CH =
 const NAV_PREV_CH =
   /^(previous chapter|prev chapter|chapter back|last chapter|prior chapter)$/i;
 const VERSION_SWITCH =
-  /(?:show me|switch to|use|change to|in the|read in|give me)?\s*(k j v|kjv|n k j v|nkjv|niv|e s v|esv|amp|msg|gn|gnt|amplified|king james|new king james|english standard|new international|good news|the message|message)\s*(version|translation|bible)?$/i;
+  /(?:show me|switch to|use|change to|in the|read in|give me)?\s*(k j v|kjv|n k j v|nkjv|n i v|niv|e s v|esv|a m p|amp|m s g|msg|g n|gn|g n t|gnt|amplified|king james|new king james|english standard|new international|good news|good news bible|the message|message)\s*(version|translation|bible)?$/i;
 
 // Reference patterns (handle both typed and voice)
 const PATTERNS = [
@@ -478,7 +483,22 @@ function convertWordNumbers(text: string): string {
  * before feeding into the regex-based parser.
  */
 function normalizeTranscript(raw: string): string {
-  let t = raw;
+  let t = raw.toLowerCase();
+
+  t = t
+    .replace(/\bprevious\s+buzz\b/g, " previous verse ")
+    .replace(/\bprevious\s+bus\b/g, " previous verse ")
+    .replace(/\bprevious\s+burst\b/g, " previous verse ")
+    .replace(/\bnext\s+buzz\b/g, " next verse ")
+    .replace(/\bnext\s+bus\b/g, " next verse ")
+    .replace(/\bnext\s+burst\b/g, " next verse ")
+    .replace(/\bjanuary\b/g, " john ")
+    .replace(/\bjoint\b/g, " john ")
+    .replace(/\bjon\b/g, " john ")
+    .replace(/\bjohnny\b/g, " john ")
+    .replace(/\bmatt you\b/g, " matthew ")
+    .replace(/\bsams\b/g, " psalms ");
+
   // Strip punctuation (commas, periods, etc.)
   t = t.replace(/[.,!?;:]+/g, " ");
   // Strip Whisper hallucination filler words that never appear in Bible references

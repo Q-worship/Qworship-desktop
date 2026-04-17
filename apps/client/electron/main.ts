@@ -14,7 +14,7 @@ import fs from "node:fs";
 import https from "node:https";
 
 // ── Whisper / HFB Services ──────────────────────────────────────
-import { VoskService } from "./services/voskService";
+import { WhisperService } from "./services/whisperService";
 import { BibleSQLiteService } from "./services/bibleSqliteService";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -44,7 +44,7 @@ let liveWindow: BrowserWindow | null = null;
 let deepLinkUrl: string | null = null;
 
 // ── Whisper Instances ────────────────────────────────────────────
-const sttService = new VoskService();
+const sttService = new WhisperService();
 const bibleService = new BibleSQLiteService();
 
 // Force protocol privileges so file:// allows secure constraints like getUserMedia APIs in packaging before app fires 'ready'
@@ -117,9 +117,9 @@ if (!gotTheLock) {
       console.error("[Main] Bible SQLite initialization failed:", err);
     });
 
-    // ── Initialize Vosk STT (non-blocking) ──────────────
-    initializeVosk().catch((err) => {
-      console.error("[Main] Vosk initialization failed:", err);
+    // ── Initialize Whisper STT (non-blocking) ───────────
+    initializeWhisper().catch((err) => {
+      console.error("[Main] Whisper initialization failed:", err);
     });
   });
 
@@ -134,26 +134,22 @@ if (!gotTheLock) {
   });
 }
 
-// ── Vosk Initialization ─────────────────────────────────────
-async function initializeVosk() {
+// ── Whisper Initialization ──────────────────────────────────
+async function initializeWhisper() {
   try {
-    sttService.initialize();
-    
-    // We send a success message to renderer directly since our Vosk implementation
-    // pushes statuses directly to the webContents within the service
-    // However, for initialization we just log it:
-    console.log("[Main] Vosk STT initialized successfully");
+    await sttService.initialize();
+    console.log("[Main] Whisper STT initialized successfully");
   } catch (err) {
-    console.error("[Main] Failed to initialize Vosk:", err);
+    console.error("[Main] Failed to initialize Whisper:", err);
   }
 }
 
-// ── Vosk IPC Handlers ───────────────────────────────────────
+// ── Whisper IPC Handlers ────────────────────────────────────
 let _audioChunkCount = 0;
 ipcMain.on("hfb:audio-chunk", (event, rawData: any) => {
   const arrayBuffer = rawData.buffer || rawData;
   if (_audioChunkCount++ % 100 === 0) {
-    console.log(`[Main] Audio chunk #${_audioChunkCount} dispatched to Vosk`);
+    console.log(`[Main] Audio chunk #${_audioChunkCount} dispatched to Whisper`);
   }
   if (win) {
     sttService.feedAudioChunk(win, arrayBuffer);
@@ -169,7 +165,7 @@ ipcMain.on("hfb:stop-listening", () => {
 });
 
 ipcMain.handle("hfb:get-status", () => {
-  // VoskService internally keeps status, but for simplified IPC
+  // WhisperService internally keeps status, but for simplified IPC
   // we just return a static string because the events handle UI updates
   return "active";
 });
