@@ -157,6 +157,10 @@ export const useMainPresentationStore = create<MainPresentationState>((set, get)
       body.bindingData = state.activeData;
     }
 
+    if (typeof window !== "undefined" && window.api && window.api.live) {
+      window.api.live.sendSync({ type: "MAIN_PRESENTATION_SYNC", body });
+    }
+
     fetch("/api/lower-third/push", {
       method: "POST",
       credentials: "include",

@@ -21,7 +21,8 @@ export const useAuthStore = create<AuthState>((set) => {
   }
 
   return {
-    isAuthenticated: typeof window !== 'undefined' ? !!localStorage.getItem('token') : false,
+    isAuthenticated: typeof window !== 'undefined' ? 
+      (!!localStorage.getItem('token') || (!navigator.onLine && !!localStorage.getItem('qworship_user'))) : false,
     user: initialUser,
     setAuth: (user) => {
       localStorage.setItem('qworship_user', JSON.stringify(user));

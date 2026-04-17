@@ -221,7 +221,6 @@ export const SlideGridRenderer = (props: any) => {
                             }
                           }}
                           onWheel={(e) => {
-                            e.preventDefault();
                             const container = e.currentTarget;
                             const scrollAmount = e.deltaY * 2; // Adjust sensitivity
                             container.scrollLeft += scrollAmount;

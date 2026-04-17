@@ -570,44 +570,108 @@ export function parseVoiceCommand(
       };
   }
 
-  // Try pattern matching
-  for (const pattern of PATTERNS) {
-    const m = normalized.match(pattern);
-    if (!m) continue;
+  // Try pattern matching against original text first (for typed references like John 3:16-18)
+  // Then fallback to the heavily normalized text (for STT voice transcripts)
+  for (const strToTest of [original, normalized]) {
+    for (const pattern of PATTERNS) {
+      const m = strToTest.match(pattern);
+      if (!m) continue;
 
-    let bookRaw: string,
-      chapter: number,
-      verseStart: number,
-      verseEnd: number | undefined;
+      let bookRaw: string,
+        chapter: number,
+        verseStart: number,
+        verseEnd: number | undefined;
 
-    if (/^\^\\d/.test(pattern.source)) {
-      // Numbered book patterns
-      bookRaw = `${m[1]} ${m[2]}`;
-      chapter = parseInt(m[3]);
-      verseStart = m[4] ? parseInt(m[4]) : 1;
-      verseEnd = m[5] ? parseInt(m[5]) : undefined;
-    } else {
-      bookRaw = m[1];
-      chapter = parseInt(m[2]);
-      verseStart = m[3] ? parseInt(m[3]) : 1;
-      verseEnd = m[4] ? parseInt(m[4]) : undefined;
+      if (/^\^\\d/.test(pattern.source)) {
+        // Numbered book patterns (e.g. "1 John 3:16")
+        bookRaw = `${m[1]} ${m[2]}`;
+        
+        // Handle Pattern 8 differently if it was "1 John 3" (chapter only) vs others
+        if (pattern.source === '^(\\d)\\s*([a-z]+(?:\\s+[a-z]+)?)\\s+verse\\s+(\\d+)$') {
+            chapter = 1;
+            verseStart = parseInt(m[3]);
+            verseEnd = verseStart;
+        } else {
+            chapter = parseInt(m[3]);
+            if (m[4]) {
+                verseStart = parseInt(m[4]);
+                if (m[5]) {
+                   let endV = parseInt(m[5]);
+                   if (endV < verseStart) {
+                       const startStr = verseStart.toString();
+                       const endStr = endV.toString();
+                       if (startStr.length > endStr.length) {
+                           const prefix = startStr.substring(0, startStr.length - endStr.length);
+                           const combined = parseInt(prefix + endStr);
+                           if (combined > verseStart) endV = combined;
+                       }
+                       if (endV < verseStart) endV = verseStart;
+                   }
+                   verseEnd = endV;
+                } else {
+                   verseEnd = verseStart;
+                }
+            } else {
+                verseStart = 1;
+                verseEnd = undefined; // Whole chapter
+            }
+        }
+      } else {
+        // Unnumbered book patterns (e.g. "John 3:16")
+        bookRaw = m[1];
+        
+        // Handle "John verse 5"
+        if (pattern.source === '^([a-z]+(?:\\s+[a-z]+)?)\\s+verse\\s+(\\d+)$') {
+            chapter = 1;
+            verseStart = parseInt(m[2]);
+            verseEnd = verseStart;
+        } else {
+            chapter = parseInt(m[2]);
+            if (m[3]) {
+                verseStart = parseInt(m[3]);
+                // Check if an end verse was specified
+                if (m[4]) {
+                   let endV = parseInt(m[4]);
+                   // Handle lazy shorthand typing like "16-7" instead of "16-17"
+                   if (endV < verseStart) {
+                       const startStr = verseStart.toString();
+                       const endStr = endV.toString();
+                       // e.g. start=16 (len 2), end=7 (len 1). diff = 1. prepends '1' onto '7' -> 17
+                       if (startStr.length > endStr.length) {
+                           const prefix = startStr.substring(0, startStr.length - endStr.length);
+                           const combined = parseInt(prefix + endStr);
+                           if (combined > verseStart) endV = combined;
+                       }
+                       // fallback if still strictly less than start it means invalid range, limit to single verse
+                       if (endV < verseStart) endV = verseStart;
+                   }
+                   verseEnd = endV;
+                } else {
+                   verseEnd = verseStart;
+                }
+            } else {
+                verseStart = 1;
+                verseEnd = undefined; // Whole chapter
+            }
+        }
+      }
+
+      const book = resolveBook(bookRaw);
+      if (!book) continue;
+
+      return {
+        originalText: original,
+        commandType: "lookup",
+        confidence: 0.95,
+        parsedReference: {
+          book,
+          chapter,
+          verseStart,
+          verseEnd,
+          version: defaultVersion,
+        },
+      };
     }
-
-    const book = resolveBook(bookRaw);
-    if (!book) continue;
-
-    return {
-      originalText: original,
-      commandType: "lookup",
-      confidence: 0.95,
-      parsedReference: {
-        book,
-        chapter,
-        verseStart,
-        verseEnd,
-        version: defaultVersion,
-      },
-    };
   }
 
   // Last resort: extract a book name from anywhere in the text and guess chapter/verse
@@ -697,11 +761,11 @@ export async function lookupOffline(
     if (!filtered.length) return null;
 
     const bookDisplay = filtered[0].book || ref.book;
-    const refStr = ref.verseEnd
-      ? `${bookDisplay} ${ref.chapter}:${ref.verseStart}-${ref.verseEnd}`
-      : ref.verseStart > 1
-        ? `${bookDisplay} ${ref.chapter}:${ref.verseStart}`
-        : `${bookDisplay} ${ref.chapter}`;
+    const isSingleVerse = ref.verseEnd === undefined || ref.verseEnd === ref.verseStart;
+    
+    const refStr = isSingleVerse
+      ? `${bookDisplay} ${ref.chapter}:${ref.verseStart}`
+      : `${bookDisplay} ${ref.chapter}:${ref.verseStart}-${ref.verseEnd}`;
 
     return {
       book: bookDisplay,

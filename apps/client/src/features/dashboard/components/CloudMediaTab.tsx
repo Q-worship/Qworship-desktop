@@ -1,5 +1,7 @@
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
+import { useLiveQuery } from "dexie-react-hooks";
+import { db } from "@/lib/db";
 import type { MediaAsset } from "@/types";
 import { MediaAssetGridCard } from "./MediaAssetGridCard";
 import { buildUrl } from "@/lib/queryClient";
@@ -16,14 +18,19 @@ export function CloudMediaTab({
   typeFilters?: string[];
   categoryFilters?: string[];
 }) {
-  const { data: cloudMediaResult = [], isLoading } = useQuery({
-    queryKey: ["/api/cloud-media"],
-  });
+  const localCloudMedia = useLiveQuery(() => db.mediaAssets.where("source").equals("cloud").toArray(), []);
+  const isLoading = localCloudMedia === undefined;
 
   // Extract the actual array from the result safely
   const cloudMedia = React.useMemo(() => {
-    return Array.isArray(cloudMediaResult) ? cloudMediaResult : [];
-  }, [cloudMediaResult]);
+    if (!localCloudMedia) return [];
+    return localCloudMedia.map(record => ({
+       ...record.metadata,
+       id: record.id,
+       fileUrl: record.fileUrl || record.metadata.fileUrl,
+       thumbnail: record.thumbnailUrl || record.metadata.thumbnail,
+    })) as MediaAsset[];
+  }, [localCloudMedia]);
 
   // Filter media based on search and filters from props
   const filteredMedia = React.useMemo(() => {

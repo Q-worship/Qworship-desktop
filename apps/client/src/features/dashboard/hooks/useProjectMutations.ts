@@ -452,6 +452,29 @@ export const useProjectMutations = ({
         data,
         isManualSave,
       });
+
+      // 1. ALWAYS update local Dexie cache immediately
+      let cached = await db.presentations.get(Number(presentationId));
+      if (!cached && typeof presentationId === 'string') cached = await db.presentations.get(presentationId);
+      if (cached) {
+          await db.presentations.update(cached.id!, {
+              ...data,
+              serviceData: JSON.stringify(data.presentation || data),
+              updatedAt: new Date().toISOString()
+          }).catch(() => {});
+      }
+
+      // 2. If offline, push to actionQueue and return success instantly
+      if (!navigator.onLine) {
+         console.warn("[Offline Mutate] Queueing UPDATE_PRESENTATION");
+         await db.actionQueue.add({
+             action: 'UPDATE_PRESENTATION',
+             payload: { id: presentationId, data },
+             timestamp: Date.now()
+         });
+         return { success: true, isManualSave, isOffline: true };
+      }
+
       try {
         const response = await apiRequest(
           "PUT",
@@ -462,6 +485,14 @@ export const useProjectMutations = ({
         console.log("Save API request successful:", result);
         return { ...result, isManualSave };
       } catch (error: any) {
+        if (String(error).includes("Network") || error.message === "Failed to fetch") {
+           await db.actionQueue.add({
+             action: 'UPDATE_PRESENTATION',
+             payload: { id: presentationId, data },
+             timestamp: Date.now()
+           });
+           return { success: true, isManualSave, isOffline: true };
+        }
         console.error("Save API request failed:", error);
         throw error;
       }
@@ -489,7 +520,37 @@ export const useProjectMutations = ({
   // Delete presentation mutation
   const deletePresentationMutation = useMutation({
     mutationFn: async (presentationId: string | number) => {
-      return await apiRequest("DELETE", `/api/presentations/${presentationId}`);
+      // 1. DELETE FROM CACHE FIRST
+      let cached = await db.presentations.get(Number(presentationId));
+      if (!cached && typeof presentationId === 'string') cached = await db.presentations.get(presentationId);
+      if (cached) {
+        await db.presentations.delete(cached.id!);
+      }
+
+      // 2. Queue for Cloud Delete if offline
+      if (!navigator.onLine) {
+         console.warn("[Offline Mutate] Queueing DELETE_PRESENTATION");
+         await db.actionQueue.add({
+             action: 'DELETE_PRESENTATION',
+             payload: { id: presentationId },
+             timestamp: Date.now()
+         });
+         return { success: true };
+      }
+
+      try {
+        return await apiRequest("DELETE", `/api/presentations/${presentationId}`);
+      } catch (error: any) {
+         if (String(error).includes("Network") || error.message === "Failed to fetch") {
+            await db.actionQueue.add({
+              action: 'DELETE_PRESENTATION',
+              payload: { id: presentationId },
+              timestamp: Date.now()
+            });
+            return { success: true, isOffline: true };
+         }
+         throw error;
+      }
     },
     onSuccess: () => {
       refetchPresentations();
@@ -518,6 +579,22 @@ export const useProjectMutations = ({
       name: string;
     }) => {
       console.log("Updating presentation name:", { presentationId, name });
+      
+      let cached = await db.presentations.get(Number(presentationId));
+      if (!cached && typeof presentationId === 'string') cached = await db.presentations.get(presentationId);
+      if (cached) {
+          await db.presentations.update(cached.id!, { name }).catch(()=> {});
+      }
+
+      if (!navigator.onLine) {
+         await db.actionQueue.add({
+             action: 'UPDATE_PRESENTATION',
+             payload: { id: presentationId, data: { name } },
+             timestamp: Date.now()
+         });
+         return { presentation: { id: presentationId, name }, isOffline: true };
+      }
+
       try {
         const response = await apiRequest(
           "PUT",
@@ -528,6 +605,14 @@ export const useProjectMutations = ({
         console.log("Update name API request successful:", result);
         return result;
       } catch (error: any) {
+        if (String(error).includes("Network") || error.message === "Failed to fetch") {
+          await db.actionQueue.add({
+              action: 'UPDATE_PRESENTATION',
+              payload: { id: presentationId, data: { name } },
+              timestamp: Date.now()
+          });
+          return { presentation: { id: presentationId, name }, isOffline: true };
+        }
         console.error("Update name API request failed:", error);
         throw error;
       }

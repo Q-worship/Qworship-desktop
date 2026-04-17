@@ -6,9 +6,12 @@ import {
   session,
   systemPreferences,
   protocol,
+  net,
 } from "electron";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import fs from "node:fs";
+import https from "node:https";
 
 // ── Whisper / HFB Services ──────────────────────────────────────
 import { VoskService } from "./services/voskService";
@@ -46,7 +49,8 @@ const bibleService = new BibleSQLiteService();
 
 // Force protocol privileges so file:// allows secure constraints like getUserMedia APIs in packaging before app fires 'ready'
 protocol.registerSchemesAsPrivileged([
-  { scheme: 'file', privileges: { secure: true, bypassCSP: true, corsEnabled: true, supportFetchAPI: true } }
+  { scheme: 'file', privileges: { secure: true, bypassCSP: true, corsEnabled: true, supportFetchAPI: true } },
+  { scheme: 'qworship-media', privileges: { standard: true, secure: true, bypassCSP: true, supportFetchAPI: true, corsEnabled: true } }
 ]);
 
 // Force single instance application
@@ -100,6 +104,13 @@ if (!gotTheLock) {
     }
 
     createWindow();
+
+    // Register local file protocol for media
+    protocol.handle("qworship-media", (request) => {
+      const filename = request.url.replace("qworship-media://", "");
+      const mediaPath = path.join(app.getPath("userData"), "media", decodeURIComponent(filename));
+      return net.fetch(`file://${mediaPath}`);
+    });
 
     // Initialize Bible SQLite (non-blocking)
     bibleService.initialize(process.env.VITE_PUBLIC as string).catch(err => {
@@ -167,6 +178,47 @@ ipcMain.handle("hfb:get-bible-chapter", (_event, version: string, book: string, 
   return bibleService.getChapter(version, book, chapter);
 });
 
+ipcMain.handle("hfb:get-bible-status", () => {
+  return bibleService.isLoaded;
+});
+
+
+// ── Media Downloader ───────────────────────────────────────────
+ipcMain.handle("download-media", async (_event, url: string, filename: string) => {
+  const mediaDir = path.join(app.getPath("userData"), "media");
+  if (!fs.existsSync(mediaDir)) {
+    fs.mkdirSync(mediaDir, { recursive: true });
+  }
+
+  const destPath = path.join(mediaDir, filename);
+
+  // Skip if already downloaded
+  if (fs.existsSync(destPath)) {
+    return "qworship-media://" + encodeURIComponent(filename);
+  }
+
+  return new Promise((resolve, reject) => {
+    const file = fs.createWriteStream(destPath);
+    https.get(url, (response) => {
+      if (response.statusCode === 200) {
+        response.pipe(file);
+        file.on("finish", () => {
+          file.close();
+          resolve("qworship-media://" + encodeURIComponent(filename));
+        });
+      } else {
+        file.close();
+        fs.unlink(destPath, () => {});
+        reject(new Error(`Server returned ${response.statusCode}`));
+      }
+    }).on("error", (err) => {
+      file.close();
+      fs.unlink(destPath, () => {});
+      reject(err);
+    });
+  });
+});
+
 // ── Deep Link Handlers ─────────────────────────────────────────
 function handleProtocolUri(url: string) {
   console.log("Received deep link:", url);
@@ -192,6 +244,11 @@ ipcMain.on("open-external-url", (_event, url) => {
 ipcMain.on("live:message", (event, payload) => {
   // If the message comes from the main window, send it to the live window
   if (win && event.sender === win.webContents) {
+    if (payload?.type === "CLOSE_LIVE" && liveWindow && !liveWindow.isDestroyed()) {
+      liveWindow.close();
+      return;
+    }
+
     if (liveWindow && !liveWindow.isDestroyed()) {
       liveWindow.webContents.send("live:message", payload);
     }

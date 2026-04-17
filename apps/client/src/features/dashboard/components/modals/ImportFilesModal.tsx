@@ -622,7 +622,6 @@ export const ImportFilesModal = ({ open, onOpenChange, onMediaUploaded, onMultip
                                 const scrollContainer = e.currentTarget.querySelector('[data-radix-scroll-area-viewport]');
                                 if (scrollContainer) {
                                   scrollContainer.scrollTop += e.deltaY;
-                                  e.preventDefault();
                                 }
                               }}>
                                 <div className="grid grid-cols-2 gap-2 pr-2">

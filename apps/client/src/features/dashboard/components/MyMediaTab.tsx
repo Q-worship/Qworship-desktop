@@ -1,5 +1,7 @@
 import React, { useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { useLiveQuery } from "dexie-react-hooks";
+import { db } from "@/lib/db";
 import type { MediaAsset, User } from "@/types";
 import { MediaAssetGridCard } from "./MediaAssetGridCard";
 import { buildUrl } from "@/lib/queryClient";
@@ -20,14 +22,18 @@ export function MyMediaTab({
   tagFilters?: string[];
   recentlyUploadedId?: number | null;
 }) {
-  const { data: userMediaResult, isLoading } = useQuery<{
-    assets: MediaAsset[];
-  }>({
-    queryKey: ["/api/user-media-assets"],
-    enabled: !!currentUser,
-  });
+  const localUserMedia = useLiveQuery(() => db.mediaAssets.where("source").equals("user").toArray(), []);
+  const isLoading = localUserMedia === undefined;
 
-  const userMedia = userMediaResult?.assets || [];
+  const userMedia = useMemo(() => {
+    if (!localUserMedia) return [] as MediaAsset[];
+    return localUserMedia.map(record => ({
+       ...record.metadata,
+       id: record.id,
+       fileUrl: record.fileUrl || record.metadata.fileUrl,
+       thumbnailUrl: record.thumbnailUrl || record.metadata.thumbnail,
+    })) as MediaAsset[];
+  }, [localUserMedia]);
 
   // Filter media based on search and filters from props, then sort with recently uploaded first
   const filteredMedia = useMemo(() => {

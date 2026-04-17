@@ -4150,7 +4150,7 @@ import type { Slide } from "@/types";\n${text}`,
                         <div className="w-full flex justify-center items-center rounded-xl overflow-hidden shadow-2xl relative" style={{ maxHeight: "calc(100% - 2rem)", height: "100%" }}>
                           {(selectedSlide.slide as any).subtype === "video" ? (
                             <video
-                              src={typeof selectedSlide.slide.content === "string" && selectedSlide.slide.content !== "Inspirational worship video" ? selectedSlide.slide.content : (selectedSlide.slide.videoSettings?.url || undefined)}
+                              src={resolveMediaUrl(typeof selectedSlide.slide.content === "string" ? selectedSlide.slide.content : undefined) || (typeof selectedSlide.slide.content === "string" && selectedSlide.slide.content !== "Inspirational worship video" ? selectedSlide.slide.content : (selectedSlide.slide.videoSettings?.url || undefined))}
                               autoPlay={(selectedSlide.slide as any).videoSettings?.autoPlay ?? true}
                               loop={(selectedSlide.slide as any).videoSettings?.endAction === "loop"}
                               muted
@@ -4174,7 +4174,7 @@ import type { Slide } from "@/types";\n${text}`,
                             />
                           ) : (
                             <img
-                              src={typeof selectedSlide.slide.content === "string" && selectedSlide.slide.content.length > 5 && selectedSlide.slide.content !== "Worship background image" && selectedSlide.slide.content !== "Inspirational worship video" ? selectedSlide.slide.content : "https://images.unsplash.com/photo-1438232992991-995b7058bbb3?q=80&w=2673&auto=format&fit=crop"}
+                              src={resolveMediaUrl(typeof selectedSlide.slide.content === "string" ? selectedSlide.slide.content : undefined) || (typeof selectedSlide.slide.content === "string" && selectedSlide.slide.content.length > 5 && selectedSlide.slide.content !== "Worship background image" && selectedSlide.slide.content !== "Inspirational worship video" ? selectedSlide.slide.content : "https://images.unsplash.com/photo-1438232992991-995b7058bbb3?q=80&w=2673&auto=format&fit=crop")}
                               alt={selectedSlide.slide.title || "Media preview"}
                               className="max-w-full max-h-full object-contain rounded-xl"
                             />
@@ -5295,7 +5295,6 @@ import type { Slide } from "@/types";\n${text}`,
                     }
                   }}
                   onWheel={(e) => {
-                    e.preventDefault();
                     const container = e.currentTarget;
                     const scrollAmount = e.deltaY * 2; // Adjust sensitivity
                     container.scrollLeft += scrollAmount;

@@ -284,6 +284,11 @@ export const useLowerThirdStore = create<LowerThirdState>((set, get) => {
       "[LT] pushToServer: fetching /api/lower-third/push with body:",
       body,
     );
+
+    if (typeof window !== "undefined" && window.api && window.api.live) {
+      window.api.live.sendSync({ type: "LOWER_THIRD_SYNC", body });
+    }
+
     fetch("/api/lower-third/push", {
       method: "POST",
       credentials: "include",

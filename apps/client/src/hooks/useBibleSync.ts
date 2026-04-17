@@ -8,6 +8,13 @@ export const useBibleSync = () => {
 
   const checkAndHydrateTargetVersion = useCallback(
     async (version: string, updateSyncState: boolean = true) => {
+      // If running on Desktop (Electron), bypass IndexedDB sync completely 
+      // as the heavy SQLite dictionary is already bundled natively.
+      if ((window as any).api?.bible) {
+        const isSqliteLoaded = await (window as any).api.bible.getStatus();
+        if (isSqliteLoaded) return;
+      }
+
       try {
         const state = await db.syncState.get(version);
 

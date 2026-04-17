@@ -5,10 +5,7 @@ import { useToast } from './use-toast';
 
 declare global {
   interface Window {
-    api?: {
-      onDeepLinkPayload: (callback: (url: string) => void) => () => void;
-      requestInitialDeepLink: () => void;
-    };
+    api?: any;
   }
 }
 

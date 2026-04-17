@@ -1,15 +1,35 @@
-import Database from 'better-sqlite3';
-import path from 'node:path';
 import fs from 'node:fs';
+import path from 'node:path';
+import { app } from 'electron';
+
+// Dynamically require better-sqlite3 from the unpacked directory in production
+// This prevents Electron from extracting the .node file to a /tmp directory,
+// which gets blocked by macOS Hardened Runtime/Gatekeeper.
+const getSqliteModule = () => {
+  if (app.isPackaged) {
+    const unpackedPath = path.join(process.resourcesPath, 'app.asar.unpacked', 'node_modules', 'better-sqlite3');
+    return require(unpackedPath);
+  }
+  return require('better-sqlite3');
+};
 
 export class BibleSQLiteService {
-  private db: Database.Database | null = null;
-  private isLoaded = false;
+  private db: any | null = null;
+  public isLoaded = false;
 
   constructor() {}
 
-  async initialize(publicPath: string): Promise<boolean> {
+  async initialize(publicPath: string) {
+    const desktopLog = path.join(require('os').homedir(), 'Desktop', 'qworship_sqlite_debug.log');
+    const log = (msg: string) => {
+      try { require('fs').appendFileSync(desktopLog, new Date().toISOString() + ': ' + msg + '\n'); } catch (e) {}
+      console.log(msg);
+    };
+
     try {
+      if (this.isLoaded) return true;
+
+      log(`[BibleSQLite] Initializing database from ${publicPath}...`);
       let dbPath = path.join(publicPath, 'data', 'bibles', 'bible.db');
       
       // better-sqlite3 uses native C++ bindings which cannot read inside Electron's virtual .asar archive.
@@ -18,26 +38,36 @@ export class BibleSQLiteService {
         dbPath = dbPath.replace('app.asar', 'app.asar.unpacked');
       }
       
+      log(`[BibleSQLite] Resolved dbPath: ${dbPath}`);
+
       if (!fs.existsSync(dbPath)) {
-        console.warn(`[BibleSQLite] SQLite database not found at ${dbPath}. Falling back to RAM cache.`);
+        log(`[BibleSQLite] SQLite database not found at ${dbPath}. Falling back to RAM cache.`);
         return false;
       }
-      
-      // Open in read-only mode for maximum performance and safety
-      this.db = new Database(dbPath, { readonly: true });
+
+      log(`[BibleSQLite] SQLite File exists at ${dbPath}. Instantiating Database via mapped native library...`);
+      const DatabaseModule = getSqliteModule();
+      this.db = new DatabaseModule(dbPath, { readonly: true });
       this.isLoaded = true;
-      console.log(`[BibleSQLite] Initialized successfully from ${dbPath}`);
+      log("[BibleSQLite] Successfully established connection to local database.");
       return true;
-    } catch (err) {
-      console.error('[BibleSQLite] Initialization failed:', err);
+    } catch (error: any) {
+      log(`[BibleSQLite] Failed to load offline database: ${error.message}\n${error.stack}`);
       return false;
     }
   }
 
   getChapter(version: string, book: string, chapter: number) {
-    if (!this.isLoaded || !this.db) return null;
-    
+    const desktopLog = path.join(require('os').homedir(), 'Desktop', 'qworship_sqlite_debug.log');
+    const log = (msg: string) => { try { require('fs').appendFileSync(desktopLog, new Date().toISOString() + ': ' + msg + '\n'); } catch (e) {} console.log(msg); };
+
+    if (!this.isLoaded || !this.db) {
+      log(`[BibleSQLite] getChapter failed: not loaded (isLoaded: ${this.isLoaded}, db: ${!!this.db})`);
+      return null;
+    }
+
     try {
+      log(`[BibleSQLite] Querying: version=${version}, book=${book}, chapter=${chapter}`);
       const stmt = this.db.prepare(`
         SELECT number, text 
         FROM verses 
@@ -45,9 +75,11 @@ export class BibleSQLiteService {
         ORDER BY number ASC
       `);
       
-      return stmt.all(version.toLowerCase(), book, chapter);
-    } catch (err) {
-      console.error(`[BibleSQLite] Failed to query chapter ${version} ${book} ${chapter}:`, err);
+      const results = stmt.all(version.toLowerCase(), book, chapter);
+      log(`[BibleSQLite] Query returned ${results.length} verses.`);
+      return results;
+    } catch (error: any) {
+      log(`[BibleSQLite] Failed to query chapter ${version} ${book} ${chapter}: ${error.message}`);
       return null;
     }
   }

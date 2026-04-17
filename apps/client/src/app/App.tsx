@@ -126,6 +126,8 @@ function MainPresentationSettingsRoute() {
 }
 
 import { useDesktopAuth } from "@/hooks/useDesktopAuth";
+import { useSyncEngine } from "@/hooks/useSyncEngine";
+import { useMediaAssetSync } from "@/hooks/useMediaAssetSync";
 import { Loader2 } from "lucide-react";
 
 const DesktopAuthHandler = () => {
@@ -146,6 +148,12 @@ const DesktopAuthHandler = () => {
   );
 };
 
+const SyncEngineOrchestrator = () => {
+  useSyncEngine();
+  useMediaAssetSync();
+  return null;
+};
+
 export const AppRouter = () => {
   return (
     <Router hook={useHashLocation}>
@@ -155,6 +163,7 @@ export const AppRouter = () => {
 
           {/* Global Desktop Authentication Loader overlay and Deep Link Handler */}
           <DesktopAuthHandler />
+          <SyncEngineOrchestrator />
 
           <Switch>
             <Route path="/" component={SplashScreen} />

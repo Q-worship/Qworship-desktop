@@ -89,6 +89,16 @@ contextBridge.exposeInMainWorld("api", {
   bible: {
     getChapter: (version: string, book: string, chapter: number) => {
       return ipcRenderer.invoke("hfb:get-bible-chapter", version, book, chapter);
+    },
+    getStatus: () => {
+      return ipcRenderer.invoke("hfb:get-bible-status");
+    }
+  },
+  
+  // ── Local Media Downloader IPC ────────────────────────────
+  media: {
+    download: (url: string, filename: string): Promise<string> => {
+      return ipcRenderer.invoke("download-media", url, filename);
     }
   }
 });

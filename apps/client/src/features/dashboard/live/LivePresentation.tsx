@@ -1827,7 +1827,25 @@ export const LivePresentation = (): JSX.Element => {
     };
 
     window.addEventListener("message", handleMessage);
-    return () => window.removeEventListener("message", handleMessage);
+
+    // Also listen for Electron IPC messages if running in the desktop app
+    let unsubscribeIpc: (() => void) | undefined;
+    if ((window as any).api?.live) {
+      unsubscribeIpc = (window as any).api.live.onMessage((payload: any) => {
+         const dummyEvent = { 
+           origin: window.location.origin, 
+           data: payload, 
+           source: window.opener 
+         };
+         // Call the same handler used for standard postMessage
+         handleMessage(dummyEvent as any);
+      });
+    }
+
+    return () => {
+      window.removeEventListener("message", handleMessage);
+      if (unsubscribeIpc) unsubscribeIpc();
+    };
   }, []);
 
   // OBS: Load settings from API (without password for security)

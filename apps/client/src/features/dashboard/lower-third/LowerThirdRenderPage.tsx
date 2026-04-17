@@ -97,6 +97,26 @@ export default function LowerThirdRenderPage() {
     };
   }, []);
 
+  // ── Electron Native IPC – cross-window without cloud ──────────────────────
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.api && window.api.live) {
+      console.log("Subscribing to native Electron IPC for projection updates...");
+      const unsubscribe = window.api.live.onMessage((msg: any) => {
+        if (msg.type === "LOWER_THIRD_SYNC") {
+          const d = msg.body;
+          setMsgCount((n) => n + 1);
+          setSyncState((prev) => ({
+            enabled: d.enabled ?? prev.enabled,
+            isVisible: d.isVisible ?? prev.isVisible,
+            templateId: d.template?.id ?? prev.templateId,
+            activeData: "bindingData" in d ? d.bindingData : prev.activeData,
+          }));
+        }
+      });
+      return () => unsubscribe();
+    }
+  }, []);
+
   // ── SSE – OBS browser source ─────────────────────────────────────────────
   useEffect(() => {
     function connect() {
