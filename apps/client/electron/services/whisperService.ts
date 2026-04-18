@@ -352,20 +352,28 @@ export class WhisperService {
 
     for (const candidate of bundledCandidates) {
       if (fs.existsSync(candidate)) {
+        console.log(`[WhisperService] Using bundled model at ${candidate}`);
         return candidate;
       }
+    }
+
+    if (app.isPackaged) {
+      throw new Error(
+        'Bundled Whisper model not found in packaged application resources. Rebuild the installer after running prepare:whisper-model.',
+      );
     }
 
     try {
       const resolved = manager.resolve('small.en');
       if (resolved && fs.existsSync(resolved)) {
+        console.log(`[WhisperService] Using cached smart-whisper model at ${resolved}`);
         return resolved;
       }
     } catch (error) {
       console.warn('[WhisperService] manager.resolve failed before download:', error);
     }
 
-    console.log('[WhisperService] small.en model missing, downloading with smart-whisper manager...');
+    console.log('[WhisperService] small.en model missing in development environment, downloading with smart-whisper manager...');
     await manager.download('small.en');
 
     const resolved = manager.resolve('small.en');
