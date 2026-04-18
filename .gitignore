@@ -23,5 +23,7 @@ apps/server/uploads/presentations/*
 apps/client/models/*.bin
 apps/client/models/*.onnx
 apps/client/bin/whisper.cpp
+apps/client/.cache/
+apps/client/vendor/
 
 #now the user downloads the models manually, we leave the md file though    

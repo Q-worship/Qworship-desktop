@@ -10,7 +10,8 @@
     "dev:desktop": "vite",
     "build": "vite build",
     "prepare:whisper-model": "node scripts/prepare-whisper-model.mjs",
-    "build:desktop": "pnpm run prepare:whisper-model && vite build && electron-builder",
+    "prepare:whisper-runtime": "node scripts/prepare-whisper-runtime.mjs",
+    "build:desktop": "pnpm run prepare:whisper-model && pnpm run prepare:whisper-runtime && vite build && electron-builder",
     "build:bible": "node scripts/build-bible-sqlite.js",
     "postinstall": "electron-builder install-app-deps",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
@@ -104,6 +105,13 @@
       {
         "from": "models",
         "to": "models",
+        "filter": [
+          "**/*"
+        ]
+      },
+      {
+        "from": "vendor/whispercpp/win32-x64",
+        "to": "whispercpp/win32-x64",
         "filter": [
           "**/*"
         ]
