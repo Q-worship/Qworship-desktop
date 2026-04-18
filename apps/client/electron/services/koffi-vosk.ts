@@ -1,38 +1,74 @@
+import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { app } from 'electron';
 import { createRequire } from 'module';
 
 const _require = typeof require !== 'undefined' ? require : createRequire(import.meta.url);
-const koffi = _require('koffi');
 
-let voskDir = '';
-if (app.isPackaged) {
-    if (process.resourcesPath) {
-        const fs = require('fs');
-        const possiblePaths = [
-            path.join(process.resourcesPath, 'app.asar.unpacked', 'node_modules', 'vosk'),
-            path.join(process.resourcesPath, 'app.asar.unpacked', 'apps', 'client', 'node_modules', 'vosk')
-        ];
-        voskDir = possiblePaths.find(p => fs.existsSync(p)) || possiblePaths[0];
+function getPackagedModulePackageJsonCandidates(moduleName: string) {
+    if (!process.resourcesPath) {
+        return [];
     }
-} else {
-    voskDir = path.dirname(_require.resolve('vosk/package.json'));
+
+    return [
+        path.join(process.resourcesPath, 'app.asar.unpacked', 'node_modules', moduleName, 'package.json'),
+        path.join(process.resourcesPath, 'app.asar.unpacked', 'apps', 'client', 'node_modules', moduleName, 'package.json'),
+        path.join(process.resourcesPath, 'node_modules', moduleName, 'package.json'),
+        path.join(process.resourcesPath, 'apps', 'client', 'node_modules', moduleName, 'package.json')
+    ];
 }
+
+function resolveModulePackageDir(moduleName: string) {
+    try {
+        return path.dirname(_require.resolve(`${moduleName}/package.json`));
+    } catch (error) {
+        if (!app.isPackaged) {
+            throw error;
+        }
+
+        const packagedPackageJson = getPackagedModulePackageJsonCandidates(moduleName).find(candidate => fs.existsSync(candidate));
+        if (!packagedPackageJson) {
+            throw error;
+        }
+
+        return path.dirname(packagedPackageJson);
+    }
+}
+
+function loadPackagedAwareModule<T = any>(moduleName: string): T {
+    try {
+        return _require(moduleName);
+    } catch (error) {
+        if (!app.isPackaged) {
+            throw error;
+        }
+
+        const packagedPackageJson = getPackagedModulePackageJsonCandidates(moduleName).find(candidate => fs.existsSync(candidate));
+        if (!packagedPackageJson) {
+            throw error;
+        }
+
+        return createRequire(packagedPackageJson)(moduleName) as T;
+    }
+}
+
+const koffi = loadPackagedAwareModule('koffi');
+const voskDir = resolveModulePackageDir('vosk');
 
 let soname;
 if (os.platform() === 'win32') {
-    let dllDirectory = path.resolve(path.join(voskDir, "lib", "win-x86_64"));
+    const dllDirectory = path.resolve(path.join(voskDir, 'lib', 'win-x86_64'));
     if (process.env.Path) {
         process.env.Path = process.env.Path + path.delimiter + dllDirectory;
     } else {
         process.env.Path = dllDirectory;
     }
-    soname = path.join(dllDirectory, "libvosk.dll");
+    soname = path.join(dllDirectory, 'libvosk.dll');
 } else if (os.platform() === 'darwin') {
-    soname = path.join(voskDir, "lib", "osx-universal", "libvosk.dylib");
+    soname = path.join(voskDir, 'lib', 'osx-universal', 'libvosk.dylib');
 } else {
-    soname = path.join(voskDir, "lib", "linux-x86_64", "libvosk.so");
+    soname = path.join(voskDir, 'lib', 'linux-x86_64', 'libvosk.so');
 }
 
 const libvosk = koffi.load(soname);
