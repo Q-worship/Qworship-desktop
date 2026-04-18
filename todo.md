@@ -6,3 +6,4 @@
 - [x] Optimize the desktop application for offline-first performance, speed, and accuracy across core workflows
 - [x] Build, validate, and prepare the optimized branch for push to `manus-voskv2`
 - [ ] Review and incorporate any user-provided optimization ideas attachment if it is resent
+- [x] Fix the Windows installer startup failure on `manus-voskv2` where the packaged app throws `Cannot find module 'koffi'` in the Electron main process
