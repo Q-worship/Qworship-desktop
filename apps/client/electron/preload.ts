@@ -60,6 +60,13 @@ contextBridge.exposeInMainWorld("api", {
       return () => ipcRenderer.removeListener("stt:status", handler);
     },
 
+    /** Listen for early partial command transcript events */
+    onCommandPartial: (callback: (text: string) => void) => {
+      const handler = (_event: any, text: string) => callback(text);
+      ipcRenderer.on("stt:command:partial", handler);
+      return () => ipcRenderer.removeListener("stt:command:partial", handler);
+    },
+
     /** Listen for command transcript events from the highly accurate stream */
     onCommandFinal: (callback: (text: string) => void) => {
       const handler = (_event: any, text: string) => callback(text);

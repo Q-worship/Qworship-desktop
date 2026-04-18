@@ -11,6 +11,7 @@ import { useLocalWhisper } from "@/hooks/useLocalWhisper";
 import { useRawAudioStream } from "@/hooks/useRawAudioStream";
 import { useToast } from "@/hooks/use-toast";
 import { useHFBStore } from "./useHFBStore";
+import { useBibleRAMCache } from "./useBibleRAMCache";
 import { db } from "@/lib/db";
 import type { BibleVersion } from "@/lib/offlineBibleEngine";
 
@@ -45,32 +46,70 @@ async function fetchMultiVersionVerses(
   verseStart: number,
   verseEnd?: number,
 ) {
+  const chapterNumber = Number(chapter);
+  const verseLimitStart = Number(verseStart);
+  const verseLimitEnd = verseEnd ? Number(verseEnd) : Number(verseStart);
+
   const allVersionData = await Promise.all(
     ALL_VERSIONS.map(async (v) => {
-      const verses = await db.verses
+      await useBibleRAMCache.getState().ensureVersionLoaded(v);
+
+      const ramVerses = useBibleRAMCache.getState().getChapter(v, book, chapterNumber);
+      if (ramVerses?.length) {
+        return {
+          version: v,
+          verses: ramVerses.map((verse) => ({ verse: verse.number, text: verse.text })),
+          source: 'ram',
+        };
+      }
+
+      const indexedVerses = await db.verses
         .where("[version+book+chapter]")
-        .equals([v, book, chapter])
-        .sortBy("verse");
-      return { version: v, verses };
+        .equals([v, book, chapterNumber])
+        .sortBy("verse")
+        .catch(() => []);
+      if (indexedVerses.length > 0) {
+        return { version: v, verses: indexedVerses, source: 'indexeddb' };
+      }
+
+      if ((window as any).api?.bible?.getChapter) {
+        try {
+          const sqliteVerses = await (window as any).api.bible.getChapter(v, book, chapterNumber);
+          if (Array.isArray(sqliteVerses) && sqliteVerses.length > 0) {
+            return {
+              version: v,
+              verses: sqliteVerses.map((verse: any) => ({
+                verse: Number(verse.number ?? verse.verse),
+                text: verse.text || '',
+              })),
+              source: 'sqlite',
+            };
+          }
+        } catch (error) {
+          console.warn(`[HFB] SQLite fallback failed for ${v} ${book} ${chapterNumber}:`, error);
+        }
+      }
+
+      return { version: v, verses: [], source: 'empty' };
     }),
   );
 
-  const anyVerses =
-    allVersionData.find((d) => d.verses.length > 0)?.verses || [];
-  const relevantVerseNums = anyVerses
+  const referenceCarrier =
+    allVersionData.find((entry) => entry.verses.length > 0)?.verses || [];
+  const relevantVerseNums = referenceCarrier
     .filter(
-      (v) =>
-        v.verse >= verseStart &&
-        (verseEnd ? v.verse <= verseEnd : v.verse === verseStart),
+      (verse) =>
+        verse.verse >= verseLimitStart &&
+        verse.verse <= verseLimitEnd,
     )
-    .map((v) => v.verse);
+    .map((verse) => verse.verse);
 
   if (relevantVerseNums.length === 0) return [];
 
   return relevantVerseNums.map((verseNum) => {
     const entry: Record<string, any> = { verse: verseNum };
     for (const { version, verses } of allVersionData) {
-      const found = verses.find((v) => v.verse === verseNum);
+      const found = verses.find((verse) => verse.verse === verseNum);
       entry[version] = found?.text || "";
     }
     return entry;

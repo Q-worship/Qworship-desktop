@@ -27,7 +27,6 @@ interface LocalWhisperProps {
   ) => void;
 }
 
-/** Type for the preload-exposed STT API */
 interface SttAPI {
   sendAudioChunk: (pcm16Buffer: ArrayBuffer) => void;
   startListening: () => void;
@@ -35,17 +34,16 @@ interface SttAPI {
   getStatus: () => Promise<string>;
   onTranscriptPartial: (callback: (text: string) => void) => () => void;
   onTranscriptFinal: (callback: (text: string) => void) => () => void;
+  onCommandPartial?: (callback: (text: string) => void) => () => void;
   onCommandFinal?: (callback: (text: string) => void) => () => void;
   onStatusChange: (callback: (status: string, message?: string) => void) => () => void;
 }
 
-/** Access the STT API exposed via preload */
 function getSttAPI(): SttAPI | null {
   const api = (window as any).api;
   return api?.stt ?? null;
 }
 
-// ── Sleep / Wake patterns ────────────────────────────────────────
 const SLEEP_PATTERNS = [
   /\b(go to sleep|sleep|stop listening|pause|be quiet|shut up|mute)\b/i,
 ];
@@ -65,8 +63,9 @@ export const useLocalWhisper = ({
   const [isConnected, setIsConnected] = useState(false);
   const isSleepingRef = useRef(false);
   const currentVersionRef = useRef<BibleVersion>('kjv');
+  const lastProcessedCommandRef = useRef('');
+  const lastProcessedAtRef = useRef(0);
 
-  // Store callbacks in refs to avoid stale closures
   const callbacks = useRef({
     onBibleMatch,
     onPartialTranscript,
@@ -89,51 +88,44 @@ export const useLocalWhisper = ({
     };
   });
 
-  // Cleanup functions for IPC listeners
   const cleanupRef = useRef<(() => void)[]>([]);
 
-  /**
-   * Process a final transcript: parse the voice command and dispatch
-   * the appropriate callback (bible match, navigation, version change, etc.)
-   */
-  const processTranscript = useCallback(async (text: string) => {
+  const processTranscript = useCallback(async (text: string, source: 'partial' | 'final' = 'final') => {
     const trimmed = text.trim();
     if (!trimmed) return;
 
+    const dedupeKey = `${source}:${trimmed.toLowerCase()}`;
+    const now = Date.now();
+    if (lastProcessedCommandRef.current === dedupeKey && now - lastProcessedAtRef.current < 400) {
+      return;
+    }
+    lastProcessedCommandRef.current = dedupeKey;
+    lastProcessedAtRef.current = now;
+
     const cb = callbacks.current;
 
-    // Check for sleep command
     if (SLEEP_PATTERNS.some((p) => p.test(trimmed))) {
       isSleepingRef.current = true;
       cb.onSleepCommand?.();
       return;
     }
 
-    // Check for wake command
     if (isSleepingRef.current) {
       if (WAKE_PATTERNS.some((p) => p.test(trimmed))) {
         isSleepingRef.current = false;
         cb.onWakeCommand?.();
       }
-      // While sleeping, ignore all other commands
       return;
     }
 
-    // Parse the voice command using the offline engine
     const command = parseVoiceCommand(trimmed, currentVersionRef.current);
 
     switch (command.commandType) {
       case 'lookup': {
-        if (!command.parsedReference) {
-          console.warn('[useLocalWhisper] Could not parse reference:', trimmed);
-          return;
-        }
+        if (!command.parsedReference) return;
 
-        // Look up the verse from local IndexedDB
         const result = await lookupOffline(command.parsedReference);
         if (result && result.verses.length > 0) {
-          // Format result to match the shape expected by handleBibleMatch
-          // in useHandsfreeBible (same shape as the old server response)
           const versesFormatted = result.verses.map((v) => {
             const entry: Record<string, any> = { verse: v.number };
             entry[result.version] = v.text;
@@ -149,7 +141,7 @@ export const useLocalWhisper = ({
               verses: versesFormatted,
             },
           });
-        } else {
+        } else if (source === 'final') {
           cb.onBibleMatch?.({
             success: false,
             error: `Verse not found: ${trimmed}`,
@@ -167,18 +159,12 @@ export const useLocalWhisper = ({
       }
 
       case 'verse_change': {
-        cb.onNavigation?.(
-          'verse_change',
-          command.navigationDirection,
-        );
+        cb.onNavigation?.('verse_change', command.navigationDirection);
         break;
       }
 
       case 'chapter_change': {
-        cb.onNavigation?.(
-          'chapter_change',
-          command.navigationDirection,
-        );
+        cb.onNavigation?.('chapter_change', command.navigationDirection);
         break;
       }
 
@@ -198,15 +184,10 @@ export const useLocalWhisper = ({
       }
 
       default:
-        console.log('[useLocalWhisper] Unhandled command type:', command.commandType, trimmed);
         break;
     }
   }, []);
 
-  /**
-   * Connect to the local whisper engine.
-   * Sets up IPC listeners for transcription events.
-   */
   const connect = useCallback(() => {
     const sttAPI = getSttAPI();
     if (!sttAPI) {
@@ -214,8 +195,6 @@ export const useLocalWhisper = ({
       return;
     }
 
-    // Set up IPC event listeners
-    // 1. UI Transcript Stream (Free-form conversational speech)
     const unsubPartial = sttAPI.onTranscriptPartial((text) => {
       const cleanedText = text.replace(/\[unk\]/gi, '').trim();
       callbacks.current.onPartialTranscript?.(cleanedText);
@@ -226,12 +205,21 @@ export const useLocalWhisper = ({
       callbacks.current.onFinalTranscript?.(cleanedText);
     });
 
-    // 2. Command Stream (Strict grammar limits for 99% precise extraction)
+    let unsubCommandPartial: (() => void) | undefined;
+    if (sttAPI.onCommandPartial) {
+      unsubCommandPartial = sttAPI.onCommandPartial((text) => {
+        const cleanedText = text.replace(/\[unk\]/gi, '').trim();
+        if (!cleanedText) return;
+        processTranscript(cleanedText, 'partial');
+      });
+    }
+
     let unsubCommand: (() => void) | undefined;
     if (sttAPI.onCommandFinal) {
       unsubCommand = sttAPI.onCommandFinal((text) => {
         const cleanedText = text.replace(/\[unk\]/gi, '').trim();
-        processTranscript(cleanedText);
+        if (!cleanedText) return;
+        processTranscript(cleanedText, 'final');
       });
     }
 
@@ -240,42 +228,31 @@ export const useLocalWhisper = ({
       setIsConnected(status === 'ready');
     });
 
-    cleanupRef.current = [unsubPartial, unsubFinal, unsubCommand, unsubStatus].filter(Boolean) as (() => void)[];
+    cleanupRef.current = [unsubPartial, unsubFinal, unsubCommandPartial, unsubCommand, unsubStatus].filter(Boolean) as (() => void)[];
 
-    // Tell main process to start listening
     sttAPI.startListening();
     setIsConnected(true);
   }, [processTranscript]);
 
-  /**
-   * Disconnect from the local whisper engine.
-   */
   const disconnect = useCallback(() => {
     const sttAPI = getSttAPI();
     if (sttAPI) {
       sttAPI.stopListening();
     }
 
-    // Clean up IPC listeners
     cleanupRef.current.forEach((unsub) => unsub());
     cleanupRef.current = [];
 
     setIsConnected(false);
   }, []);
 
-  /**
-   * Send PCM16 audio data to the main process.
-   * Drop-in replacement for the old WebSocket `sendPCMData`.
-   */
   const sendPCMData = useCallback((pcmBuffer: Int16Array) => {
     const sttAPI = getSttAPI();
     if (sttAPI) {
-      // Transfer the ArrayBuffer to the main process
       sttAPI.sendAudioChunk(pcmBuffer.buffer as ArrayBuffer);
     }
   }, []);
 
-  // Clean up on unmount
   useEffect(() => {
     return () => {
       cleanupRef.current.forEach((unsub) => unsub());

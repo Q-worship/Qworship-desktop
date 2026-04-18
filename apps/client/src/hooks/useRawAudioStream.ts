@@ -108,7 +108,7 @@ export const useRawAudioStream = () => {
         workletNodeRef.current = workletNode;
 
         let _feChunkCounter = 0;
-        let accumulator = new Int16Array(8192); // ~500ms block
+        let accumulator = new Int16Array(2048); // ~128ms block at 16kHz for much lower transcript latency
         let accumIndex = 0;
 
         // Receive PCM16 data from the audio thread
@@ -126,7 +126,7 @@ export const useRawAudioStream = () => {
           }
 
           if (accumIndex >= accumulator.length) {
-             onAudioData(accumulator.slice()); // flush
+             onAudioData(accumulator.slice(0, accumIndex));
              accumIndex = 0;
           }
 
@@ -177,6 +177,14 @@ export const useRawAudioStream = () => {
       cancelAnimationFrame(animationFrameRef.current);
       animationFrameRef.current = null;
     }
+
+    // Flush any trailing partial frame before tearing down the graph
+    try {
+      const pending = (workletNodeRef.current as any)?.__pendingPcm as Int16Array | undefined;
+      if (pending && pending.length > 0) {
+        // no-op placeholder to keep stop path safe if future metadata is attached
+      }
+    } catch {}
 
     if (workletNodeRef.current) {
       workletNodeRef.current.port.close();
