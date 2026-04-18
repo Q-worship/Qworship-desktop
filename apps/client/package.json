@@ -107,8 +107,8 @@
     ],
     "extraResources": [
       {
-        "from": "assets/vosk-model",
-        "to": "vosk-model",
+        "from": "assets/vosk-model-large",
+        "to": "vosk-model-large",
         "filter": [
           "**/*"
         ]

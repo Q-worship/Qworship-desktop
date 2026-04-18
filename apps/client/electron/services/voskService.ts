@@ -13,8 +13,8 @@ export class VoskService {
     vosk.setLogLevel(-1); // Silence vosk logs to avoid spam
     try {
       const modelPath = app.isPackaged 
-        ? path.join(process.resourcesPath, 'vosk-model')
-        : path.join(app.getAppPath(), 'assets/vosk-model');
+        ? path.join(process.resourcesPath, 'vosk-model-large')
+        : path.join(app.getAppPath(), 'assets/vosk-model-large');
 
       if (!fs.existsSync(modelPath)) {
         throw new Error(`[VoskService] Model not found at ${modelPath}`);
@@ -36,39 +36,10 @@ export class VoskService {
 
     if (this.isListening) return;
 
-    // "Smart Model" Grammar constraint to force 99% accuracy by limiting Vosk dictionary
-    const VOSK_GRAMMAR = [
-      // Bible Books (Removed unknown vocab, added phonetic split words)
-      "genesis", "exodus", "leviticus", "numbers", "deuteronomy", "joshua", "judges", "ruth",
-      "samuel", "kings", "chronicles", "ezra", "nehemiah", "esther", "job", "psalms", "proverbs",
-      "ecclesiastes", "song of solomon", "song of songs", "isaiah", "jeremiah", "lamentations", "ezekiel", "daniel",
-      "hosea", "joel", "amos", "obadiah", "jonah", "micah", "nahum", "zephaniah", 
-      "malachi", "matthew", "mark", "luke", "john", "acts", "romans", "corinthians",
-      "ephesians", "timothy", "titus",
-      "philemon", "hebrews", "james", "peter", "jude", "revelation",
-      // Phonetic overrides for books missing from Vosk dictionary (habakkuk, haggai, zechariah, galatians, philippians, colossians, thessalonians)
-      "have", "a", "cook", "hag", "eye", "zachariah", "gal", "asians", "filipinos", "phillip", "collisions", "tess", "salon", "ians",
-      // Words that replace numbers in books
-      "first", "second", "third",
-      // Numbers (Spelled out)
-      "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten",
-      "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen",
-      "twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety", "hundred", "thousand",
-      // Control Commands & Glue
-      "go", "to", "verse", "chapter", "search", "hands", "free", "open", "sleep", "wake", "up", "stop", "listening",
-      "pause", "be", "quiet", "shut", "mute", "resume", "listen", "start", "bible", "show", "me", "turn", "read",
-      "next", "previous", "last", "jump", "forward", "back", "backward", "and", "through", "of", "the", "i", "m", "am",
-      // English Translation Versions (Phonetic equivalents for kjv, nkjv, esv)
-      "k", "j", "v", "n", "e", "s", "amp", "msg", "niv", "king", "james", "version", "amplified", "message", "english", "standard", "new", "international",
-      // Out-of-vocabulary fallback to prevent crashes on sneezing
-      "[unk]"
-    ];
-
-    // 1. Command Recognizer (Strict Grammar)
+    // 1. Command Recognizer (Unrestricted Large Model)
     this.commandRecognizer = new vosk.Recognizer({ 
         model: this.model, 
-        sampleRate: 16000,
-        grammar: VOSK_GRAMMAR 
+        sampleRate: 16000
     });
 
     // 2. Transcript Recognizer (Free-form)
