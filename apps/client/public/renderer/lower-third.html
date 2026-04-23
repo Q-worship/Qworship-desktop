@@ -1,0 +1,337 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>QWorship Lower Third</title>
+    <style>
+      /* ── Reset & Base ─────────────────────────────────────────────────────── */
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+        background: transparent;
+        overflow: hidden;
+        font-family: "Inter", "Segoe UI", sans-serif;
+      }
+
+      /* ── Canvas ───────────────────────────────────────────────────────────── */
+      #canvas {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+      }
+
+      /* ── Element base ─────────────────────────────────────────────────────── */
+      .lt-element {
+        position: absolute;
+        overflow: hidden;
+      }
+
+      .lt-element.text-element {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      .lt-text-inner {
+        width: 100%;
+      }
+
+      /* ── Connection status (debug only) ───────────────────────────────────── */
+      #status {
+        position: fixed;
+        bottom: 8px;
+        right: 8px;
+        font-size: 10px;
+        color: rgba(255, 255, 255, 0.4);
+        font-family: monospace;
+        pointer-events: none;
+        display: none; /* hidden by default — enable for debug */
+      }
+    </style>
+  </head>
+  <body>
+    <div id="canvas"></div>
+    <div id="status">waiting for IPC…</div>
+
+    <script>
+      // ── Utilities ─────────────────────────────────────────────────────────────
+
+      const canvas = document.getElementById("canvas");
+      const statusEl = document.getElementById("status");
+
+      function setStatus(msg) {
+        if (statusEl) statusEl.textContent = msg;
+      }
+
+      // ── Text resolution ───────────────────────────────────────────────────────
+
+      function resolveText(element, data) {
+        // Composite binding: merge multiple fields into one string
+        if (element.compositeBinding && element.compositeBinding.length && data) {
+          return element.compositeBinding
+            .map(p => (p.prefix || "") + (data[p.field] || "") + (p.suffix || ""))
+            .join("");
+        }
+        if (element.binding && data) {
+          const value = data[element.binding.field];
+          return value || element.binding.placeholder || element.text || "";
+        }
+        return element.text || "";
+      }
+
+      // ── Smart font sizing (binary search) ────
+
+      function fitText(containerEl, textEl, minSize, maxSize) {
+        let min = minSize;
+        let max = maxSize;
+        let best = minSize;
+
+        const origDisplay = textEl.style.display;
+        const origClamp = textEl.style.webkitLineClamp;
+        textEl.style.webkitLineClamp = "unset";
+        textEl.style.display = "block";
+
+        while (min <= max) {
+          const mid = Math.floor((min + max) / 2);
+          textEl.style.fontSize = mid + "px";
+          const overflow =
+            textEl.scrollHeight > containerEl.clientHeight ||
+            textEl.scrollWidth > containerEl.clientWidth;
+          if (overflow) {
+            max = mid - 1;
+          } else {
+            best = mid;
+            min = mid + 1;
+          }
+        }
+
+        textEl.style.display = origDisplay || "block";
+        if (origClamp) textEl.style.webkitLineClamp = origClamp;
+        textEl.style.fontSize = best + "px";
+      }
+
+      // ── Animation helpers ─────────────────────────────────────────────────────
+
+      function applyEnterAnimation(el, anim) {
+        if (!anim || anim.type === "none") return;
+        const { type, duration, delay, easing } = anim;
+        const dur = `${duration}ms`;
+        const del = `${delay}ms`;
+        const ease = easing || "ease-out";
+
+        el.style.opacity = "0";
+        el.style.transition = "none";
+
+        switch (type) {
+          case "fadeIn":
+            el.style.transform = "none";
+            break;
+          case "slideIn":
+            el.style.transform = "translateY(16px)";
+            break;
+          case "scaleIn":
+            el.style.transform = "scale(0.92)";
+            break;
+          case "rotateIn":
+            el.style.transform = "rotate(-4deg) scale(0.92)";
+            break;
+        }
+
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            el.style.transition = `opacity ${dur} ${ease} ${del}, transform ${dur} ${ease} ${del}`;
+            el.style.opacity = "1";
+            el.style.transform = "none";
+          });
+        });
+      }
+
+      // ── Render ────────────────────────────────────────────────────────────────
+
+      let currentState = null;
+
+      function render(state) {
+        currentState = state;
+
+        if (
+          !state.enabled ||
+          !state.isVisible ||
+          !state.template ||
+          !state.bindingData
+        ) {
+          fadeOutAll();
+          return;
+        }
+
+        buildTemplate(state.template, state.bindingData, state.isVisible);
+      }
+
+      function fadeOutAll() {
+        const elements = canvas.querySelectorAll(".lt-element");
+        elements.forEach((el) => {
+          el.style.transition = "opacity 300ms ease-in, transform 300ms ease-in";
+          el.style.opacity = "0";
+          el.style.transform = "translateY(8px)";
+        });
+        setTimeout(() => {
+          canvas.innerHTML = "";
+        }, 350);
+      }
+
+      function buildTemplate(template, data, isVisible) {
+        canvas.innerHTML = "";
+        canvas.style.backgroundColor = template.backgroundColor || "transparent";
+
+        const elements = [...template.elements]
+          .filter((el) => el.visible)
+          .sort((a, b) => a.zIndex - b.zIndex);
+
+        elements.forEach((element) => {
+          if (element.type === "text") {
+            buildTextElement(element, data, isVisible);
+          } else if (element.type === "shape") {
+            buildShapeElement(element, isVisible);
+          } else if (element.type === "image") {
+            buildImageElement(element);
+          }
+        });
+      }
+
+      function buildTextElement(element, data, isVisible) {
+        const text = resolveText(element, data);
+        const defaultSize = element.fontSizeMax ?? element.fontSize ?? 48;
+        const minSize = element.fontSizeMin ?? 16;
+
+        const outer = document.createElement("div");
+        outer.className = "lt-element text-element";
+        Object.assign(outer.style, {
+          left: element.x + "%",
+          top: element.y + "%",
+          width: element.width + "%",
+          height: element.height + "%",
+          zIndex: element.zIndex,
+          alignItems:
+            element.textAlign === "center"
+              ? "center"
+              : element.textAlign === "right"
+                ? "flex-end"
+                : "flex-start",
+        });
+
+        const inner = document.createElement("div");
+        inner.className = "lt-text-inner";
+        Object.assign(inner.style, {
+          fontFamily: element.fontFamily || "Inter, sans-serif",
+          fontWeight: element.fontWeight || 700,
+          fontStyle: element.fontStyle || "normal",
+          color: element.textColor || "#ffffff",
+          textAlign: element.textAlign || "left",
+          lineHeight: element.lineHeight || 1.3,
+          letterSpacing: element.letterSpacing ? element.letterSpacing + "px" : undefined,
+          fontSize: defaultSize + "px",
+          whiteSpace: element.textOverflow === "truncate" ? "nowrap" : "pre-wrap",
+          wordBreak: "break-word",
+          overflow: "hidden",
+        });
+
+        if (element.lineClamp) {
+          inner.style.display = "-webkit-box";
+          inner.style.webkitLineClamp = element.lineClamp;
+          inner.style.webkitBoxOrient = "vertical";
+        }
+
+        inner.textContent = text;
+        outer.appendChild(inner);
+        canvas.appendChild(outer);
+
+        if (element.fontSizeDynamic) {
+          fitText(outer, inner, minSize, defaultSize);
+        }
+
+        if (element.animation && element.animation.type !== "none") {
+          applyEnterAnimation(outer, element.animation);
+        }
+      }
+
+      function buildShapeElement(element, isVisible) {
+        const el = document.createElement("div");
+        el.className = "lt-element";
+        Object.assign(el.style, {
+          left: element.x + "%",
+          top: element.y + "%",
+          width: element.width + "%",
+          height: element.height + "%",
+          zIndex: element.zIndex,
+          backgroundColor: element.gradient ? undefined : element.backgroundColor || "transparent",
+          background: element.gradient || undefined,
+          borderColor: element.borderColor,
+          borderWidth: element.borderWidth ? element.borderWidth + "px" : undefined,
+          borderStyle: element.borderWidth ? "solid" : undefined,
+          borderRadius: element.borderRadius ? element.borderRadius + "px" : undefined,
+          opacity: element.opacity ?? 1,
+          boxShadow: element.boxShadow,
+          clipPath: element.clipPath,
+          transform: element.transform,
+          backdropFilter: element.backdropFilter,
+        });
+
+        canvas.appendChild(el);
+
+        if (element.animation && element.animation.type !== "none") {
+          applyEnterAnimation(el, element.animation);
+        }
+      }
+
+      function buildImageElement(element) {
+        const el = document.createElement("img");
+        el.src = element.src || "";
+        el.alt = "";
+        Object.assign(el.style, {
+          position: "absolute",
+          left: element.x + "%",
+          top: element.y + "%",
+          width: element.width + "%",
+          height: element.height + "%",
+          zIndex: element.zIndex,
+          objectFit: element.objectFit || "cover",
+          opacity: element.opacity ?? 1,
+          borderRadius: element.borderRadius ? element.borderRadius + "px" : undefined,
+        });
+        canvas.appendChild(el);
+
+        if (element.animation && element.animation.type !== "none") {
+          applyEnterAnimation(el, element.animation);
+        }
+      }
+
+      // ── IPC State Listener ────────────────────────────────────────────────────
+      // In the Electron main process, this window is hidden and state is pushed
+      // via webContents.send('state-update', state). We listen here instead of
+      // connecting to the cloud SSE endpoint.
+
+      if (window.qworshipRendererApi) {
+        setStatus("ready — waiting for state");
+        window.qworshipRendererApi.onStateUpdate((state) => {
+          setStatus("state received");
+          render(state.lowerThird || state);
+        });
+      } else {
+        // Fallback: not running in Electron (e.g. dev browser preview).
+        // In this case nothing will render without a real state push.
+        setStatus("no IPC api found");
+        console.warn("[lower-third.html] window.qworshipRendererApi not found. Running outside Electron?");
+      }
+    </script>
+  </body>
+</html>

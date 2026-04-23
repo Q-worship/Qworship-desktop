@@ -101,6 +101,30 @@ function getAuthHeaders(): Record<string, string> {
   return headers;
 }
 
+// ─── Local renderer IPC helper ───────────────────────────────────────────────
+// When running inside the Electron desktop app, forward state to the hidden
+// offscreen main-presentation renderer window immediately (zero network latency).
+
+function pushToLocalRenderer(
+  overrides?: Partial<{
+    enabled: boolean;
+    isVisible: boolean;
+    settings: MainPresentationSettings;
+    activeData: MainPresentationBindingData | null;
+  }>,
+) {
+  const electronApi = (window as Window & { api?: { renderer?: { updateState: (type: string, state: unknown) => void } } }).api;
+  if (!electronApi?.renderer?.updateState) return; // not running in Electron
+
+  const state = useMainPresentationStore.getState();
+  electronApi.renderer.updateState('mainPresentation', {
+    enabled: overrides?.enabled ?? state.enabled,
+    isVisible: overrides?.isVisible ?? state.isVisible,
+    settings: overrides?.settings ?? state.settings,
+    bindingData: overrides && "activeData" in overrides ? overrides.activeData : state.activeData,
+  });
+}
+
 let ltBaseUrl: string | null = null;
 async function getLtBaseUrl(): Promise<string> {
   if (ltBaseUrl) return ltBaseUrl;
@@ -183,6 +207,7 @@ export const useMainPresentationStore = create<MainPresentationState>((set, get)
       set({ enabled });
       persistState({ ...get(), enabled });
       pushToServer({ enabled });
+      pushToLocalRenderer({ enabled });
       get().broadcastState();
     },
 
@@ -191,6 +216,7 @@ export const useMainPresentationStore = create<MainPresentationState>((set, get)
       set({ settings: updated });
       persistState({ ...get(), settings: updated });
       pushToServer({ settings: updated });
+      pushToLocalRenderer({ settings: updated });
       get().broadcastState();
     },
 
@@ -198,12 +224,14 @@ export const useMainPresentationStore = create<MainPresentationState>((set, get)
       set({ activeData: data, isVisible: !!data });
       get().broadcastState();
       pushToServer({ activeData: data, isVisible: !!data });
+      pushToLocalRenderer({ activeData: data, isVisible: !!data });
     },
 
     setIsVisible: (visible) => {
       set({ isVisible: visible });
       get().broadcastState();
       pushToServer({ isVisible: visible });
+      pushToLocalRenderer({ isVisible: visible });
     },
 
     setRenderPageEnabled: (enabled) => {
@@ -216,6 +244,7 @@ export const useMainPresentationStore = create<MainPresentationState>((set, get)
       set({ activeData, isVisible: true });
       get().broadcastState();
       pushToServer({ activeData, isVisible: true }, forUserId);
+      pushToLocalRenderer({ activeData, isVisible: true });
     },
 
     projectLyric: (lyrics, sectionTitle, songTitle, forUserId) => {
@@ -223,6 +252,7 @@ export const useMainPresentationStore = create<MainPresentationState>((set, get)
       set({ activeData, isVisible: true });
       get().broadcastState();
       pushToServer({ activeData, isVisible: true }, forUserId);
+      pushToLocalRenderer({ activeData, isVisible: true });
     },
 
     projectAnnouncement: (text, category, subtitle, forUserId) => {
@@ -230,12 +260,14 @@ export const useMainPresentationStore = create<MainPresentationState>((set, get)
       set({ activeData, isVisible: true });
       get().broadcastState();
       pushToServer({ activeData, isVisible: true }, forUserId);
+      pushToLocalRenderer({ activeData, isVisible: true });
     },
 
     clearActiveData: (forUserId?) => {
       set({ activeData: null, isVisible: false });
       get().broadcastState();
       pushToServer({ activeData: null, isVisible: false }, forUserId);
+      pushToLocalRenderer({ activeData: null, isVisible: false });
     },
 
     broadcastState: () => {

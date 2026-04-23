@@ -2,6 +2,7 @@ packages:
   - "apps/*"
   - "packages/*"
 allowBuilds:
+  '@stagetimerio/grandiose': false
   core-js: true
   electron: true
   es5-ext: true

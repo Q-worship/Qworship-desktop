@@ -28,6 +28,7 @@ import { useAuthStore } from "@/features/auth/auth.store";
 import { TEMPLATE_CATEGORIES } from "./defaultTemplates";
 import { LowerThirdRenderer } from "./LowerThirdRenderer";
 import type { LowerThirdTemplate, LowerThirdBindingData, TemplateCategory } from "./types";
+import { NdiSettingsPanel } from "@/features/dashboard/NdiSettingsPanel";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -328,90 +329,98 @@ export function LowerThirdSettingsPage({ onClose }: LowerThirdSettingsPageProps)
 
       {/* ── Config strip ───────────────────────────────────────────────── */}
       <div className="px-8 py-4 border-b border-gray-700/30 bg-[#0a0614] flex-shrink-0">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-          {/* Scripture */}
-          <div className="space-y-1.5">
-            <label className="text-[10px] font-bold text-gray-500 uppercase tracking-[0.1em] flex items-center gap-1">
-              <BookOpen className="w-3 h-3 text-purple-400" />
-              Scripture Template
-            </label>
-            <Select value={scriptureTemplateId} onValueChange={setScriptureTemplateId}>
-              <SelectTrigger className="bg-[#1a0f2e] border-gray-700/60 text-white text-sm h-10">
-                <SelectValue placeholder="Choose template" />
-              </SelectTrigger>
-              <SelectContent className="bg-[#1a0f2e] border-gray-700 text-white max-h-64">
-                {bibleTemplates.map((t) => (
-                  <SelectItem key={t.id} value={t.id} className="text-sm">
-                    {t.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+        {/* In the desktop app (Electron), show NDI streaming controls instead of the cloud URL */}
+        {window.api?.ndi ? (
+          <div className="space-y-3">
+            <h2 className="text-xs font-bold text-gray-500 uppercase tracking-[0.1em]">NDI Output</h2>
+            <NdiSettingsPanel />
           </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+            {/* Scripture */}
+            <div className="space-y-1.5">
+              <label className="text-[10px] font-bold text-gray-500 uppercase tracking-[0.1em] flex items-center gap-1">
+                <BookOpen className="w-3 h-3 text-purple-400" />
+                Scripture Template
+              </label>
+              <Select value={scriptureTemplateId} onValueChange={setScriptureTemplateId}>
+                <SelectTrigger className="bg-[#1a0f2e] border-gray-700/60 text-white text-sm h-10">
+                  <SelectValue placeholder="Choose template" />
+                </SelectTrigger>
+                <SelectContent className="bg-[#1a0f2e] border-gray-700 text-white max-h-64">
+                  {bibleTemplates.map((t) => (
+                    <SelectItem key={t.id} value={t.id} className="text-sm">
+                      {t.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
 
-          {/* Lyrics */}
-          <div className="space-y-1.5">
-            <label className="text-[10px] font-bold text-gray-500 uppercase tracking-[0.1em] flex items-center gap-1">
-              <Music className="w-3 h-3 text-pink-400" />
-              Lyrics Template
-            </label>
-            <Select value={lyricTemplateId} onValueChange={setLyricTemplateId}>
-              <SelectTrigger className="bg-[#1a0f2e] border-gray-700/60 text-white text-sm h-10">
-                <SelectValue placeholder="Choose template" />
-              </SelectTrigger>
-              <SelectContent className="bg-[#1a0f2e] border-gray-700 text-white max-h-64">
-                {lyricsTemplates.map((t) => (
-                  <SelectItem key={t.id} value={t.id} className="text-sm">
-                    {t.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
+            {/* Lyrics */}
+            <div className="space-y-1.5">
+              <label className="text-[10px] font-bold text-gray-500 uppercase tracking-[0.1em] flex items-center gap-1">
+                <Music className="w-3 h-3 text-pink-400" />
+                Lyrics Template
+              </label>
+              <Select value={lyricTemplateId} onValueChange={setLyricTemplateId}>
+                <SelectTrigger className="bg-[#1a0f2e] border-gray-700/60 text-white text-sm h-10">
+                  <SelectValue placeholder="Choose template" />
+                </SelectTrigger>
+                <SelectContent className="bg-[#1a0f2e] border-gray-700 text-white max-h-64">
+                  {lyricsTemplates.map((t) => (
+                    <SelectItem key={t.id} value={t.id} className="text-sm">
+                      {t.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
 
-          {/* OBS Source URL */}
-          <div className="space-y-1.5">
-            <label className="text-[10px] font-bold text-gray-500 uppercase tracking-[0.1em] flex items-center gap-1">
-              <Link className="w-3 h-3 text-blue-400" />
-              Streaming Source URL
-            </label>
-            <div className="flex items-center gap-2">
-              <div className="flex-1 flex items-center bg-[#1a0f2e] border border-gray-700/60 rounded-lg overflow-hidden min-w-0">
-                <span className="pl-3 text-gray-500 flex-shrink-0">
-                  <Link className="w-3 h-3" />
-                </span>
-                <span className="flex-1 text-xs text-gray-400 truncate px-2 py-2.5">
-                  {renderUrl}
-                </span>
+            {/* OBS Source URL */}
+            <div className="space-y-1.5">
+              <label className="text-[10px] font-bold text-gray-500 uppercase tracking-[0.1em] flex items-center gap-1">
+                <Link className="w-3 h-3 text-blue-400" />
+                Streaming Source URL
+              </label>
+              <div className="flex items-center gap-2">
+                <div className="flex-1 flex items-center bg-[#1a0f2e] border border-gray-700/60 rounded-lg overflow-hidden min-w-0">
+                  <span className="pl-3 text-gray-500 flex-shrink-0">
+                    <Link className="w-3 h-3" />
+                  </span>
+                  <span className="flex-1 text-xs text-gray-400 truncate px-2 py-2.5">
+                    {renderUrl}
+                  </span>
+                </div>
+                <button
+                  onClick={handleCopyUrl}
+                  className={`flex items-center gap-1.5 px-3 py-2.5 rounded-lg text-sm font-semibold flex-shrink-0 transition-all ${
+                    copiedUrl
+                      ? "bg-green-600 text-white"
+                      : "bg-purple-600 hover:bg-purple-500 text-white"
+                  }`}
+                  title={renderUrl}
+                >
+                  {copiedUrl ? (
+                    <Check className="w-3.5 h-3.5" />
+                  ) : (
+                    <Copy className="w-3.5 h-3.5" />
+                  )}
+                  {copiedUrl ? "Copied!" : "Copy"}
+                </button>
+                <a
+                  href={renderUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-2.5 border border-gray-700/60 rounded-lg text-gray-400 hover:text-white transition-colors flex-shrink-0"
+                  title="Open in browser"
+                >
+                  <ExternalLink className="w-4 h-4" />
+                </a>
               </div>
-              <button
-                onClick={handleCopyUrl}
-                className={`flex items-center gap-1.5 px-3 py-2.5 rounded-lg text-sm font-semibold flex-shrink-0 transition-all ${
-                  copiedUrl
-                    ? "bg-green-600 text-white"
-                    : "bg-purple-600 hover:bg-purple-500 text-white"
-                }`}
-                title={renderUrl}
-              >
-                {copiedUrl ? (
-                  <Check className="w-3.5 h-3.5" />
-                ) : (
-                  <Copy className="w-3.5 h-3.5" />
-                )}
-                {copiedUrl ? "Copied!" : "Copy"}
-              </button>
-              <a
-                href={renderUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="p-2.5 border border-gray-700/60 rounded-lg text-gray-400 hover:text-white transition-colors flex-shrink-0"
-                title="Open in browser"
-              >
-                <ExternalLink className="w-4 h-4" />
-              </a>
             </div>
           </div>
-        </div>
+        )}
       </div>
 
       {/* ── Tab bar ────────────────────────────────────────────────────── */}

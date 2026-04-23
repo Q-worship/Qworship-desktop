@@ -8,6 +8,20 @@ declare global {
     api?: {
       onDeepLinkPayload: (callback: (url: string) => void) => () => void;
       requestInitialDeepLink: () => void;
+      openWebAuth: (url: string) => void;
+      ndi?: {
+        startStream: (sources: Array<{ url: string; ndiName: string }>) => Promise<{ ok: boolean }>;
+        stopStream: () => Promise<{ ok: boolean }>;
+        getGrandioseError: () => Promise<{ message: string; details: string; solution: string } | null>;
+        onStatsUpdate: (callback: (stats: unknown) => void) => () => void;
+        onError: (callback: (err: unknown) => void) => () => void;
+      };
+      renderer?: {
+        updateState: (type: 'lowerThird' | 'mainPresentation', state: unknown) => void;
+      };
+    };
+    qworshipRendererApi?: {
+      onStateUpdate: (callback: (state: unknown) => void) => () => void;
     };
   }
 }
