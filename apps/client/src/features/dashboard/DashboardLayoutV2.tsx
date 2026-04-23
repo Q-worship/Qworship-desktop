@@ -2099,6 +2099,18 @@ export const QworshipHomeV2Base = (): JSX.Element => {
         setActiveDropdown(null);
       },
     },
+    // NDI Settings — only visible in the Electron desktop app
+    ...(typeof window !== 'undefined' && window.api?.ndi
+      ? [{
+          name: "NDI Settings",
+          shortcut: "",
+          hasSubmenu: false,
+          action: () => {
+            setLocation("/ndi-settings");
+            setActiveDropdown(null);
+          },
+        }]
+      : []),
   ];
 
   // Insert item functions

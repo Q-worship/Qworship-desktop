@@ -28,7 +28,6 @@ import { useAuthStore } from "@/features/auth/auth.store";
 import { TEMPLATE_CATEGORIES } from "./defaultTemplates";
 import { LowerThirdRenderer } from "./LowerThirdRenderer";
 import type { LowerThirdTemplate, LowerThirdBindingData, TemplateCategory } from "./types";
-import { NdiSettingsPanel } from "@/features/dashboard/NdiSettingsPanel";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -329,13 +328,7 @@ export function LowerThirdSettingsPage({ onClose }: LowerThirdSettingsPageProps)
 
       {/* ── Config strip ───────────────────────────────────────────────── */}
       <div className="px-8 py-4 border-b border-gray-700/30 bg-[#0a0614] flex-shrink-0">
-        {/* In the desktop app (Electron), show NDI streaming controls instead of the cloud URL */}
-        {window.api?.ndi ? (
-          <div className="space-y-3">
-            <h2 className="text-xs font-bold text-gray-500 uppercase tracking-[0.1em]">NDI Output</h2>
-            <NdiSettingsPanel />
-          </div>
-        ) : (
+        {/* Template selectors and streaming URL */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
             {/* Scripture */}
             <div className="space-y-1.5">
@@ -420,7 +413,6 @@ export function LowerThirdSettingsPage({ onClose }: LowerThirdSettingsPageProps)
               </div>
             </div>
           </div>
-        )}
       </div>
 
       {/* ── Tab bar ────────────────────────────────────────────────────── */}
