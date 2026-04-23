@@ -1,7 +1,22 @@
 import { QueryClient, QueryFunction } from "@tanstack/react-query";
+import { useAuthStore } from "@/features/auth/auth.store";
+
+// ─── Global 401 handler ───────────────────────────────────────────────────────
+// When the server rejects a token (expired / invalid), clear local auth state
+// and bounce the user back to the login screen.
+function handle401() {
+  useAuthStore.getState().logout();
+  // Use hash-based redirect since the app uses useHashLocation
+  if (typeof window !== 'undefined' && !window.location.hash.includes('/login')) {
+    window.location.hash = '#/login';
+  }
+}
 
 async function throwIfResNotOk(res: Response) {
   if (!res.ok) {
+    if (res.status === 401) {
+      handle401();
+    }
     const text = (await res.text()) || res.statusText;
     throw new Error(`${res.status}: ${text}`);
   }
@@ -138,6 +153,10 @@ export const getQueryFn: <T>(options: {
       return null;
     }
 
+    if (res.status === 401) {
+      handle401();
+    }
+
     await throwIfResNotOk(res);
     return await res.json();
   };
@@ -169,6 +188,10 @@ export const getAdminQueryFn: <T>(options: {
 
     if (unauthorizedBehavior === "returnNull" && res.status === 401) {
       return null;
+    }
+
+    if (res.status === 401) {
+      handle401();
     }
 
     await throwIfResNotOk(res);
