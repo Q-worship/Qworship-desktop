@@ -460,6 +460,7 @@ export class WhisperService extends EventEmitter {
         // Clear buffer after capturing the data for final segment
         this.resetBuffer();
         this.vad.reset();
+        this.isInSpeechSegment = false;
       }
 
       const startTime = Date.now();
