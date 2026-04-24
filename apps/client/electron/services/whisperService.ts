@@ -51,7 +51,7 @@ export class WhisperService extends EventEmitter {
   private vad: VADDetector;
   private modelPath: string = '';
 
-  /** Audio buffer — accumulates Float32 samples at 16kHz */
+  /** Audio buffer — accumulates Float32 samples at 16kHz (SPEECH ONLY) */
   private audioBuffer: Float32Array;
   private bufferWritePos: number = 0;
 
@@ -63,6 +63,16 @@ export class WhisperService extends EventEmitter {
 
   /** Sliding window size in samples (2.5s @ 16kHz) */
   private readonly WINDOW_SAMPLES = 16000 * SLIDING_WINDOW.WINDOW_SECONDS;
+
+  /**
+   * Pre-speech lookback ring buffer (300ms @ 16kHz = 4800 samples).
+   * Captures audio BEFORE VAD onset so we don't clip the start of a word.
+   * When speech is first detected, this is flushed into the main buffer.
+   */
+  private readonly LOOKBACK_SAMPLES = 16000 * 0.3;
+  private lookbackBuffer: Float32Array;
+  private lookbackWritePos: number = 0;
+  private lookbackFilled: boolean = false;
 
   /** Are we actively listening for audio? */
   private isListening: boolean = false;
@@ -82,6 +92,9 @@ export class WhisperService extends EventEmitter {
   /** Track whether speech was detected since last inference */
   private speechDetectedSinceLastInference: boolean = false;
 
+  /** Whether we are currently in a speech segment (buffering audio) */
+  private isInSpeechSegment: boolean = false;
+
   /** Track when speech started (for minimum speech duration check) */
   private speechStartTime: number | null = null;
 
@@ -94,6 +107,7 @@ export class WhisperService extends EventEmitter {
   constructor() {
     super();
     this.audioBuffer = new Float32Array(this.MAX_BUFFER_SAMPLES);
+    this.lookbackBuffer = new Float32Array(this.LOOKBACK_SAMPLES);
     this.nThreads = Math.max(2, Math.floor(os.cpus().length / 2));
 
     this.vad = new VADDetector({
@@ -150,6 +164,7 @@ export class WhisperService extends EventEmitter {
     this.resetBuffer();
     this.vad.reset();
     this.speechDetectedSinceLastInference = false;
+    this.isInSpeechSegment = false;
     this.speechStartTime = null;
     this.lastPartialText = '';
 
@@ -192,45 +207,114 @@ export class WhisperService extends EventEmitter {
       float32[i] = pcm16[i] / 32768.0;
     }
 
-    // Feed VAD
+    // Feed VAD (must always run so it can detect speech onset)
     this.vad.process(float32);
 
     const isSpeaking = this.vad.isSpeaking();
 
-    if (isSpeaking) {
-      if (!this.speechDetectedSinceLastInference) {
-        this.speechDetectedSinceLastInference = true;
-        this.speechStartTime = Date.now();
-      }
-      // Start sliding window timer when speech begins
+    if (isSpeaking && !this.isInSpeechSegment) {
+      // ── Speech onset: transition from silence → speaking ──────
+      this.isInSpeechSegment = true;
+      this.speechDetectedSinceLastInference = true;
+      this.speechStartTime = Date.now();
+
+      // Flush the lookback buffer into the main buffer so we capture
+      // the start of the word (audio just before VAD triggered).
+      this.flushLookback();
+
+      // Start sliding window timer
       this.startSlidingTimer();
+      console.log('[WhisperService] Speech onset detected — buffering started');
     }
 
-    // Append to buffer
-    const spaceLeft = this.MAX_BUFFER_SAMPLES - this.bufferWritePos;
-    const samplesToWrite = Math.min(float32.length, spaceLeft);
+    if (this.isInSpeechSegment) {
+      // ── During speech: buffer audio for inference ──────────────
+      const spaceLeft = this.MAX_BUFFER_SAMPLES - this.bufferWritePos;
+      const samplesToWrite = Math.min(float32.length, spaceLeft);
 
-    if (samplesToWrite > 0) {
-      this.audioBuffer.set(float32.subarray(0, samplesToWrite), this.bufferWritePos);
-      this.bufferWritePos += samplesToWrite;
-    }
+      if (samplesToWrite > 0) {
+        this.audioBuffer.set(float32.subarray(0, samplesToWrite), this.bufferWritePos);
+        this.bufferWritePos += samplesToWrite;
+      }
 
-    // If buffer is full, force inference
-    if (this.bufferWritePos >= this.MAX_BUFFER_SAMPLES) {
-      this.tryRunFinalInference();
+      // If buffer is full, force inference
+      if (this.bufferWritePos >= this.MAX_BUFFER_SAMPLES) {
+        this.tryRunFinalInference();
+      }
+    } else {
+      // ── Silence: only write to the lookback ring buffer ────────
+      // This data is discarded unless speech onset happens next.
+      this.writeLookback(float32);
     }
 
     // Check for end of utterance (silence timeout reached)
     if (this.vad.isEndOfUtterance() && this.speechDetectedSinceLastInference) {
+      this.isInSpeechSegment = false;
       this.stopSlidingTimer();
       if (this.isProcessing) {
-        // Queue it — we'll drain after the current inference finishes
         this._pendingFinalInference = true;
         console.log('[WhisperService] End-of-utterance queued (inference in progress)');
       } else {
         this.tryRunFinalInference();
       }
     }
+  }
+
+  // ── Lookback Ring Buffer ───────────────────────────────────────
+
+  /**
+   * Write audio samples to the lookback ring buffer.
+   * This captures the last 300ms of silence so we can recover
+   * the onset of speech when VAD triggers.
+   */
+  private writeLookback(samples: Float32Array): void {
+    for (let i = 0; i < samples.length; i++) {
+      this.lookbackBuffer[this.lookbackWritePos] = samples[i];
+      this.lookbackWritePos = (this.lookbackWritePos + 1) % this.LOOKBACK_SAMPLES;
+    }
+    if (samples.length >= this.LOOKBACK_SAMPLES) {
+      this.lookbackFilled = true;
+    }
+    if (!this.lookbackFilled && this.lookbackWritePos >= this.LOOKBACK_SAMPLES) {
+      this.lookbackFilled = true;
+    }
+  }
+
+  /**
+   * Flush the lookback buffer into the main audio buffer.
+   * Called exactly once at speech onset to capture the word start.
+   */
+  private flushLookback(): void {
+    const totalLookback = this.lookbackFilled ? this.LOOKBACK_SAMPLES : this.lookbackWritePos;
+    if (totalLookback === 0) return;
+
+    const spaceLeft = this.MAX_BUFFER_SAMPLES - this.bufferWritePos;
+    const samplesToWrite = Math.min(totalLookback, spaceLeft);
+
+    if (this.lookbackFilled) {
+      // Ring buffer wrapped — read from writePos to end, then 0 to writePos
+      const firstPart = this.lookbackBuffer.subarray(this.lookbackWritePos);
+      const secondPart = this.lookbackBuffer.subarray(0, this.lookbackWritePos);
+
+      const firstWrite = Math.min(firstPart.length, samplesToWrite);
+      this.audioBuffer.set(firstPart.subarray(0, firstWrite), this.bufferWritePos);
+      this.bufferWritePos += firstWrite;
+
+      const remainingSpace = samplesToWrite - firstWrite;
+      if (remainingSpace > 0) {
+        const secondWrite = Math.min(secondPart.length, remainingSpace);
+        this.audioBuffer.set(secondPart.subarray(0, secondWrite), this.bufferWritePos);
+        this.bufferWritePos += secondWrite;
+      }
+    } else {
+      // Buffer hasn't wrapped yet — simple copy
+      this.audioBuffer.set(this.lookbackBuffer.subarray(0, samplesToWrite), this.bufferWritePos);
+      this.bufferWritePos += samplesToWrite;
+    }
+
+    // Reset lookback
+    this.lookbackWritePos = 0;
+    this.lookbackFilled = false;
   }
 
   // ── Sliding Window Timer ──────────────────────────────────────
@@ -454,9 +538,11 @@ export class WhisperService extends EventEmitter {
     return String(result || '');
   }
 
-  /** Reset the audio buffer */
+  /** Reset the audio buffer and lookback */
   private resetBuffer(): void {
     this.bufferWritePos = 0;
+    this.lookbackWritePos = 0;
+    this.lookbackFilled = false;
   }
 
   /** Update status and emit event */
