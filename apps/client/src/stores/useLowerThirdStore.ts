@@ -127,6 +127,34 @@ function getStoredOrgName(): string {
   return "";
 }
 
+// ─── Local renderer IPC helper ───────────────────────────────────────────────
+// When running inside the Electron desktop app, forward state to the hidden
+// offscreen lower-third renderer window immediately (zero network latency).
+
+function pushToLocalRenderer(
+  overrides?: Partial<{
+    enabled: boolean;
+    isVisible: boolean;
+    templateId: string;
+    activeData: LowerThirdBindingData | null;
+  }>,
+) {
+  const electronApi = (window as Window & { api?: { renderer?: { updateState: (type: string, state: unknown) => void } } }).api;
+  if (!electronApi?.renderer?.updateState) return; // not running in Electron
+
+  const state = useLowerThirdStore.getState();
+  const resolvedTemplateId = overrides?.templateId ?? state.selectedTemplateId;
+  const resolvedTemplate = state.getAllTemplates().find((t) => t.id === resolvedTemplateId) ?? null;
+  const bindingData = overrides && "activeData" in overrides ? overrides.activeData : state.activeData;
+
+  electronApi.renderer.updateState('lowerThird', {
+    enabled: overrides?.enabled ?? state.enabled,
+    isVisible: overrides?.isVisible ?? state.isVisible,
+    template: resolvedTemplate,
+    bindingData,
+  });
+}
+
 // ─── Server API helpers ────────────────────────────────────────────────────────
 
 function getAuthHeaders(): Record<string, string> {
@@ -448,12 +476,14 @@ export const useLowerThirdStore = create<LowerThirdState>((set, get) => {
       set({ activeData: data, isVisible: !!data });
       get().broadcastState();
       pushToServer({ activeData: data, isVisible: !!data });
+      pushToLocalRenderer({ activeData: data, isVisible: !!data });
     },
 
     setIsVisible: (visible) => {
       set({ isVisible: visible });
       get().broadcastState();
       pushToServer({ isVisible: visible });
+      pushToLocalRenderer({ isVisible: visible });
     },
 
     setRenderPageEnabled: (enabled) => {
@@ -485,6 +515,7 @@ export const useLowerThirdStore = create<LowerThirdState>((set, get) => {
         },
         forUserId,
       );
+      pushToLocalRenderer({ activeData, isVisible: true, templateId: scriptureTemplateId, enabled });
     },
 
     projectLyric: (lyrics, sectionTitle, songTitle, forUserId) => {
@@ -508,6 +539,7 @@ export const useLowerThirdStore = create<LowerThirdState>((set, get) => {
         },
         forUserId,
       );
+      pushToLocalRenderer({ activeData, isVisible: true, templateId: lyricTemplateId, enabled });
     },
 
     projectAnnouncement: (text, category, subtitle, forUserId) => {
@@ -530,12 +562,14 @@ export const useLowerThirdStore = create<LowerThirdState>((set, get) => {
         },
         forUserId,
       );
+      pushToLocalRenderer({ activeData, isVisible: true, templateId: announcementTemplateId, enabled });
     },
 
     clearActiveData: (forUserId?) => {
       set({ activeData: null, isVisible: false });
       get().broadcastState();
       pushToServer({ activeData: null, isVisible: false }, forUserId);
+      pushToLocalRenderer({ activeData: null, isVisible: false });
     },
 
     getSelectedTemplate: () => {

@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { isWindowOpen } from "@/utils/windowUtils";
 import { useBibleProjectionStore } from "@/stores/useBibleProjectionStore";
 import { useDisplayModeStore } from "@/stores/useDisplayModeStore";
+import { useNdiSettingsStore } from "@/stores/useNdiSettingsStore";
 
 export interface UseLivePresentationProps {
   currentUser: any;
@@ -54,6 +55,12 @@ export const useLivePresentation = ({
       setLiveWindow(newWindow);
       setIsLive(true);
       setIsInPreview(false);
+
+      // ── Auto-start NDI on Go Live ────────────────────────────────
+      const ndiSettings = useNdiSettingsStore.getState();
+      if (ndiSettings.autoStartOnLive && !ndiSettings.isStreaming && window.api?.ndi) {
+        ndiSettings.startStreaming();
+      }
 
       const sendInitialData = () => {
         if (slides.length === 0) {
@@ -134,6 +141,12 @@ export const useLivePresentation = ({
     setLiveWindow(null);
     setIsInPreview(false);
     setIsBuildMode(true);
+
+    // ── Auto-stop NDI when exiting Live ─────────────────────────────
+    const ndiSettings = useNdiSettingsStore.getState();
+    if (ndiSettings.autoStartOnLive && ndiSettings.isStreaming && window.api?.ndi) {
+      ndiSettings.stopStreaming();
+    }
   };
 
   const togglePreview = () => {

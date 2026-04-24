@@ -27,6 +27,7 @@ import AssetsPage from "@/features/dashboard/pages/AssetsPage";
 import HelpSupportPage from "@/features/dashboard/pages/HelpSupportPage";
 import { LowerThirdEditorPage, LowerThirdSettingsPage } from "@/features/lowerThird";
 import { MainPresentationSettingsPage } from "@/features/mainPresentation";
+import { NdiSettingsPage } from "@/features/ndi";
 import SuperAdminSidebar from "@/features/super-admin/components/SuperAdminSidebar";
 
 const DashboardMock = () => (
@@ -120,6 +121,10 @@ function MainPresentationSettingsRoute() {
   const [, navigate] = useLocation();
   return <MainPresentationSettingsPage onClose={() => navigate("/dashboard")} />;
 }
+function NdiSettingsRoute() {
+  const [, navigate] = useLocation();
+  return <NdiSettingsPage onClose={() => navigate("/dashboard")} />;
+}
 
 import { useDesktopAuth } from "@/hooks/useDesktopAuth";
 import { Loader2 } from "lucide-react";
@@ -184,6 +189,7 @@ export const AppRouter = () => {
                   <Route path="/lower-third-settings" component={LowerThirdSettingsRoute} />
                   <Route path="/lower-third-editor/:templateId" component={LowerThirdEditorPage} />
                   <Route path="/main-presentation-settings" component={MainPresentationSettingsRoute} />
+                  <Route path="/ndi-settings" component={NdiSettingsRoute} />
 
                   <Route>
                     <div className="text-center py-20 text-muted-foreground flex items-center justify-center font-bold text-2xl h-full">

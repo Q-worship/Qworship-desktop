@@ -14,7 +14,7 @@ export default defineConfig({
         vite: {
           build: {
             rollupOptions: {
-              external: ['smart-whisper'],
+              external: ['smart-whisper', '@stagetimerio/grandiose'],
             },
           },
         },

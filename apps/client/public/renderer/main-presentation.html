@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>QWorship Main Presentation</title>
+    <style>
+      /* ── Reset & Base ─────────────────────────────────────────────────────── */
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+        background: transparent;
+        overflow: hidden;
+      }
+
+      /* ── Media Background ─────────────────────────────────────────────────── */
+      #media-bg-img,
+      #media-bg-video {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        z-index: 0;
+        display: none;
+        transition: opacity 300ms ease;
+      }
+
+      /* ── Canvas ───────────────────────────────────────────────────────────── */
+      #canvas {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+        display: flex;
+        padding: 6rem 8rem; /* safe margins */
+        opacity: 0;
+        transition: opacity 300ms ease, background 300ms ease;
+      }
+
+      /* Content Wrapper */
+      #content-wrapper {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+      }
+
+      .text-primary {
+        white-space: pre-wrap;
+        word-break: break-word;
+        line-height: 1.35;
+      }
+
+      .text-secondary {
+        opacity: 0.8;
+        font-size: 0.5em;
+        margin-top: 0.2em;
+        font-weight: 500;
+        letter-spacing: 0.05em;
+      }
+
+      .text-tertiary {
+        opacity: 0.6;
+        font-size: 0.4em;
+        font-weight: 400;
+        letter-spacing: 0.05em;
+      }
+
+      /* ── Status (debug only) ───────────────────────────────────────────────── */
+      #status {
+        position: fixed;
+        bottom: 8px;
+        right: 8px;
+        font-size: 10px;
+        color: rgba(255, 255, 255, 0.4);
+        font-family: monospace;
+        pointer-events: none;
+        display: none; /* enable for debug */
+        z-index: 999;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Background media elements -->
+    <img id="media-bg-img" src="" alt="" />
+    <video id="media-bg-video" src="" autoplay loop muted playsinline></video>
+
+    <div id="canvas">
+      <div id="content-wrapper">
+        <div id="text-primary" class="text-primary"></div>
+        <div id="text-secondary" class="text-secondary"></div>
+        <div id="text-tertiary" class="text-tertiary"></div>
+      </div>
+    </div>
+
+    <div id="status">waiting for IPC…</div>
+
+    <script>
+      // ── Element refs ─────────────────────────────────────────────────────────
+
+      const canvas = document.getElementById("canvas");
+      const mediaBgImg = document.getElementById("media-bg-img");
+      const mediaBgVideo = document.getElementById("media-bg-video");
+      const contentWrapper = document.getElementById("content-wrapper");
+      const textPrimary = document.getElementById("text-primary");
+      const textSecondary = document.getElementById("text-secondary");
+      const textTertiary = document.getElementById("text-tertiary");
+      const statusEl = document.getElementById("status");
+
+      function setStatus(msg) {
+        if (statusEl) statusEl.textContent = msg;
+      }
+
+      // ── Default Settings Fallback ─────────────────────────────────────────────
+
+      const DEFAULT_SETTINGS = {
+        backgroundType: "solid",
+        backgroundValue: "#0f0f0f",
+        fontColor: "#ffffff",
+        fontFamily: "Inter, sans-serif",
+        fontWeight: "700",
+        fontSizeMin: 40,
+        fontSizeMax: 140,
+        textAlign: "center",
+        justifyContent: "center",
+      };
+
+      // ── Render ────────────────────────────────────────────────────────────────
+
+      let currentState = null;
+
+      function render(state) {
+        const isCurrentlyHidden = !currentState || !currentState.isVisible;
+        currentState = state;
+
+        if (!state.enabled || !state.isVisible || !state.bindingData) {
+          fadeOutAll();
+          return;
+        }
+
+        const settings = state.settings || DEFAULT_SETTINGS;
+        buildContent(settings, state.bindingData);
+
+        if (isCurrentlyHidden) {
+          fadeInAll();
+        }
+      }
+
+      function fadeOutAll() {
+        if (canvas) canvas.style.opacity = "0";
+        if (mediaBgImg) mediaBgImg.style.opacity = "0";
+        if (mediaBgVideo) mediaBgVideo.style.opacity = "0";
+      }
+
+      function fadeInAll() {
+        if (canvas) canvas.style.opacity = "1";
+        if (mediaBgImg) mediaBgImg.style.opacity = "1";
+        if (mediaBgVideo) mediaBgVideo.style.opacity = "1";
+      }
+
+      function buildContent(settings, data) {
+        // 1. Background
+        if (settings.backgroundType === "solid" || settings.backgroundType === "gradient") {
+          mediaBgImg.style.display = "none";
+          mediaBgVideo.style.display = "none";
+          document.body.style.background = settings.backgroundValue || "#000000";
+        } else if (settings.backgroundType === "media") {
+          document.body.style.background = "#000000";
+          var isVideo = settings.backgroundMediaType === "video";
+          if (isVideo) {
+            mediaBgImg.style.display = "none";
+            if (settings.backgroundValue !== mediaBgVideo.src) {
+              mediaBgVideo.src = settings.backgroundValue || "";
+            }
+            mediaBgVideo.style.display = "block";
+          } else {
+            mediaBgVideo.style.display = "none";
+            mediaBgVideo.src = "";
+            if (settings.backgroundValue !== mediaBgImg.src) {
+              mediaBgImg.src = settings.backgroundValue || "";
+            }
+            mediaBgImg.style.display = "block";
+          }
+        }
+
+        // 2. Container Layout
+        canvas.style.justifyContent = settings.justifyContent;
+        canvas.style.alignItems =
+          settings.textAlign === "center"
+            ? "center"
+            : settings.textAlign === "right"
+              ? "flex-end"
+              : "flex-start";
+
+        // 3. Text Alignment & Typography
+        contentWrapper.style.textAlign = settings.textAlign;
+        contentWrapper.style.color = settings.fontColor;
+        contentWrapper.style.fontFamily = settings.fontFamily;
+        contentWrapper.style.fontWeight = settings.fontWeight;
+        contentWrapper.style.fontSize = settings.fontSizeMax + "px";
+
+        // 4. Content population
+        const primaryText = data.verse || data.lyrics || data.text || "";
+        const secondaryText = data.reference || data.sectionTitle || data.category || "";
+        const tertiaryText = data.version || data.songTitle || data.subtitle || "";
+
+        textPrimary.textContent = primaryText;
+        textSecondary.textContent = secondaryText;
+        textTertiary.textContent = tertiaryText;
+        textPrimary.style.display = primaryText ? "block" : "none";
+        textSecondary.style.display = secondaryText ? "block" : "none";
+        textTertiary.style.display = tertiaryText ? "block" : "none";
+
+        // 5. Auto-fit font size
+        fitText(settings.fontSizeMin, settings.fontSizeMax);
+      }
+
+      function fitText(lo, hi) {
+        lo = Math.max(8, lo);
+        hi = Math.max(lo, hi);
+
+        contentWrapper.style.fontSize = hi + "px";
+        if (
+          contentWrapper.scrollHeight <= canvas.clientHeight &&
+          contentWrapper.scrollWidth <= canvas.clientWidth
+        ) {
+          return;
+        }
+
+        var iterations = 12;
+        while (lo < hi - 1 && iterations-- > 0) {
+          var mid = Math.floor((lo + hi) / 2);
+          contentWrapper.style.fontSize = mid + "px";
+          var overflows =
+            contentWrapper.scrollHeight > canvas.clientHeight ||
+            contentWrapper.scrollWidth > canvas.clientWidth;
+          if (overflows) {
+            hi = mid;
+          } else {
+            lo = mid;
+          }
+        }
+        contentWrapper.style.fontSize = lo + "px";
+      }
+
+      // ── IPC State Listener ────────────────────────────────────────────────────
+      // In the Electron main process, this window is hidden and state is pushed
+      // via webContents.send('state-update', state). We listen here instead of
+      // connecting to the cloud SSE endpoint.
+
+      if (window.qworshipRendererApi) {
+        setStatus("ready — waiting for state");
+        window.qworshipRendererApi.onStateUpdate((state) => {
+          setStatus("state received");
+          // State shape from mainPresentation store: { enabled, isVisible, settings, bindingData }
+          render(state.mainPresentation || state);
+        });
+      } else {
+        setStatus("no IPC api found");
+        console.warn(
+          "[main-presentation.html] window.qworshipRendererApi not found. Running outside Electron?",
+        );
+      }
+    </script>
+  </body>
+</html>
