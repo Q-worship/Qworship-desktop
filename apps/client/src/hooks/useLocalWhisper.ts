@@ -24,9 +24,11 @@ import {
   detectBookAndChapter,
   prefetchChapter,
   type BibleVersion,
+  type BibleReference,
   type EarlyDetection,
   type OfflineBibleResult,
 } from '@/lib/offlineBibleEngine';
+import { useBibleRAMCache } from '@/features/dashboard/hooks/useBibleRAMCache';
 
 interface LocalWhisperProps {
   onBibleMatch: (result: any) => void;
@@ -108,6 +110,78 @@ export const useLocalWhisper = ({
   // Cleanup functions for IPC listeners
   const cleanupRef = useRef<(() => void)[]>([]);
 
+  // ── 3-Tier Lookup Helper ────────────────────────────────────────
+  // Matches the same fallback chain as useInlineBibleBrowser/useHFBStore:
+  // RAM Cache → IndexedDB → Cloud API
+  const lookupWithFallback = useCallback(async (
+    ref: BibleReference,
+  ): Promise<OfflineBibleResult | null> => {
+    const vKey = ref.version;
+
+    // Tier 1: RAM Cache (0ms)
+    const ramVerses = useBibleRAMCache.getState().getChapter(vKey, ref.book, ref.chapter);
+    if (ramVerses && ramVerses.length > 0) {
+      const filtered = ramVerses.filter(
+        (v) => v.number >= ref.verseStart && (ref.verseEnd ? v.number <= ref.verseEnd : true),
+      );
+      if (filtered.length > 0) {
+        console.log(`[useLocalWhisper] 🚀 RAM Cache hit: ${ref.book} ${ref.chapter}`);
+        return {
+          book: ref.book,
+          chapter: ref.chapter,
+          verses: filtered,
+          version: vKey,
+          formattedReference: `${ref.book} ${ref.chapter}:${ref.verseStart}`,
+        };
+      }
+    }
+
+    // Tier 2: IndexedDB (offline engine)
+    const offlineResult = await lookupOffline(ref);
+    if (offlineResult && offlineResult.verses.length > 0) {
+      console.log(`[useLocalWhisper] 📦 IndexedDB hit: ${ref.book} ${ref.chapter}`);
+      return offlineResult;
+    }
+
+    // Tier 3: Cloud API fallback
+    try {
+      console.log(`[useLocalWhisper] ☁️ Cloud fallback: ${ref.book} ${ref.chapter}:${ref.verseStart}`);
+      const resp = await fetch('/api/bible/search', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          book: ref.book,
+          chapter: ref.chapter,
+          verseStart: ref.verseStart,
+          verseEnd: ref.verseEnd ?? ref.verseStart,
+          version: vKey,
+        }),
+      });
+      if (resp.ok) {
+        const data = await resp.json();
+        if (data?.success && data?.result) {
+          const verses = (data.result.verses || []).map((v: any) => ({
+            number: v.verse,
+            text: v[vKey] || v.kjv || '',
+          }));
+          if (verses.length > 0) {
+            return {
+              book: ref.book,
+              chapter: ref.chapter,
+              verses,
+              version: vKey,
+              formattedReference: `${ref.book} ${ref.chapter}:${ref.verseStart}`,
+            };
+          }
+        }
+      }
+    } catch (err) {
+      console.warn('[useLocalWhisper] Cloud API fallback failed:', err);
+    }
+
+    return null;
+  }, []);
+
   // ── Speculative Prefetch Cache ──────────────────────────────────
   // Caches chapter data from IndexedDB when we detect a book+chapter
   // in a partial transcript, so the verse lookup is instant when the
@@ -185,9 +259,9 @@ export const useLocalWhisper = ({
         }
       }
 
-      // If cache miss, fall back to direct IndexedDB lookup
+      // If cache miss, fall back to 3-tier lookup (RAM → IndexedDB → Cloud API)
       if (!result) {
-        result = await lookupOffline({
+        result = await lookupWithFallback({
           book: detection.book,
           chapter: detection.chapter,
           verseStart: detection.verse,
@@ -257,8 +331,8 @@ export const useLocalWhisper = ({
           return;
         }
 
-        // Look up the verse from local IndexedDB
-        const result = await lookupOffline(command.parsedReference);
+        // Look up the verse using 3-tier fallback (RAM → IndexedDB → Cloud API)
+        const result = await lookupWithFallback(command.parsedReference);
         if (result && result.verses.length > 0) {
           // Format result to match the shape expected by handleBibleMatch
           // in useHandsfreeBible (same shape as the old server response)

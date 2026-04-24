@@ -1,6 +1,5 @@
 import { useState, useCallback, useEffect } from "react";
 import { db } from "../lib/db";
-import { apiClient } from "../lib/api";
 
 export const useBibleSync = () => {
   const [isSyncing, setIsSyncing] = useState(false);
@@ -32,11 +31,13 @@ export const useBibleSync = () => {
           syncedAt: Date.now(),
         });
 
-        // Fetch from API
-        const response = await apiClient.get(`/bible/export/${version}`);
+        // Fetch from API — use relative URL so Vite dev proxy routes correctly
+        const response = await fetch(`/api/bible/export/${version}`);
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        const data = await response.json();
 
-        if (response.data?.success && response.data?.verses) {
-          const verses = response.data.verses;
+        if (data?.success && data?.verses) {
+          const verses = data.verses;
 
           await db.transaction('rw', db.verses, db.syncState, async () => {
              // Clear existing verses for this version just in case of corruption
