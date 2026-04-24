@@ -254,15 +254,20 @@ class WhisperService extends node_events.EventEmitter {
     this.MAX_BUFFER_SAMPLES = 16e3 * 30;
     this.MIN_INFERENCE_SAMPLES = 16e3 * SLIDING_WINDOW.MIN_SPEECH_SECONDS;
     this.WINDOW_SAMPLES = 16e3 * SLIDING_WINDOW.WINDOW_SECONDS;
+    this.LOOKBACK_SAMPLES = 16e3 * 0.3;
+    this.lookbackWritePos = 0;
+    this.lookbackFilled = false;
     this.isListening = false;
     this.isProcessing = false;
     this.slidingTimer = null;
     this.inferenceTimer = null;
     this._pendingFinalInference = false;
     this.speechDetectedSinceLastInference = false;
+    this.isInSpeechSegment = false;
     this.speechStartTime = null;
     this.lastPartialText = "";
     this.audioBuffer = new Float32Array(this.MAX_BUFFER_SAMPLES);
+    this.lookbackBuffer = new Float32Array(this.LOOKBACK_SAMPLES);
     this.nThreads = Math.max(2, Math.floor(os.cpus().length / 2));
     this.vad = new VADDetector({
       onsetThreshold: 0.01,
@@ -311,6 +316,7 @@ class WhisperService extends node_events.EventEmitter {
     this.resetBuffer();
     this.vad.reset();
     this.speechDetectedSinceLastInference = false;
+    this.isInSpeechSegment = false;
     this.speechStartTime = null;
     this.lastPartialText = "";
     console.log("[WhisperService] Started listening (sliding window mode)");
@@ -344,23 +350,29 @@ class WhisperService extends node_events.EventEmitter {
     }
     this.vad.process(float32);
     const isSpeaking = this.vad.isSpeaking();
-    if (isSpeaking) {
-      if (!this.speechDetectedSinceLastInference) {
-        this.speechDetectedSinceLastInference = true;
-        this.speechStartTime = Date.now();
-      }
+    if (isSpeaking && !this.isInSpeechSegment) {
+      this.isInSpeechSegment = true;
+      this.speechDetectedSinceLastInference = true;
+      this.speechStartTime = Date.now();
+      this.flushLookback();
       this.startSlidingTimer();
+      console.log("[WhisperService] Speech onset detected — buffering started");
     }
-    const spaceLeft = this.MAX_BUFFER_SAMPLES - this.bufferWritePos;
-    const samplesToWrite = Math.min(float32.length, spaceLeft);
-    if (samplesToWrite > 0) {
-      this.audioBuffer.set(float32.subarray(0, samplesToWrite), this.bufferWritePos);
-      this.bufferWritePos += samplesToWrite;
-    }
-    if (this.bufferWritePos >= this.MAX_BUFFER_SAMPLES) {
-      this.tryRunFinalInference();
+    if (this.isInSpeechSegment) {
+      const spaceLeft = this.MAX_BUFFER_SAMPLES - this.bufferWritePos;
+      const samplesToWrite = Math.min(float32.length, spaceLeft);
+      if (samplesToWrite > 0) {
+        this.audioBuffer.set(float32.subarray(0, samplesToWrite), this.bufferWritePos);
+        this.bufferWritePos += samplesToWrite;
+      }
+      if (this.bufferWritePos >= this.MAX_BUFFER_SAMPLES) {
+        this.tryRunFinalInference();
+      }
+    } else {
+      this.writeLookback(float32);
     }
     if (this.vad.isEndOfUtterance() && this.speechDetectedSinceLastInference) {
+      this.isInSpeechSegment = false;
       this.stopSlidingTimer();
       if (this.isProcessing) {
         this._pendingFinalInference = true;
@@ -369,6 +381,52 @@ class WhisperService extends node_events.EventEmitter {
         this.tryRunFinalInference();
       }
     }
+  }
+  // ── Lookback Ring Buffer ───────────────────────────────────────
+  /**
+   * Write audio samples to the lookback ring buffer.
+   * This captures the last 300ms of silence so we can recover
+   * the onset of speech when VAD triggers.
+   */
+  writeLookback(samples) {
+    for (let i = 0; i < samples.length; i++) {
+      this.lookbackBuffer[this.lookbackWritePos] = samples[i];
+      this.lookbackWritePos = (this.lookbackWritePos + 1) % this.LOOKBACK_SAMPLES;
+    }
+    if (samples.length >= this.LOOKBACK_SAMPLES) {
+      this.lookbackFilled = true;
+    }
+    if (!this.lookbackFilled && this.lookbackWritePos >= this.LOOKBACK_SAMPLES) {
+      this.lookbackFilled = true;
+    }
+  }
+  /**
+   * Flush the lookback buffer into the main audio buffer.
+   * Called exactly once at speech onset to capture the word start.
+   */
+  flushLookback() {
+    const totalLookback = this.lookbackFilled ? this.LOOKBACK_SAMPLES : this.lookbackWritePos;
+    if (totalLookback === 0) return;
+    const spaceLeft = this.MAX_BUFFER_SAMPLES - this.bufferWritePos;
+    const samplesToWrite = Math.min(totalLookback, spaceLeft);
+    if (this.lookbackFilled) {
+      const firstPart = this.lookbackBuffer.subarray(this.lookbackWritePos);
+      const secondPart = this.lookbackBuffer.subarray(0, this.lookbackWritePos);
+      const firstWrite = Math.min(firstPart.length, samplesToWrite);
+      this.audioBuffer.set(firstPart.subarray(0, firstWrite), this.bufferWritePos);
+      this.bufferWritePos += firstWrite;
+      const remainingSpace = samplesToWrite - firstWrite;
+      if (remainingSpace > 0) {
+        const secondWrite = Math.min(secondPart.length, remainingSpace);
+        this.audioBuffer.set(secondPart.subarray(0, secondWrite), this.bufferWritePos);
+        this.bufferWritePos += secondWrite;
+      }
+    } else {
+      this.audioBuffer.set(this.lookbackBuffer.subarray(0, samplesToWrite), this.bufferWritePos);
+      this.bufferWritePos += samplesToWrite;
+    }
+    this.lookbackWritePos = 0;
+    this.lookbackFilled = false;
   }
   // ── Sliding Window Timer ──────────────────────────────────────
   /** Start the sliding window partial inference timer */
@@ -480,6 +538,7 @@ class WhisperService extends node_events.EventEmitter {
       if (isFinal) {
         this.resetBuffer();
         this.vad.reset();
+        this.isInSpeechSegment = false;
       }
       const startTime = Date.now();
       console.log(`[WhisperService] Final inference dispatched. Samples: ${audioCopy.length}, Duration: ${(audioCopy.length / 16e3).toFixed(1)}s`);
@@ -544,9 +603,11 @@ class WhisperService extends node_events.EventEmitter {
     }
     return String(result || "");
   }
-  /** Reset the audio buffer */
+  /** Reset the audio buffer and lookback */
   resetBuffer() {
     this.bufferWritePos = 0;
+    this.lookbackWritePos = 0;
+    this.lookbackFilled = false;
   }
   /** Update status and emit event */
   setStatus(status, message) {
