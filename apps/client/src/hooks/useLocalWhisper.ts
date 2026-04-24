@@ -7,10 +7,26 @@
  *
  * The hook also handles command parsing locally using the offlineBibleEngine,
  * eliminating the need for any server-side logic.
+ *
+ * OPTIMIZATIONS (sliding window + early detection):
+ * - Partial transcripts are parsed with `detectBookAndChapter()` for
+ *   early Bible reference detection ("John 3" triggers prefetch)
+ * - Speculative prefetch loads chapter data from IndexedDB before the
+ *   user finishes speaking
+ * - Full `parseVoiceCommand()` still runs on final transcripts for
+ *   navigation, version changes, and confirmed lookups
  */
 
 import { useState, useRef, useCallback, useEffect } from 'react';
-import { parseVoiceCommand, lookupOffline, type BibleVersion } from '@/lib/offlineBibleEngine';
+import {
+  parseVoiceCommand,
+  lookupOffline,
+  detectBookAndChapter,
+  prefetchChapter,
+  type BibleVersion,
+  type EarlyDetection,
+  type OfflineBibleResult,
+} from '@/lib/offlineBibleEngine';
 
 interface LocalWhisperProps {
   onBibleMatch: (result: any) => void;
@@ -92,6 +108,113 @@ export const useLocalWhisper = ({
   // Cleanup functions for IPC listeners
   const cleanupRef = useRef<(() => void)[]>([]);
 
+  // ── Speculative Prefetch Cache ──────────────────────────────────
+  // Caches chapter data from IndexedDB when we detect a book+chapter
+  // in a partial transcript, so the verse lookup is instant when the
+  // full reference arrives.
+  const prefetchCacheRef = useRef<{
+    key: string;
+    data: OfflineBibleResult;
+  } | null>(null);
+
+  /** Track the last early detection to avoid redundant prefetches */
+  const lastDetectionRef = useRef<string>('');
+
+  /**
+   * Track whether the current partial has already triggered a bible match.
+   * Reset when a new final transcript arrives.
+   */
+  const partialMatchDeliveredRef = useRef(false);
+
+  /**
+   * Process a partial transcript for early Bible reference detection.
+   * This runs on every sliding window partial (~750ms intervals).
+   */
+  const processPartialForEarlyDetection = useCallback(async (text: string) => {
+    if (isSleepingRef.current) return;
+
+    const detection = detectBookAndChapter(text);
+    if (!detection || !detection.book) return;
+
+    // Build a key for deduplication
+    const detectionKey = `${detection.book}:${detection.chapter ?? ''}:${detection.verse ?? ''}`;
+    if (detectionKey === lastDetectionRef.current) return; // Already processed
+    lastDetectionRef.current = detectionKey;
+
+    const version = currentVersionRef.current;
+
+    // Stage 1: Book detected → log it (prefetch could happen here for book metadata)
+    if (detection.book && !detection.chapter) {
+      console.log(`[EarlyDetect] Book detected: "${detection.book}" — waiting for chapter...`);
+      return;
+    }
+
+    // Stage 2: Book + Chapter detected → speculative prefetch
+    if (detection.book && detection.chapter && !detection.verse) {
+      console.log(`[EarlyDetect] Prefetching: ${detection.book} ${detection.chapter}`);
+      const chapterData = await prefetchChapter(detection.book, detection.chapter, version);
+      if (chapterData) {
+        prefetchCacheRef.current = {
+          key: `${detection.book}:${detection.chapter}:${version}`,
+          data: chapterData,
+        };
+        console.log(`[EarlyDetect] Prefetched ${chapterData.verses.length} verses for ${detection.book} ${detection.chapter}`);
+      }
+      return;
+    }
+
+    // Stage 3: Book + Chapter + Verse detected → immediate display!
+    if (detection.book && detection.chapter && detection.verse && !partialMatchDeliveredRef.current) {
+      console.log(`[EarlyDetect] 🎯 Full reference from partial: ${detection.book} ${detection.chapter}:${detection.verse}`);
+      partialMatchDeliveredRef.current = true;
+
+      // Try to use the prefetched cache first (instant, no DB hit)
+      const cacheKey = `${detection.book}:${detection.chapter}:${version}`;
+      let result: OfflineBibleResult | null = null;
+
+      if (prefetchCacheRef.current?.key === cacheKey) {
+        // Use cached chapter data — filter to the specific verse
+        const cached = prefetchCacheRef.current.data;
+        const matchedVerses = cached.verses.filter((v) => v.number === detection.verse);
+        if (matchedVerses.length > 0) {
+          result = {
+            ...cached,
+            verses: matchedVerses,
+            formattedReference: `${detection.book} ${detection.chapter}:${detection.verse}`,
+          };
+        }
+      }
+
+      // If cache miss, fall back to direct IndexedDB lookup
+      if (!result) {
+        result = await lookupOffline({
+          book: detection.book,
+          chapter: detection.chapter,
+          verseStart: detection.verse,
+          version,
+        });
+      }
+
+      if (result && result.verses.length > 0) {
+        const versesFormatted = result.verses.map((v) => {
+          const entry: Record<string, any> = { verse: v.number };
+          entry[result!.version] = v.text;
+          return entry;
+        });
+
+        callbacks.current.onBibleMatch?.({
+          success: true,
+          commandType: 'lookup',
+          result: {
+            book: result.book,
+            chapter: result.chapter,
+            verses: versesFormatted,
+          },
+        });
+      }
+    }
+  }, []);
+
   /**
    * Process a final transcript: parse the voice command and dispatch
    * the appropriate callback (bible match, navigation, version change, etc.)
@@ -99,6 +222,11 @@ export const useLocalWhisper = ({
   const processTranscript = useCallback(async (text: string) => {
     const trimmed = text.trim();
     if (!trimmed) return;
+
+    // Reset early detection state for next utterance
+    partialMatchDeliveredRef.current = false;
+    lastDetectionRef.current = '';
+    prefetchCacheRef.current = null;
 
     const cb = callbacks.current;
 
@@ -217,6 +345,8 @@ export const useLocalWhisper = ({
     // Set up IPC event listeners
     const unsubPartial = whisperAPI.onTranscriptPartial((text) => {
       callbacks.current.onPartialTranscript?.(text);
+      // Run early detection on every partial transcript
+      processPartialForEarlyDetection(text);
     });
 
     const unsubFinal = whisperAPI.onTranscriptFinal((text) => {
@@ -234,7 +364,7 @@ export const useLocalWhisper = ({
     // Tell main process to start listening
     whisperAPI.startListening();
     setIsConnected(true);
-  }, [processTranscript]);
+  }, [processTranscript, processPartialForEarlyDetection]);
 
   /**
    * Disconnect from the local whisper engine.
@@ -248,6 +378,11 @@ export const useLocalWhisper = ({
     // Clean up IPC listeners
     cleanupRef.current.forEach((unsub) => unsub());
     cleanupRef.current = [];
+
+    // Reset early detection state
+    partialMatchDeliveredRef.current = false;
+    lastDetectionRef.current = '';
+    prefetchCacheRef.current = null;
 
     setIsConnected(false);
   }, []);

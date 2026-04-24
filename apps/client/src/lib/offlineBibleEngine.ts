@@ -649,3 +649,127 @@ export async function searchOffline(
   if (!cmd.parsedReference) return null;
   return lookupOffline({ ...cmd.parsedReference, version });
 }
+
+// ============================================================
+// Early Detection — Lightweight partial transcript parser
+// ============================================================
+
+export interface EarlyDetection {
+  /** Recognized Bible book name (canonical), or null */
+  book: string | null;
+  /** Chapter number, or null if not yet spoken */
+  chapter: number | null;
+  /** Verse number, or null if not yet spoken */
+  verse: number | null;
+  /** Confidence score (0-1) */
+  confidence: number;
+}
+
+/**
+ * Lightweight early detector for partial transcripts.
+ *
+ * Unlike `parseVoiceCommand()` which requires a complete utterance, this
+ * function detects Bible references incrementally:
+ *   - "Show me John"     → { book: "John", chapter: null, verse: null }
+ *   - "Show me John 3"   → { book: "John", chapter: 3,    verse: null }
+ *   - "Show me John 3 16"→ { book: "John", chapter: 3,    verse: 16   }
+ *
+ * Runs in <1ms — safe to call on every partial without debounce.
+ */
+export function detectBookAndChapter(text: string): EarlyDetection | null {
+  if (!text || text.trim().length < 2) return null;
+
+  // Normalize: strip conversational filler, convert word numbers, clean punctuation
+  let cleaned = text
+    .replace(/[.,!?;:]+/g, " ")
+    .replace(
+      /\b(show me|go to|turn to|read|open|find|can you|please|the book of|book of|the)\b/gi,
+      "",
+    )
+    .replace(/\s+/g, " ")
+    .trim();
+
+  // Convert spoken numbers to digits
+  cleaned = convertWordNumbers(cleaned);
+  const lower = cleaned.toLowerCase();
+
+  // Try to find a book name — scan from longest candidate to shortest
+  const words = lower.split(/\s+/);
+  let matchedBook: string | null = null;
+  let remainingWords: string[] = [];
+
+  // Try numbered book first: "1 john", "2 samuel" etc.
+  if (words.length >= 2 && /^\d$/.test(words[0])) {
+    const candidate = `${words[0]} ${words[1]}`;
+    const resolved = resolveBook(candidate);
+    if (resolved) {
+      matchedBook = resolved;
+      remainingWords = words.slice(2);
+    }
+  }
+
+  // Try multi-word then single-word book names
+  if (!matchedBook) {
+    for (let len = Math.min(3, words.length); len >= 1; len--) {
+      const candidate = words.slice(0, len).join(" ");
+      const resolved = resolveBook(candidate);
+      if (resolved) {
+        matchedBook = resolved;
+        remainingWords = words.slice(len);
+        break;
+      }
+    }
+  }
+
+  if (!matchedBook) return null;
+
+  // Extract numbers from remaining words
+  const numbers = remainingWords
+    .filter((w) => /^\d+$/.test(w))
+    .map(Number);
+
+  const chapter = numbers.length >= 1 ? numbers[0] : null;
+  const verse = numbers.length >= 2 ? numbers[1] : null;
+
+  // Confidence increases with specificity
+  const confidence = verse ? 0.95 : chapter ? 0.8 : 0.6;
+
+  return {
+    book: matchedBook,
+    chapter,
+    verse,
+    confidence,
+  };
+}
+
+/**
+ * Pre-fetch a chapter from IndexedDB into memory.
+ * Returns the chapter data or null if not found.
+ * This is designed to be called speculatively on partial matches.
+ */
+export async function prefetchChapter(
+  book: string,
+  chapter: number,
+  version: BibleVersion = "kjv",
+): Promise<OfflineBibleResult | null> {
+  try {
+    const verses = await db.verses
+      .where("[version+book+chapter]")
+      .equals([version, book, chapter])
+      .sortBy("verse");
+
+    if (!verses.length) return null;
+
+    return {
+      book,
+      chapter,
+      verses: verses.map((v) => ({ number: v.verse, text: v.text })),
+      version,
+      formattedReference: `${book} ${chapter}`,
+    };
+  } catch (err) {
+    console.error("[OfflineBible] Prefetch error:", err);
+    return null;
+  }
+}
+
