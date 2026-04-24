@@ -24,11 +24,131 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
 Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
 const electron = require("electron");
 const path = require("node:path");
+const os = require("node:os");
 const node_url = require("node:url");
 const node_events = require("node:events");
 const fs = require("node:fs");
 const https = require("node:https");
 var _documentCurrentScript = typeof document !== "undefined" ? document.currentScript : null;
+let grandiose = null;
+let grandioseError = null;
+try {
+  grandiose = require("@stagetimerio/grandiose");
+  console.log("[NdiManager] grandiose module loaded successfully");
+} catch (e) {
+  const err = e;
+  console.error(
+    "[NdiManager] CRITICAL: grandiose native module could not be loaded.\nMake sure the NDI Runtime is installed.\nDownload from: https://www.ndi.tv/tools/\nError:",
+    err.message
+  );
+  grandioseError = {
+    message: "NDI Runtime not found",
+    details: err.message,
+    solution: "Download and install NDI Tools from https://www.ndi.tv/tools/"
+  };
+}
+class NdiSender {
+  constructor(index, name, width, height) {
+    this._sender = null;
+    this._frameCount = 0;
+    this._lastFpsCheck = Date.now();
+    this._fps = 0;
+    this._bytesSent = 0;
+    this._lastBitCheck = Date.now();
+    this._bitrateMbps = 0;
+    this._index = index;
+    this._name = name;
+    this._width = width;
+    this._height = height;
+    this._init();
+  }
+  async _init() {
+    if (!grandiose) return;
+    try {
+      const senderObj = await grandiose.send({
+        name: this._name,
+        clockVideo: true,
+        clockAudio: false
+      });
+      this._sender = senderObj;
+      console.log(`[NdiSender ${this._index}] NDI sender "${this._name}" initialised`);
+    } catch (e) {
+      console.error(`[NdiSender ${this._index}] Failed to create NDI sender:`, e.message);
+    }
+  }
+  sendFrame(bgraBuffer, width, height) {
+    if (!this._sender) return;
+    this._frameCount++;
+    this._bytesSent += bgraBuffer.byteLength;
+    const now = Date.now();
+    if (now - this._lastFpsCheck >= 1e3) {
+      this._fps = this._frameCount;
+      this._frameCount = 0;
+      this._lastFpsCheck = now;
+    }
+    if (now - this._lastBitCheck >= 1e3) {
+      this._bitrateMbps = parseFloat((this._bytesSent * 8 / 1e6).toFixed(1));
+      this._bytesSent = 0;
+      this._lastBitCheck = now;
+    }
+    try {
+      this._sender.video({
+        xres: width,
+        yres: height,
+        frameRateN: 6e4,
+        frameRateD: 1001,
+        pictureAspectRatio: width / height,
+        frameFormatType: grandiose.FORMAT_TYPE_PROGRESSIVE,
+        fourCC: 1095911234,
+        // BGRA
+        lineStrideBytes: width * 4,
+        data: bgraBuffer
+      }).catch(() => {
+      });
+    } catch (e) {
+      console.error(`[NdiSender ${this._index}] sendFrame sync error:`, e.message);
+    }
+  }
+  get fps() {
+    return this._fps;
+  }
+  get bitrateMbps() {
+    return this._bitrateMbps;
+  }
+  destroy() {
+    if (this._sender) {
+      try {
+        this._sender.destroy();
+      } catch (_) {
+      }
+      this._sender = null;
+    }
+  }
+}
+class NdiManager {
+  constructor() {
+    this._senders = [null, null];
+  }
+  static getGrandioseError() {
+    return grandioseError;
+  }
+  createSender(index, name, width, height) {
+    if (this._senders[index]) this._senders[index].destroy();
+    const s = new NdiSender(index, name, width, height);
+    this._senders[index] = s;
+    return s;
+  }
+  getFpsStats() {
+    return this._senders.map((s) => s ? s.fps : 0);
+  }
+  getBitrateStats() {
+    return this._senders.map((s) => s ? s.bitrateMbps : 0);
+  }
+  destroy() {
+    this._senders.forEach((s) => s && s.destroy());
+    this._senders = [null, null];
+  }
+}
 class VADDetector {
   constructor(options = {}) {
     this.speaking = false;
@@ -116,6 +236,14 @@ class VADDetector {
 }
 let Whisper = null;
 const BIBLE_INITIAL_PROMPT = "Genesis, Exodus, Luke, Psalms, Matthew, John, Revelation, chapter, verse.";
+const SLIDING_WINDOW = {
+  /** How often to run partial inference while speech is active (ms) */
+  INTERVAL_MS: 750,
+  /** How much audio to include in each sliding window (seconds) */
+  WINDOW_SECONDS: 2.5,
+  /** Minimum audio duration before first partial inference (seconds) */
+  MIN_SPEECH_SECONDS: 0.6
+};
 class WhisperService extends node_events.EventEmitter {
   constructor() {
     super();
@@ -124,16 +252,23 @@ class WhisperService extends node_events.EventEmitter {
     this.modelPath = "";
     this.bufferWritePos = 0;
     this.MAX_BUFFER_SAMPLES = 16e3 * 30;
-    this.MIN_INFERENCE_SAMPLES = 16e3 * 0.8;
+    this.MIN_INFERENCE_SAMPLES = 16e3 * SLIDING_WINDOW.MIN_SPEECH_SECONDS;
+    this.WINDOW_SAMPLES = 16e3 * SLIDING_WINDOW.WINDOW_SECONDS;
     this.isListening = false;
     this.isProcessing = false;
-    this._pendingInference = false;
+    this.slidingTimer = null;
+    this.inferenceTimer = null;
+    this._pendingFinalInference = false;
     this.speechDetectedSinceLastInference = false;
+    this.speechStartTime = null;
+    this.lastPartialText = "";
     this.audioBuffer = new Float32Array(this.MAX_BUFFER_SAMPLES);
+    this.nThreads = Math.max(2, Math.floor(os.cpus().length / 2));
     this.vad = new VADDetector({
       onsetThreshold: 0.01,
       offsetThreshold: 6e-3,
-      silenceTimeoutMs: 1500,
+      silenceTimeoutMs: 800,
+      // Reduced from 1500ms for faster end-of-utterance
       sampleRate: 16e3
     });
   }
@@ -156,7 +291,7 @@ class WhisperService extends node_events.EventEmitter {
       this.modelPath = modelPath;
       this.whisper = new Whisper(modelPath, { gpu: false });
       this.setStatus("ready");
-      console.log("[WhisperService] Model loaded successfully");
+      console.log(`[WhisperService] Model loaded successfully (threads: ${this.nThreads})`);
     } catch (err) {
       this.setStatus("error", err.message);
       console.error("[WhisperService] Failed to load model:", err);
@@ -165,7 +300,7 @@ class WhisperService extends node_events.EventEmitter {
   }
   /**
    * Start listening for audio input.
-   * Begins the inference timer and VAD processing.
+   * Begins the sliding window timer and VAD processing.
    */
   startListening() {
     if (this.status !== "ready") {
@@ -176,13 +311,16 @@ class WhisperService extends node_events.EventEmitter {
     this.resetBuffer();
     this.vad.reset();
     this.speechDetectedSinceLastInference = false;
-    console.log("[WhisperService] Started listening");
+    this.speechStartTime = null;
+    this.lastPartialText = "";
+    console.log("[WhisperService] Started listening (sliding window mode)");
   }
   /**
    * Stop listening and process any remaining audio.
    */
   async stopListening() {
     this.isListening = false;
+    this.stopSlidingTimer();
     if (this.inferenceTimer) {
       clearInterval(this.inferenceTimer);
       this.inferenceTimer = null;
@@ -205,8 +343,13 @@ class WhisperService extends node_events.EventEmitter {
       float32[i] = pcm16[i] / 32768;
     }
     this.vad.process(float32);
-    if (this.vad.isSpeaking()) {
-      this.speechDetectedSinceLastInference = true;
+    const isSpeaking = this.vad.isSpeaking();
+    if (isSpeaking) {
+      if (!this.speechDetectedSinceLastInference) {
+        this.speechDetectedSinceLastInference = true;
+        this.speechStartTime = Date.now();
+      }
+      this.startSlidingTimer();
     }
     const spaceLeft = this.MAX_BUFFER_SAMPLES - this.bufferWritePos;
     const samplesToWrite = Math.min(float32.length, spaceLeft);
@@ -215,37 +358,122 @@ class WhisperService extends node_events.EventEmitter {
       this.bufferWritePos += samplesToWrite;
     }
     if (this.bufferWritePos >= this.MAX_BUFFER_SAMPLES) {
-      this.tryRunInference(true);
+      this.tryRunFinalInference();
     }
     if (this.vad.isEndOfUtterance() && this.speechDetectedSinceLastInference) {
+      this.stopSlidingTimer();
       if (this.isProcessing) {
-        this._pendingInference = true;
+        this._pendingFinalInference = true;
         console.log("[WhisperService] End-of-utterance queued (inference in progress)");
       } else {
-        this.tryRunInference(true);
+        this.tryRunFinalInference();
       }
     }
   }
+  // ── Sliding Window Timer ──────────────────────────────────────
+  /** Start the sliding window partial inference timer */
+  startSlidingTimer() {
+    if (this.slidingTimer) return;
+    this.slidingTimer = setInterval(() => {
+      if (!this.isListening || !this.speechDetectedSinceLastInference) {
+        this.stopSlidingTimer();
+        return;
+      }
+      if (!this.isProcessing && this.bufferWritePos >= this.MIN_INFERENCE_SAMPLES) {
+        const speechDuration = this.speechStartTime ? Date.now() - this.speechStartTime : 0;
+        if (speechDuration >= SLIDING_WINDOW.MIN_SPEECH_SECONDS * 1e3) {
+          this.runSlidingWindowInference().catch((err) => {
+            console.error("[WhisperService] Sliding window inference error:", err);
+          });
+        }
+      }
+    }, SLIDING_WINDOW.INTERVAL_MS);
+    console.log("[WhisperService] Sliding window timer started");
+  }
+  /** Stop the sliding window timer */
+  stopSlidingTimer() {
+    if (this.slidingTimer) {
+      clearInterval(this.slidingTimer);
+      this.slidingTimer = null;
+    }
+  }
   /**
-   * Attempt to run inference if conditions are met.
-   * @param isFinal Whether this is a final segment (end of utterance or forced)
+   * Run a sliding window partial inference on the last N seconds of audio.
+   * Uses a FIXED-SIZE window to avoid the growing-buffer GGML reallocation
+   * segfault that plagued the original periodic inference approach.
    */
-  tryRunInference(isFinal) {
+  async runSlidingWindowInference() {
+    if (!this.whisper || this.isProcessing) return;
+    this.isProcessing = true;
+    try {
+      const windowSamples = Math.min(this.bufferWritePos, this.WINDOW_SAMPLES);
+      const startOffset = this.bufferWritePos - windowSamples;
+      const audioCopy = new Float32Array(windowSamples);
+      audioCopy.set(this.audioBuffer.subarray(startOffset, this.bufferWritePos));
+      const startTime = Date.now();
+      console.log(`[WhisperService] Sliding window partial. Window: ${(windowSamples / 16e3).toFixed(1)}s, Total buffer: ${(this.bufferWritePos / 16e3).toFixed(1)}s`);
+      const task = await this.whisper.transcribe(audioCopy, {
+        language: "en",
+        n_threads: this.nThreads,
+        single_segment: true,
+        no_context: true,
+        no_timestamps: true,
+        initial_prompt: BIBLE_INITIAL_PROMPT
+      });
+      task.on("transcribed", (segment) => {
+        const segText = (segment.text || "").trim();
+        if (segText && segText !== this.lastPartialText) {
+          this.lastPartialText = segText;
+          this.emit("transcript-partial", segText);
+        }
+      });
+      const timeoutPromise = new Promise(
+        (_, reject) => setTimeout(() => reject(new Error("Sliding window inference timed out after 10s")), 1e4)
+      );
+      const result = await Promise.race([task.result, timeoutPromise]);
+      const elapsed = Date.now() - startTime;
+      const transcript = this.extractTranscript(result);
+      if (transcript && transcript.trim().length > 0) {
+        const cleaned = transcript.trim();
+        if (cleaned !== this.lastPartialText) {
+          this.lastPartialText = cleaned;
+          this.emit("transcript-partial", cleaned);
+          console.log(`[WhisperService] Sliding partial (${elapsed}ms): "${cleaned}"`);
+        }
+      }
+    } catch (err) {
+      console.error("[WhisperService] Sliding window inference failed:", err);
+    } finally {
+      this.isProcessing = false;
+      if (this._pendingFinalInference && this.bufferWritePos >= this.MIN_INFERENCE_SAMPLES) {
+        this._pendingFinalInference = false;
+        console.log("[WhisperService] Draining queued final inference after partial...");
+        this.tryRunFinalInference();
+      }
+    }
+  }
+  // ── Final Inference (End of Utterance) ────────────────────────
+  /**
+   * Attempt to run final inference if conditions are met.
+   */
+  tryRunFinalInference() {
     if (this.isProcessing) return;
     if (this.bufferWritePos < this.MIN_INFERENCE_SAMPLES) return;
-    if (!this.speechDetectedSinceLastInference && !isFinal) return;
-    console.log(`[WhisperService] VAD Triggered Inference (isFinal: ${isFinal}). Samples: ${this.bufferWritePos}`);
-    this.runInference(isFinal).catch((err) => {
-      console.error("[WhisperService] Inference error:", err);
+    console.log(`[WhisperService] Final inference triggered. Samples: ${this.bufferWritePos}`);
+    this.runInference(true).catch((err) => {
+      console.error("[WhisperService] Final inference error:", err);
     });
   }
   /**
-   * Run whisper.cpp inference on the current audio buffer.
+   * Run whisper.cpp inference on the FULL current audio buffer.
+   * Used for end-of-utterance final results.
    */
   async runInference(isFinal) {
     if (!this.whisper || this.isProcessing) return;
     this.isProcessing = true;
     this.speechDetectedSinceLastInference = false;
+    this.speechStartTime = null;
+    this.lastPartialText = "";
     try {
       const audioData = new Float32Array(this.audioBuffer.buffer, 0, this.bufferWritePos);
       const audioCopy = new Float32Array(audioData);
@@ -254,24 +482,27 @@ class WhisperService extends node_events.EventEmitter {
         this.vad.reset();
       }
       const startTime = Date.now();
-      console.log(`[WhisperService] C++ Engine chunk dispatched. Samples: ${audioCopy.length}, Duration: ${(audioCopy.length / 16e3).toFixed(1)}s`);
+      console.log(`[WhisperService] Final inference dispatched. Samples: ${audioCopy.length}, Duration: ${(audioCopy.length / 16e3).toFixed(1)}s`);
       const task = await this.whisper.transcribe(audioCopy, {
         language: "en",
-        n_threads: 4,
+        n_threads: this.nThreads,
         single_segment: true,
         no_context: true,
         no_timestamps: true,
         initial_prompt: BIBLE_INITIAL_PROMPT
       });
       task.on("transcribed", (segment) => {
-        console.log(`[WhisperService-C++] Segment: "${segment.text}"`);
+        const segText = (segment.text || "").trim();
+        if (segText) {
+          this.emit("transcript-partial", segText);
+        }
       });
       const timeoutPromise = new Promise(
         (_, reject) => setTimeout(() => reject(new Error("Whisper inference timed out after 30s")), 3e4)
       );
       const result = await Promise.race([task.result, timeoutPromise]);
       const elapsed = Date.now() - startTime;
-      console.log(`[WhisperService] C++ Engine resolved in ${elapsed}ms.`);
+      console.log(`[WhisperService] Final inference resolved in ${elapsed}ms.`);
       const transcript = this.extractTranscript(result);
       if (transcript && transcript.trim().length > 0) {
         const cleaned = transcript.trim();
@@ -287,12 +518,12 @@ class WhisperService extends node_events.EventEmitter {
       console.error("[WhisperService] Inference failed:", err);
     } finally {
       this.isProcessing = false;
-      if (this._pendingInference && this.bufferWritePos >= this.MIN_INFERENCE_SAMPLES) {
-        this._pendingInference = false;
-        console.log("[WhisperService] Draining queued inference...");
-        this.tryRunInference(true);
+      if (this._pendingFinalInference && this.bufferWritePos >= this.MIN_INFERENCE_SAMPLES) {
+        this._pendingFinalInference = false;
+        console.log("[WhisperService] Draining queued final inference...");
+        this.tryRunFinalInference();
       } else {
-        this._pendingInference = false;
+        this._pendingFinalInference = false;
       }
     }
   }
@@ -325,6 +556,7 @@ class WhisperService extends node_events.EventEmitter {
   /** Shut down the whisper engine and free resources */
   async shutdown() {
     this.isListening = false;
+    this.stopSlidingTimer();
     if (this.inferenceTimer) {
       clearInterval(this.inferenceTimer);
       this.inferenceTimer = null;
@@ -468,23 +700,169 @@ const MAIN_DIST = path.join(process.env.APP_ROOT, "dist-electron");
 const RENDERER_DIST = path.join(process.env.APP_ROOT, "dist");
 process.env.VITE_PUBLIC = VITE_DEV_SERVER_URL ? path.join(process.env.APP_ROOT, "public") : RENDERER_DIST;
 let win;
+let lowerThirdWindow = null;
+let mainPresentationWindow = null;
 let deepLinkUrl = null;
 const whisperService = new WhisperService();
 const modelManager = new WhisperModelManager();
 const DEFAULT_MODEL = "ggml-tiny.en.bin";
+let ndiManager = null;
+let statsInterval = null;
+let _lastCpu = os.cpus().map((c) => ({ ...c.times }));
+function getCpuPercent() {
+  const cpus = os.cpus();
+  let total = 0;
+  let idle = 0;
+  cpus.forEach((cpu, i) => {
+    const prev = _lastCpu[i];
+    const curr = cpu.times;
+    const dUser = curr.user - prev.user;
+    const dNice = curr.nice - prev.nice;
+    const dSys = curr.sys - prev.sys;
+    const dIrq = curr.irq - prev.irq;
+    const dIdle = curr.idle - prev.idle;
+    const tTotal = dUser + dNice + dSys + dIrq + dIdle;
+    total += tTotal;
+    idle += dIdle;
+  });
+  _lastCpu = cpus.map((c) => ({ ...c.times }));
+  return total > 0 ? Math.round((total - idle) / total * 100) : 0;
+}
+function createHiddenRendererWindow(rendererType) {
+  const win2 = new electron.BrowserWindow({
+    width: 1920,
+    height: 1080,
+    // enableLargerThanScreen is deprecated in modern Electron — bounds handles this
+    show: false,
+    transparent: true,
+    backgroundColor: "#00000000",
+    webPreferences: {
+      offscreen: true,
+      nodeIntegration: false,
+      contextIsolation: true,
+      webSecurity: false,
+      // allow local file:// assets from public dir
+      preload: path.join(__dirname$1, "preload.cjs")
+    }
+  });
+  const htmlFile = rendererType === "lowerThird" ? "lower-third.html" : "main-presentation.html";
+  if (VITE_DEV_SERVER_URL) {
+    win2.loadURL(`${VITE_DEV_SERVER_URL}renderer/${htmlFile}`);
+  } else {
+    win2.loadFile(path.join(RENDERER_DIST, "renderer", htmlFile));
+  }
+  win2.webContents.on("did-finish-load", () => {
+    console.log(`[RendererWindow:${rendererType}] page loaded`);
+  });
+  win2.webContents.on("did-fail-load", (_e, code, desc) => {
+    console.error(`[RendererWindow:${rendererType}] load failed:`, code, desc);
+  });
+  return win2;
+}
+function startNdiStreams(sources) {
+  console.log("[NDI] startNdiStreams", sources);
+  stopNdiStreams();
+  ndiManager = new NdiManager();
+  const grandioseError2 = NdiManager.getGrandioseError();
+  if (grandioseError2) {
+    console.error("[NDI] Grandiose error:", grandioseError2);
+    win == null ? void 0 : win.webContents.send("ndi-error", grandioseError2);
+    return;
+  }
+  if (!lowerThirdWindow || lowerThirdWindow.isDestroyed()) {
+    lowerThirdWindow = createHiddenRendererWindow("lowerThird");
+  }
+  if (!mainPresentationWindow || mainPresentationWindow.isDestroyed()) {
+    mainPresentationWindow = createHiddenRendererWindow("mainPresentation");
+  }
+  const windows = [lowerThirdWindow, mainPresentationWindow];
+  sources.forEach((src, i) => {
+    if (!src.ndiName) {
+      console.warn(`[NDI] Source ${i} missing ndiName, skipping`);
+      return;
+    }
+    const rendererWin = windows[i];
+    if (!rendererWin || rendererWin.isDestroyed()) return;
+    const sender = ndiManager.createSender(i, src.ndiName, 1920, 1080);
+    let frameLogged = false;
+    rendererWin.webContents.once("did-finish-load", () => {
+      setTimeout(() => {
+        rendererWin.webContents.setFrameRate(60);
+        rendererWin.webContents.on("paint", (_event, _dirty, image) => {
+          if (!frameLogged) {
+            console.log(`[NDI] First frame for source ${i} (${src.ndiName})`);
+            frameLogged = true;
+          }
+          try {
+            if (!image) return;
+            const frameData = image.getBitmap();
+            if (!frameData) return;
+            const size = image.getSize();
+            sender.sendFrame(frameData, size.width, size.height);
+          } catch (err) {
+            console.error(`[NDI] Frame error for source ${i}:`, err.message);
+          }
+        });
+        console.log(`[NDI] Paint listener registered for source ${i}`);
+      }, 500);
+    });
+  });
+  statsInterval = setInterval(async () => {
+    if (!win || win.isDestroyed()) return;
+    const mem = process.memoryUsage();
+    const fps = ndiManager ? ndiManager.getFpsStats() : [0, 0];
+    const bitrate = ndiManager ? ndiManager.getBitrateStats() : [0, 0];
+    const previews = await Promise.all(
+      windows.map(async (w) => {
+        if (!w || w.isDestroyed()) return null;
+        try {
+          const img = await w.webContents.capturePage();
+          return img ? img.resize({ width: 480 }).toDataURL() : null;
+        } catch {
+          return null;
+        }
+      })
+    );
+    win.webContents.send("ndi-stats-update", {
+      cpu: getCpuPercent(),
+      ram: Math.round(mem.rss / 1024 / 1024),
+      sources: [
+        { fps: fps[0], bitrateMbps: bitrate[0], active: !!(lowerThirdWindow && !lowerThirdWindow.isDestroyed()) },
+        { fps: fps[1], bitrateMbps: bitrate[1], active: !!(mainPresentationWindow && !mainPresentationWindow.isDestroyed()) }
+      ],
+      previews
+    });
+  }, 1e3);
+}
+function stopNdiStreams() {
+  if (statsInterval) {
+    clearInterval(statsInterval);
+    statsInterval = null;
+  }
+  if (lowerThirdWindow && !lowerThirdWindow.isDestroyed()) {
+    lowerThirdWindow.destroy();
+    lowerThirdWindow = null;
+  }
+  if (mainPresentationWindow && !mainPresentationWindow.isDestroyed()) {
+    mainPresentationWindow.destroy();
+    mainPresentationWindow = null;
+  }
+  if (ndiManager) {
+    ndiManager.destroy();
+    ndiManager = null;
+  }
+}
 const gotTheLock = electron.app.requestSingleInstanceLock();
 if (!gotTheLock) {
   electron.app.quit();
 } else {
-  electron.app.on("second-instance", (event, commandLine, workingDirectory) => {
+  electron.app.on("second-instance", (_event, commandLine) => {
     if (win) {
       if (win.isMinimized()) win.restore();
       win.focus();
     }
     const uri = commandLine.find((arg) => arg.startsWith("qworship://"));
-    if (uri) {
-      handleProtocolUri(uri);
-    }
+    if (uri) handleProtocolUri(uri);
   });
   if (process.defaultApp) {
     if (process.argv.length >= 2) {
@@ -593,23 +971,30 @@ electron.ipcMain.on("open-external-url", (_event, url) => {
     electron.shell.openExternal(url);
   }
 });
+electron.ipcMain.handle("ndi-start-stream", (_event, sources) => {
+  startNdiStreams(sources);
+  return { ok: true };
+});
+electron.ipcMain.handle("ndi-stop-stream", () => {
+  stopNdiStreams();
+  return { ok: true };
+});
+electron.ipcMain.handle("ndi-get-grandiose-error", () => {
+  return NdiManager.getGrandioseError();
+});
+electron.ipcMain.on("update-renderer-state", (_event, type, state) => {
+  const target = type === "lowerThird" ? lowerThirdWindow : mainPresentationWindow;
+  if (target && !target.isDestroyed()) {
+    target.webContents.send("state-update", state);
+  }
+});
 function createWindow() {
-  const { session: session2 } = require("electron");
-  session2.defaultSession.setPermissionRequestHandler((_webContents, permission, callback) => {
-    const allowed = ["microphone", "camera", "media", "audioCapture", "videoCapture"];
-    callback(allowed.includes(permission));
-  });
-  session2.defaultSession.setPermissionCheckHandler((_webContents, permission) => {
-    const allowed = ["microphone", "camera", "media", "audioCapture", "videoCapture"];
-    return allowed.includes(permission);
-  });
   win = new electron.BrowserWindow({
     width: 1200,
     height: 800,
     minWidth: 800,
     minHeight: 600,
     show: false,
-    // Don't show immediately to prevent white flash
     titleBarStyle: "hiddenInset",
     icon: path.join(process.env.VITE_PUBLIC, "favicon.ico"),
     webPreferences: {
@@ -617,7 +1002,6 @@ function createWindow() {
       nodeIntegration: false,
       contextIsolation: true,
       webviewTag: true
-      // Necessary if they use <webview> for pricing
     }
   });
   win.on("ready-to-show", () => {
@@ -642,11 +1026,9 @@ function createWindow() {
         action: "allow",
         overrideBrowserWindowOptions: {
           fullscreen: false,
-          // Changed from true so it appears as a distinct window
           width: 1024,
           height: 768,
           frame: true,
-          // Allow user to drag it to an external display
           title: "Qworship Live Presentation",
           webPreferences: {
             preload: path.join(__dirname$1, "preload.cjs"),
@@ -674,6 +1056,7 @@ function createWindow() {
   });
 }
 electron.app.on("window-all-closed", () => {
+  stopNdiStreams();
   if (process.platform !== "darwin") {
     whisperService.shutdown().finally(() => {
       electron.app.quit();
