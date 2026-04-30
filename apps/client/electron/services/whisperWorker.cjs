@@ -16,7 +16,12 @@
 'use strict';
 
 const { Whisper } = require('smart-whisper');
-const ort = require('onnxruntime-node');
+let ort = null;
+try {
+  ort = require('onnxruntime-node');
+} catch (e) {
+  console.warn('[WhisperWorker] onnxruntime-node unavailable (NAPI mismatch or missing build):', e.message, '— Silero VAD disabled, falling back to amplitude gate.');
+}
 const path = require('node:path');
 const fs = require('node:fs');
 
@@ -42,6 +47,8 @@ const BIBLE_INITIAL_PROMPT = [
   'KJV, NKJV, NIV, ESV, AMP, MSG,',
   // Navigation commands
   'chapter, verse, next verse, previous verse, show me, wake up, amen, thank you.',
+  // Phonetic reinforcement for commonly misheard books
+  'Nahum. Habakkuk. Zephaniah. Zechariah. Malachi. Galatians. Philippians.',
 ].join(' ');
 
 // ---------------------------------------------------------------------------
@@ -56,6 +63,7 @@ let sileroH = null; // hidden state (1×1×64 float32)
 let sileroC = null; // cell state  (1×1×64 float32)
 
 async function loadSileroVAD(modelPath) {
+  if (!ort) return; // onnxruntime-node not available
   if (sileroSession) return; // already loaded
   if (!fs.existsSync(modelPath)) {
     console.warn('[WhisperWorker] Silero VAD model not found at', modelPath, '— VAD disabled, falling back to amplitude gate.');
@@ -77,7 +85,7 @@ async function loadSileroVAD(modelPath) {
 }
 
 function resetSileroState() {
-  if (!sileroSession) return;
+  if (!sileroSession || !ort) return;
   sileroH = new ort.Tensor('float32', new Float32Array(2 * 1 * 64), [2, 1, 64]);
   sileroC = new ort.Tensor('float32', new Float32Array(2 * 1 * 64), [2, 1, 64]);
 }
