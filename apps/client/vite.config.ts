@@ -14,7 +14,7 @@ export default defineConfig({
         vite: {
           build: {
             rollupOptions: {
-              external: ["better-sqlite3", "smart-whisper"],
+              external: ["better-sqlite3", "smart-whisper", "vosk", "ws"],
             },
           },
         },
@@ -40,7 +40,7 @@ export default defineConfig({
         vite: {
           build: {
             rollupOptions: {
-              external: ["better-sqlite3", "smart-whisper"],
+              external: ["better-sqlite3", "smart-whisper", "vosk", "ws"],
               output: {
                 format: "cjs",
                 entryFileNames: "whisperWorker.cjs",
@@ -69,7 +69,7 @@ export default defineConfig({
   },
   build: {
     rollupOptions: {
-      external: ["better-sqlite3", "smart-whisper"],
+      external: ["better-sqlite3", "smart-whisper", "vosk", "ws"],
     },
   },
 });

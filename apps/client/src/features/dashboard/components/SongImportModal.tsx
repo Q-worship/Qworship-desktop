@@ -73,40 +73,63 @@ export const SongImportModal: React.FC<SongImportModalProps> = ({
   // File import mutation
   const importMutation = useImportSong();
 
+  const countImportedSections = (lyrics?: string, structure?: unknown) => {
+    if (Array.isArray(structure) && structure.length > 0) {
+      return structure.length;
+    }
+
+    if (!lyrics) return 0;
+
+    return lyrics
+      .split("\n")
+      .filter((line) => line.trim().startsWith("[") && line.trim().endsWith("]"))
+      .length;
+  };
+
   const handleImport = async () => {
     if (selectedFileIndex === null) return;
-    
+
     const selectedFile = selectedFiles[selectedFileIndex];
     setIsImporting(true);
-    
-    importMutation.mutate(
-      { file: selectedFile, format: selectedFormat },
-      {
-        onSuccess: (data) => {
-          toast({
-            title: "Import Successful",
-            description: `"${data.song.title}" has been imported with ${data.parsedData.sectionsFound} sections.`,
-          });
-          
-          if (onImportComplete) {
-            onImportComplete(data.song);
-          }
-          
-          setSelectedFiles([]);
-          setSelectedFileIndex(null);
-          setIsImporting(false);
-          onClose();
-        },
-        onError: (error: Error) => {
-          toast({
-            title: "Import Failed", 
-            description: error.message,
-            variant: "destructive",
-          });
-          setIsImporting(false);
-        }
+
+    try {
+      const data = await importMutation.mutateAsync({
+        file: selectedFile,
+        format: selectedFormat,
+      });
+
+      const importedSong = data?.song;
+      if (!importedSong) {
+        throw new Error("Import completed without song data");
       }
-    );
+
+      const sectionsFound = countImportedSections(importedSong.lyrics, importedSong.structure);
+
+      setSelectedFiles([]);
+      setSelectedFileIndex(null);
+      setIsImporting(false);
+
+      toast({
+        title: "Import Successful",
+        description:
+          sectionsFound > 0
+            ? `"${importedSong.title}" has been imported with ${sectionsFound} sections.`
+            : `"${importedSong.title}" has been imported successfully.`,
+      });
+
+      if (onImportComplete) {
+        onImportComplete(importedSong);
+      }
+
+      onClose();
+    } catch (error: any) {
+      toast({
+        title: "Import Failed",
+        description: error?.message || "Import failed",
+        variant: "destructive",
+      });
+      setIsImporting(false);
+    }
   };
 
   if (!isOpen) return null;

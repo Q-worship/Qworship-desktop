@@ -6,7 +6,7 @@ export interface MainPresentationSettings {
   backgroundValue: string;
   backgroundMediaType?: "image" | "video";
   backgroundMediaId?: string;
-  backgroundMediaSource?: "user" | "cloud";
+  backgroundMediaSource?: "user" | "cloud" | "local";
   fontColor: string;
   fontFamily: string;
   fontWeight: string;
@@ -50,7 +50,13 @@ interface MainPresentationState {
   setRenderPageEnabled: (enabled: boolean) => void;
 
   projectScripture: (verse: string, reference: string, version: string, forUserId?: string | null) => void;
-  projectLyric: (lyrics: string, sectionTitle: string, songTitle: string, forUserId?: string | null) => void;
+  projectLyric: (
+    lyrics: string,
+    sectionTitle: string,
+    songTitle: string,
+    forUserId?: string | null,
+    pace?: { lines: string[]; lineIdx: number; lineProgress: number },
+  ) => void;
   projectAnnouncement: (text: string, category: string, subtitle: string, forUserId?: string | null) => void;
   clearActiveData: (forUserId?: string | null) => void;
 
@@ -62,7 +68,9 @@ function loadPersistedState() {
   try {
     const stored = localStorage.getItem(STORAGE_KEY);
     if (stored) return JSON.parse(stored);
-  } catch {}
+  } catch (error) {
+    console.warn("[MainPresentationStore] Failed to load persisted state", error);
+  }
   return {};
 }
 
@@ -75,15 +83,21 @@ function persistState(state: Partial<MainPresentationState>) {
         userId: state.userId,
         settings: state.settings,
         renderPageEnabled: state.renderPageEnabled,
+        activeData: state.activeData,
+        isVisible: state.isVisible,
       }),
     );
-  } catch {}
+  } catch (error) {
+    console.warn("[MainPresentationStore] Failed to persist state", error);
+  }
 }
 
 let broadcastChannel: BroadcastChannel | null = null;
 try {
   broadcastChannel = new BroadcastChannel(CHANNEL_NAME);
-} catch {}
+} catch (error) {
+  console.warn("[MainPresentationStore] Broadcast channel unavailable", error);
+}
 
 let _resolvedUserId: string | null = loadPersistedState().userId ?? null;
 
@@ -110,7 +124,9 @@ async function getLtBaseUrl(): Promise<string> {
       const data = await res.json();
       ltBaseUrl = data.ltBaseUrl || "http://localhost:3400";
     }
-  } catch {}
+  } catch (error) {
+    console.warn("[MainPresentationStore] Failed to resolve presentation service URL", error);
+  }
   return ltBaseUrl || "http://localhost:3400";
 }
 
@@ -169,8 +185,8 @@ export const useMainPresentationStore = create<MainPresentationState>((set, get)
     enabled: persisted.enabled ?? true,
     userId: persisted.userId ?? null,
     settings: persisted.settings || DEFAULT_SETTINGS,
-    activeData: null,
-    isVisible: false,
+    activeData: persisted.activeData ?? null,
+    isVisible: persisted.isVisible ?? false,
     renderPageEnabled: persisted.renderPageEnabled ?? true,
 
     setUserId: (id) => {
@@ -194,17 +210,20 @@ export const useMainPresentationStore = create<MainPresentationState>((set, get)
       get().broadcastState();
     },
 
-    setActiveData: (data) => {
+      setActiveData: (data) => {
       set({ activeData: data, isVisible: !!data });
+      persistState({ ...get(), activeData: data, isVisible: !!data });
       get().broadcastState();
       pushToServer({ activeData: data, isVisible: !!data });
     },
 
     setIsVisible: (visible) => {
       set({ isVisible: visible });
+      persistState({ ...get(), isVisible: visible });
       get().broadcastState();
       pushToServer({ isVisible: visible });
     },
+
 
     setRenderPageEnabled: (enabled) => {
       set({ renderPageEnabled: enabled });
@@ -214,13 +233,23 @@ export const useMainPresentationStore = create<MainPresentationState>((set, get)
     projectScripture: (verse, reference, version, forUserId) => {
       const activeData: MainPresentationBindingData = { verse, reference, version, type: "scripture" };
       set({ activeData, isVisible: true });
+      persistState({ ...get(), activeData, isVisible: true });
       get().broadcastState();
       pushToServer({ activeData, isVisible: true }, forUserId);
     },
 
-    projectLyric: (lyrics, sectionTitle, songTitle, forUserId) => {
-      const activeData: MainPresentationBindingData = { verse: lyrics, reference: sectionTitle || songTitle || "", version: songTitle || "", type: "lyrics" };
+    projectLyric: (lyrics, sectionTitle, songTitle, forUserId, pace) => {
+      const activeData: MainPresentationBindingData = {
+        verse: lyrics,
+        reference: sectionTitle || songTitle || "",
+        version: songTitle || "",
+        type: "lyrics",
+        paceLines: pace?.lines,
+        paceLineIdx: pace?.lineIdx,
+        paceLineProgress: pace?.lineProgress,
+      };
       set({ activeData, isVisible: true });
+      persistState({ ...get(), activeData, isVisible: true });
       get().broadcastState();
       pushToServer({ activeData, isVisible: true }, forUserId);
     },
@@ -228,12 +257,14 @@ export const useMainPresentationStore = create<MainPresentationState>((set, get)
     projectAnnouncement: (text, category, subtitle, forUserId) => {
       const activeData: MainPresentationBindingData = { verse: text, reference: category, version: subtitle, type: "announcement" };
       set({ activeData, isVisible: true });
+      persistState({ ...get(), activeData, isVisible: true });
       get().broadcastState();
       pushToServer({ activeData, isVisible: true }, forUserId);
     },
 
     clearActiveData: (forUserId?) => {
       set({ activeData: null, isVisible: false });
+      persistState({ ...get(), activeData: null, isVisible: false });
       get().broadcastState();
       pushToServer({ activeData: null, isVisible: false }, forUserId);
     },
@@ -245,7 +276,9 @@ export const useMainPresentationStore = create<MainPresentationState>((set, get)
           type: "MAIN_PRESENTATION_UPDATE",
           payload: { activeData, isVisible, settings, enabled },
         });
-      } catch {}
+      } catch (error) {
+        console.warn("[MainPresentationStore] Failed to broadcast state", error);
+      }
     },
 
     getRenderUrl: () => {

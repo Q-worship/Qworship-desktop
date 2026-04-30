@@ -105,7 +105,7 @@ export function ProjectSelection() {
           title: "New Presentation Created",
           description: `"${resData.presentation.name}" is ready for content.`,
         });
-        setLocation("/dashboard");
+        setLocation("/live-console");
       },
       onError: (err: any) => {
         toast({ title: "Error", description: err.message || "Failed to create presentation", variant: "destructive" });
@@ -125,7 +125,7 @@ export function ProjectSelection() {
         sessionStorage.setItem("qworship_current_presentation_name", resData.presentation.name);
         
         if (resData.presentation.serviceData) {
-          let dataStringToUse = typeof resData.presentation.serviceData === 'string' 
+          const dataStringToUse = typeof resData.presentation.serviceData === 'string' 
               ? resData.presentation.serviceData 
               : JSON.stringify(resData.presentation);
               
@@ -135,7 +135,7 @@ export function ProjectSelection() {
           title: "Project Opened",
           description: `"${resData.presentation.name}" has been loaded successfully.`,
         });
-        setLocation("/dashboard");
+        setLocation("/live-console");
       },
       onError: (err: any) => {
         toast({ title: "Load Error", description: err.message || "Failed to load presentation", variant: "destructive" });

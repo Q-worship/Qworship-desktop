@@ -155,4 +155,7 @@ export interface LowerThirdBindingData {
   churchName?: string;
   songTitle?: string;
   type?: "scripture" | "lyrics" | "announcement";
+  paceLines?: string[];
+  paceLineIdx?: number;
+  paceLineProgress?: number;
 }

@@ -3,6 +3,8 @@ import { useState, useEffect, useRef } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { useBibleProjectionStore, requestSyncFromOtherWindows } from "@/stores/useBibleProjectionStore";
 import { useDisplayModeStore, requestDisplayModeSync } from "@/stores/useDisplayModeStore";
+import { useMainPresentationStore } from "@/stores/useMainPresentationStore";
+import { useLowerThirdStore } from "@/stores/useLowerThirdStore";
 
 
 const isWindowOpen = (win: any): boolean => {
@@ -79,7 +81,9 @@ export function useLivePresentationState() {
         const parsed = JSON.parse(saved);
         return parsed.type || "color";
       }
-    } catch (e) {}
+    } catch (error) {
+      console.warn("[useLivePresentationState] Failed to read saved background type", error);
+    }
     return "color";
   });
   const [appliedBackgroundColor, setAppliedBackgroundColor] = useState(() => {
@@ -89,7 +93,9 @@ export function useLivePresentationState() {
         const parsed = JSON.parse(saved);
         return parsed.color || "#000000";
       }
-    } catch (e) {}
+    } catch (error) {
+      console.warn("[useLivePresentationState] Failed to read saved background color", error);
+    }
     return "#000000";
   });
   const [appliedBackgroundImage, setAppliedBackgroundImage] = useState<
@@ -101,7 +107,9 @@ export function useLivePresentationState() {
         const parsed = JSON.parse(saved);
         return parsed.image || null;
       }
-    } catch (e) {}
+    } catch (error) {
+      console.warn("[useLivePresentationState] Failed to read saved background image", error);
+    }
     return null;
   });
   const [appliedBackgroundVideo, setAppliedBackgroundVideo] = useState<
@@ -113,7 +121,9 @@ export function useLivePresentationState() {
         const parsed = JSON.parse(saved);
         return parsed.video || null;
       }
-    } catch (e) {}
+    } catch (error) {
+      console.warn("[useLivePresentationState] Failed to read saved background video", error);
+    }
     return null;
   });
 
@@ -136,7 +146,9 @@ export function useLivePresentationState() {
             ? true
             : false;
         }
-      } catch (e) {}
+      } catch (error) {
+        console.warn("[useLivePresentationState] Failed to read live settings background flag", error);
+      }
       return false;
     },
   );
@@ -276,6 +288,97 @@ export function useLivePresentationState() {
 
   // Display mode store for unified content display control
   const { activeMode } = useDisplayModeStore();
+  const mainPresentationEnabled = useMainPresentationStore((state) => state.enabled);
+  const mainPresentationIsVisible = useMainPresentationStore((state) => state.isVisible);
+  const mainPresentationActiveData = useMainPresentationStore((state) => state.activeData);
+  const mainPresentationSettings = useMainPresentationStore((state) => state.settings);
+
+  useEffect(() => {
+    if (!mainPresentationEnabled) return;
+
+    if (mainPresentationSettings.backgroundType === "media") {
+      if (mainPresentationSettings.backgroundMediaType === "video") {
+        setAppliedBackgroundType("video");
+        setAppliedBackgroundVideo(mainPresentationSettings.backgroundValue || null);
+        setAppliedBackgroundImage(null);
+      } else {
+        setAppliedBackgroundType("image");
+        setAppliedBackgroundImage(mainPresentationSettings.backgroundValue || null);
+        setAppliedBackgroundVideo(null);
+      }
+    } else {
+      setAppliedBackgroundType("color");
+      setAppliedBackgroundColor(mainPresentationSettings.backgroundValue || "#000000");
+      setAppliedBackgroundImage(null);
+      setAppliedBackgroundVideo(null);
+    }
+
+    setHasLiveSettingsBackground(true);
+    setSlideAlignment(mainPresentationSettings.textAlign);
+    setEditorState((prev: any) => ({
+      ...prev,
+      selectedFont: mainPresentationSettings.fontFamily,
+      styleFontFamily: mainPresentationSettings.fontFamily,
+      textColor: mainPresentationSettings.fontColor,
+      styleColor: mainPresentationSettings.fontColor,
+      isBold: /bold|[6-9]00/.test(mainPresentationSettings.fontWeight),
+      styleFontWeight: mainPresentationSettings.fontWeight,
+    }));
+  }, [
+    mainPresentationEnabled,
+    mainPresentationSettings.backgroundMediaType,
+    mainPresentationSettings.backgroundType,
+    mainPresentationSettings.backgroundValue,
+    mainPresentationSettings.fontColor,
+    mainPresentationSettings.fontFamily,
+    mainPresentationSettings.fontWeight,
+    mainPresentationSettings.textAlign,
+  ]);
+
+  useEffect(() => {
+    if (!(mainPresentationEnabled && mainPresentationIsVisible && mainPresentationActiveData)) {
+      const displayModeStore = useDisplayModeStore.getState();
+      if (["song", "on-screen-bible", "hfb-bible"].includes(displayModeStore.activeMode)) {
+        setCurrentSongProjection(null);
+        setProjectionType(null);
+        setLiveProjection("");
+        setPacingLineIdx(-1);
+        displayModeStore.setMode(slides.length > 0 ? "slides" : "none");
+      }
+      return;
+    }
+
+    const displayModeStore = useDisplayModeStore.getState();
+    const contentText = mainPresentationActiveData.verse || "";
+
+    if (mainPresentationActiveData.type === "scripture") {
+      setCurrentSongProjection({
+        title: mainPresentationActiveData.reference || "Scripture",
+        sectionTitle: mainPresentationActiveData.version || "",
+        lyrics: contentText,
+      });
+      setProjectionType("bible");
+      setLiveProjection(contentText);
+      setPacingLineIdx(-1);
+      displayModeStore.setMode("on-screen-bible");
+      return;
+    }
+
+    setCurrentSongProjection({
+      title: mainPresentationActiveData.version || mainPresentationActiveData.reference || "Presentation",
+      sectionTitle: mainPresentationActiveData.reference || "",
+      lyrics: contentText,
+    });
+    setProjectionType("song");
+    setLiveProjection("");
+    setPacingLineIdx(mainPresentationActiveData.paceLineIdx ?? -1);
+    displayModeStore.setMode("song");
+  }, [
+    mainPresentationActiveData,
+    mainPresentationEnabled,
+    mainPresentationIsVisible,
+    slides.length,
+  ]);
 
   // Request display mode sync from other windows on mount
   useEffect(() => {
@@ -1161,7 +1264,7 @@ export function useLivePresentationState() {
         case "CLOSE_LIVE":
           window.close();
           break;
-        case "BACKGROUND_UPDATE":
+        case "BACKGROUND_UPDATE": {
           const { background, itemId } = data;
 
           // Store background data for this item
@@ -1294,7 +1397,8 @@ export function useLivePresentationState() {
             }
           }
           break;
-        case "ASSET_SELECTED_FOR_BACKGROUND":
+        }
+        case "ASSET_SELECTED_FOR_BACKGROUND": {
           console.log(
             "Live presentation: Received background asset:",
             event.data,
@@ -1350,6 +1454,7 @@ export function useLivePresentationState() {
             }
           }
           break;
+        }
         case "BIBLE_VERSE_DISPLAY":
           console.log(
             "Live presentation: Received Bible verse from voice command:",
@@ -1394,7 +1499,7 @@ export function useLivePresentationState() {
           }
           break;
 
-        case "GO_TO_SLIDE":
+        case "GO_TO_SLIDE": {
           console.log(
             "🎯🎯🎯 LivePresentation: RECEIVED GO_TO_SLIDE - slideIndex:",
             data.slideIndex,
@@ -1470,6 +1575,7 @@ export function useLivePresentationState() {
             );
           }
           break;
+        }
         case "PROJECT_SONG":
           console.log("Live Console: Projecting song", data);
           setCurrentSongProjection({
@@ -1623,8 +1729,9 @@ export function useLivePresentationState() {
             );
           }
           break;
+
         case "TOGGLE_FULLSCREEN":
-          console.log("Live Console: Toggling fullscreen");
+         console.log("Live Console: Toggling fullscreen");
           if (document.fullscreenElement) {
             document.exitFullscreen();
           } else {
@@ -2114,6 +2221,30 @@ export function useLivePresentationState() {
   const projectToLiveScreen = (content: string) => {
     setLiveProjection(content);
 
+    const lowerThirdUserId = useLowerThirdStore.getState().userId ?? null;
+    if (currentBiblePassage?.verses?.length) {
+      const currentVerse = currentBiblePassage.verses[currentBibleVerseIndex];
+      if (currentVerse) {
+        const referenceMatch = currentBiblePassage.reference.match(
+          /^(.+?)\s+(?:Chapter\s+)?(\d+)(?:\s+verses?\s+(\d+)(?:\s+to\s+\d+)?)?/,
+        );
+        const bookName = referenceMatch
+          ? referenceMatch[1]
+          : currentBiblePassage.reference;
+        const chapter = referenceMatch ? referenceMatch[2] : "";
+        const verseReference = `${bookName} ${chapter}:${currentVerse.number}`;
+        const verseText = `${currentVerse.number} ${currentVerse.text}`;
+        useLowerThirdStore
+          .getState()
+          .projectScripture(
+            verseText,
+            verseReference,
+            currentBiblePassage.version || "KJV",
+            lowerThirdUserId,
+          );
+      }
+    }
+
     // Store in localStorage for potential external screen sync
     localStorage.setItem(
       "qworship-live-projection",
@@ -2138,11 +2269,17 @@ export function useLivePresentationState() {
     lyrics: string,
     fullSongData?: any,
   ) => {
+    const lowerThirdUserId = useLowerThirdStore.getState().userId ?? null;
+
     setCurrentSongProjection({
       title: songTitle,
       sectionTitle,
       lyrics,
     });
+
+    useLowerThirdStore
+      .getState()
+      .projectLyric(lyrics, sectionTitle, songTitle, lowerThirdUserId);
 
     // If full song data is provided, store it for navigation
     if (fullSongData && fullSongData.sections) {
@@ -2190,11 +2327,15 @@ export function useLivePresentationState() {
 
   // Clear all projections
   const clearProjection = () => {
+    const lowerThirdUserId = useLowerThirdStore.getState().userId ?? null;
+
     setLiveProjection("");
     setCurrentSongProjection(null);
     setCurrentProjectedSong(null);
     setCurrentSongSectionIndex(0);
     setProjectionType(null);
+
+    useLowerThirdStore.getState().clearActiveData(lowerThirdUserId);
 
     localStorage.removeItem("qworship-live-projection");
     console.log("Projection cleared");
@@ -2215,6 +2356,15 @@ export function useLivePresentationState() {
         sectionTitle: nextSection.title,
         lyrics: nextSection.content,
       });
+
+      useLowerThirdStore
+        .getState()
+        .projectLyric(
+          nextSection.content,
+          nextSection.title,
+          currentProjectedSong.title,
+          useLowerThirdStore.getState().userId ?? null,
+        );
 
       console.log(
         "🎵 LIVE NAVIGATION - Next section:",
@@ -2238,6 +2388,15 @@ export function useLivePresentationState() {
         sectionTitle: prevSection.title,
         lyrics: prevSection.content,
       });
+
+      useLowerThirdStore
+        .getState()
+        .projectLyric(
+          prevSection.content,
+          prevSection.title,
+          currentProjectedSong.title,
+          useLowerThirdStore.getState().userId ?? null,
+        );
 
       console.log(
         "🎵 LIVE NAVIGATION - Previous section:",
@@ -2275,6 +2434,15 @@ export function useLivePresentationState() {
         lyrics: `${verseText}\n\n— ${currentBiblePassage.version}`,
       });
 
+      useLowerThirdStore
+        .getState()
+        .projectScripture(
+          verseText,
+          verseReference,
+          currentBiblePassage.version || "KJV",
+          useLowerThirdStore.getState().userId ?? null,
+        );
+
       console.log(
         "📖 BIBLE NAVIGATION - Next verse:",
         verseReference,
@@ -2309,6 +2477,15 @@ export function useLivePresentationState() {
         sectionTitle: "",
         lyrics: `${verseText}\n\n— ${currentBiblePassage.version}`,
       });
+
+      useLowerThirdStore
+        .getState()
+        .projectScripture(
+          verseText,
+          verseReference,
+          currentBiblePassage.version || "KJV",
+          useLowerThirdStore.getState().userId ?? null,
+        );
 
       console.log(
         "📖 BIBLE NAVIGATION - Previous verse:",

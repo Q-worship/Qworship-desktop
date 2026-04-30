@@ -12,6 +12,7 @@ export interface IBibleVerse extends Document {
   msg?: string;
   esv?: string;
   niv?: string;
+  gn?: string;
 }
 
 const BibleVerseSchema = new Schema<IBibleVerse>({
@@ -25,6 +26,7 @@ const BibleVerseSchema = new Schema<IBibleVerse>({
   msg: String,
   esv: String,
   niv: String,
+  gn: String,
 });
 
 // Compound index for ultra-fast verse lookup: Book -> Chapter -> Verse
@@ -38,7 +40,7 @@ export interface ISpeechSession extends Document {
   currentBook?: string;
   currentChapter?: number;
   currentVerse?: number;
-  currentVersion: 'kjv' | 'nkjv' | 'amp' | 'msg' | 'esv' | 'niv';
+  currentVersion: 'kjv' | 'nkjv' | 'amp' | 'msg' | 'esv' | 'niv' | 'gn';
   lastCommand?: string;
   contextData?: string;
   isActive: boolean;

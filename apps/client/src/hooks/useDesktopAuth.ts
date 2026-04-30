@@ -3,21 +3,19 @@ import { useLocation } from 'wouter';
 import { useAuthStore } from '../features/auth/auth.store';
 import { useToast } from './use-toast';
 
-declare global {
-  interface Window {
-    api?: {
-      onDeepLinkPayload: (callback: (url: string) => void) => () => void;
-      requestInitialDeepLink: () => void;
-    };
-  }
-}
-
 export function useDesktopAuth() {
   const [, setLocation] = useLocation();
   const { toast } = useToast();
   const [isAuthenticating, setIsAuthenticating] = useState(false);
 
   useEffect(() => {
+    const syncExistingToken = () => {
+      const token = localStorage.getItem('token');
+      void window.api?.speech?.setAuthToken?.(token ?? null);
+    };
+
+    syncExistingToken();
+
     // We define this inside useEffect to ensure it captures the latest setLocation/toast
     const handleIncomingUrl = (url: string) => {
       console.log('useDesktopAuth caught deep link:', url);
@@ -36,6 +34,7 @@ export function useDesktopAuth() {
             // Hydrate the session
             localStorage.setItem('token', token);
             sessionStorage.setItem('qworship_user_id', user.id?.toString() || "");
+            void window.api?.speech?.setAuthToken?.(token);
             
             useAuthStore.getState().setAuth(user);
             
@@ -51,8 +50,8 @@ export function useDesktopAuth() {
                  // Extreme fallback
                  setLocation('/organization-setup');
               } else {
-                 // Push straight into the action
-                 setLocation('/project-selection');
+                 // Standalone desktop target boots directly into Live Console
+                 setLocation('/live-console');
               }
               setIsAuthenticating(false);
             }, 1500);
@@ -91,4 +90,3 @@ export function useDesktopAuth() {
 
   return { isAuthenticating };
 }
-

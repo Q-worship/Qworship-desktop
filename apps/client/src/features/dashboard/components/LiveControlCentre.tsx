@@ -116,7 +116,9 @@ export function LiveControlCentre(props: LiveConsoleProps) {
            bookName = bookChap.substring(0, lastSpace);
            chap = parseInt(bookChap.substring(lastSpace + 1));
         }
-      } catch (e) {}
+      } catch (error) {
+        console.warn('[LiveControlCentre] Failed to parse projected Bible reference', error);
+      }
 
       useBibleProjectionStore.getState().setVerse({
          book: passageData?.book || bookName,

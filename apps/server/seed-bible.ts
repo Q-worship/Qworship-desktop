@@ -11,8 +11,11 @@ const legacyDir = "/Users/rebeccashewuri/Documents/development/qworship/QWorship
 const files = [
   { path: `${legacyDir}/kjv-complete.json`, version: 'kjv' },
   { path: `${legacyDir}/nkjv-complete.json`, version: 'nkjv' },
+  { path: `${legacyDir}/amp-complete.json`, version: 'amp' },
+  { path: `${legacyDir}/msg-complete.json`, version: 'msg' },
   { path: `${legacyDir}/esv-complete.json`, version: 'esv' },
   { path: `${legacyDir}/niv-complete.json`, version: 'niv' },
+  { path: `${legacyDir}/gn-complete.json`, version: 'gn' },
 ];
 
 async function seed() {

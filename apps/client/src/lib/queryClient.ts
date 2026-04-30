@@ -7,7 +7,13 @@ async function throwIfResNotOk(res: Response) {
   }
 }
 
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+const API_BASE =
+  import.meta.env.VITE_API_URL ||
+  (typeof window !== 'undefined'
+    ? (window.location.protocol === 'http:' || window.location.protocol === 'https:')
+      ? '/api'
+      : 'https://api.qworship.com/api'
+    : 'https://api.qworship.com/api');
 
 export function buildUrl(path: string): string {
   if (path.startsWith('http://') || path.startsWith('https://')) return path;

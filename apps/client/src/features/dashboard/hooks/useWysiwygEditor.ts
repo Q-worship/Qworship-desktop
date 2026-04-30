@@ -326,7 +326,7 @@ export const useWysiwygEditor = ({
         case "align-justify":
           newTitleEditorState.textAlign = "justify";
           break;
-        case "heading":
+        case "heading": {
           newTitleEditorState.selectedHeading = value || "Paragraph";
           const headingSizes = {
             "Heading 1": "24px",
@@ -337,6 +337,7 @@ export const useWysiwygEditor = ({
           newTitleEditorState.fontSize =
             headingSizes[value as keyof typeof headingSizes] || "16px";
           break;
+        }
         case "style":
           newTitleEditorState.selectedStyle = value || "None";
           applyWYSIWYGStyle(newTitleEditorState, value || "None");
@@ -388,7 +389,7 @@ export const useWysiwygEditor = ({
         case "align-justify":
           newEditorState.textAlign = "justify";
           break;
-        case "heading":
+        case "heading": {
           newEditorState.selectedHeading = value || "Paragraph";
           const headingSizes = {
             "Heading 1": "22px",
@@ -399,6 +400,7 @@ export const useWysiwygEditor = ({
           newEditorState.fontSize =
             headingSizes[value as keyof typeof headingSizes] || "14px";
           break;
+        }
         case "style":
           newEditorState.selectedStyle = value || "None";
           applyWYSIWYGStyle(newEditorState, value || "None");

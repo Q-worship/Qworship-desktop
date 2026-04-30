@@ -1,5 +1,10 @@
 import { useState, useEffect, useCallback } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { resolveMediaUrl } from "@/lib/queryClient";
+import {
+  isLocalBackgroundMediaRef,
+  resolveLocalBackgroundMediaObjectUrl,
+} from "@/lib/localBackgroundMedia";
 import {
   useMainPresentationStore,
   DEFAULT_SETTINGS,
@@ -327,6 +332,37 @@ export function MainPresentationSettingsPage({
   };
 
   const bgType = settings.backgroundType;
+  const [previewLocalMediaUrl, setPreviewLocalMediaUrl] = useState<string>("");
+
+  useEffect(() => {
+    let isActive = true;
+    let objectUrlToRevoke: string | null = null;
+
+    if (bgType !== "media" || !isLocalBackgroundMediaRef(settings.backgroundValue)) {
+      setPreviewLocalMediaUrl("");
+      return () => {
+        if (objectUrlToRevoke) URL.revokeObjectURL(objectUrlToRevoke);
+      };
+    }
+
+    resolveLocalBackgroundMediaObjectUrl(settings.backgroundValue)
+      .then((url) => {
+        if (!isActive) {
+          if (url) URL.revokeObjectURL(url);
+          return;
+        }
+        objectUrlToRevoke = url ?? null;
+        setPreviewLocalMediaUrl(url ?? "");
+      })
+      .catch(() => {
+        if (isActive) setPreviewLocalMediaUrl("");
+      });
+
+    return () => {
+      isActive = false;
+      if (objectUrlToRevoke) URL.revokeObjectURL(objectUrlToRevoke);
+    };
+  }, [bgType, settings.backgroundValue]);
 
   const previewBg =
     bgType === "gradient"
@@ -334,6 +370,11 @@ export function MainPresentationSettingsPage({
       : bgType === "media"
         ? "#000000"
         : settings.backgroundValue || "#0f0f0f";
+
+  const previewMediaUrl =
+    bgType === "media"
+      ? previewLocalMediaUrl || resolveMediaUrl(settings.backgroundValue)
+      : undefined;
 
   return (
     <div
@@ -709,11 +750,11 @@ export function MainPresentationSettingsPage({
             >
               {/* Media background layer */}
               {bgType === "media" &&
-                settings.backgroundValue &&
+                previewMediaUrl &&
                 (settings.backgroundMediaType === "video" ? (
                   <video
-                    key={settings.backgroundValue}
-                    src={settings.backgroundValue}
+                    key={previewMediaUrl}
+                    src={previewMediaUrl}
                     autoPlay
                     loop
                     muted
@@ -722,8 +763,8 @@ export function MainPresentationSettingsPage({
                   />
                 ) : (
                   <img
-                    src={settings.backgroundValue}
-                    alt="Background"
+                    src={previewMediaUrl}
+                    alt=""
                     className="absolute inset-0 w-full h-full object-cover z-0"
                   />
                 ))}

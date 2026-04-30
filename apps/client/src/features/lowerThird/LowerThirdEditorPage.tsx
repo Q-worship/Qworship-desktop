@@ -64,7 +64,9 @@ function getStoredChurchName(): string {
       const user = JSON.parse(stored);
       return user.organizationName || "My Church";
     }
-  } catch {}
+  } catch (error) {
+    console.warn("[LowerThirdEditorPage] Failed to read stored church name", error);
+  }
   return "My Church";
 }
 
@@ -530,7 +532,7 @@ function BindingSection({
 
   useEffect(() => {
     setMode(
-      !!(element.compositeBinding && element.compositeBinding.length > 0)
+      element.compositeBinding && element.compositeBinding.length > 0
         ? "composite"
         : "single",
     );
@@ -1043,14 +1045,18 @@ export function LowerThirdEditorPage() {
   );
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
+  const autosaveTimerRef = useRef<number | null>(null);
+  const lastSavedSnapshotRef = useRef("");
 
   useEffect(() => {
     const all = getAllTemplates();
-    let found = all.find((t) => t.id === params.templateId) ?? null;
+    const found = all.find((t) => t.id === params.templateId) ?? null;
     if (found) {
-      setTemplate(JSON.parse(JSON.stringify(found)));
+      const cloned = JSON.parse(JSON.stringify(found)) as LowerThirdTemplate;
+      lastSavedSnapshotRef.current = JSON.stringify(cloned);
+      setTemplate(cloned);
     }
-  }, [params.templateId]);
+  }, [getAllTemplates, params.templateId]);
 
   // ── Element helpers ────────────────────────────────────────────────────────
   const updateElement = useCallback(
@@ -1151,61 +1157,89 @@ export function LowerThirdEditorPage() {
   };
 
   // ── Save ──────────────────────────────────────────────────────────────────
+  const persistTemplate = useCallback(
+    async (draft: LowerThirdTemplate) => {
+      if (!authUser?.id) return;
+      setSaving(true);
+      try {
+        let saveTarget = { ...draft, updatedAt: new Date().toISOString() };
+
+        // If editing a default template, auto-duplicate to a custom template first.
+        if (saveTarget.isDefault) {
+          const newId = `custom-${Date.now()}`;
+          saveTarget = {
+            ...saveTarget,
+            id: newId,
+            name: `${saveTarget.name} (Custom)`,
+            isDefault: false,
+            isCustom: true,
+            createdAt: new Date().toISOString(),
+            createdBy: "user",
+          };
+          await addCustomTemplate(saveTarget);
+          setTemplate(saveTarget);
+          navigate(`/lower-third-editor/${newId}`, { replace: true });
+        } else {
+          await updateCustomTemplate(saveTarget);
+        }
+
+        let finalTarget = saveTarget;
+
+        try {
+          const snapRes = await fetch("/api/lower-third/snapshot", {
+            method: "POST",
+            credentials: "include",
+            headers: getEditorAuthHeaders(),
+            body: JSON.stringify({
+              template: saveTarget,
+              bindingData: getPlaceholderData(saveTarget),
+              templateId: saveTarget.id,
+            }),
+          });
+          if (snapRes.ok) {
+            const { thumbnailUrl } = await snapRes.json();
+            finalTarget = { ...saveTarget, thumbnail: thumbnailUrl };
+            await updateCustomTemplate(finalTarget);
+            setTemplate((prev) => (prev ? { ...prev, thumbnail: thumbnailUrl } : prev));
+          }
+        } catch {
+          // Snapshot is optional — don't fail the save.
+        }
+
+        lastSavedSnapshotRef.current = JSON.stringify(finalTarget);
+        setSaved(true);
+        window.setTimeout(() => setSaved(false), 3000);
+      } finally {
+        setSaving(false);
+      }
+    },
+    [addCustomTemplate, authUser?.id, navigate, updateCustomTemplate],
+  );
+
   const handleSave = async () => {
     if (!template || !authUser?.id) return;
-    setSaving(true);
-    try {
-      let saveTarget = { ...template, updatedAt: new Date().toISOString() };
-
-      // If editing a default template, auto-duplicate to a custom template first
-      if (saveTarget.isDefault) {
-        const newId = `custom-${Date.now()}`;
-        saveTarget = {
-          ...saveTarget,
-          id: newId,
-          name: `${saveTarget.name} (Custom)`,
-          isDefault: false,
-          isCustom: true,
-          createdAt: new Date().toISOString(),
-          createdBy: "user",
-        };
-        await addCustomTemplate(saveTarget);
-        setTemplate(saveTarget);
-        // Update URL to the new custom template ID
-        navigate(`/lower-third-editor/${newId}`, { replace: true });
-      } else {
-        updateCustomTemplate(saveTarget);
-      }
-
-      // Generate snapshot (best effort)
-      try {
-        const snapRes = await fetch("/api/lower-third/snapshot", {
-          method: "POST",
-          credentials: "include",
-          headers: getEditorAuthHeaders(),
-          body: JSON.stringify({
-            template: saveTarget,
-            bindingData: getPlaceholderData(saveTarget),
-            templateId: saveTarget.id,
-          }),
-        });
-        if (snapRes.ok) {
-          const { thumbnailUrl } = await snapRes.json();
-          updateCustomTemplate({ ...saveTarget, thumbnail: thumbnailUrl });
-          setTemplate((prev) =>
-            prev ? { ...prev, thumbnail: thumbnailUrl } : prev,
-          );
-        }
-      } catch {
-        // Snapshot is optional — don't fail the save
-      }
-
-      setSaved(true);
-      setTimeout(() => setSaved(false), 3000);
-    } finally {
-      setSaving(false);
-    }
+    await persistTemplate(template);
   };
+
+  useEffect(() => {
+    if (!template || !authUser?.id) return;
+    const nextSnapshot = JSON.stringify(template);
+    if (nextSnapshot === lastSavedSnapshotRef.current) return;
+
+    if (autosaveTimerRef.current) {
+      window.clearTimeout(autosaveTimerRef.current);
+    }
+
+    autosaveTimerRef.current = window.setTimeout(() => {
+      void persistTemplate(template);
+    }, 1200);
+
+    return () => {
+      if (autosaveTimerRef.current) {
+        window.clearTimeout(autosaveTimerRef.current);
+      }
+    };
+  }, [authUser?.id, persistTemplate, template]);
 
   // ── Selected element ───────────────────────────────────────────────────────
   const selectedElement =

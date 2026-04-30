@@ -4833,7 +4833,7 @@ import type { Slide } from "@/types";\n${text}`,
                       itemBackground.type === "video"
                     ) {
                       // Ensure URL is properly resolved for media rendering
-                      let backgroundUrl = resolveMediaUrl(itemBackground.value) || itemBackground.value;
+                      const backgroundUrl = resolveMediaUrl(itemBackground.value) || itemBackground.value;
 
                       console.log(
                         "🌄 Main preview applying media background URL:",

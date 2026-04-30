@@ -1,12 +1,10 @@
 /**
  * useLocalWhisper — Local IPC-based transcription hook.
  *
- * Drop-in replacement for `useRealtimeSocket`. Instead of streaming audio
- * over a WebSocket to a cloud server, this hook routes audio to the Electron
- * Main Process via IPC where whisper.cpp runs inference locally.
- *
- * The hook also handles command parsing locally using the offlineBibleEngine,
- * eliminating the need for any server-side logic.
+ * This hook now prefers the provider-neutral `window.api.speech` bridge while
+ * still supporting the legacy `window.api.whisper` bridge during the migration.
+ * It continues to parse Bible voice commands locally in the renderer so the
+ * downstream Hands-Free Bible flow remains unchanged during Sprint 1.
  */
 
 import { useState, useRef, useCallback, useEffect } from 'react';
@@ -27,8 +25,7 @@ interface LocalWhisperProps {
   ) => void;
 }
 
-/** Type for the preload-exposed whisper API */
-interface WhisperAPI {
+interface LegacyWhisperAPI {
   sendAudioChunk: (pcm16Buffer: ArrayBuffer) => void;
   startListening: () => void;
   stopListening: () => void;
@@ -36,22 +33,165 @@ interface WhisperAPI {
   onTranscriptPartial: (callback: (text: string) => void) => () => void;
   onTranscriptFinal: (callback: (text: string) => void) => () => void;
   onStatusChange: (callback: (status: string, message?: string) => void) => () => void;
-  onModelDownloadProgress: (callback: (percent: number, downloadedMB: number, totalMB: number) => void) => () => void;
+  onModelDownloadProgress?: (
+    callback: (percent: number, downloadedMB: number, totalMB: number) => void,
+  ) => () => void;
 }
 
-/** Access the whisper API exposed via preload */
-function getWhisperAPI(): WhisperAPI | null {
+interface SpeechDescriptor {
+  id: string;
+  label: string;
+  mode: 'offline' | 'online';
+}
+
+interface SpeechTranscriptPayload {
+  text: string;
+  isFinal: boolean;
+  provider: SpeechDescriptor;
+}
+
+interface SpeechStatusPayload {
+  status: string;
+  message?: string;
+  provider: SpeechDescriptor;
+}
+
+interface SpeechModelDownloadPayload {
+  percent: number;
+  downloadedMB: number;
+  totalMB: number;
+  provider?: SpeechDescriptor;
+}
+
+interface ProviderNeutralSpeechAPI {
+  sendAudioChunk: (pcm16Buffer: ArrayBuffer) => void;
+  startListening: () => void;
+  stopListening: () => void;
+  getStatus: () => Promise<SpeechStatusPayload | string>;
+  setProvider?: (providerId: string) => Promise<any>;
+  getProviders?: () => Promise<any>;
+  onTranscriptPartial: (callback: (payload: SpeechTranscriptPayload) => void) => () => void;
+  onTranscriptFinal: (callback: (payload: SpeechTranscriptPayload) => void) => () => void;
+  onStatusChange: (callback: (payload: SpeechStatusPayload) => void) => () => void;
+  onModelDownloadProgress?: (
+    callback: (payload: SpeechModelDownloadPayload) => void,
+  ) => () => void;
+}
+
+interface NormalizedSpeechAPI {
+  sendAudioChunk: (pcm16Buffer: ArrayBuffer) => void;
+  startListening: () => void;
+  stopListening: () => void;
+  getStatus: () => Promise<SpeechStatusPayload>;
+  setProvider?: (providerId: string) => Promise<any>;
+  getProviders?: () => Promise<any>;
+  onTranscriptPartial: (callback: (payload: SpeechTranscriptPayload) => void) => () => void;
+  onTranscriptFinal: (callback: (payload: SpeechTranscriptPayload) => void) => () => void;
+  onStatusChange: (callback: (payload: SpeechStatusPayload) => void) => () => void;
+  onModelDownloadProgress?: (
+    callback: (payload: SpeechModelDownloadPayload) => void,
+  ) => () => void;
+}
+
+const LEGACY_PROVIDER: SpeechDescriptor = {
+  id: 'offline-whisper-legacy',
+  label: 'Offline Whisper (Legacy)',
+  mode: 'offline',
+};
+
+function normalizeStatusPayload(
+  payload: SpeechStatusPayload | string,
+): SpeechStatusPayload {
+  if (typeof payload === 'string') {
+    return {
+      status: payload,
+      provider: LEGACY_PROVIDER,
+    };
+  }
+
+  return payload;
+}
+
+function normalizeTranscriptPayload(
+  text: string,
+  isFinal: boolean,
+): SpeechTranscriptPayload {
+  return {
+    text,
+    isFinal,
+    provider: LEGACY_PROVIDER,
+  };
+}
+
+function getSpeechAPI(): NormalizedSpeechAPI | null {
   const api = (window as any).api;
-  return api?.whisper ?? null;
+
+  if (api?.speech) {
+    const speechApi = api.speech as ProviderNeutralSpeechAPI;
+
+    return {
+      sendAudioChunk: speechApi.sendAudioChunk,
+      startListening: speechApi.startListening,
+      stopListening: speechApi.stopListening,
+      getStatus: async () => normalizeStatusPayload(await speechApi.getStatus()),
+      setProvider: speechApi.setProvider,
+      getProviders: speechApi.getProviders,
+      onTranscriptPartial: (callback) =>
+        speechApi.onTranscriptPartial((payload) => callback(payload)),
+      onTranscriptFinal: (callback) =>
+        speechApi.onTranscriptFinal((payload) => callback(payload)),
+      onStatusChange: (callback) =>
+        speechApi.onStatusChange((payload) => callback(payload)),
+      onModelDownloadProgress: speechApi.onModelDownloadProgress,
+    };
+  }
+
+  if (api?.whisper) {
+    const whisperApi = api.whisper as LegacyWhisperAPI;
+
+    return {
+      sendAudioChunk: whisperApi.sendAudioChunk,
+      startListening: whisperApi.startListening,
+      stopListening: whisperApi.stopListening,
+      getStatus: async () => normalizeStatusPayload(await whisperApi.getStatus()),
+      setProvider: undefined,
+      getProviders: undefined,
+      onTranscriptPartial: (callback) =>
+        whisperApi.onTranscriptPartial((text) =>
+          callback(normalizeTranscriptPayload(text, false)),
+        ),
+      onTranscriptFinal: (callback) =>
+        whisperApi.onTranscriptFinal((text) =>
+          callback(normalizeTranscriptPayload(text, true)),
+        ),
+      onStatusChange: (callback) =>
+        whisperApi.onStatusChange((status, message) =>
+          callback({ status, message, provider: LEGACY_PROVIDER }),
+        ),
+      onModelDownloadProgress: whisperApi.onModelDownloadProgress
+        ? (callback) =>
+            whisperApi.onModelDownloadProgress?.((percent, downloadedMB, totalMB) =>
+              callback({
+                percent,
+                downloadedMB,
+                totalMB,
+                provider: LEGACY_PROVIDER,
+              }),
+            ) ?? (() => undefined)
+        : undefined,
+    };
+  }
+
+  return null;
 }
 
-// ── Sleep / Wake patterns ────────────────────────────────────────
 const SLEEP_PATTERNS = [
   /\b(go to sleep|sleep|stop listening|pause|be quiet|shut up|mute)\b/i,
 ];
 const WAKE_PATTERNS = [
   /\b(wake up|i'?m ready|bible|start listening|resume|unmute|listen)\b/i,
 ];
+const IGNORED_TRANSCRIPT_PATTERNS = [/^\[(silence|pause|noise)\]$/i, /^(silence|noise)$/i];
 
 export const useLocalWhisper = ({
   onBibleMatch,
@@ -66,7 +206,6 @@ export const useLocalWhisper = ({
   const isSleepingRef = useRef(false);
   const currentVersionRef = useRef<BibleVersion>('kjv');
 
-  // Store callbacks in refs to avoid stale closures
   const callbacks = useRef({
     onBibleMatch,
     onPartialTranscript,
@@ -89,63 +228,57 @@ export const useLocalWhisper = ({
     };
   });
 
-  // Cleanup functions for IPC listeners
   const cleanupRef = useRef<(() => void)[]>([]);
 
-  /**
-   * Process a final transcript: parse the voice command and dispatch
-   * the appropriate callback (bible match, navigation, version change, etc.)
-   */
-  const processTranscript = useCallback(async (text: string) => {
+  const processTranscript = useCallback(async (text: string, provider?: SpeechDescriptor) => {
     const trimmed = text.trim();
-    if (!trimmed) return;
+    if (!trimmed || IGNORED_TRANSCRIPT_PATTERNS.some((pattern) => pattern.test(trimmed))) return;
 
     const cb = callbacks.current;
 
-    // Check for sleep command
     if (SLEEP_PATTERNS.some((p) => p.test(trimmed))) {
       isSleepingRef.current = true;
       cb.onSleepCommand?.();
       return;
     }
 
-    // Check for wake command
     if (isSleepingRef.current) {
       if (WAKE_PATTERNS.some((p) => p.test(trimmed))) {
         isSleepingRef.current = false;
         cb.onWakeCommand?.();
       }
-      // While sleeping, ignore all other commands
       return;
     }
 
-    // Parse the voice command using the offline engine
     const command = parseVoiceCommand(trimmed, currentVersionRef.current);
 
     switch (command.commandType) {
       case 'lookup': {
         if (!command.parsedReference) {
           console.warn('[useLocalWhisper] Could not parse reference:', trimmed);
+          cb.onBibleMatch?.({
+            success: false,
+            error: `Command unclear: ${trimmed}`,
+          });
           return;
         }
 
-        // Look up the verse from local IndexedDB
         const result = await lookupOffline(command.parsedReference);
+
         if (result && result.verses.length > 0) {
-          // Format result to match the shape expected by handleBibleMatch
-          // in useHandsfreeBible (same shape as the old server response)
           const versesFormatted = result.verses.map((v) => {
             const entry: Record<string, any> = { verse: v.number };
             entry[result.version] = v.text;
             return entry;
           });
-
           cb.onBibleMatch?.({
             success: true,
             commandType: 'lookup',
+            requestedVersion: command.parsedReference.version,
             result: {
               book: result.book,
               chapter: result.chapter,
+              version: result.version,
               verses: versesFormatted,
             },
           });
@@ -167,18 +300,12 @@ export const useLocalWhisper = ({
       }
 
       case 'verse_change': {
-        cb.onNavigation?.(
-          'verse_change',
-          command.navigationDirection,
-        );
+        cb.onNavigation?.('verse_change', command.navigationDirection);
         break;
       }
 
       case 'chapter_change': {
-        cb.onNavigation?.(
-          'chapter_change',
-          command.navigationDirection,
-        );
+        cb.onNavigation?.('chapter_change', command.navigationDirection);
         break;
       }
 
@@ -203,68 +330,107 @@ export const useLocalWhisper = ({
     }
   }, []);
 
-  /**
-   * Connect to the local whisper engine.
-   * Sets up IPC listeners for transcription events.
-   */
-  const connect = useCallback(() => {
-    const whisperAPI = getWhisperAPI();
-    if (!whisperAPI) {
-      console.warn('[useLocalWhisper] Whisper API not available (not running in Electron?)');
+  const connect = useCallback(async () => {
+    const speechAPI = getSpeechAPI();
+    if (!speechAPI) {
+      console.warn('[useLocalWhisper] Speech API not available (not running in Electron?)');
       return;
     }
 
-    // Set up IPC event listeners
-    const unsubPartial = whisperAPI.onTranscriptPartial((text) => {
-      callbacks.current.onPartialTranscript?.(text);
+    cleanupRef.current.forEach((unsub) => unsub());
+    cleanupRef.current = [];
+
+    let resolveReady: (() => void) | null = null;
+    const readyPromise = new Promise<void>((resolve) => {
+      resolveReady = resolve;
     });
 
-    const unsubFinal = whisperAPI.onTranscriptFinal((text) => {
-      callbacks.current.onFinalTranscript?.(text);
-      processTranscript(text);
+    const settleReady = () => {
+      if (resolveReady) {
+        resolveReady();
+        resolveReady = null;
+      }
+    };
+
+    const unsubPartial = speechAPI.onTranscriptPartial((payload) => {
+      callbacks.current.onPartialTranscript?.(payload.text);
     });
 
-    const unsubStatus = whisperAPI.onStatusChange((status, message) => {
-      console.log('[useLocalWhisper] Whisper status:', status, message);
-      setIsConnected(status === 'ready');
+    const unsubFinal = speechAPI.onTranscriptFinal((payload) => {
+      callbacks.current.onFinalTranscript?.(payload.text);
+      processTranscript(payload.text, payload.provider);
+    });
+
+    const unsubStatus = speechAPI.onStatusChange((payload) => {
+      console.log('[useLocalWhisper] Speech status:', payload.status, payload.message, payload.provider?.id);
+      const ready = payload.status === 'ready' || payload.status === 'processing';
+      setIsConnected(ready);
+      if (ready || payload.status === 'error') {
+        settleReady();
+      }
     });
 
     cleanupRef.current = [unsubPartial, unsubFinal, unsubStatus];
 
-    // Tell main process to start listening
-    whisperAPI.startListening();
-    setIsConnected(true);
-  }, [processTranscript]);
-
-  /**
-   * Disconnect from the local whisper engine.
-   */
-  const disconnect = useCallback(() => {
-    const whisperAPI = getWhisperAPI();
-    if (whisperAPI) {
-      whisperAPI.stopListening();
+    try {
+      const status = await speechAPI.getStatus();
+      if (status.status === 'ready' || status.status === 'processing') {
+        setIsConnected(true);
+        settleReady();
+      }
+    } catch (error) {
+      console.warn('[useLocalWhisper] Failed to read speech status before connect', error);
     }
 
-    // Clean up IPC listeners
+    speechAPI.startListening();
+    await Promise.race([
+      readyPromise,
+      new Promise<void>((resolve) => {
+        window.setTimeout(resolve, 2200);
+      }),
+    ]);
+  }, [processTranscript]);
+
+  const disconnect = useCallback(() => {
+    const speechAPI = getSpeechAPI();
+    if (speechAPI) {
+      speechAPI.stopListening();
+    }
+
     cleanupRef.current.forEach((unsub) => unsub());
     cleanupRef.current = [];
 
     setIsConnected(false);
   }, []);
 
-  /**
-   * Send PCM16 audio data to the main process.
-   * Drop-in replacement for the old WebSocket `sendPCMData`.
-   */
   const sendPCMData = useCallback((pcmBuffer: Int16Array) => {
-    const whisperAPI = getWhisperAPI();
-    if (whisperAPI) {
-      // Transfer the ArrayBuffer to the main process
-      whisperAPI.sendAudioChunk(pcmBuffer.buffer as ArrayBuffer);
+    const speechAPI = getSpeechAPI();
+    if (speechAPI) {
+      speechAPI.sendAudioChunk(pcmBuffer.buffer as ArrayBuffer);
     }
   }, []);
 
-  // Clean up on unmount
+  const setSpeechProvider = useCallback(async (providerId: string) => {
+    const speechAPI = getSpeechAPI();
+    if (!speechAPI?.setProvider) {
+      return {
+        success: false,
+        error: 'Speech provider switching is not available in the current bridge.',
+      };
+    }
+
+    return speechAPI.setProvider(providerId);
+  }, []);
+
+  const getSpeechProviders = useCallback(async () => {
+    const speechAPI = getSpeechAPI();
+    if (!speechAPI?.getProviders) {
+      return [];
+    }
+
+    return speechAPI.getProviders();
+  }, []);
+
   useEffect(() => {
     return () => {
       cleanupRef.current.forEach((unsub) => unsub());
@@ -277,5 +443,8 @@ export const useLocalWhisper = ({
     connect,
     disconnect,
     sendPCMData,
+    setSpeechProvider,
+    getSpeechProviders,
   };
-};
+}
+

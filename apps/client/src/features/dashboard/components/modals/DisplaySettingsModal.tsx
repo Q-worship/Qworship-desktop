@@ -1,271 +1,529 @@
-import { useState } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import { useEffect, useMemo, useState } from "react";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
-import { Slider } from "@/components/ui/slider";
+import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Monitor, Type, Palette, Layout, Maximize, Eye } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
+import {
+  Cable,
+  Crown,
+  Maximize,
+  Monitor,
+  Radio,
+  ScreenShare,
+  SlidersHorizontal,
+  Tv,
+  Waves,
+} from "lucide-react";
+import {
+  ConnectionMethod,
+  NDIBandwidth,
+  NDIColorFormat,
+  NDIFrameRate,
+  NDIResolution,
+  useDisplayModeStore,
+} from "@/stores/useDisplayModeStore";
 
 interface DisplaySettingsModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
+const CONNECTION_OPTIONS: Array<{
+  value: ConnectionMethod;
+  label: string;
+  description: string;
+  badge?: string;
+}> = [
+  {
+    value: "wired",
+    label: "Wired - HDMI",
+    description: "Send the audience screen to a selected external projector, TV, or monitor.",
+  },
+  {
+    value: "ndi",
+    label: "Wireless - NDI",
+    description: "Configure the audience output and lower third for network-based delivery.",
+  },
+  {
+    value: "both",
+    label: "Both",
+    description: "Use HDMI for the room display while keeping NDI output active at the same time.",
+    badge: "Pro Feature",
+  },
+];
+
+const RESOLUTION_OPTIONS: Array<{ value: NDIResolution; label: string }> = [
+  { value: "1920x1080", label: "1080p (1920 × 1080)" },
+  { value: "1280x720", label: "720p (1280 × 720)" },
+  { value: "3840x2160", label: "4K (3840 × 2160)" },
+];
+
+const FRAME_RATE_OPTIONS: Array<{ value: NDIFrameRate; label: string }> = [
+  { value: "24", label: "24 fps" },
+  { value: "30", label: "30 fps" },
+  { value: "60", label: "60 fps" },
+];
+
+const BANDWIDTH_OPTIONS: Array<{ value: NDIBandwidth; label: string }> = [
+  { value: "highest", label: "Highest Quality" },
+  { value: "balanced", label: "Balanced" },
+  { value: "lowest", label: "Lowest Bandwidth" },
+];
+
+const COLOR_FORMAT_OPTIONS: Array<{ value: NDIColorFormat; label: string }> = [
+  { value: "uyvy422", label: "UYVY 4:2:2" },
+  { value: "rgba", label: "RGBA" },
+  { value: "bgra", label: "BGRA" },
+];
+
+const sectionCardClass = "rounded-2xl border border-white/10 bg-[#1a0f2e] p-5 shadow-[0_12px_40px_rgba(0,0,0,0.24)]";
+const controlClass = "bg-[#0f0920] border-white/10 text-white focus-visible:ring-[#8b5cf6]";
+
 export function DisplaySettingsModal({ isOpen, onClose }: DisplaySettingsModalProps) {
   const { toast } = useToast();
-  const [fontSize, setFontSize] = useState<number[]>([16]);
-  const [fontFamily, setFontFamily] = useState<string>("inter");
-  const [primaryColor, setPrimaryColor] = useState<string>("#8356f3");
-  const [showSlideNumbers, setShowSlideNumbers] = useState(true);
-  const [showPreviewPanel, setShowPreviewPanel] = useState(true);
-  const [fullscreenOnLive, setFullscreenOnLive] = useState(true);
-  const [transitionEffect, setTransitionEffect] = useState<string>("fade");
-  const [transitionDuration, setTransitionDuration] = useState<number[]>([300]);
+  const availableDisplays = useDisplayModeStore((state) => state.availableDisplays);
+  const targetDisplayId = useDisplayModeStore((state) => state.targetDisplayId);
+  const connectionMethod = useDisplayModeStore((state) => state.connectionMethod);
+  const fullscreenOnLive = useDisplayModeStore((state) => state.fullscreenOnLive);
+  const ndiSettings = useDisplayModeStore((state) => state.ndiSettings);
+  const setAvailableDisplays = useDisplayModeStore((state) => state.setAvailableDisplays);
+  const applyLiveSettings = useDisplayModeStore((state) => state.applyLiveSettings);
 
-  const handleSave = () => {
-    toast({
-      title: "Display Settings Saved",
-      description: "Your display settings have been updated successfully.",
-      className: "bg-[#8356f3] text-white",
-    });
+  const [draftDisplayId, setDraftDisplayId] = useState<string>(targetDisplayId ?? "auto");
+  const [draftConnectionMethod, setDraftConnectionMethod] = useState<ConnectionMethod>(connectionMethod);
+  const [draftFullscreenOnLive, setDraftFullscreenOnLive] = useState<boolean>(fullscreenOnLive);
+  const [draftNdiSettings, setDraftNdiSettings] = useState(ndiSettings);
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    setDraftDisplayId(targetDisplayId ?? "auto");
+    setDraftConnectionMethod(connectionMethod);
+    setDraftFullscreenOnLive(fullscreenOnLive);
+    setDraftNdiSettings(ndiSettings);
+
+    const loadDisplays = async () => {
+      try {
+        const electronApi = window.api as
+          | {
+              display?: {
+                getOutputs?: () => Promise<unknown>;
+              };
+            }
+          | undefined;
+        const displays = await electronApi?.display?.getOutputs?.();
+        if (Array.isArray(displays) && displays.length > 0) {
+          setAvailableDisplays(displays as Parameters<typeof setAvailableDisplays>[0]);
+        }
+      } catch (error) {
+        console.error("[DisplaySettings] Failed to load outputs", error);
+      }
+    };
+
+    void loadDisplays();
+  }, [
+    isOpen,
+    targetDisplayId,
+    connectionMethod,
+    fullscreenOnLive,
+    ndiSettings,
+    setAvailableDisplays,
+  ]);
+
+  const displayOptions = useMemo(() => {
+    if (availableDisplays.length === 0) {
+      return [{ id: "auto", label: "Auto-detect primary external display", isPrimary: false }];
+    }
+
+    return [
+      { id: "auto", label: "Auto-detect primary external display", isPrimary: false },
+      ...availableDisplays,
+    ];
+  }, [availableDisplays]);
+
+  const updateDraftNdiSettings = <K extends keyof typeof draftNdiSettings>(key: K, value: (typeof draftNdiSettings)[K]) => {
+    setDraftNdiSettings((current) => ({ ...current, [key]: value }));
   };
 
-  const colorOptions = [
-    { value: "#8356f3", label: "Purple", color: "#8356f3" },
-    { value: "#3b82f6", label: "Blue", color: "#3b82f6" },
-    { value: "#10b981", label: "Green", color: "#10b981" },
-    { value: "#f59e0b", label: "Orange", color: "#f59e0b" },
-    { value: "#ef4444", label: "Red", color: "#ef4444" },
-    { value: "#ec4899", label: "Pink", color: "#ec4899" },
-  ];
+  const handleSave = () => {
+    applyLiveSettings({
+      connectionMethod: draftConnectionMethod,
+      targetDisplayId: draftDisplayId === "auto" ? null : draftDisplayId,
+      fullscreenOnLive: draftFullscreenOnLive,
+      ndiSettings: draftNdiSettings,
+    });
+
+    toast({
+      title: "Display Settings Saved",
+      description: "Audience screen and lower-third output preferences have been updated.",
+      className: "bg-[#8356f3] text-white",
+    });
+
+    onClose();
+  };
+
+  const selectedConnection = CONNECTION_OPTIONS.find((option) => option.value === draftConnectionMethod);
+  const showWiredSettings = draftConnectionMethod === "wired" || draftConnectionMethod === "both";
+  const showNdiSettings = draftConnectionMethod === "ndi" || draftConnectionMethod === "both";
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent 
-        className="max-w-5xl w-[92vw] h-[85vh] max-h-[800px] bg-[#0f0920] border-gray-700 p-0 flex flex-col"
+      <DialogContent
+        className="max-w-6xl w-[94vw] h-[88vh] max-h-[920px] overflow-hidden border border-white/10 bg-[#120a22] p-0 text-white"
         data-testid="modal-display-settings"
       >
-        <DialogHeader className="px-6 pt-6 pb-4 border-b border-gray-700/50 flex-shrink-0">
-          <DialogTitle className="text-xl font-bold text-[#C77DFF]">
-            Display Settings
-          </DialogTitle>
-          <DialogDescription className="text-gray-400">
-            Customize how content is displayed in your presentations and workspace
-          </DialogDescription>
+        <DialogHeader className="border-b border-white/10 bg-[linear-gradient(180deg,#2f1854_0%,#1a0f2e_100%)] px-7 py-6">
+          <div className="flex items-start justify-between gap-6">
+            <div className="space-y-2">
+              <DialogTitle className="text-2xl font-bold text-[#d9b3ff]">Display Settings</DialogTitle>
+              <DialogDescription className="max-w-3xl text-sm leading-6 text-[#c8bedf]">
+                Configure how Qworship sends your audience screen and lower third to HDMI displays, NDI endpoints, or both while preserving the existing purple theme across the full experience.
+              </DialogDescription>
+            </div>
+            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/10 text-[#d9b3ff]">
+              <ScreenShare className="h-6 w-6" />
+            </div>
+          </div>
         </DialogHeader>
 
-        <div className="flex-1 overflow-y-auto p-6">
-          <div className="space-y-8 max-w-3xl">
-            {/* Typography Settings */}
-            <div className="space-y-4">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-lg bg-purple-600/20 flex items-center justify-center">
-                  <Type className="w-5 h-5 text-purple-400" />
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold text-white">Typography</h3>
-                  <p className="text-sm text-gray-400">Customize fonts and text sizes</p>
-                </div>
-              </div>
-              <div className="ml-13 pl-10 space-y-4">
-                <div className="p-4 rounded-lg bg-[#1a0f2e] border border-gray-700">
-                  <Label className="text-white font-medium mb-3 block">Font Family</Label>
-                  <Select value={fontFamily} onValueChange={setFontFamily}>
-                    <SelectTrigger className="w-full max-w-xs bg-[#0f0920] border-gray-600 text-white">
-                      <SelectValue placeholder="Select font" />
-                    </SelectTrigger>
-                    <SelectContent className="bg-[#1a0f2e] border-gray-600">
-                      <SelectItem value="inter" className="text-white hover:bg-purple-600">Inter</SelectItem>
-                      <SelectItem value="roboto" className="text-white hover:bg-purple-600">Roboto</SelectItem>
-                      <SelectItem value="opensans" className="text-white hover:bg-purple-600">Open Sans</SelectItem>
-                      <SelectItem value="lato" className="text-white hover:bg-purple-600">Lato</SelectItem>
-                      <SelectItem value="montserrat" className="text-white hover:bg-purple-600">Montserrat</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div className="p-4 rounded-lg bg-[#1a0f2e] border border-gray-700">
-                  <div className="flex items-center justify-between mb-3">
-                    <Label className="text-white font-medium">Base Font Size</Label>
-                    <span className="text-purple-400 font-medium">{fontSize[0]}px</span>
+        <div className="flex-1 overflow-y-auto px-7 py-6">
+          <div className="grid gap-6 xl:grid-cols-[1.2fr_0.8fr]">
+            <div className="space-y-6">
+              <section className={sectionCardClass}>
+                <div className="mb-4 flex items-start gap-3">
+                  <div className="mt-0.5 rounded-xl bg-[#7c3aed]/20 p-2 text-[#c084fc]">
+                    <Cable className="h-5 w-5" />
                   </div>
-                  <Slider
-                    value={fontSize}
-                    onValueChange={setFontSize}
-                    min={12}
-                    max={24}
-                    step={1}
-                    className="w-full"
-                  />
-                  <div className="flex justify-between text-xs text-gray-500 mt-2">
-                    <span>12px</span>
-                    <span>24px</span>
+                  <div>
+                    <h3 className="text-lg font-semibold text-white">Output Type</h3>
+                    <p className="mt-1 text-sm leading-6 text-[#b8b0cb]">
+                      Choose whether Go Live should use a wired HDMI screen, a wireless NDI pipeline, or both together for Pro workflows.
+                    </p>
                   </div>
                 </div>
-              </div>
-            </div>
 
-            {/* Color Theme */}
-            <div className="space-y-4">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-lg bg-purple-600/20 flex items-center justify-center">
-                  <Palette className="w-5 h-5 text-purple-400" />
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold text-white">Accent Color</h3>
-                  <p className="text-sm text-gray-400">Choose your primary accent color</p>
-                </div>
-              </div>
-              <div className="ml-13 pl-10">
-                <div className="p-4 rounded-lg bg-[#1a0f2e] border border-gray-700">
-                  <div className="flex flex-wrap gap-3">
-                    {colorOptions.map((option) => (
+                <div className="grid gap-3 md:grid-cols-3">
+                  {CONNECTION_OPTIONS.map((option) => {
+                    const active = draftConnectionMethod === option.value;
+                    return (
                       <button
                         key={option.value}
-                        onClick={() => setPrimaryColor(option.value)}
-                        className={`w-10 h-10 rounded-full transition-all ${
-                          primaryColor === option.value 
-                            ? "ring-2 ring-white ring-offset-2 ring-offset-[#1a0f2e]" 
-                            : "hover:scale-110"
+                        type="button"
+                        onClick={() => setDraftConnectionMethod(option.value)}
+                        className={`rounded-2xl border px-4 py-4 text-left transition-all ${
+                          active
+                            ? "border-[#9f67ff] bg-[#2f1854] shadow-[0_0_0_1px_rgba(159,103,255,0.4)]"
+                            : "border-white/10 bg-[#140b25] hover:border-[#7041d8] hover:bg-[#1a1031]"
                         }`}
-                        style={{ backgroundColor: option.color }}
-                        title={option.label}
-                        data-testid={`color-option-${option.label.toLowerCase()}`}
-                      />
-                    ))}
-                  </div>
+                      >
+                        <div className="flex items-center justify-between gap-3">
+                          <span className="text-sm font-semibold text-white">{option.label}</span>
+                          {option.badge ? (
+                            <Badge className="border border-[#9f67ff]/40 bg-[#9f67ff]/15 text-[#e4d2ff] hover:bg-[#9f67ff]/15">
+                              {option.badge}
+                            </Badge>
+                          ) : null}
+                        </div>
+                        <p className="mt-3 text-xs leading-5 text-[#b8b0cb]">{option.description}</p>
+                      </button>
+                    );
+                  })}
                 </div>
-              </div>
+
+                <div className="mt-4 rounded-2xl border border-dashed border-[#5f3f96] bg-[#140b25] px-4 py-3 text-sm text-[#d8d2eb]">
+                  <span className="font-semibold text-white">Selected mode:</span>{" "}
+                  {selectedConnection?.label}. {selectedConnection?.description}
+                </div>
+              </section>
+
+              {showWiredSettings ? (
+                <section className={sectionCardClass}>
+                  <div className="mb-4 flex items-start gap-3">
+                    <div className="mt-0.5 rounded-xl bg-[#7c3aed]/20 p-2 text-[#c084fc]">
+                      <Monitor className="h-5 w-5" />
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-semibold text-white">Wired - HDMI Output</h3>
+                      <p className="mt-1 text-sm leading-6 text-[#b8b0cb]">
+                        Pick the exact external display that should be taken over when Go Live is triggered. If only one HDMI-capable external screen is connected, it will be the only choice shown here.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="grid gap-5 lg:grid-cols-[1fr_auto] lg:items-end">
+                    <div className="space-y-2">
+                      <Label className="text-sm font-medium text-white">Audience Screen Source</Label>
+                      <Select value={draftDisplayId} onValueChange={setDraftDisplayId}>
+                        <SelectTrigger className={controlClass}>
+                          <SelectValue placeholder="Select HDMI output" />
+                        </SelectTrigger>
+                        <SelectContent className="border-white/10 bg-[#1a0f2e] text-white">
+                          {displayOptions.map((display) => (
+                            <SelectItem key={display.id} value={display.id} className="text-white focus:bg-[#2f1854] focus:text-white">
+                              {display.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <p className="text-xs leading-5 text-[#b8b0cb]">
+                        Qworship reads the currently connected outputs from the desktop session and stores your preferred selection for the next Go Live action.
+                      </p>
+                    </div>
+
+                    <div className="rounded-2xl border border-white/10 bg-[#140b25] px-4 py-3 text-sm text-[#d8d2eb]">
+                      <div className="flex items-center gap-2 font-medium text-white">
+                        <Tv className="h-4 w-4 text-[#c084fc]" />
+                        HDMI behavior
+                      </div>
+                      <p className="mt-2 max-w-xs leading-6 text-[#b8b0cb]">
+                        Once Go Live starts, the selected screen will be used for the audience output just as the current full-screen presentation flow already works.
+                      </p>
+                    </div>
+                  </div>
+                </section>
+              ) : null}
+
+              {showNdiSettings ? (
+                <section className={sectionCardClass}>
+                  <div className="mb-4 flex items-start gap-3">
+                    <div className="mt-0.5 rounded-xl bg-[#7c3aed]/20 p-2 text-[#c084fc]">
+                      <Waves className="h-5 w-5" />
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-semibold text-white">Wireless - NDI Configuration</h3>
+                      <p className="mt-1 text-sm leading-6 text-[#b8b0cb]">
+                        Configure the audience-screen and lower-third network delivery settings. The defaults are set to 1080p and 24 fps as requested.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="grid gap-4 md:grid-cols-2">
+                    <div className="space-y-2">
+                      <Label className="text-sm font-medium text-white">Resolution</Label>
+                      <Select value={draftNdiSettings.resolution} onValueChange={(value) => updateDraftNdiSettings("resolution", value as NDIResolution)}>
+                        <SelectTrigger className={controlClass}>
+                          <SelectValue placeholder="Select resolution" />
+                        </SelectTrigger>
+                        <SelectContent className="border-white/10 bg-[#1a0f2e] text-white">
+                          {RESOLUTION_OPTIONS.map((option) => (
+                            <SelectItem key={option.value} value={option.value} className="text-white focus:bg-[#2f1854] focus:text-white">
+                              {option.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label className="text-sm font-medium text-white">Frame Rate</Label>
+                      <Select value={draftNdiSettings.frameRate} onValueChange={(value) => updateDraftNdiSettings("frameRate", value as NDIFrameRate)}>
+                        <SelectTrigger className={controlClass}>
+                          <SelectValue placeholder="Select frame rate" />
+                        </SelectTrigger>
+                        <SelectContent className="border-white/10 bg-[#1a0f2e] text-white">
+                          {FRAME_RATE_OPTIONS.map((option) => (
+                            <SelectItem key={option.value} value={option.value} className="text-white focus:bg-[#2f1854] focus:text-white">
+                              {option.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label className="text-sm font-medium text-white">Bandwidth Profile</Label>
+                      <Select value={draftNdiSettings.bandwidth} onValueChange={(value) => updateDraftNdiSettings("bandwidth", value as NDIBandwidth)}>
+                        <SelectTrigger className={controlClass}>
+                          <SelectValue placeholder="Select bandwidth profile" />
+                        </SelectTrigger>
+                        <SelectContent className="border-white/10 bg-[#1a0f2e] text-white">
+                          {BANDWIDTH_OPTIONS.map((option) => (
+                            <SelectItem key={option.value} value={option.value} className="text-white focus:bg-[#2f1854] focus:text-white">
+                              {option.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label className="text-sm font-medium text-white">Colour Format</Label>
+                      <Select value={draftNdiSettings.colorFormat} onValueChange={(value) => updateDraftNdiSettings("colorFormat", value as NDIColorFormat)}>
+                        <SelectTrigger className={controlClass}>
+                          <SelectValue placeholder="Select colour format" />
+                        </SelectTrigger>
+                        <SelectContent className="border-white/10 bg-[#1a0f2e] text-white">
+                          {COLOR_FORMAT_OPTIONS.map((option) => (
+                            <SelectItem key={option.value} value={option.value} className="text-white focus:bg-[#2f1854] focus:text-white">
+                              {option.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
+
+                  <div className="mt-5 grid gap-4 md:grid-cols-2">
+                    <div className="rounded-2xl border border-white/10 bg-[#140b25] p-4">
+                      <div className="mb-4 flex items-center justify-between gap-4">
+                        <div>
+                          <h4 className="font-medium text-white">Audience Screen over NDI</h4>
+                          <p className="mt-1 text-xs leading-5 text-[#b8b0cb]">Enable the main audience program feed for NDI delivery.</p>
+                        </div>
+                        <Switch checked={draftNdiSettings.audienceEnabled} onCheckedChange={(checked) => updateDraftNdiSettings("audienceEnabled", checked)} className="data-[state=checked]:bg-[#7c3aed]" />
+                      </div>
+                      <Label className="mb-2 block text-sm font-medium text-white">Audience Stream Name</Label>
+                      <Input value={draftNdiSettings.audienceStreamName} onChange={(event) => updateDraftNdiSettings("audienceStreamName", event.target.value)} className={controlClass} placeholder="Qworship Audience" />
+                    </div>
+
+                    <div className="rounded-2xl border border-white/10 bg-[#140b25] p-4">
+                      <div className="mb-4 flex items-center justify-between gap-4">
+                        <div>
+                          <h4 className="font-medium text-white">Lower Third over NDI</h4>
+                          <p className="mt-1 text-xs leading-5 text-[#b8b0cb]">Enable a dedicated lower-third network feed alongside the audience program output.</p>
+                        </div>
+                        <Switch checked={draftNdiSettings.lowerThirdEnabled} onCheckedChange={(checked) => updateDraftNdiSettings("lowerThirdEnabled", checked)} className="data-[state=checked]:bg-[#7c3aed]" />
+                      </div>
+                      <Label className="mb-2 block text-sm font-medium text-white">Lower Third Stream Name</Label>
+                      <Input value={draftNdiSettings.lowerThirdStreamName} onChange={(event) => updateDraftNdiSettings("lowerThirdStreamName", event.target.value)} className={controlClass} placeholder="Qworship Lower Third" />
+                    </div>
+                  </div>
+
+                  <div className="mt-5 grid gap-4 md:grid-cols-2">
+                    <div className="flex items-center justify-between rounded-2xl border border-white/10 bg-[#140b25] p-4">
+                      <div>
+                        <Label className="text-sm font-medium text-white">Include Audio</Label>
+                        <p className="mt-1 text-xs leading-5 text-[#b8b0cb]">Keep audio available for NDI-capable receivers.</p>
+                      </div>
+                      <Switch checked={draftNdiSettings.audioEnabled} onCheckedChange={(checked) => updateDraftNdiSettings("audioEnabled", checked)} className="data-[state=checked]:bg-[#7c3aed]" />
+                    </div>
+
+                    <div className="flex items-center justify-between rounded-2xl border border-white/10 bg-[#140b25] p-4">
+                      <div>
+                        <Label className="text-sm font-medium text-white">Preserve Alpha Channel</Label>
+                        <p className="mt-1 text-xs leading-5 text-[#b8b0cb]">Useful when lower-third graphics need transparency-aware workflows.</p>
+                      </div>
+                      <Switch checked={draftNdiSettings.alphaEnabled} onCheckedChange={(checked) => updateDraftNdiSettings("alphaEnabled", checked)} className="data-[state=checked]:bg-[#7c3aed]" />
+                    </div>
+                  </div>
+                </section>
+              ) : null}
+
+              {draftConnectionMethod === "both" ? (
+                <section className={sectionCardClass}>
+                  <div className="mb-4 flex items-start gap-3">
+                    <div className="mt-0.5 rounded-xl bg-[#7c3aed]/20 p-2 text-[#f0abfc]">
+                      <Crown className="h-5 w-5" />
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-semibold text-white">Both Mode (Pro Feature)</h3>
+                      <p className="mt-1 text-sm leading-6 text-[#b8b0cb]">
+                        This mode keeps the room projector on HDMI while also preserving your NDI audience and lower-third settings for hybrid or broadcast-ready workflows.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="rounded-2xl border border-dashed border-[#7c3aed]/40 bg-[#140b25] p-4 text-sm leading-6 text-[#d8d2eb]">
+                    When <strong className="text-white">Both</strong> is selected, Go Live will continue to use the chosen HDMI display for the room audience output while retaining your configured NDI resolution, frame rate, stream names, and lower-third toggles for simultaneous use.
+                  </div>
+                </section>
+              ) : null}
             </div>
 
-            {/* Presentation Layout */}
-            <div className="space-y-4">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-lg bg-purple-600/20 flex items-center justify-center">
-                  <Layout className="w-5 h-5 text-purple-400" />
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold text-white">Workspace Layout</h3>
-                  <p className="text-sm text-gray-400">Configure your workspace panels</p>
-                </div>
-              </div>
-              <div className="ml-13 pl-10 space-y-4">
-                <div className="flex items-center justify-between p-4 rounded-lg bg-[#1a0f2e] border border-gray-700">
-                  <div>
-                    <Label className="text-white font-medium">Show Slide Numbers</Label>
-                    <p className="text-sm text-gray-400">Display slide numbers in the editor</p>
+            <aside className="space-y-6">
+              <section className={sectionCardClass}>
+                <div className="mb-4 flex items-start gap-3">
+                  <div className="mt-0.5 rounded-xl bg-[#7c3aed]/20 p-2 text-[#c084fc]">
+                    <Maximize className="h-5 w-5" />
                   </div>
-                  <Switch 
-                    checked={showSlideNumbers} 
-                    onCheckedChange={setShowSlideNumbers}
-                    className="data-[state=checked]:bg-[#6366f1]"
-                  />
-                </div>
-                <div className="flex items-center justify-between p-4 rounded-lg bg-[#1a0f2e] border border-gray-700">
                   <div>
-                    <Label className="text-white font-medium">Show Preview Panel</Label>
-                    <p className="text-sm text-gray-400">Display the live preview panel</p>
+                    <h3 className="text-lg font-semibold text-white">Go Live Behavior</h3>
+                    <p className="mt-1 text-sm leading-6 text-[#b8b0cb]">
+                      Decide how the audience screen should behave the moment you activate the live output.
+                    </p>
                   </div>
-                  <Switch 
-                    checked={showPreviewPanel} 
-                    onCheckedChange={setShowPreviewPanel}
-                    className="data-[state=checked]:bg-[#6366f1]"
-                  />
                 </div>
-              </div>
-            </div>
 
-            {/* Presentation Mode */}
-            <div className="space-y-4">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-lg bg-purple-600/20 flex items-center justify-center">
-                  <Maximize className="w-5 h-5 text-purple-400" />
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold text-white">Presentation Mode</h3>
-                  <p className="text-sm text-gray-400">Configure live presentation behavior</p>
-                </div>
-              </div>
-              <div className="ml-13 pl-10 space-y-4">
-                <div className="flex items-center justify-between p-4 rounded-lg bg-[#1a0f2e] border border-gray-700">
-                  <div>
-                    <Label className="text-white font-medium">Fullscreen on Go Live</Label>
-                    <p className="text-sm text-gray-400">Automatically enter fullscreen when presenting</p>
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between rounded-2xl border border-white/10 bg-[#140b25] p-4">
+                    <div>
+                      <Label className="text-sm font-medium text-white">Fullscreen on Go Live</Label>
+                      <p className="mt-1 text-xs leading-5 text-[#b8b0cb]">
+                        Expand the selected HDMI audience screen into full-screen presentation mode immediately.
+                      </p>
+                    </div>
+                    <Switch checked={draftFullscreenOnLive} onCheckedChange={setDraftFullscreenOnLive} className="data-[state=checked]:bg-[#7c3aed]" />
                   </div>
-                  <Switch 
-                    checked={fullscreenOnLive} 
-                    onCheckedChange={setFullscreenOnLive}
-                    className="data-[state=checked]:bg-[#6366f1]"
-                  />
-                </div>
-              </div>
-            </div>
 
-            {/* Transition Effects */}
-            <div className="space-y-4">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-lg bg-purple-600/20 flex items-center justify-center">
-                  <Eye className="w-5 h-5 text-purple-400" />
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold text-white">Transitions</h3>
-                  <p className="text-sm text-gray-400">Configure slide transition effects</p>
-                </div>
-              </div>
-              <div className="ml-13 pl-10 space-y-4">
-                <div className="p-4 rounded-lg bg-[#1a0f2e] border border-gray-700">
-                  <Label className="text-white font-medium mb-3 block">Transition Effect</Label>
-                  <Select value={transitionEffect} onValueChange={setTransitionEffect}>
-                    <SelectTrigger className="w-full max-w-xs bg-[#0f0920] border-gray-600 text-white">
-                      <SelectValue placeholder="Select effect" />
-                    </SelectTrigger>
-                    <SelectContent className="bg-[#1a0f2e] border-gray-600">
-                      <SelectItem value="none" className="text-white hover:bg-purple-600">None</SelectItem>
-                      <SelectItem value="fade" className="text-white hover:bg-purple-600">Fade</SelectItem>
-                      <SelectItem value="slide" className="text-white hover:bg-purple-600">Slide</SelectItem>
-                      <SelectItem value="zoom" className="text-white hover:bg-purple-600">Zoom</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div className="p-4 rounded-lg bg-[#1a0f2e] border border-gray-700">
-                  <div className="flex items-center justify-between mb-3">
-                    <Label className="text-white font-medium">Transition Duration</Label>
-                    <span className="text-purple-400 font-medium">{transitionDuration[0]}ms</span>
-                  </div>
-                  <Slider
-                    value={transitionDuration}
-                    onValueChange={setTransitionDuration}
-                    min={100}
-                    max={1000}
-                    step={50}
-                    className="w-full"
-                  />
-                  <div className="flex justify-between text-xs text-gray-500 mt-2">
-                    <span>100ms</span>
-                    <span>1000ms</span>
+                  <div className="rounded-2xl border border-white/10 bg-[#140b25] p-4 text-sm leading-6 text-[#d8d2eb]">
+                    <div className="flex items-center gap-2 font-medium text-white">
+                      <Radio className="h-4 w-4 text-[#c084fc]" />
+                      Current save summary
+                    </div>
+                    <table className="mt-3 w-full text-left text-sm">
+                      <tbody className="divide-y divide-white/5">
+                        <tr>
+                          <th className="py-2 pr-4 font-medium text-[#b8b0cb]">Output type</th>
+                          <td className="py-2 text-white">{selectedConnection?.label}</td>
+                        </tr>
+                        <tr>
+                          <th className="py-2 pr-4 font-medium text-[#b8b0cb]">HDMI screen</th>
+                          <td className="py-2 text-white">{displayOptions.find((display) => display.id === draftDisplayId)?.label ?? "Auto-detect primary external display"}</td>
+                        </tr>
+                        <tr>
+                          <th className="py-2 pr-4 font-medium text-[#b8b0cb]">NDI resolution</th>
+                          <td className="py-2 text-white">{draftNdiSettings.resolution}</td>
+                        </tr>
+                        <tr>
+                          <th className="py-2 pr-4 font-medium text-[#b8b0cb]">NDI frame rate</th>
+                          <td className="py-2 text-white">{draftNdiSettings.frameRate} fps</td>
+                        </tr>
+                        <tr>
+                          <th className="py-2 pr-4 font-medium text-[#b8b0cb]">Lower third feed</th>
+                          <td className="py-2 text-white">{draftNdiSettings.lowerThirdEnabled ? "Enabled" : "Disabled"}</td>
+                        </tr>
+                      </tbody>
+                    </table>
                   </div>
                 </div>
-              </div>
-            </div>
+              </section>
+
+              <section className={sectionCardClass}>
+                <div className="flex items-start gap-3">
+                  <div className="mt-0.5 rounded-xl bg-[#7c3aed]/20 p-2 text-[#c084fc]">
+                    <SlidersHorizontal className="h-5 w-5" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold text-white">Theme Alignment</h3>
+                    <p className="mt-1 text-sm leading-6 text-[#b8b0cb]">
+                      This modal follows the current Qworship palette with dark purple surfaces, bright lavender accents, white primary text, and consistent border contrast across every card, field, and switch state.
+                    </p>
+                  </div>
+                </div>
+              </section>
+            </aside>
           </div>
         </div>
 
-        <div className="px-6 py-4 border-t border-gray-700/50 flex-shrink-0 flex justify-between">
+        <div className="flex items-center justify-between border-t border-white/10 bg-[#120a22] px-7 py-5">
           <Button
             onClick={onClose}
             variant="outline"
-            className="border-gray-600 text-gray-300 hover:bg-gray-700"
+            className="border-white/10 bg-transparent text-[#d8d2eb] hover:bg-white/5 hover:text-white"
             data-testid="button-cancel-display-settings"
           >
             Cancel
           </Button>
           <Button
             onClick={handleSave}
-            className="bg-[#6366f1] hover:bg-[#5558e3] text-white"
+            className="bg-[#7c3aed] text-white shadow-[0_10px_30px_rgba(124,58,237,0.35)] hover:bg-[#6d28d9]"
             data-testid="button-save-display-settings"
           >
-            Save Changes
+            Save Display Settings
           </Button>
         </div>
       </DialogContent>

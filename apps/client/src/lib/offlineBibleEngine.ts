@@ -1,12 +1,13 @@
-/**
- * Offline Bible Engine — Fully Self-Contained Browser/Electron Module
+﻿/**
+ * Offline Bible Engine â€” Fully Self-Contained Browser/Electron Module
  *
  * No Node.js dependencies. No server calls. Works 100% offline.
  * Reads Bible data from IndexedDB (populated by useBibleSync).
  */
 
-import Fuse from "fuse.js";
-import { db } from "./db";
+import FuseImport from "../../node_modules/fuse.js/dist/fuse.mjs";
+import { getLiveConsoleBibleBooks } from "../features/dashboard/data/bibleBooks.ts";
+import { useBibleRAMCache } from "../features/dashboard/hooks/useBibleRAMCache";
 
 export type BibleVersion =
   | "kjv"
@@ -38,6 +39,38 @@ export interface OfflineBibleResult {
   formattedReference: string;
 }
 
+const BIBLE_BOOK_METADATA = new Map(
+  getLiveConsoleBibleBooks().map((book) => [
+    book.name,
+    {
+      chapters: book.chapters,
+      verses: book.verses,
+    },
+  ]),
+);
+
+function isValidBibleReference(ref: Pick<BibleReference, "book" | "chapter" | "verseStart" | "verseEnd">) {
+  const meta = BIBLE_BOOK_METADATA.get(ref.book);
+  if (!meta) return true;
+  if (!Number.isFinite(ref.chapter) || ref.chapter < 1 || ref.chapter > meta.chapters) return false;
+
+  const maxVerse = meta.verses[ref.chapter - 1] ?? Number.POSITIVE_INFINITY;
+  if (!Number.isFinite(ref.verseStart) || ref.verseStart < 1 || ref.verseStart > maxVerse) return false;
+  if (ref.verseEnd != null && (!Number.isFinite(ref.verseEnd) || ref.verseEnd < ref.verseStart || ref.verseEnd > maxVerse)) {
+    return false;
+  }
+
+  return true;
+}
+
+function getBibleBookMetadata(book: string) {
+  return BIBLE_BOOK_METADATA.get(book) ?? null;
+}
+
+function isSingleChapterBook(book: string): boolean {
+  return (getBibleBookMetadata(book)?.chapters ?? 0) === 1;
+}
+
 export type CommandType =
   | "lookup"
   | "version_change"
@@ -61,7 +94,7 @@ export interface ParsedVoiceCommand {
 }
 
 // ============================================================
-// Book name table — alias → canonical name
+// Book name table â€” alias â†’ canonical name
 // ============================================================
 const BOOK_ALIASES: Record<string, string> = {
   genesis: "Genesis",
@@ -72,6 +105,9 @@ const BOOK_ALIASES: Record<string, string> = {
   ex: "Exodus",
   leviticus: "Leviticus",
   lev: "Leviticus",
+  liviticus: "Leviticus",
+  levidicus: "Leviticus",
+  leviticuss: "Leviticus",
   numbers: "Numbers",
   num: "Numbers",
   deuteronomy: "Deuteronomy",
@@ -119,6 +155,9 @@ const BOOK_ALIASES: Record<string, string> = {
   job: "Job",
   psalms: "Psalms",
   psalm: "Psalms",
+  pslams: "Psalms",
+  pslamss: "Psalms",
+  sams: "Psalms",
   psa: "Psalms",
   ps: "Psalms",
   proverbs: "Proverbs",
@@ -128,6 +167,8 @@ const BOOK_ALIASES: Record<string, string> = {
   ecc: "Ecclesiastes",
   "song of solomon": "Song of Solomon",
   "song of songs": "Song of Solomon",
+  "songs of songs": "Song of Solomon",
+  "song songs": "Song of Solomon",
   sos: "Song of Solomon",
   isaiah: "Isaiah",
   isa: "Isaiah",
@@ -146,6 +187,7 @@ const BOOK_ALIASES: Record<string, string> = {
   amos: "Amos",
   obadiah: "Obadiah",
   obad: "Obadiah",
+  obadia: "Obadiah",
   jonah: "Jonah",
   jon: "Jonah",
   micah: "Micah",
@@ -154,15 +196,20 @@ const BOOK_ALIASES: Record<string, string> = {
   nah: "Nahum",
   habakkuk: "Habakkuk",
   hab: "Habakkuk",
+  habbakkuk: "Habakkuk",
+  habbakuk: "Habakkuk",
   zephaniah: "Zephaniah",
   zeph: "Zephaniah",
   haggai: "Haggai",
   hag: "Haggai",
   zechariah: "Zechariah",
   zech: "Zechariah",
+  zachariah: "Zechariah",
   malachi: "Malachi",
+  malachia: "Malachi",
   mal: "Malachi",
   matthew: "Matthew",
+  mathew: "Matthew",
   matt: "Matthew",
   mat: "Matthew",
   mark: "Mark",
@@ -174,31 +221,69 @@ const BOOK_ALIASES: Record<string, string> = {
   acts: "Acts",
   act: "Acts",
   romans: "Romans",
+  roman: "Romans",
+  romens: "Romans",
   rom: "Romans",
   "1 corinthians": "1 Corinthians",
   "1corinthians": "1 Corinthians",
+  "1 corinthian": "1 Corinthians",
+  "1corinthian": "1 Corinthians",
   "1cor": "1 Corinthians",
   "1co": "1 Corinthians",
   "first corinthians": "1 Corinthians",
+  "first corinthian": "1 Corinthians",
+  "first corintians": "1 Corinthians",
+  "first corintian": "1 Corinthians",
+  "first corenthians": "1 Corinthians",
+  "first corenthian": "1 Corinthians",
+  "first corinthens": "1 Corinthians",
+  "first core inthians": "1 Corinthians",
+  "first coreinthians": "1 Corinthians",
+  "passcore in": "1 Corinthians",
+  "passcor in": "1 Corinthians",
+  "past core in": "1 Corinthians",
   "2 corinthians": "2 Corinthians",
   "2corinthians": "2 Corinthians",
+  "2 corinthian": "2 Corinthians",
+  "2corinthian": "2 Corinthians",
   "2cor": "2 Corinthians",
   "2co": "2 Corinthians",
   "second corinthians": "2 Corinthians",
+  "second corinthian": "2 Corinthians",
+  "second corintians": "2 Corinthians",
+  "second corintian": "2 Corinthians",
   galatians: "Galatians",
   gal: "Galatians",
   ephesians: "Ephesians",
   eph: "Ephesians",
   philippians: "Philippians",
+  philippian: "Philippians",
+  philipians: "Philippians",
+  philiipians: "Philippians",
+  phillipians: "Philippians",
+  phillippians: "Philippians",
+  filipians: "Philippians",
+  filippians: "Philippians",
+  filipianss: "Philippians",
   phil: "Philippians",
   colossians: "Colossians",
+  colosians: "Colossians",
+  collossians: "Colossians",
   col: "Colossians",
   "1 thessalonians": "1 Thessalonians",
+  "1 thessalonian": "1 Thessalonians",
   "1thess": "1 Thessalonians",
   "1th": "1 Thessalonians",
+  "first thessalonians": "1 Thessalonians",
+  "first thessalonian": "1 Thessalonians",
+  "1 tessalonians": "1 Thessalonians",
   "2 thessalonians": "2 Thessalonians",
+  "2 thessalonian": "2 Thessalonians",
   "2thess": "2 Thessalonians",
   "2th": "2 Thessalonians",
+  "second thessalonians": "2 Thessalonians",
+  "second thessalonian": "2 Thessalonians",
+  "2 tessalonians": "2 Thessalonians",
   "1 timothy": "1 Timothy",
   "1tim": "1 Timothy",
   "1ti": "1 Timothy",
@@ -232,7 +317,7 @@ const BOOK_ALIASES: Record<string, string> = {
   revelation: "Revelation",
   rev: "Revelation",
 
-  // ── STT phonetic aliases (common Whisper misheard variants) ──
+  // â”€â”€ STT phonetic aliases (common Whisper misheard variants) â”€â”€
   look: "Luke",
   luck: "Luke",
   luc: "Luke",
@@ -243,17 +328,16 @@ const BOOK_ALIASES: Record<string, string> = {
   jennesis: "Genesis",
   exedus: "Exodus",
   exidus: "Exodus",
-  levidicus: "Leviticus",
   laviticus: "Leviticus",
   deuteronamy: "Deuteronomy",
   deuteranomy: "Deuteronomy",
   deuteronami: "Deuteronomy",
+  deuteronomyy: "Deuteronomy",
   duderonomy: "Deuteronomy",
   josua: "Joshua",
   proverb: "Proverbs",
   proverbes: "Proverbs",
   sam: "Psalms",
-  sams: "Psalms",
   songs: "Psalms",
   salm: "Psalms",
   salms: "Psalms",
@@ -261,18 +345,19 @@ const BOOK_ALIASES: Record<string, string> = {
   sawm: "Psalms",
   sawms: "Psalms",
   isaya: "Isaiah",
-  mathew: "Matthew",
   mathews: "Matthew",
   mattew: "Matthew",
   marc: "Mark",
   jone: "John",
   joan: "John",
   ax: "Acts",
-  roman: "Romans",
   romanss: "Romans",
-  philippian: "Philippians",
   filipino: "Philippians",
+  filippian: "Philippians",
+  filipenses: "Philippians",
   filemon: "Philemon",
+  phileman: "Philemon",
+  philimon: "Philemon",
   hebrew: "Hebrews",
   jame: "James",
   revelations: "Revelation",
@@ -280,29 +365,280 @@ const BOOK_ALIASES: Record<string, string> = {
 };
 
 const ALL_CANONICAL_BOOKS = [...new Set(Object.values(BOOK_ALIASES))];
+const BOOK_ALIAS_KEYS = Object.keys(BOOK_ALIASES);
+const BOOK_ALIASES_BY_CANONICAL = new Map<string, string[]>();
+for (const [alias, canonical] of Object.entries(BOOK_ALIASES)) {
+  const aliases = BOOK_ALIASES_BY_CANONICAL.get(canonical) ?? [];
+  aliases.push(alias);
+  BOOK_ALIASES_BY_CANONICAL.set(canonical, aliases);
+}
+for (const aliases of BOOK_ALIASES_BY_CANONICAL.values()) {
+  aliases.sort((left, right) => compactBookKey(right).length - compactBookKey(left).length);
+}
+const COMMON_COMMAND_FILLERS = new Set([
+  "show",
+  "me",
+  "please",
+  "read",
+  "give",
+  "bring",
+  "open",
+  "take",
+  "from",
+  "for",
+  "with",
+  "into",
+  "the",
+  "a",
+  "an",
+  "book",
+  "bible",
+  "in",
+  "to",
+  "of",
+  "on",
+  "go",
+]);
+const ENGLISH_BIBLE_VOCAB = new Set([
+  ...BOOK_ALIAS_KEYS.flatMap((alias) => alias.split(/\s+/)),
+  ...ALL_CANONICAL_BOOKS.flatMap((book) => book.toLowerCase().split(/\s+/)),
+  "kjv",
+  "nkjv",
+  "niv",
+  "esv",
+  "amp",
+  "msg",
+  "gn",
+  "gnt",
+  "king",
+  "james",
+  "new",
+  "international",
+  "english",
+  "standard",
+  "amplified",
+  "message",
+  "good",
+  "news",
+  "translation",
+  "version",
+  "chapter",
+  "verse",
+  "verses",
+  "next",
+  "previous",
+  "prev",
+  "prior",
+  "back",
+  "forward",
+  "continue",
+  "advance",
+  "through",
+  "and",
+  "or",
+  "then",
+  "wake",
+  "sleep",
+  "amen",
+  "thank",
+  "you",
+]);
+
+function normalizeBookKey(raw: string): string {
+  return raw
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9\s]/g, " ")
+    .replace(/\bfirst\b/g, "1")
+    .replace(/\bsecond\b/g, "2")
+    .replace(/\bthird\b/g, "3")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function compactBookKey(raw: string): string {
+  return normalizeBookKey(raw).replace(/\s+/g, "");
+}
+
+function levenshteinDistance(left: string, right: string): number {
+  if (left === right) return 0;
+  if (!left.length) return right.length;
+  if (!right.length) return left.length;
+
+  const rows = Array.from({ length: left.length + 1 }, (_, index) => index);
+  for (let column = 1; column <= right.length; column += 1) {
+    let previousDiagonal = rows[0];
+    rows[0] = column;
+    for (let row = 1; row <= left.length; row += 1) {
+      const previousRow = rows[row];
+      const substitutionCost = left[row - 1] === right[column - 1] ? 0 : 1;
+      rows[row] = Math.min(
+        rows[row] + 1,
+        rows[row - 1] + 1,
+        previousDiagonal + substitutionCost,
+      );
+      previousDiagonal = previousRow;
+    }
+  }
+
+  return rows[left.length];
+}
+
+function similarityScore(left: string, right: string): number {
+  const normalizedLeft = compactBookKey(left);
+  const normalizedRight = compactBookKey(right);
+  if (!normalizedLeft || !normalizedRight) return 0;
+  if (normalizedLeft === normalizedRight) return 1;
+
+  const distance = levenshteinDistance(normalizedLeft, normalizedRight);
+  return 1 - distance / Math.max(normalizedLeft.length, normalizedRight.length);
+}
+
+const FuseCtor = (FuseImport as unknown as { default?: new (...args: any[]) => FuseImport<string> })?.default as
+  | (new (...args: any[]) => FuseImport<string>)
+  | undefined;
 
 // Lazy Fuse.js instance for fuzzy book matching
-let _fuse: Fuse<string> | null = null;
-function getFuse(): Fuse<string> {
-  if (!_fuse) {
-    // Wider threshold to catch STT misheard variants that slip past the alias table
-    _fuse = new Fuse(ALL_CANONICAL_BOOKS, {
-      threshold: 0.5,
+let _fuse: FuseImport<string> | null | undefined = undefined;
+function getFuse(): FuseImport<string> | null {
+  if (_fuse !== undefined) return _fuse;
+
+  if (!FuseCtor) {
+    _fuse = null;
+    return _fuse;
+  }
+
+  try {
+    _fuse = new FuseCtor([...new Set([...BOOK_ALIAS_KEYS, ...ALL_CANONICAL_BOOKS])], {
+      threshold: 0.38,
       includeScore: true,
       minMatchCharLength: 2,
     });
+  } catch {
+    _fuse = null;
   }
+
   return _fuse;
 }
 
+function resolveBookCandidate(raw: string): { book: string; score: number } | null {
+  const normalized = normalizeBookKey(raw);
+  if (!normalized) return null;
+
+  if (BOOK_ALIASES[normalized]) {
+    return { book: BOOK_ALIASES[normalized], score: 1 };
+  }
+
+  const compact = compactBookKey(normalized);
+  let best: { book: string; score: number } | null = null;
+
+  for (const alias of BOOK_ALIAS_KEYS) {
+    const aliasCompact = compactBookKey(alias);
+    const book = BOOK_ALIASES[alias];
+    let score = similarityScore(compact, aliasCompact);
+
+    if (compact === aliasCompact) score = 1;
+    else if (compact.startsWith(aliasCompact) || aliasCompact.startsWith(compact)) score += 0.08;
+
+    const hasSameOrdinalPrefix = /^[123]/.test(compact) === /^[123]/.test(aliasCompact)
+      && (!/^[123]/.test(compact) || compact[0] === aliasCompact[0]);
+    if (hasSameOrdinalPrefix) score += 0.05;
+
+    if (!best || score > best.score) {
+      best = { book, score };
+    }
+  }
+
+  const fuse = getFuse();
+  const fuseResults = fuse ? fuse.search(normalized) : [];
+  if (fuseResults.length > 0) {
+    const fuseTop = fuseResults[0];
+    const alias = normalizeBookKey(fuseTop.item);
+    const book = BOOK_ALIASES[alias] ?? fuseTop.item;
+    const score = 1 - (fuseTop.score ?? 1);
+    if (!best || score > best.score) {
+      best = { book, score };
+    }
+  }
+
+  return best && best.score >= 0.58 ? best : null;
+}
+
 function resolveBook(raw: string): string | null {
-  const lower = raw.toLowerCase().trim();
-  if (BOOK_ALIASES[lower]) return BOOK_ALIASES[lower];
-  // Fuzzy match against canonical names
-  const results = getFuse().search(raw);
-  if (results.length > 0 && (results[0].score ?? 1) < 0.6)
-    return results[0].item;
+  return resolveBookCandidate(raw)?.book ?? null;
+}
+
+function extractLikelyBookCandidate(text: string): { book: string; score: number } | null {
+  const cleaned = normalizeBookKey(text);
+  if (!cleaned) return null;
+
+  const tokens = cleaned
+    .split(/\s+/)
+    .filter((token) => token && !COMMON_COMMAND_FILLERS.has(token));
+
+  let best: { book: string; score: number } | null = null;
+  for (let size = Math.min(4, tokens.length); size >= 1; size -= 1) {
+    for (let start = 0; start <= tokens.length - size; start += 1) {
+      const window = tokens.slice(start, start + size).join(" ");
+      const candidate = resolveBookCandidate(window);
+      if (candidate && (!best || candidate.score > best.score)) {
+        best = candidate;
+      }
+    }
+  }
+
+  return best && best.score >= 0.72 ? best : null;
+}
+
+function stripCommandPreamble(text: string): string {
+  return text
+    .replace(
+      /^(?:please\s+)?(?:show|read|open|bring|give|take|project|display)\s+(?:me\s+)?(?:to\s+)?(?:the\s+)?/i,
+      "",
+    )
+    .replace(/^(?:go\s+to|take\s+me\s+to|bring\s+me\s+to)\s+(?:the\s+)?/i, "")
+    .replace(/\s+(?:please|for me)$/i, "")
+    .trim();
+}
+
+function extractExplicitBookCandidate(text: string): { book: string; score: number } | null {
+  const cleaned = normalizeBookKey(stripCommandPreamble(text));
+  if (!cleaned) return null;
+
+  const beforeStructureCue = cleaned
+    .split(/\bchapter\b|\bverse\b|\bverses\b/)[0]
+    .replace(/\b\d+\b.*$/, "")
+    .trim();
+
+  const tokens = beforeStructureCue
+    .split(/\s+/)
+    .filter((token) => token && !COMMON_COMMAND_FILLERS.has(token));
+
+  for (let size = Math.min(4, tokens.length); size >= 1; size -= 1) {
+    const candidateText = tokens.slice(tokens.length - size).join(" ");
+    const candidate = resolveBookCandidate(candidateText);
+    if (candidate && candidate.score >= 0.74) {
+      return candidate;
+    }
+  }
+
   return null;
+}
+
+function isLikelyEnglishBibleTranscript(text: string): boolean {
+  const normalized = normalizeBookKey(text);
+  if (!normalized) return true;
+  if (/[^\x00-\x7F]/.test(text)) return false;
+
+  const tokens = normalized.split(/\s+/).filter(Boolean);
+  const alphaTokens = tokens.filter((token) => /[a-z]/.test(token));
+  if (!alphaTokens.length) return true;
+
+  const knownCount = alphaTokens.filter(
+    (token) => ENGLISH_BIBLE_VOCAB.has(token) || BOOK_ALIASES[token] || token.length <= 2,
+  ).length;
+
+  return knownCount / alphaTokens.length >= 0.45;
 }
 
 // ============================================================
@@ -341,22 +677,26 @@ function resolveVersion(raw: string): BibleVersion | null {
 // Navigation/version regex (no external libs needed)
 // ============================================================
 const NAV_NEXT =
-  /^(next|next verse|go next|forward|continue|advance|following verse|one more|read on|next one|next please)$/i;
+  /(?:\bnext verse\b|\bfollowing verse\b|\bgo next\b|\bnext one\b|\bone more\b|\bread on\b|^(?:next|forward|continue|advance|next please)$)/i;
 const NAV_PREV =
-  /^(previous|prev|go back|back|prior|last one|back one|previous please)$/i;
+  /(?:\bprevious verse\b|\bprev verse\b|\bprior verse\b|\bgo to the previous verse\b|\bgo to previous verse\b|\bback one\b|^(?:previous|prev|go back|back|prior|last one|previous please)$)/i;
 const NAV_NEXT_CH =
   /^(next chapter|chapter forward|advance.*chapter|following chapter)$/i;
 const NAV_PREV_CH =
   /^(previous chapter|prev chapter|chapter back|last chapter|prior chapter)$/i;
 const VERSION_SWITCH =
-  /(?:show me|switch to|use|change to|in the|read in|give me)?\s*(kjv|nkjv|niv|esv|amp|msg|gn|gnt|amplified|king james|new king james|english standard|new international|good news|the message|message)\s*(version|translation|bible)?$/i;
+  /(?:(?:show me|switch to|use|change to|read in|give me|put it in)\s+)?(?:the\s+)?(kjv|nkjv|niv|esv|amp|msg|gn|gnt|amplified|king james|king james version|new king james|new king james version|english standard|english standard version|new international|new international version|good news|good news bible|the message|message)\s*(version|translation|bible)?$/i;
+const JUMP_TO_VERSE =
+  /^(?:(?:take|bring|move|jump|go|proceed|show|open|let(?:'|â€™)s go|lets go)\s+(?:me|us)?\s*(?:to\s+)?)?(?:the\s+)?(?:verse\s+)?(\d+)$/i;
+const EXPLICIT_JUMP_TO_VERSE =
+  /^(?:(?:take|bring|move|jump|go|proceed|show|open)(?:\s+me|\s+us)?\s+(?:to\s+)?)?(?:the\s+)?verse\s+(\d+)$/i;
 
 // Reference patterns (handle both typed and voice)
 const PATTERNS = [
   // "1 John 3:16-18"  or  "2 samuel 7:12"
-  /^(\d)\s*([a-z]+(?:\s+[a-z]+)?)\s+(\d+)[:.:](\d+)(?:\s*[-–]\s*(\d+))?$/i,
+  /^(\d)\s*([a-z]+(?:\s+[a-z]+)?)\s+(\d+)[:.:](\d+)(?:\s*[-â€“]\s*(\d+))?$/i,
   // "John 3:16-18"
-  /^([a-z]+(?:\s+[a-z]+)?)\s+(\d+)[:.:](\d+)(?:\s*[-–]\s*(\d+))?$/i,
+  /^([a-z]+(?:\s+[a-z]+)?)\s+(\d+)[:.:](\d+)(?:\s*[-â€“]\s*(\d+))?$/i,
   // "John chapter 3 verse 16"
   /^([a-z]+(?:\s+[a-z]+)?)\s+chapter\s+(\d+)\s+verse\s+(\d+)(?:\s+(?:to|through)\s+(\d+))?$/i,
   // "1 John chapter 3 verse 16" (numbered + voice)
@@ -374,10 +714,13 @@ const PATTERNS = [
 ];
 
 /**
- * Convert simple word numbers to digits ("three" → 3, "sixteen" → 16).
+ * Convert simple word numbers to digits ("three" â†’ 3, "sixteen" â†’ 16).
  * Handles common cases without requiring words-to-numbers npm package.
  */
 const WORD_NUMS: Record<string, number> = {
+  zero: 0,
+  oh: 0,
+  o: 0,
   one: 1,
   two: 2,
   three: 3,
@@ -412,14 +755,300 @@ const WORD_NUMS: Record<string, number> = {
   fourth: 4,
   fifth: 5,
 };
+const NUMBER_CONNECTOR_WORDS = new Set(["and"]);
 
 function convertWordNumbers(text: string): string {
-  // Match single words only — greedy two-word matching swallows "five is" as one token
-  return text.replace(/\b([a-z]+)\b/gi, (match) => {
-    const lower = match.toLowerCase();
-    if (WORD_NUMS[lower] !== undefined) return String(WORD_NUMS[lower]);
-    return match;
+  // Match single words only â€” greedy two-word matching swallows "five is" as one token.
+  // Keep the conversion intentionally lightweight and let the structured parser rebuild
+  // multi-token number phrases such as "twenty three" or "one hundred nineteen" safely.
+  return text
+    .replace(/\b1st\b/gi, "first")
+    .replace(/\b2nd\b/gi, "second")
+    .replace(/\b3rd\b/gi, "third")
+    .replace(/\b([a-z]+)\b/gi, (match) => {
+      const lower = match.toLowerCase();
+      if (WORD_NUMS[lower] !== undefined) return String(WORD_NUMS[lower]);
+      return match;
+    });
+}
+
+function isNumericToken(token: string): boolean {
+  return /^\d+$/.test(token) || WORD_NUMS[token] !== undefined || NUMBER_CONNECTOR_WORDS.has(token);
+}
+
+function parseNumberPhraseTokens(tokens: string[], options?: { allowDigitSequence?: boolean }): number | null {
+  const filtered = tokens
+    .map((token) => token.toLowerCase())
+    .filter((token) => token && !NUMBER_CONNECTOR_WORDS.has(token));
+  if (!filtered.length) return null;
+
+  const values = filtered.map((token) => {
+    if (/^\d+$/.test(token)) return parseInt(token, 10);
+    if (WORD_NUMS[token] !== undefined) return WORD_NUMS[token];
+    return NaN;
   });
+  if (values.some((value) => Number.isNaN(value))) return null;
+
+  const allowDigitSequence = options?.allowDigitSequence ?? false;
+  if (allowDigitSequence && values.length > 1 && values.every((value) => value >= 0 && value <= 9)) {
+    return parseInt(values.join(""), 10);
+  }
+
+  let current = 0;
+  for (const value of values) {
+    if (value === 100) {
+      current = current === 0 ? 100 : current * 100;
+      continue;
+    }
+
+    if (current === 0) {
+      current = value;
+      continue;
+    }
+
+    if (current % 100 === 0) {
+      current += value;
+      continue;
+    }
+
+    if (current >= 20 && current < 100 && current % 10 === 0 && value < 10) {
+      current += value;
+      continue;
+    }
+
+    return null;
+  }
+
+  return current;
+}
+
+function tokenizeNumericFragment(fragment: string): string[] {
+  return normalizeBookKey(fragment)
+    .split(/\s+/)
+    .filter((token) => token && isNumericToken(token));
+}
+
+function parseNumericSlots(
+  fragment: string,
+  exactCount: number,
+  options?: { allowDigitSequence?: boolean },
+): number[] | null {
+  const tokens = tokenizeNumericFragment(fragment);
+  if (!tokens.length) return null;
+
+  const results: number[][] = [];
+  const visit = (start: number, parts: number[]) => {
+    if (parts.length > exactCount) return;
+    if (start === tokens.length) {
+      if (parts.length === exactCount) results.push([...parts]);
+      return;
+    }
+
+    for (let end = start + 1; end <= tokens.length; end += 1) {
+      const parsed = parseNumberPhraseTokens(tokens.slice(start, end), options);
+      if (parsed == null) continue;
+      parts.push(parsed);
+      visit(end, parts);
+      parts.pop();
+    }
+  };
+
+  visit(0, []);
+  return results[0] ?? null;
+}
+
+function stripResolvedBookPrefix(text: string, canonicalBook: string): string {
+  const normalized = normalizeBookKey(text);
+  const aliases = BOOK_ALIASES_BY_CANONICAL.get(canonicalBook) ?? [normalizeBookKey(canonicalBook)];
+  for (const alias of aliases) {
+    if (normalized === alias) return "";
+    if (normalized.startsWith(`${alias} `)) {
+      return normalized.slice(alias.length).trim();
+    }
+  }
+
+  return normalized;
+}
+
+function splitRangeFragment(fragment: string): { startFragment: string; endFragment?: string } {
+  const normalized = fragment.trim();
+  const rangeMatch = normalized.match(/^(.*?)(?:\s*(?:to|through|-)\s*)(.+)$/i);
+  if (!rangeMatch) {
+    return { startFragment: normalized };
+  }
+
+  return {
+    startFragment: rangeMatch[1].trim(),
+    endFragment: rangeMatch[2].trim(),
+  };
+}
+
+function normalizeCueNumericSlotFragment(fragment: string): string {
+  const normalized = fragment.trim().toLowerCase();
+  if (/^(?:to|too)$/.test(normalized)) return "two";
+  return fragment;
+}
+
+function parseStructuredLookupByCue(
+  coreText: string,
+  original: string,
+  defaultVersion: BibleVersion,
+): ParsedVoiceCommand | null {
+  const normalizedCore = normalizeTranscript(coreText);
+  const hasChapterCue = /\bchapter\b/i.test(normalizedCore);
+  const hasVerseCue = /\bverses?\b/i.test(normalizedCore);
+  if (!hasChapterCue && !hasVerseCue) return null;
+
+  const explicitBook = extractExplicitBookCandidate(normalizedCore);
+  const bookPrefix = normalizedCore.split(/\bchapter\b|\bverses?\b/i)[0]?.trim() ?? "";
+  const bookCandidate = explicitBook ?? resolveBookCandidate(bookPrefix);
+  if (!bookCandidate || bookCandidate.score < 0.64) {
+    return {
+      originalText: original,
+      parsedReference: null,
+      commandType: "lookup",
+      confidence: 0,
+    };
+  }
+
+  const bookTail = stripResolvedBookPrefix(bookPrefix, bookCandidate.book);
+  const chapterFragment = hasChapterCue
+    ? (hasVerseCue
+        ? normalizedCore.split(/\bchapter\b/i)[1]?.split(/\bverses?\b/i)[0]?.trim() ?? ""
+        : normalizedCore.split(/\bchapter\b/i)[1]?.trim() ?? "")
+    : "";
+  const verseFragment = hasVerseCue ? normalizedCore.split(/\bverses?\b/i)[1]?.trim() ?? "" : "";
+  const normalizedChapterFragment = normalizeCueNumericSlotFragment(chapterFragment);
+  const normalizedVerseFragment = normalizeCueNumericSlotFragment(verseFragment);
+
+  let chapter: number | undefined;
+  let verseStart: number | undefined;
+  let verseEnd: number | undefined;
+
+  if (hasChapterCue) {
+    const compactChapterVerse = !hasVerseCue
+      ? parseNumericSlots(normalizedChapterFragment, 2, { allowDigitSequence: true })
+      : null;
+    if (compactChapterVerse) {
+      [chapter, verseStart] = compactChapterVerse;
+    } else {
+      chapter =
+        parseNumberPhraseTokens(tokenizeNumericFragment(normalizedChapterFragment), { allowDigitSequence: true })
+        ?? parseNumericSlots(normalizedChapterFragment, 1, { allowDigitSequence: true })?.[0];
+    }
+  }
+
+  if (hasVerseCue) {
+    const { startFragment, endFragment } = splitRangeFragment(normalizedVerseFragment);
+    verseStart =
+      parseNumberPhraseTokens(tokenizeNumericFragment(startFragment), { allowDigitSequence: true })
+      ?? parseNumericSlots(startFragment, 1, { allowDigitSequence: true })?.[0];
+    verseEnd = endFragment
+      ? (
+          parseNumberPhraseTokens(tokenizeNumericFragment(endFragment), { allowDigitSequence: true })
+          ?? parseNumericSlots(endFragment, 1, { allowDigitSequence: true })?.[0]
+        )
+      : undefined;
+
+    if (chapter == null) {
+      chapter =
+        parseNumberPhraseTokens(tokenizeNumericFragment(bookTail), { allowDigitSequence: false })
+        ?? parseNumericSlots(bookTail, 1, { allowDigitSequence: false })?.[0];
+    }
+
+    if (chapter == null && isSingleChapterBook(bookCandidate.book)) {
+      chapter = 1;
+    }
+  }
+
+  if (chapter == null) {
+    chapter = 1;
+  }
+
+  if (verseStart == null) {
+    verseStart = 1;
+  }
+
+  const parsedReference = {
+    book: bookCandidate.book,
+    chapter,
+    verseStart,
+    verseEnd,
+    version: defaultVersion,
+  };
+
+  if (!isValidBibleReference(parsedReference)) {
+    return {
+      originalText: original,
+      parsedReference: null,
+      commandType: "lookup",
+      confidence: 0,
+    };
+  }
+
+  return {
+    originalText: original,
+    commandType: "lookup",
+    confidence: Math.max(0.88, Math.min(0.98, bookCandidate.score + 0.08)),
+    parsedReference,
+  };
+}
+
+function parseCompactLookupBySlots(
+  coreText: string,
+  original: string,
+  defaultVersion: BibleVersion,
+): ParsedVoiceCommand | null {
+  const normalizedCore = normalizeTranscript(coreText);
+  if (/\bchapter\b|\bverses?\b/i.test(normalizedCore)) return null;
+
+  const explicitBook = extractExplicitBookCandidate(normalizedCore);
+  const bookCandidate = explicitBook ?? extractLikelyBookCandidate(normalizedCore);
+  if (!bookCandidate || bookCandidate.score < 0.82) return null;
+
+  const trailingReference = stripResolvedBookPrefix(normalizedCore, bookCandidate.book);
+  if (!trailingReference) return null;
+
+  const compactTriple = parseNumericSlots(trailingReference, 3, { allowDigitSequence: false });
+  const compactDouble = parseNumericSlots(trailingReference, 2, { allowDigitSequence: false });
+  const compactSingle = parseNumericSlots(trailingReference, 1, { allowDigitSequence: false });
+
+  let chapter: number | undefined;
+  let verseStart: number | undefined;
+  let verseEnd: number | undefined;
+
+  if (compactDouble) {
+    [chapter, verseStart] = compactDouble;
+  } else if (compactTriple) {
+    [chapter, verseStart, verseEnd] = compactTriple;
+  } else if (compactSingle) {
+    if (isSingleChapterBook(bookCandidate.book)) {
+      chapter = 1;
+      [verseStart] = compactSingle;
+    } else {
+      [chapter] = compactSingle;
+      verseStart = 1;
+    }
+  }
+
+  if (chapter == null || verseStart == null) return null;
+
+  const parsedReference = {
+    book: bookCandidate.book,
+    chapter,
+    verseStart,
+    verseEnd,
+    version: defaultVersion,
+  };
+
+  if (!isValidBibleReference(parsedReference)) return null;
+
+  return {
+    originalText: original,
+    commandType: "lookup",
+    confidence: Math.max(0.9, Math.min(0.98, bookCandidate.score + 0.04)),
+    parsedReference,
+  };
 }
 
 // ============================================================
@@ -441,10 +1070,10 @@ function normalizeTranscript(raw: string): string {
     /\b(true|false|was|were|are|been|being|um|uh|just|really|actually|basically|okay|ok|yeah|very|much|also|too)\b/gi,
     "",
   );
-  // "chapter 5 is 5"  →  "chapter 5 verse 5"
-  // "chapter 5 and 6" →  "chapter 5 verse 6"
-  // "chapter 5 or 6"  →  "chapter 5 verse 6"
-  // "chapter 5 was 5"  → "chapter 5 verse 5"
+  // "chapter 5 is 5"  â†’  "chapter 5 verse 5"
+  // "chapter 5 and 6" â†’  "chapter 5 verse 6"
+  // "chapter 5 or 6"  â†’  "chapter 5 verse 6"
+  // "chapter 5 was 5"  â†’ "chapter 5 verse 5"
   t = t.replace(/(\d+)\s+(?:is|and|or|was|versus)\s+(\d+)/gi, "$1 verse $2");
   // Collapse multiple spaces
   t = t.replace(/\s+/g, " ").trim();
@@ -457,7 +1086,56 @@ export function parseVoiceCommand(
 ): ParsedVoiceCommand {
   const original = text.trim();
   const normalized = normalizeTranscript(convertWordNumbers(original)).trim();
+  const coreText = stripCommandPreamble(normalized) || normalized;
   const lower = normalized.toLowerCase();
+  const coreLower = coreText.toLowerCase();
+
+  // Standalone version-switch commands should be handled before the generic
+  // transcript-language rejection gate so short phrases such as "show me the amplified bible"
+  // are not discarded too early.
+  if (/\bamplified bible\b/i.test(coreLower)) {
+    return {
+      originalText: original,
+      parsedReference: null,
+      commandType: "version_change",
+      requestedVersion: "amp",
+      confidence: 1,
+    };
+  }
+
+  const earlyDirectVersion = resolveVersion(coreLower);
+  if (earlyDirectVersion) {
+    return {
+      originalText: original,
+      parsedReference: null,
+      commandType: "version_change",
+      requestedVersion: earlyDirectVersion,
+      confidence: 1,
+    };
+  }
+
+  const earlyVersionMatch = coreLower.match(VERSION_SWITCH);
+  if (earlyVersionMatch) {
+    const ver = resolveVersion(earlyVersionMatch[1]);
+    if (ver) {
+      return {
+        originalText: original,
+        parsedReference: null,
+        commandType: "version_change",
+        requestedVersion: ver,
+        confidence: 1,
+      };
+    }
+  }
+
+  if (!isLikelyEnglishBibleTranscript(normalized)) {
+    return {
+      originalText: original,
+      parsedReference: null,
+      commandType: "lookup",
+      confidence: 0,
+    };
+  }
 
   // Navigation
   if (NAV_NEXT.test(lower))
@@ -493,8 +1171,8 @@ export function parseVoiceCommand(
       confidence: 1,
     };
 
-  // Jump to verse number: "verse 5"
-  const jumpMatch = lower.match(/^(?:go to |jump to |verse )?verse (\d+)$/i);
+  // Jump to verse number within the current chapter.
+  const jumpMatch = lower.match(EXPLICIT_JUMP_TO_VERSE) || lower.match(JUMP_TO_VERSE);
   if (jumpMatch)
     return {
       originalText: original,
@@ -504,23 +1182,19 @@ export function parseVoiceCommand(
       confidence: 1,
     };
 
-  // Version switch
-  const versionMatch = lower.match(VERSION_SWITCH);
-  if (versionMatch) {
-    const ver = resolveVersion(versionMatch[1]);
-    if (ver)
-      return {
-        originalText: original,
-        parsedReference: null,
-        commandType: "version_change",
-        requestedVersion: ver,
-        confidence: 1,
-      };
+  const structuredLookup = parseStructuredLookupByCue(coreText, original, defaultVersion);
+  if (structuredLookup) {
+    return structuredLookup;
+  }
+
+  const compactLookup = parseCompactLookupBySlots(coreText, original, defaultVersion);
+  if (compactLookup) {
+    return compactLookup;
   }
 
   // Try pattern matching
   for (const pattern of PATTERNS) {
-    const m = normalized.match(pattern);
+    const m = coreText.match(pattern);
     if (!m) continue;
 
     let bookRaw: string,
@@ -528,7 +1202,9 @@ export function parseVoiceCommand(
       verseStart: number,
       verseEnd: number | undefined;
 
-    if (/^\^\\d/.test(pattern.source)) {
+    const isNumberedPattern = pattern === PATTERNS[0] || pattern === PATTERNS[3] || pattern === PATTERNS[4] || pattern === PATTERNS[8];
+
+    if (isNumberedPattern) {
       // Numbered book patterns
       bookRaw = `${m[1]} ${m[2]}`;
       chapter = parseInt(m[3]);
@@ -541,65 +1217,70 @@ export function parseVoiceCommand(
       verseEnd = m[4] ? parseInt(m[4]) : undefined;
     }
 
-    const book = resolveBook(bookRaw);
-    if (!book) continue;
+    const bookCandidate = resolveBookCandidate(bookRaw);
+    if (!bookCandidate || bookCandidate.score < 0.84) continue;
+
+    const parsedReference = {
+      book: bookCandidate.book,
+      chapter,
+      verseStart,
+      verseEnd,
+      version: defaultVersion,
+    };
+
+    if (!isValidBibleReference(parsedReference)) {
+      continue;
+    }
 
     return {
       originalText: original,
       commandType: "lookup",
       confidence: 0.95,
-      parsedReference: {
-        book,
-        chapter,
-        verseStart,
-        verseEnd,
-        version: defaultVersion,
-      },
+      parsedReference,
     };
   }
 
-  // Last resort: Invincible substring scanner for Books + Numbers
-  // This bypasses Whisper hallucinations like "Show me John 3.16. John 3.16."
-  const numMatches = [...normalized.matchAll(/\d+/g)];
-  if (numMatches.length >= 1) {
-    let matchedBook: string | null = null;
-    // Sort aliases by length descending so "1 samuel" matches before "samuel"
-    const sortedAliases = Object.keys(BOOK_ALIASES).sort((a, b) => b.length - a.length);
-    
-    for (const alias of sortedAliases) {
-        // use word boundaries to prevent "am" matching inside "james"
-        if (new RegExp(`\\b${alias}\\b`, 'i').test(lower)) {
-             matchedBook = BOOK_ALIASES[alias];
-             break;
-        }
-    }
-    
-    if (!matchedBook) {
-        // Fallback to fuzzy search on the text words
-        const words = lower.split(' ').filter(w => !/\d/.test(w) && w.length > 2);
-        for (const w of words) {
-            const fuzzy = resolveBook(w);
-            if (fuzzy) {
-                matchedBook = fuzzy;
-                break;
-            }
-        }
-    }
+  // Last resort: Bible-specific candidate scanning across the whole utterance.
+  // This is more resilient to STT drift than relying on one literal alias hit.
+  const fallbackNumericTokens = tokenizeNumericFragment(coreText);
+  if (fallbackNumericTokens.length >= 1) {
+    const explicitBook = extractExplicitBookCandidate(coreText);
+    const matchedBook = explicitBook ?? extractLikelyBookCandidate(coreLower);
+    const hasExplicitStructureCue = /\bchapter\b|\bverse\b|\bverses\b/.test(coreLower);
 
     if (matchedBook) {
-      const chapter = parseInt(numMatches[0][0]);
-      const verseStart = numMatches[1] ? parseInt(numMatches[1][0]) : 1;
-      return {
-        originalText: original,
-        commandType: "lookup",
-        confidence: 0.8,
-        parsedReference: {
-          book: matchedBook,
-          chapter,
-          verseStart,
-          version: defaultVersion,
-        },
+      if (hasExplicitStructureCue && matchedBook.score < 0.82) {
+        return {
+          originalText: original,
+          parsedReference: null,
+          commandType: "lookup",
+          confidence: 0,
+        };
+      }
+
+      const trailingReference = stripResolvedBookPrefix(coreText, matchedBook.book);
+      const numericPair = parseNumericSlots(trailingReference, 2, { allowDigitSequence: false });
+      const numericSingle =
+        parseNumberPhraseTokens(tokenizeNumericFragment(trailingReference), { allowDigitSequence: false }) != null
+          ? [parseNumberPhraseTokens(tokenizeNumericFragment(trailingReference), { allowDigitSequence: false }) as number]
+          : parseNumericSlots(trailingReference, 1, { allowDigitSequence: false });
+      const chapter = numericPair?.[0] ?? numericSingle?.[0];
+      const verseStart = numericPair?.[1] ?? (isSingleChapterBook(matchedBook.book) ? numericSingle?.[0] : 1);
+      const parsedReference = {
+        book: matchedBook.book,
+        chapter: chapter ?? 1,
+        verseStart: verseStart ?? 1,
+        version: defaultVersion,
       };
+
+      if (isValidBibleReference(parsedReference)) {
+        return {
+          originalText: original,
+          commandType: "lookup",
+          confidence: Math.max(0.84, Math.min(0.98, matchedBook.score)),
+          parsedReference,
+        };
+      }
     }
   }
 
@@ -612,16 +1293,30 @@ export function parseVoiceCommand(
 }
 
 // ============================================================
-// IndexedDB lookup — zero network
+// IndexedDB lookup â€” zero network
 // ============================================================
 export async function lookupOffline(
   ref: BibleReference,
 ): Promise<OfflineBibleResult | null> {
   try {
     let verses: any[] = [];
+
+    try {
+      await useBibleRAMCache.getState().ensureVersionLoaded(ref.version);
+      const ramVerses = useBibleRAMCache.getState().getChapter(ref.version, ref.book, ref.chapter);
+      if (ramVerses && ramVerses.length > 0) {
+        verses = ramVerses.map((verse) => ({
+          verse: verse.number,
+          text: verse.text,
+          book: ref.book,
+        }));
+      }
+    } catch (error) {
+      console.warn("[OfflineBible] RAM lookup warm-up failed, falling back.", error);
+    }
     
-    // First Priority: Native SQLite Engine
-    if ((window as any).api?.bible) {
+    // Fallback: Native SQLite Engine
+    if (verses.length === 0 && (window as any).api?.bible) {
       try {
         const sqliteVerses = await (window as any).api.bible.getChapter(
           ref.version,
@@ -629,7 +1324,6 @@ export async function lookupOffline(
           ref.chapter,
         );
         if (sqliteVerses && sqliteVerses.length > 0) {
-          // sqlite verses have {number, text}
           verses = sqliteVerses.map((v: any) => ({
             verse: v.number,
             text: v.text,
@@ -643,6 +1337,7 @@ export async function lookupOffline(
 
     // Fallback: IndexedDB / Dexie
     if (verses.length === 0) {
+      const { db } = await import("./db");
       verses = await db.verses
         .where("[version+book+chapter]")
         .equals([ref.version, ref.book, ref.chapter])
@@ -689,3 +1384,4 @@ export async function searchOffline(
   if (!cmd.parsedReference) return null;
   return lookupOffline({ ...cmd.parsedReference, version });
 }
+

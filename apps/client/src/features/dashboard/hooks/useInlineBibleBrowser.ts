@@ -1,16 +1,27 @@
-import { useState, useRef, useCallback, useEffect } from "react";
-import { BIBLE_BOOKS_LCC, BIBLE_VERSIONS_LCC } from "../data/bibleBooks";
-import { db } from "../../../lib/db";
-import { useBibleRAMCache } from "./useBibleRAMCache";
+import {
+  useState,
+  useRef,
+  useCallback,
+  type RefObject,
+} from "react";
+import {
+  BIBLE_BOOKS_LCC,
+  BIBLE_VERSIONS_LCC,
+  DEFAULT_INLINE_BIBLE_VERSION_LCC,
+  getBibleVerseCountForChapter,
+  type SelectableBibleVersionCode,
+} from "../data/bibleBooks";
 import {
   searchOffline,
   type BibleVersion,
 } from "../../../lib/offlineBibleEngine";
+import { fetchBibleChapterWithFallback } from "../../../lib/sharedBibleEngine";
 
 export interface BibleVerse {
   number: number;
   text: string;
 }
+
 export interface BiblePassage {
   book: string;
   chapter: number;
@@ -28,6 +39,37 @@ interface UseInlineBibleBrowserProps {
   ) => void;
 }
 
+const SELECTABLE_BIBLE_VERSIONS =
+  BIBLE_VERSIONS_LCC as SelectableBibleVersionCode[];
+const DEFAULT_BIBLE_VERSION =
+  DEFAULT_INLINE_BIBLE_VERSION_LCC as SelectableBibleVersionCode;
+
+const resolveSelectableVersion = (
+  version?: string,
+): SelectableBibleVersionCode => {
+  if (
+    version &&
+    SELECTABLE_BIBLE_VERSIONS.includes(version as SelectableBibleVersionCode)
+  ) {
+    return version as SelectableBibleVersionCode;
+  }
+
+  return DEFAULT_BIBLE_VERSION;
+};
+
+const scrollVerseIntoView = (
+  verseListRef: RefObject<HTMLDivElement>,
+  verseIndex: number,
+) => {
+  setTimeout(() => {
+    if (verseListRef.current && verseListRef.current.children[verseIndex]) {
+      (verseListRef.current.children[verseIndex] as HTMLElement).scrollIntoView({
+        block: "center",
+      });
+    }
+  }, 100);
+};
+
 export function useInlineBibleBrowser({
   onProjectVerse,
 }: UseInlineBibleBrowserProps) {
@@ -36,18 +78,16 @@ export function useInlineBibleBrowser({
   const [bibleChapterNum, setBibleChapterNum] = useState(1);
   const [bibleVerseIndex, setBibleVerseIndex] = useState(0);
   const [selBibleVersion, setSelBibleVersion] =
-    useState<(typeof BIBLE_VERSIONS_LCC)[number]>("KJV");
+    useState<SelectableBibleVersionCode>(DEFAULT_BIBLE_VERSION);
   const [biblePassage, setBiblePassage] = useState<BiblePassage | null>(null);
   const [bibleIsLoading, setBibleIsLoading] = useState(false);
   const [bibleSearch, setBibleSearch] = useState("");
   const [bibleSearchError, setBibleSearchError] = useState<string | null>(null);
 
-  // Scroll refs for 3 columns
   const bibleBookListRef = useRef<HTMLDivElement>(null);
   const bibleChapterListRef = useRef<HTMLDivElement>(null);
   const bibleVerseListRef = useRef<HTMLDivElement>(null);
 
-  // Fetch a chapter's verses from the API
   const fetchBibleChapter = useCallback(
     async (
       bookName: string,
@@ -56,321 +96,230 @@ export function useInlineBibleBrowser({
     ): Promise<BiblePassage | null> => {
       setBibleIsLoading(true);
       setBibleSearchError(null);
+
       try {
-        const bookData = BIBLE_BOOKS_LCC.find((b) => b.name === bookName);
-        const verseEnd = bookData?.verses[chapter - 1] ?? 150;
-        const vKey = version.toLowerCase() as any;
-
-        // 0. Try Native SQLite Fetching (0.00ms latency, zero RAM)
-        const sqliteStartTime = performance.now();
-        let cachedVerses: any = null;
-        if ((window as any).api?.bible) {
-           try {
-             cachedVerses = await (window as any).api.bible.getChapter(vKey, bookName, chapter);
-           } catch(e) {
-             console.warn("[BibleBrowser] SQLite query failed", e);
-           }
-        }
-        const sqliteEndTime = performance.now();
-
-        // 0.1 Fallback to RAM Cache if not on Electron Native
-        if (!cachedVerses || cachedVerses.length === 0) {
-           cachedVerses = useBibleRAMCache.getState().getChapter(vKey, bookName, chapter);
-        }
-
-        if (cachedVerses && cachedVerses.length > 0) {
-          const p: BiblePassage = {
-            book: bookName,
-            chapter,
-            verses: cachedVerses as BibleVerse[],
-            version: version.toUpperCase(),
-            reference: `${bookName} ${chapter}`,
-          };
-          setBiblePassage(p);
-          setBibleIsLoading(false);
-          console.log(
-            `🚀 [Bible Engine] Fetched ${bookName} ${chapter} (${vKey}) in ${(sqliteEndTime - sqliteStartTime).toFixed(2)}ms`,
-          );
-          return p;
-        }
-
-        // 1. Try Local IndexedDB fetching
-        const startTime = performance.now();
-        const localVerses = await db.verses
-          .where({ version: vKey, book: bookName, chapter })
-          .toArray();
-        const endTime = performance.now();
-
-        if (localVerses && localVerses.length > 0) {
-          localVerses.sort((a: any, b: any) => a.verse - b.verse);
-          const mappedVerses: BibleVerse[] = localVerses.map((v: any) => ({
-            number: v.verse,
-            text: v.text || "",
-          }));
-
-          const p: BiblePassage = {
-            book: bookName,
-            chapter,
-            verses: mappedVerses,
-            version: version.toUpperCase(),
-            reference: `${bookName} ${chapter}`,
-          };
-          setBiblePassage(p);
-          setBibleIsLoading(false);
-          console.log(
-            `🚀 [IndexedDB] Fetched ${bookName} ${chapter} (${vKey}) locally in ${(endTime - startTime).toFixed(2)}ms`,
-          );
-          return p;
-        }
-
-        // 2. Fallback to Cloud API
-        const resp = await fetch("/api/bible/search", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            book: bookName,
-            chapter,
-            verseStart: 1,
-            verseEnd,
-            version: vKey,
-          }),
+        const lookup = await fetchBibleChapterWithFallback({
+          book: bookName,
+          chapter,
+          version,
+          verseEnd: getBibleVerseCountForChapter(bookName, chapter),
         });
-        if (resp.ok) {
-          const data = await resp.json();
-          if (data?.success && data?.result) {
-            const verses: BibleVerse[] = (data.result.verses || []).map(
-              (v: any) => ({
-                number: v.verse,
-                text: v[vKey] || v.kjv || "",
-              }),
-            );
-            const p: BiblePassage = {
-              book: bookName,
-              chapter,
-              verses,
-              version: version.toUpperCase(),
-              reference: `${bookName} ${chapter}`,
-            };
-            setBiblePassage(p);
-            return p;
-          } else {
-            setBibleSearchError(data?.message || "Chapter not found.");
-          }
-        } else {
-          setBibleSearchError("Error loading chapter.");
+
+        if (!lookup) {
+          setBibleSearchError("Chapter not found.");
+          return null;
         }
-      } catch {
+
+        const passage: BiblePassage = {
+          book: lookup.book,
+          chapter: lookup.chapter,
+          verses: lookup.verses,
+          version: lookup.version,
+          reference: lookup.reference,
+        };
+
+        setBiblePassage(passage);
+        console.log(
+          `🚀 [Bible Engine] Fetched ${bookName} ${chapter} (${lookup.versionKey}) via ${lookup.source}`,
+        );
+        return passage;
+      } catch (error) {
+        console.error("[useInlineBibleBrowser] Chapter fetch failed", error);
         setBibleSearchError("Error loading chapter.");
+        return null;
       } finally {
         setBibleIsLoading(false);
       }
-      return null;
     },
     [],
   );
 
-  // Project a verse from the current passage
   const projectVerse = useCallback(
-    (p: BiblePassage, idx: number) => {
-      if (!p?.verses?.length) return;
-      const verse = p.verses[idx];
-      const ref = `${p.book} ${p.chapter}:${verse.number}`;
+    (passage: BiblePassage, verseIndex: number) => {
+      if (!passage?.verses?.length) return;
+      const verse = passage.verses[verseIndex];
+      const reference = `${passage.book} ${passage.chapter}:${verse.number}`;
       const text = `${verse.number} ${verse.text}`;
-      onProjectVerse(ref, text, p.version, p);
-      setBibleVerseIndex(idx);
+      onProjectVerse(reference, text, passage.version, passage);
+      setBibleVerseIndex(verseIndex);
     },
     [onProjectVerse],
   );
 
+  const syncSearchSelection = useCallback(
+    (passage: BiblePassage, targetVerseNumber: number) => {
+      setBiblePassage(passage);
+      const matchedBookIndex = BIBLE_BOOKS_LCC.findIndex(
+        (book) => book.name.toLowerCase() === passage.book.toLowerCase(),
+      );
+      if (matchedBookIndex !== -1) {
+        setBibleBookIndex(matchedBookIndex);
+      }
+      setBibleChapterNum(passage.chapter);
+      const matchedVerseIndex = passage.verses.findIndex(
+        (verse) => verse.number === targetVerseNumber,
+      );
+      const finalVerseIndex = matchedVerseIndex !== -1 ? matchedVerseIndex : 0;
+      setBibleVerseIndex(finalVerseIndex);
+      projectVerse(passage, finalVerseIndex);
+      scrollVerseIntoView(bibleVerseListRef, finalVerseIndex);
+    },
+    [projectVerse],
+  );
+
   const handleBookSelect = useCallback(
-    async (idx: number) => {
-      setBibleBookIndex(idx);
+    async (index: number) => {
+      setBibleBookIndex(index);
       setBibleChapterNum(1);
       setBibleVerseIndex(0);
       setBiblePassage(null);
-      const p = await fetchBibleChapter(
-        BIBLE_BOOKS_LCC[idx].name,
+      const passage = await fetchBibleChapter(
+        BIBLE_BOOKS_LCC[index].name,
         1,
         selBibleVersion,
       );
-      if (p && p.verses.length > 0) projectVerse(p, 0);
-      // Scroll chapter column to top
-      if (bibleChapterListRef.current)
+      if (passage && passage.verses.length > 0) {
+        projectVerse(passage, 0);
+      }
+      if (bibleChapterListRef.current) {
         bibleChapterListRef.current.scrollTop = 0;
-      if (bibleVerseListRef.current) bibleVerseListRef.current.scrollTop = 0;
+      }
+      if (bibleVerseListRef.current) {
+        bibleVerseListRef.current.scrollTop = 0;
+      }
     },
-    [selBibleVersion, fetchBibleChapter, projectVerse],
+    [fetchBibleChapter, projectVerse, selBibleVersion],
   );
 
   const handleChapterSelect = useCallback(
-    async (ch: number) => {
-      setBibleChapterNum(ch);
+    async (chapter: number) => {
+      setBibleChapterNum(chapter);
       setBibleVerseIndex(0);
       setBiblePassage(null);
-      const p = await fetchBibleChapter(
+      const passage = await fetchBibleChapter(
         BIBLE_BOOKS_LCC[bibleBookIndex].name,
-        ch,
+        chapter,
         selBibleVersion,
       );
-      if (p && p.verses.length > 0) projectVerse(p, 0);
-      if (bibleVerseListRef.current) bibleVerseListRef.current.scrollTop = 0;
+      if (passage && passage.verses.length > 0) {
+        projectVerse(passage, 0);
+      }
+      if (bibleVerseListRef.current) {
+        bibleVerseListRef.current.scrollTop = 0;
+      }
     },
-    [bibleBookIndex, selBibleVersion, fetchBibleChapter, projectVerse],
+    [bibleBookIndex, fetchBibleChapter, projectVerse, selBibleVersion],
   );
 
   const handleVersionChange = useCallback(
-    async (v: (typeof BIBLE_VERSIONS_LCC)[number]) => {
-      setSelBibleVersion(v);
+    async (version: SelectableBibleVersionCode) => {
+      const resolvedVersion = resolveSelectableVersion(version);
+      setSelBibleVersion(resolvedVersion);
       setBiblePassage(null);
-      const p = await fetchBibleChapter(
+      const passage = await fetchBibleChapter(
         BIBLE_BOOKS_LCC[bibleBookIndex].name,
         bibleChapterNum,
-        v,
+        resolvedVersion,
       );
-      if (p && p.verses.length > 0) {
-        projectVerse(
-          p,
-          bibleVerseIndex < p.verses.length ? bibleVerseIndex : 0,
-        );
+      if (passage && passage.verses.length > 0) {
+        const nextVerseIndex =
+          bibleVerseIndex < passage.verses.length ? bibleVerseIndex : 0;
+        projectVerse(passage, nextVerseIndex);
       }
     },
-    [
-      bibleBookIndex,
-      bibleChapterNum,
-      bibleVerseIndex,
-      fetchBibleChapter,
-      projectVerse,
-    ],
+    [bibleBookIndex, bibleChapterNum, bibleVerseIndex, fetchBibleChapter, projectVerse],
   );
 
   const handleVerseClick = useCallback(
-    (idx: number) => {
-      setBibleVerseIndex(idx);
-      if (biblePassage) projectVerse(biblePassage, idx);
+    (index: number) => {
+      setBibleVerseIndex(index);
+      if (biblePassage) {
+        projectVerse(biblePassage, index);
+      }
     },
     [biblePassage, projectVerse],
   );
 
   const handleBibleSearch = useCallback(async () => {
-    if (!bibleSearch.trim()) {
+    const reference = bibleSearch.trim();
+    if (!reference) {
       setBibleSearchError("Please enter a reference.");
       return;
     }
+
     setBibleIsLoading(true);
     setBibleSearchError(null);
-    try {
-      const version = selBibleVersion.toLowerCase() as BibleVersion;
 
-      // 1. Try offline IndexedDB first
-      const offlineResult = await searchOffline(bibleSearch.trim(), version);
+    try {
+      const lookupVersion = selBibleVersion.toLowerCase() as BibleVersion;
+      const offlineResult = await searchOffline(reference, lookupVersion);
 
       if (offlineResult && offlineResult.verses.length > 0) {
-        const bookName = offlineResult.book;
-        const chapterNum = offlineResult.chapter;
-        const targetVerseNumber = offlineResult.verses[0].number;
-
-        // Load the full chapter so adjacent verses are browsable
-        const fullChapterPassage = await fetchBibleChapter(
-          bookName,
-          chapterNum,
+        const passage = await fetchBibleChapter(
+          offlineResult.book,
+          offlineResult.chapter,
           selBibleVersion,
         );
-        if (fullChapterPassage && fullChapterPassage.verses.length > 0) {
-          setBiblePassage(fullChapterPassage);
-          const bIdx = BIBLE_BOOKS_LCC.findIndex(
-            (b) => b.name.toLowerCase() === bookName.toLowerCase(),
-          );
-          if (bIdx !== -1) setBibleBookIndex(bIdx);
-          setBibleChapterNum(chapterNum);
-          const targetIdx = fullChapterPassage.verses.findIndex(
-            (v: any) => v.number === targetVerseNumber,
-          );
-          const finalIdx = targetIdx !== -1 ? targetIdx : 0;
-          setBibleVerseIndex(finalIdx);
-          projectVerse(fullChapterPassage, finalIdx);
-          setTimeout(() => {
-            if (
-              bibleVerseListRef.current &&
-              bibleVerseListRef.current.children[finalIdx]
-            ) {
-              (
-                bibleVerseListRef.current.children[finalIdx] as HTMLElement
-              ).scrollIntoView({ block: "center" });
-            }
-          }, 100);
+        if (passage && passage.verses.length > 0) {
+          syncSearchSelection(passage, offlineResult.verses[0].number);
         } else {
           setBibleSearchError("Could not load chapter context.");
         }
         return;
       }
 
-      // 2. Fallback to cloud API (when Bible not yet synced to IndexedDB)
-      const resp = await fetch(
-        `/api/bible/search?reference=${encodeURIComponent(bibleSearch.trim())}&version=${selBibleVersion.toLowerCase()}`,
+      const response = await fetch(
+        `/api/bible/search?reference=${encodeURIComponent(reference)}&version=${selBibleVersion.toLowerCase()}`,
       );
-      if (resp.ok) {
-        const data = await resp.json();
-        if (
-          data?.success &&
-          data?.passage &&
-          data.passage.verses &&
-          data.passage.verses.length > 0
-        ) {
-          const targetVerseNumber = Number(data.passage.verses[0].number);
-          const bookName = (data.passage.book || "").trim();
-          const chapterNum = Number(data.passage.chapter);
-          const fullChapterPassage = await fetchBibleChapter(
-            bookName,
-            chapterNum,
-            selBibleVersion,
-          );
-          if (fullChapterPassage && fullChapterPassage.verses.length > 0) {
-            setBiblePassage(fullChapterPassage);
-            const bIdx = BIBLE_BOOKS_LCC.findIndex(
-              (b) => b.name.toLowerCase() === bookName.toLowerCase(),
-            );
-            if (bIdx !== -1) setBibleBookIndex(bIdx);
-            setBibleChapterNum(chapterNum);
-            const targetIdx = fullChapterPassage.verses.findIndex(
-              (v: any) => v.number === targetVerseNumber,
-            );
-            const finalIdx = targetIdx !== -1 ? targetIdx : 0;
-            setBibleVerseIndex(finalIdx);
-            projectVerse(fullChapterPassage, finalIdx);
-            setTimeout(() => {
-              if (
-                bibleVerseListRef.current &&
-                bibleVerseListRef.current.children[finalIdx]
-              ) {
-                (
-                  bibleVerseListRef.current.children[finalIdx] as HTMLElement
-                ).scrollIntoView({ block: "center" });
-              }
-            }, 100);
-          } else {
-            setBibleSearchError("Could not load chapter context.");
-          }
-        } else {
-          setBibleSearchError("Scripture not found.");
-        }
-      } else {
+
+      if (!response.ok) {
         setBibleSearchError("Error searching Bible.");
+        return;
       }
-    } catch {
+
+      const data = await response.json();
+      if (
+        !data?.success ||
+        !data?.passage ||
+        !data.passage.verses ||
+        data.passage.verses.length === 0
+      ) {
+        setBibleSearchError("Scripture not found.");
+        return;
+      }
+
+      const passage = await fetchBibleChapter(
+        String(data.passage.book || "").trim(),
+        Number(data.passage.chapter),
+        selBibleVersion,
+      );
+
+      if (passage && passage.verses.length > 0) {
+        syncSearchSelection(passage, Number(data.passage.verses[0].number));
+      } else {
+        setBibleSearchError("Could not load chapter context.");
+      }
+    } catch (error) {
+      console.error("[useInlineBibleBrowser] Bible search failed", error);
       setBibleSearchError("Error searching Bible.");
     } finally {
       setBibleIsLoading(false);
     }
-  }, [bibleSearch, selBibleVersion, projectVerse, fetchBibleChapter]);
+  }, [bibleSearch, fetchBibleChapter, projectVerse, selBibleVersion, syncSearchSelection]);
 
-  // Auto-load Genesis 1 when bible mode first opens
   const openBibleMode = useCallback(async () => {
     setIsBibleMode(true);
     if (!biblePassage) {
-      const p = await fetchBibleChapter("Genesis", 1, selBibleVersion);
-      if (p && p.verses.length > 0) projectVerse(p, 0);
+      const passage = await fetchBibleChapter(
+        "Genesis",
+        1,
+        resolveSelectableVersion(selBibleVersion),
+      );
+      if (passage && passage.verses.length > 0) {
+        projectVerse(passage, 0);
+      }
     }
-  }, [biblePassage, selBibleVersion, fetchBibleChapter, projectVerse]);
+  }, [biblePassage, fetchBibleChapter, projectVerse, selBibleVersion]);
 
   return {
     BIBLE_BOOKS: BIBLE_BOOKS_LCC,

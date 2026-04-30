@@ -344,16 +344,14 @@ export const SlideDisplayArea: React.FC<SlideDisplayAreaProps> = ({
                     itemBackground.type === "image" ||
                     itemBackground.type === "video"
                   ) {
-                    let backgroundUrl = itemBackground.value;
-                    const resolvedUrl = resolveMediaUrl(backgroundUrl);
-                    if (resolvedUrl) {
-                      backgroundUrl = resolvedUrl;
-                    } else if (
-                      !backgroundUrl.startsWith("http") &&
-                      !backgroundUrl.startsWith("data:")
-                    ) {
-                      backgroundUrl = `${window.location.origin}${backgroundUrl.startsWith("/") ? "" : "/"}${backgroundUrl}`;
-                    }
+                    const sourceBackgroundUrl = itemBackground.value;
+                    const resolvedUrl = resolveMediaUrl(sourceBackgroundUrl);
+                    const backgroundUrl = resolvedUrl
+                      ? resolvedUrl
+                      : !sourceBackgroundUrl.startsWith("http") &&
+                          !sourceBackgroundUrl.startsWith("data:")
+                        ? `${window.location.origin}${sourceBackgroundUrl.startsWith("/") ? "" : "/"}${sourceBackgroundUrl}`
+                        : sourceBackgroundUrl;
                     return {
                       ...baseStyle,
                       backgroundImage: `url("${backgroundUrl}")`,

@@ -149,7 +149,7 @@ export const structuredSearchBible = async (req: Request, res: Response) => {
 export const exportBibleVersion = async (req: Request, res: Response) => {
   try {
     const version = (req.params.version || 'kjv').toLowerCase();
-    const validVersions = ['kjv', 'nkjv', 'amp', 'msg', 'esv', 'niv'];
+    const validVersions = ['kjv', 'nkjv', 'amp', 'msg', 'esv', 'niv', 'gn'];
 
     if (!validVersions.includes(version)) {
       return res.status(400).json({ success: false, message: 'Invalid version specified' });

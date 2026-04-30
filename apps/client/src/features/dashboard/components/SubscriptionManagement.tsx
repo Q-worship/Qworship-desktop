@@ -141,8 +141,8 @@ export const SubscriptionManagement: React.FC<SubscriptionManagementProps> = ({ 
     const now = new Date();
     
     // For legacy users missing trial fields, fallback to createdAt
-    let computedTrialStart = user.trialStartDate ? new Date(user.trialStartDate) : (user.createdAt ? new Date(user.createdAt) : now);
-    let computedTrialEnd = user.trialEndDate 
+    const computedTrialStart = user.trialStartDate ? new Date(user.trialStartDate) : (user.createdAt ? new Date(user.createdAt) : now);
+    const computedTrialEnd = user.trialEndDate 
       ? new Date(user.trialEndDate) 
       : new Date(computedTrialStart.getTime() + 30 * 24 * 60 * 60 * 1000);
       

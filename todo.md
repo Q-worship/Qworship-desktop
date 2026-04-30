@@ -1,0 +1,537 @@
+# Qworship Live Console Build TODO
+- [x] Run the reconstructed reconstruction/v1.0.0-parity development build in the Linux sandbox and capture startup/runtime blockers against the packaged v1.0.0 baseline
+- [ ] Perform initial Linux sandbox runtime parity checks for Hands-Free Bible, projected scripture sync, translation switching, microphone failure handling, and sleep/wake behavior
+- [ ] Reconstruct a preserved version 1.0.0-equivalent baseline from packaged artifacts and repository history before any optimization work
+- [x] Extract the packaged version 1.0.0 application bundle and recover the authoritative baseline code and assets needed for parity analysis
+- [x] Compare the recovered version 1.0.0 packaged baseline against the current repository and isolate the minimum restoration set for parity
+- [x] Create and preserve a controlled reconstruction baseline for version 1.0.0 parity validation before any HFB changes
+- [ ] Validate reconstructed version 1.0.0 parity against known baseline behavior and document any remaining gaps
+- [ ] Search local folders, archives, branches, and backups for an authentic version 1.0.0 source copy that can be used directly
+- [ ] Verify any recovered version 1.0.0 source candidate against the known 1.0.0 installer artifact and current repository evidence
+- [ ] Preserve any authentic version 1.0.0 source baseline unchanged before considering targeted HFB optimization work
+- [ ] Complete a strict recovery audit to determine whether an exact working v1.0.0 baseline can be reconstructed from the local workspace
+- [ ] Inspect the earliest local release artifacts and Git history to identify the closest authentic v1.0.0 source/build state
+- [ ] Verify whether any recovered v1.0.0 baseline is launchable and suitable for duplication unchanged
+- [x] Fix the installed Windows app icon so Qworship Live Console shows Qworship branding instead of the generic Electron icon in Start menu, taskbar, and installed apps
+- [x] Fix Windows firewall/security prompt branding so NDI permission dialogs show Qworship Live Console and the correct publisher instead of Electron and GitHub, Inc.
+- [ ] Bundle ffi-napi and ref-napi into the packaged Windows desktop build so offline Vosk can initialize in win-unpacked
+- [ ] Bundle the debug runtime dependency required by ref-napi in the packaged Windows desktop build so offline Vosk can finish loading in win-unpacked
+- [ ] Bundle the node-gyp-build runtime dependency required by ref-napi in the packaged Windows desktop build so offline Vosk can finish loading in win-unpacked
+- [ ] Prevent the packaged Windows desktop build from loading an incompatible ref-napi build artifact so Electron can use the bundled prebuilt binary for offline Vosk
+- [ ] Satisfy the packaged ref-napi native loader requirement for node.exe so the offline Vosk Electron prebuilt can load at runtime
+- [ ] Optimize the Hands-free Bible offline pipeline around the implementation-plan Vosk strategy for near-zero-latency scripture command detection and high practical accuracy
+- [ ] Optimize the Hands-free Bible online pipeline around the implementation-plan Whisper strategy for superfast scripture command detection and high practical accuracy modeled on the referenced LogosAI-style approach
+- [x] Align the Live Console Usage Mode switching so Online and Offline Hands-free Bible paths each use the intended pipeline, defaults, and performance behavior from the governing plan
+- [ ] Redesign the Live Console Settings modal into a cleaner single-selection layout so users focus on one settings category at a time without losing any existing controls or functions
+- [x] Show a friendly offline-mode notice in Usage Mode explaining that users may notice slight speed differences or a small increase in latency when Offline is selected
+- [ ] Create a themed Live Console Settings modal that matches the platform styling and uses the same backdrop treatment as the Display Settings modal
+- [x] Add Hands-free Bible Audio Settings to control microphone or audio input device selection inside the Live Console Settings modal
+- [x] Add Hands-free Bible Usage Mode settings with Offline as the default mode and user-selectable offline or online preference controls
+- [ ] Add additional dynamic Hands-free Bible settings in the Live Console Settings modal and adapt Preferences behavior from the desktop application to the Live Console context
+
+- [ ] Constrain the Hands-free Bible Live Transcript area to a fixed height with internal scrolling so long listening sessions do not overflow the left panel
+- [ ] Restrict Hands-free Bible live output and preview projection to exactly one selected verse at a time instead of projecting clustered verses
+- [ ] Visually highlight the currently live Hands-free Bible verse in the middle chapter panel with a distinct colour and shaded selection state similar to the song lyric live state
+- [ ] Reduce Hands-free Bible transcript, command-detection, and scripture-projection latency toward a near-zero-latency desktop experience suitable for live ministry use
+- [ ] Prevent Hands-free Bible from treating static, silence markers, and noise as valid Bible commands when the mic is on
+- [ ] Keep Hands-free Bible in a clean listening-ready state until an actual Bible command is detected, without projecting random scripture or filling Recent Detections with static content
+- [ ] Make the Hands-free Bible transcript show short live speech batches, visually distinguish detected Bible commands, and only populate Detected Verses after a valid command resolves
+- [ ] When a valid Bible command resolves, simultaneously load the matching chapter into the middle reading area, preselect the live verse, project that verse to Live Preview and output screens, and create a recent-detection thumbnail for that command
+- [ ] Preserve the current scripture reference when switching translations in Hands-free Bible and immediately refresh the live projections and previews in the newly selected translation
+- [ ] Fix the desktop Hands-free Bible microphone-access failure so clicking ON enters listening mode instead of showing the Microphone Error toast
+- [ ] Fix the visible Live Console Hands-free Bible ON button so clicking it enters listening mode and begins the speech pipeline in the running desktop window
+- [x] Confirm the repository is checked out on `qworshipliveconsole-manus`
+- [x] Audit the monorepo app and package structure for the desktop client implementation path
+- [ ] Stabilize the Electron desktop startup path and native service initialization boundaries
+- [x] Formalize shared module boundaries for speech, Bible, settings, assets, and songbook
+- [x] Refactor the current offline speech integration behind a provider-neutral speech engine interface
+- [ ] Expand the Bible data layer to support full translation management for KJV, NKJV, NIV, ESV, MSG, AMP, and GN
+- [x] Design the settings migration baseline for Preferences, Integrations, Audio Settings, Lower Third Settings, and Main Presentation Settings
+- [x] Design the Assets module baseline for My Assets and Cloud Media
+- [x] Design the Offline Songbook baseline with local storage, fast search, manual song creation, and DOCX import
+- [x] Obtain access to the Qworship V2 source or branch snapshot for deeper reuse classification
+- [x] Implement Sprint 1 foundation hardening around `apps/client/electron/main.ts`, preload wiring, and startup lifecycle ownership
+- [x] Introduce a provider-neutral speech engine boundary so offline and online STT can share one downstream command pipeline
+- [x] Reconcile current desktop placeholders with Qworship V2 feature modules for Bible workspace, assets, lower third, main presentation, and songs
+- [x] Replace current Songs and Presentations mocks with explicit Live Console module shells and routing targets
+- [x] Define shared domain contracts for Bible commands, projection payloads, settings groups, assets, and offline songbook entities
+- [x] Produce an alignment report comparing the original hybrid online/offline application plan against Sprint 1 implementation, including clarification of Whisper's role versus the intended architecture
+- [x] Reconfirm the originally planned offline STT model and the intended strategy for maximum practical accuracy and near-zero latency in the hybrid speech architecture
+- [x] Clarify the original project position on Vosk within the offline speech strategy and compare it with Web Speech API and local Whisper references
+- [x] Verify whether the attached implementation plan document is the exact governing plan for Qworship desktop architecture and alignment reviews
+- [x] Correct the governing alignment basis to reflect that the attached implementation plan was informed by deeper comparative research, including LogosAI-style speed and accuracy strategy for both offline and online modes
+- [x] Assess whether Vosk can meet the offline near-zero-latency and very-high-accuracy goals, and whether Whisper is suitable for the online fast-response mode under the governing implementation plan
+- [x] Begin Sprint 2 source audit and reuse classification aligned to the authoritative implementation plan for Bible workspace, settings, lower thirds, main presentation, assets, and songbook modules
+- [x] Visualize the current desktop application UI state with screenshots or a component map for Live Console parity work
+- [x] Audit the new Live Console shells against the existing desktop UI for look-and-feel consistency
+- [x] Define the UI consistency rules, tokens, and reusable layout patterns that must be preserved in the Live Console desktop rebuild
+- [x] Replace the standalone Live Console shell styling in `apps/client/src/app/LiveConsoleModuleShells.tsx` with desktop-derived Qworship chrome
+- [x] Create a reusable Live Console frame pattern derived from the existing dashboard header, toolbar, and workspace language
+- [x] Document a UI parity checklist for migrated Live Console modules and validate the updated shell presentation against it
+- [ ] Prepare a screenshot-based comparison pack when a runnable local desktop session is available
+- [x] Create an image-based visual preview of the Live Console Desktop Application that reflects the new parity-safe Qworship desktop frame
+- [x] Replace the dashboard-derived Live Console parity frame with the actual Live Console UI language used in the current desktop app and Q-worship V2
+- [x] Remove the incorrect Presentation module entry from the Live Console desktop route architecture and keep Live Console focused on the approved feature subset
+- [x] Rebuild the Live Console route entry points around the existing Live Console pathways for On-screen Bible, Hands-free Bible, and Songs
+- [x] Re-align imported Live Console modules to the approved scope: Songbook, Lower Third Builder, Main Presentation Settings, Assets, and Settings
+- [ ] Redefine Go Live behavior so the Live Console uses full-display presentation mode instead of opening a separate audience window
+- [ ] Define the default-state UI for Qworship Live Console Desktop before any main button is selected
+- [ ] Finalize the state-specific UI language for On-screen Bible while preserving existing functionality and theme
+- [ ] Finalize the state-specific UI language for Hands-Free Bible while preserving existing functionality and theme
+- [ ] Finalize the state-specific UI language for Songs while preserving existing functionality and theme
+- [ ] Review and incorporate user-supplied UI references without changing the approved functional direction
+- [x] Make the Live Console Desktop application load with HFB pre-selected by default
+- [x] Align the default loaded state to the provided empty HFB UI reference while keeping the current theme and functional direction unchanged
+- [x] Use the provided empty HFB state as the primary authority for default layout before designing the Bible and Songs state-specific UIs
+- [x] Map the five right-side Live Console icons to the approved hidden-label actions: Songbook, Display Settings, Main Presentation Settings, Lower Third Settings, and General Settings
+- [x] Keep the icon labels out of the visible UI and use them only as implementation guidance
+- [x] Adapt the default HFB-loaded shell so the right-side icon cluster opens the correct Live Console modules and settings surfaces
+- [x] Add icons to all three primary Live Console mode buttons: On-screen Bible, HFB, and Songs
+- [x] Use the small Qworship logo mark inside the Hands-Free Bible button while preserving the current theme
+- [x] Keep the button-icon treatment as design direction only and align it consistently across the default HFB, Bible, and Songs states
+- [x] Capture the engaged HFB mic-on state as a distinct Live Console UI state separate from the empty startup HFB state
+- [x] Align the live transcript panel to show active command capture and emphasized current utterance behavior
+- [x] Align detected verses, audience preview, lower third preview, and recent detections to the engaged HFB working state shown in the supplied reference
+- [x] Align the On-screen Bible empty state to the newly supplied Live Console reference while preserving the approved dark console frame and icon language
+- [x] Preload the On-screen Bible state with Genesis selected and Genesis 1 verses visible in the content area alongside book, chapter, and verse navigation columns
+- [x] Align the engaged On-screen Bible search state to the newly supplied Live Console reference, including active verse highlighting in the middle reading area
+- [x] Support compact manual scripture search inputs such as `Num 2 3`, `Matt 1 2`, `Matt 1:2`, `Mt 1 2`, and `Gen 1`, with Enter triggering the search and immediately updating the Audience and Lower Third previews
+- [x] Align the Songs empty state to the newly supplied Live Console reference while preserving the approved dark console frame, right-side preview stack, and bottom recent detections strip
+- [x] Build the Songs left rail with compact song search, Songbook action, current song placeholder, and recent songs list matching the approved empty-state layout
+- [x] Align the engaged Songs state to the newly supplied Live Console reference, including active section highlighting in the center lyrics area and populated Audience and Lower Third previews
+- [x] Preserve recent-song continuity in the Songs left rail while making the selected song visible as the current song and keeping recent detections populated across scripture and song history
+- [x] Align the engaged Songs Pace Mode state to the newly supplied Live Console reference while preserving the existing engaged Songs layout and live preview structure
+- [x] Add Pace Mode controls for BPM adjustment, play/pause, and a visible lyric progress bar that supports audience sing-along without changing the underlying Songs shell
+- [x] Adopt the original approved UI for imported Settings modules inside Qworship Live Console Desktop rather than re-styling them into a different shell
+- [x] Adopt the original approved UI for the Songbook module when opened from Live Console while keeping its integration path consistent with the desktop console flow
+- [x] Preserve and adopt the source UI for Lower Third Settings inside Live Console, including its existing configuration structure and visual treatment
+- [x] Preserve and adopt the source UI for Main Presentation Settings inside Live Console, including its existing configuration structure and visual treatment
+- [x] Sprint next: connect approved Live Console UI states to real interaction flows, including module-to-console navigation, state persistence, and close/return continuity
+- [ ] Sprint next: replace remaining static Live Console demo data with live desktop data sources for Songs, Bible selection state, preview state, and imported module launch contexts
+- [x] Sprint next: implement command orchestration for Hands-Free Bible, manual Bible search, song projection, and Pace Mode so UI states drive real projection behavior instead of parity scaffolds alone
+- [ ] Sprint next: add desktop validation coverage for Live Console state transitions, route entry points, and imported module return paths
+- [x] Build a shared Live Console state coordinator that owns active mode, selected Bible reference, selected song, selected song section, Pace Mode state, preview payloads, and module return context
+- [ ] Replace remaining static Live Console Bible, Songs, and preview scaffold state with data driven by the shared desktop state layer
+- [x] Unify projection behavior so manual Bible search, verse selection, HFB actions, song section activation, and Pace Mode all update Audience and Lower Third outputs through one orchestration path
+- [x] Preserve imported-module continuity by carrying Live Console entry and return context through Settings, Songbook, Lower Third Settings, and Main Presentation Settings
+- [ ] Add desktop validation coverage for Live Console mode switching, state transitions, projection updates, and imported-module return paths
+- [x] Restore the Electron desktop workspace dependencies in `Qworship-desktop` so local runtime, lint, type-check, and test validation can resume
+- [x] Run a desktop validation pass after dependency restoration to verify linting, typing, and Electron runtime checks in `Qworship-desktop`
+- [x] Repair the Electron desktop lint configuration so monorepo and client lint checks run correctly in `Qworship-desktop`
+- [x] Reduce the remaining Electron desktop lint errors in batches so `pnpm lint` becomes a usable validation gate for `Qworship-desktop`
+- [x] Perform a runtime verification pass for the Qworship Live Console desktop flows, including launch, mode switching, scripture projection, song projection, and imported-module return behavior
+- [x] Fix the `getChapter is not defined` runtime failure in `apps/client/src/app/LiveConsoleDesktopFrame.tsx` so Bible-related Live Console flows stop crashing during desktop interaction
+- [x] Realign Electron desktop startup so the app boots into the new standalone Qworship Live Console target instead of the legacy QWorship desktop shell
+- [x] Trace and fix the current desktop routing or bootstrap path that is loading the previous QWorship application experience during runtime verification
+- [x] Make the Electron desktop application launch directly into the standalone Qworship Live Console instead of the legacy root splash, project-selection, and dashboard flow
+- [x] Fix the standalone Live Console `getChapter` Bible-data path and rerun desktop runtime verification from the corrected direct-launch entry route
+- [x] Correct the standalone Live Console Hands-Free Bible UI so it matches the approved reference layout, spacing, and panel composition more closely
+- [x] Align the default Hands-Free Bible screen before proceeding to On-screen Bible and Songs UI correction work
+- [x] Change the border colour of all five top-right Live Console header icon buttons to `#0D0D1A` consistently across all screens
+- [x] Add hover tooltips to all five top-right Live Console header icon buttons so each button shows its label on hover- [x] Replace the Lower Third active/inactive buttons with a capsule switch control across Hands-Free Bible, ...[content truncated]
+- [ ] Fix Online Whisper startup race where the main process calls startListening before the provider is initialized, causing a main-process crash when the mic is toggled on
+- [ ] Re-test Online mode after the startup-race fix to confirm microphone activation no longer crashes and transcript plus verse display still work
+- [ ] Reassess whether any Electron runtime downgrade needed for Offline Vosk would risk the repaired Online Whisper path before making that runtime change
+ongs screens
+- [x] Reposition the Lower Third state control directly below the Lower Third preview on the right across all Live Console screens
+- [x] Align the On-screen Bible left panel below the mode buttons to the approved empty-state UI reference while keeping the right preview panel unchanged
+- [x] Align the On-screen Bible middle panel to the approved empty-state UI reference while keeping the right preview panel unchanged
+- [x] Replace the inconsistent bright white border treatment on the On-screen Bible left and middle sections with the subtler reference-consistent styling
+- [x] Match the Book, Chapter, and Verse scrollbar styling in the On-screen Bible left panel to the approved UI reference
+- [x] Align the Songs screen left panel to the approved UI reference while keeping the shared right preview panel unchanged
+- [x] Align the Songs screen middle panel to the approved UI reference while keeping the shared right preview panel unchanged
+- [x] Replace any inconsistent bright border treatment on the Songs screen left and middle sections with the subtler reference-consistent styling
+- [ ] Remove hard-coded placeholder songs from the Songs screen Recent Songs section and populate it only from real recent user song selections
+- [ ] Restore editable Songs search input and show dynamic dropdown matches after the first three typed letters using the user's offline songbook data
+- [ ] Load the selected song dynamically into the Current Song panel and middle stage when chosen from the search results
+- [ ] Generate the Recent Detections thumbnail dynamically when a song is selected in the Songs screen
+- [x] Restore the Songs search-row Songbook button styling to its previous approved appearance without changing the restored dynamic search behavior
+- [x] Fix the Songs search so the default songbook sample entry `Example Song` appears in dropdown results for matching input such as `Exa` and can be selected and loaded normally
+- [x] Implement the Songs Clear Screen action so clicking the red Clear Screen text removes song content from the Audience and Lower Third projections and updates the Live Preview panels accordingly
+- [x] Implement Songs Pace Mode so clicking the clock icon in the song header activates pace mode immediately and displays the pace mode bar beneath the header as in the existing Qworship applications
+- [ ] Fix the Live Console runtime crash caused by a remaining `Monitor` icon reference after the Songs header was switched to the clock-based Pace Mode control
+- [ ] Fix the Live Console desktop white-screen runtime failure that appears after relaunch so the Songs, Bible, and Hands-Free Bible screens render again for manual testing
+- [x] Make Songs Pace Mode update the active lyric colour in sync with the advancing yellow progress bar so singing progress is visually reflected in the lyrics
+- [x] Fix the Pace Mode lyric-highlighting renderer crash caused by using `clamp` in `LiveConsoleDesktopFrame.tsx` without a defined helper in that component scope
+- [ ] Make Songs Pace Mode automatically advance from the current verse or chorus to the next section instead of repeating the same block when one section completes
+- [ ] Make Songs Pace Mode lyric highlighting propagate to the Audience screen, Lower Third screen, and Live Preview panels so all live outputs reflect the same singing pace
+- [x] Study how Main Presentation Settings dynamically control the live Audience screen in the current Qworship application and mirror those preferences immediately in the Live Console Audience preview
+- [ ] Remove the hard-coded `Example Song - Qworship` value that now appears in the Songs search bar when the Songs button is opened, and restore the intended dynamic search-input behavior
+- [ ] Make Main Presentation Settings behave as a universal setting for On-Screen Bible and Hands-Free Bible as well, so their live output and Live Console Audience preview mirror the same presentation preferences immediately
+- [ ] Make Lower Third Settings behave as a universal setting for Songs, On-Screen Bible, Hands-Free Bible, and announcements so default lower-third choices take immediate effect on live lower-third outputs and broadcast links
+- [ ] Mirror the user’s default Lower Third Settings selections for Songs and Bible in the Live Console lower-third preview panel immediately
+- [ ] Verify and harden the offline lower-third builder/editor autosave and persistence behavior so custom templates and edits save reliably without network dependence
+- [ ] Fix the Live Console Lower Third preview layout so Songs, On-Screen Bible, and Hands-Free Bible templates span the full lower-width preview area instead of rendering compressed into the left corner
+- [ ] Make the Go Live / Exit Live control a universal desktop presentation setting with a default OFF state on startup and a live-only label change from Go Live to Exit Live when activated
+- [ ] Make Go Live project the Audience output to the selected extended display in full-screen mode for wired screen connections instead of merely opening another tab or window
+- [ ] Add Display Settings support for selecting the preferred target screen when multiple wired displays are connected to the computer
+- [ ] Add Display Settings support for choosing the preferred connection method between Wired - HDMI, Wireless - NDI, or Both for audience output delivery
+- [ ] Wire the Go Live activation flow so audience output follows Main Presentation Settings when projected through wired display extension, NDI, or both
+- [ ] Remove the desktop menu bar from the Go Live audience output so the live presentation opens as a true full-screen screen takeover without File/Edit/View/Window/Help chrome
+- [ ] Make Go Live render the actual synchronized Audience and Lower Third presentation content from Songs, On-Screen Bible, and Hands-Free Bible instead of the placeholder Live Service screen, and keep the Live Console preview panels mirrored with the live outputs
+- [ ] Rebuild or realign the Audience Screen so the actual live output fully matches the Main Presentation preview and all Main Presentation settings for Songs, On-Screen Bible, and Hands-Free Bible
+- [ ] Prepare the Audience Screen rendering path for future NDI-compatible high-definition output with presentation-grade resolution and frame behavior
+- [ ] Fix the Audience preview crash where `mainPresentationActiveData` is undefined after the shared MainPresentationRenderer integration
+- [ ] Trace the still-reproducing `mainPresentationActiveData is not defined` runtime path after restart and remove any remaining undeclared preview references
+- [ ] Remove the unwanted `Background` image/text overlay from the Main Presentation Settings live preview area
+- [ ] Fix the Main Presentation Settings `Your Media` background flow so local image and video uploads succeed and can be used as backgrounds
+- [ ] Remove the persistent `Audience Background` overlay text still leaking into the Main Presentation Settings preview area
+- [ ] Fix the Main Presentation Settings local image and video background uploads that still fail with `Failed to fetch`
+- [ ] Repair the Main Presentation Settings `Your Media` local computer file-picking and upload bridge so direct image and video selection from desktop storage succeeds
+- [ ] Implement a local-first offline `Your Media` architecture so Main Presentation image and video backgrounds can be added, persisted, and reused from desktop storage without internet access
+- [ ] Remove the green offline-storage informational banner from Main Presentation `Your Media`
+- [ ] Change the local background asset badge text from `OFFLINE` to `YOUR MEDIA` in Main Presentation `Your Media`
+- [x] Make the Songs Songbook modal open inside the Live Console with the Live Console background blurred instead of showing a white-screen backdrop
+- [x] Fix the Songbook `Add new song` flow so it opens the full song creation builder correctly inside the Qworship Live Console Desktop application
+- [x] Fix the Songbook `Import song` flow so DOCX files from local computer storage are parsed into the Song builder modal with verses, choruses, authors, copyright, and related fields
+- [x] Fix the Songbook local DOCX import/parsing flow that currently fails with `Import failed` in the Qworship Live Console Desktop application
+- [x] Fix the save flow for songs created from imported DOCX data so imported songs can be saved correctly after parsing into the Song builder modal
+- [x] Fix the Songbook DOCX import flow that now hangs indefinitely in the loading state after clicking `Import song`
+- [ ] Verify and harden the Songbook as a fully offline local-first desktop module so song browse, create, import, edit, and save flows do not depend on internet access
+- [x] Fix the Songbook runtime crash caused by the unresolved `mammoth/mammoth.browser` import so the desktop app loads normally again
+- [x] Fix the persistent Songbook runtime crash where the Electron client still cannot resolve the `mammoth` module after restart
+- [x] Fix DOCX-imported songs so full verse and chorus text displays correctly in the Live Console middle panel and previews
+- [ ] Add Display Settings output type selection with Wired - HDMI, Wireless - NDI, and Both (Pro Feature) options for audience screens and lower third outputs
+- [ ] Add wired HDMI output source selection in Display Settings that lists all currently connected external screens and uses the selected display when Go Live is triggered
+- [ ] Add wireless NDI configuration controls in Display Settings including default 1080p resolution, default 24 fps, and related NDI broadcast options
+- [ ] Add combined Wired plus NDI Display Settings configuration flow for the Pro feature mode
+- [ ] Build a new theme-aligned Display Settings modal from scratch under the top-right settings area for audience screen and lower-third preferences
+- [ ] Add Output Type selection in Display Settings with Wired - HDMI, Wireless - NDI, and Both (Pro Feature) choices
+- [ ] Add Wired - HDMI source selection that lists all currently connected display outputs and uses the selected screen when Go Live is triggered
+- [ ] Add Wireless - NDI configuration options with default 1920 x 1080 resolution, default 24 fps, and related NDI broadcast controls
+- [ ] Add Pro-mode combined output configuration for simultaneous Wired - HDMI and Wireless - NDI behavior
+- [ ] Ensure the new Display Settings modal follows the existing Qworship theme colours consistently across layout, fields, toggles, buttons, and state styling
+- [ ] Fix the top-right Display Settings icon so it opens the new Display Settings modal instead of the Profile Settings modal
+- [ ] Make the Display Settings modal use the blurred Qworship Live Console as its backdrop, matching the Songbook modal experience
+- [ ] Implement true NDI output support so the Audience screen becomes a discoverable NDI source labeled `Audience` and follows Display Settings selection
+- [ ] Implement true NDI output support so the Lower Third becomes a discoverable headless NDI source labeled `Lower Third` and renders the exact selected lower-third designs for Songs and Bible
+- [ ] Wire NDI output mode so Bible, Hands-free Bible, and Songs content is pushed to Audience and Lower Third NDI sources in real time just like HDMI output
+- [ ] Audit the web version and existing desktop output architecture for any reusable NDI implementation details before building the desktop NDI pipeline
+- [x] Build a shareable Windows executable package for the Qworship Live Console Desktop app, including the native NDI integration for external testing
+- [x] Repair the recursive Windows packaging output that caused a OneDrive long-path sync error and restore a clean shareable desktop build
+- [x] Diagnose the existing X: drive mapping mismatch so the recursive `win-unpacked` folder can be deleted successfully
+- [ ] Investigate why ProPresenter cannot discover the `Audience` and `Lower Third` NDI sources from the desktop app and why Live Console content is not visible through those outputs
+- [ ] Fix the packaged Windows desktop runtime so startup no longer fails with a missing `bindings` module from `better-sqlite3`, which currently blocks reliable NDI verification
+- [ ] Fix the blank NDI output issue where `Qworship Audience` and `Qworship Lower Third` are discoverable in ProPresenter and NDI Monitor but do not display the selected Main Presentation or Lower Third content from the Live Console
+- [ ] Validate whether Songs projection correctly fills the `Qworship Audience` and `Qworship Lower Third` NDI outputs while Bible projection remains under repair
+- [ ] Fix the On-screen Bible flow so it correctly projects selected scripture into the Audience and Lower Third outputs
+- [ ] Fix the Hands-free Bible flow so detected scripture projects correctly into the Audience and Lower Third outputs
+- [ ] Fix the NDI Lower Third output so `Qworship Lower Third` renders its dedicated lower-third composition instead of mirroring the working `Qworship Audience` feed during Songs projection
+- [ ] Fix the Lower Third NDI capture path now that the in-app Lower Third preview is confirmed correct but NDI Monitor still shows a mostly black frame with stray red debug-style elements instead of the live lower-third composition
+- [ ] Fix the Lower Third NDI output so the Electron lower-third window uses the correct local render route, hides debug UI, and receives live updates reliably
+- [ ] Fix the Electron lower-third route format so the packaged NDI window no longer lands on a workspace 404 page
+- [ ] Fix the packaged Windows desktop white-screen startup failure introduced while patching the lower-third route so the app launches again for NDI testing
+- [ ] Fix the remaining packaged lower-third NDI 404 fallback so the hidden window resolves to the actual lower-third render route instead of the workspace not-found screen
+- [ ] Fix the packaged lower-third black-frame state so the hidden NDI window receives active template data and paints the selected overlay instead of rendering a blank black frame
+- [ ] Compare the desktop and web lower-third implementations to identify the missing headless lower-third state-delivery path in the desktop NDI flow
+- [ ] Return to the unresolved NDI Lower Third issue later; it is still not fixed and still needs a proper headless output repair
+- [ ] Revise the desktop productization alignment note to make speed and accuracy the top guiding principle for both speech modes
+- [ ] Add the default Online mode, optional Offline mode, and application-wide settings requirements to the desktop alignment note
+- [ ] Review the original desktop implementation plan again to realign the productization goals for Hands-free Bible and On-screen Bible
+- [ ] Confirm that the full desktop Bible database exists for all seven translations before continuing Bible feature implementation
+- [ ] Prepare a reference plan for the On-screen Bible aligned to the desktop productization goals
+- [ ] Investigate and fix the On-screen Bible feature in the desktop app as the next top priority
+- [ ] Investigate and fix the Hands-free Bible feature in the desktop app as the next top priority
+- [ ] Search the Qworship V2 GitHub repository for any GN translation asset, export artifact, or historical source before concluding GN is missing
+- [ ] Search the specific Qworship V2 GitHub repository at `https://github.com/Q-worship/Qworship-v2.git` for any GN translation asset, export artifact, or historical source before concluding GN is missing
+- [ ] Search the additional repository `https://github.com/316Startups/Qworship.git` for any GN translation asset, export artifact, or historical source before concluding GN is unavailable
+- [ ] Proceed with the desktop Bible foundation as six locally confirmed translations while GN remains pending licensed or source delivery
+- [ ] Make the desktop Bible translation architecture scalable so additional Bible translations can be added later without reworking the core pipeline
+- [ ] Prepare the On-screen Bible reference plan based on the six-confirmed-plus-GN-pending Bible foundation and future translation scalability
+- [ ] Keep GN recorded as a pending licensed/source dependency while continuing other Bible productization work
+- [ ] Review the newly provided On-screen Bible functional rundown before active implementation begins
+- [ ] Incorporate the document’s routing logic constraints into the On-screen Bible implementation context to avoid conflicts
+- [ ] Incorporate the document’s offline-mode working behavior into the refined On-screen Bible plan before building
+- [x] Build the shared Hands-free Bible foundation for both Online and Offline modes as part of the initial Bible engine work
+- [x] Design the Online Hands-free Bible path for maximum speed and accuracy as the default desktop mode
+- [x] Design the Offline Hands-free Bible path for near-zero-latency local operation with strong accuracy
+- [x] Keep the Hands-free Bible and On-screen Bible on one shared scripture engine so manual and voice flows remain synchronized
+- [x] Build a data-driven Bible translation registry shared by On-screen Bible and Hands-free Bible, with GN retained as a pending translation entry
+- [x] Extract a shared Bible chapter retrieval pipeline so On-screen Bible and Hands-free Bible use the same SQLite → RAM → IndexedDB → Cloud fallback flow
+- [x] Route Hands-free Bible verse projection and chapter-view updates through the shared Bible engine instead of a separate retrieval stack
+- [x] Introduce explicit Hands-free Bible speech usage modes with Online Whisper as default and Offline Vosk as the local low-latency path
+- [x] Lay the state foundation for the new app-wide Settings modal usage-mode and audio settings controls without changing the parked NDI Lower Third workstream
+- [x] Prepare a native Windows validation checklist for the shared Bible engine and dual-mode Hands-free Bible foundation
+- [x] Define the immediate post-validation repair order for On-screen Bible, Hands-free Bible, shared projection, and speech-mode persistence issues
+- [ ] Run a native Windows validation pass for the shared Bible engine and dual-mode Hands-free Bible foundation in the desktop repository
+- [ ] Capture the first blocking startup, Bible-loading, projection, or speech-mode regression reproduced during native validation
+- [ ] Fix the highest-priority native validation regression in the shared Bible engine or Hands-free Bible flow
+- [x] Create a local sandbox mirror of the desktop repository with restored package-manager dependencies so build and lint validation can run reliably outside the mounted Windows workspace
+- [x] Identify the correct runtime launch path for the Qworship Live Console Desktop Application in the mounted project
+- [x] Launch or prepare the actual Qworship Live Console Desktop Application so the user can open and test the current runtime state directly
+- [ ] Verify the first user-visible runtime blockers in the Live Console app after launch preparation
+- [ ] Diagnose why the Qworship Live Console Desktop Application launch session starts but no visible Windows app window appears for the user
+- [ ] Apply the first reliable relaunch or startup fix that makes the Live Console window appear visibly on the user's desktop
+- [ ] Trace and fix the main-process startup crash reporting "TypeError: Object has been destroyed" so the Qworship Live Console Desktop Application opens a visible usable window
+- [ ] Diagnose why the Hands-free Bible shell renders with an empty central scripture workspace after startup even though the Live Console window now opens
+- [ ] Fix the duplicated Bible version entries now visible in the Live Console version strip so the shared translation registry renders the correct distinct version set
+- [ ] Fix the Live Console Hands-free Bible mic toggle so Qworship starts with the mic off by default and enters listening mode when the user clicks ON
+- [ ] Restore the Hands-free Bible speech-to-text command pipeline so mic activation leads into real Bible-command detection for live latency and accuracy testing
+- [ ] Add Settings foundations for Hands-free Bible usage mode selection in the Live Console
+- [ ] Add Audio Settings in the Live Console so users can view and choose connected microphones and audio input devices like the desktop reference
+- [ ] Add an Audio Settings record-and-playback mic test flow in the Live Console so users can verify microphone power and input quality before using Hands-free Bible
+- [ ] Relaunch the Qworship Live Console Desktop Application after manual closure so the user can continue direct runtime testing
+- [ ] Re-verify that the visible Live Console ON control now enters listening mode after the patched runtime shell reloads
+- [ ] Fix the malformed Windows relaunch command that opened an error dialog instead of restarting the Qworship Live Console Desktop Application
+- [ ] Diagnose and fix the Qworship Live Console Desktop Application runtime instability where the app opens and then closes again before Hands-free Bible testing can proceed
+
+- [ ] Constrain the Hands-free Bible middle chapter-reading area to a fixed height and add a single purple vertical scrollbar so long chapters do not stretch the Live Console layout
+- [ ] Fix the Electron runtime module resolution issue preventing the desktop app from launching during the Hands-free Bible smoke test after adding the online Whisper provider dependency on `ws`
+- [ ] Complete a live Electron smoke test covering Hands-free Bible Online mode, Offline mode, provider switching, and runtime initialization behavior after the launch blocker is fixed
+- [ ] Fix the native Electron module loading error triggered from `ref-napi` during desktop app startup so the Hands-free Bible smoke test can reach the running UI after the online provider integration changes
+- [ ] Confirm the Qworship desktop app loads cleanly into the Live Console before deeper Hands-free Bible runtime validation
+- [ ] Validate Hands-free Bible Online mode in the running Electron UI after startup is stable
+- [ ] Restore and validate the native Vosk Offline mode path so Hands-free Bible Offline mode works reliably in the running Electron UI
+- [ ] Diagnose why Hands-free Bible Online mode can show Listening while producing no live transcript entries and no Bible result after spoken references such as Genesis chapter 1 verse 4
+- [ ] Trace why Hands-free Bible Online mode can remain in a Listening state with no transcript updates and no verse fetch even after repeated live speech tests in the desktop app
+- [ ] Trace the lower-level Hands-free Bible Online speech transport path across microphone capture, renderer IPC, Electron provider events, and transcript callbacks because repeated live tests still show Listening with no transcript and no verse results
+- [ ] Diagnose why Hands-free Bible Online mode still produces no transcript and no Bible fetch after the realtime session schema and sample-rate fixes, by tracing main-process provider events and transcript callback delivery end to end
+- [ ] Diagnose whether Hands-free Bible Online is failing because provider selection, listening startup, or mode activation order is incorrect even after the realtime transport fixes, since repeated live tests still produce no transcript and no Bible fetch
+- [ ] Verify whether the microphone selected in Audio settings is actually delivering non-zero audio into the Hands-free Bible capture path, because repeated live tests have produced no transcript and no Bible fetch and the current Listening state may be misleading
+- [ ] Instrument and verify the exact active microphone track identity, selected-device match, and captured signal level in the Hands-free Bible path, because using the selected microphone still produces no transcript and no Bible fetch
+- [ ] Inspect the fresh microphone-path instrumentation after another failed live test to confirm the requested device, the actual opened track, and whether meaningful PCM signal is reaching the Hands-free Bible pipeline
+- [ ] Investigate why Hands-free Bible still shows no transcript and no verse output even after restoring the selected microphone, instrumenting the capture path, and mixing/boosting worklet audio, by checking whether provider events or callback wiring are still dropping the speech signal downstream
+- [ ] Diagnose why Hands-free Bible Online now produces output but transcribes or maps spoken scripture to the wrong passage, since live testing is returning John 19 content instead of the requested reference
+- [ ] Diagnose why Hands-free Bible Online returned to a silent state after reducing input gain and switching to a more literal transcription prompt, even though the realtime transcription session now configures successfully
+- [ ] Diagnose why Hands-free Bible Online still fails after the adaptive-gain change, because live testing continues to produce no reliable transcript or verse output
+- [ ] Diagnose why Hands-free Bible Online still fails after the latest retest, because live testing continues to produce no reliable transcript or verse output even after the higher adaptive-gain change
+- [ ] Pivot the Hands-free Bible smoke test toward the Vosk offline path because the current Online path remains unstable and the user wants Offline mode tested next
+- [ ] Inspect the current native Vosk startup and runtime blockers in the desktop client so Offline mode can be repaired and validated in the running UI
+- [ ] Fix Online Whisper transcript contamination where the session prompt text is forwarded into Live Transcript when the mic is switched on
+- [ ] Re-test Online mode after the transcript-filter fix to confirm only spoken audio appears in Live Transcript and verse detection still works
+- [ ] Repair the Online Whisper regression where recent filtering and session changes stopped transcription output and scripture fetching entirely
+- [ ] Validate the restored Online flow against the previous working behavior so prompt leakage is gone without losing transcript or verse detection
+- [ ] Improve Bible-book recognition accuracy for Online Whisper so spoken book names resolve correctly at a much higher rate during Hands-free Bible use
+- [ ] Improve Bible-book recognition accuracy for Offline Vosk using Bible-specific constrained decoding and post-processing rather than raw transcript text alone
+- [ ] Enforce English-only transcription behavior across Online and Offline Hands-free Bible modes so non-English outputs are suppressed or normalized before Bible-command parsing
+- [ ] Study how Logos AI appears to achieve higher scripture-command accuracy and adapt the relevant strategy to Qworship without regressing speed
+- [ ] Fix Online Bible-book failures where numbered books such as First Corinthians are transcribed so poorly that scripture lookup cannot recover them
+- [ ] Block non-English Online transcript output from entering the Hands-free Bible pipeline when English-only mode is required
+- [ ] Add stronger candidate recovery for difficult Bible books such as Philippians, Corinthians, Thessalonians, Deuteronomy, and Philemon before verse lookup
+- [ ] Implement flexible Next Verse voice navigation so any spoken phrase containing a next-verse intent advances to the next verse within the current chapter
+- [ ] Implement flexible Previous Verse voice navigation so any spoken phrase containing a previous-verse intent moves back one verse within the current chapter
+- [ ] Implement flexible jump-to-verse voice navigation within the current chapter so phrases like take me to verse 11 or show me verse 11 move directly to that verse
+- [ ] Make the On-screen Bible selector apply the same purple selected-state styling to the active Book, Chapter, and Verse items so all three columns visibly reflect the current selection
+- [ ] Make the On-screen Bible middle chapter pane highlight the selected verse with the rounded purple active-state treatment shown in the reference so verse selection is visually obvious in the reading area
+- [ ] Constrain the On-screen Bible middle verse-reading pane to a fixed maximum height with internal scrolling so long chapters do not stretch and distort the Live Console layout
+- [x] Keep a clear note that Offline (Vosk) remains pending because the current Electron 28 native ABI incompatibility still needs a dedicated fix path
+- [x] Remove the top-bar logo and replace the visible desktop title text from `Qworship V2` to `Qworship Live Console`
+- [x] Update the Electron window title and packaged app branding strings to `Qworship Live Console`
+- [x] Build the distributable Windows executable for the Qworship Live desktop application and verify the installer output path
+- [ ] Prepare the Mac executable workflow after the Windows packaging step is complete
+- [x] Replace the current top-left Electron app icon with the user-supplied Qworship logo in the desktop window and packaged application
+- [ ] Verify which supplied logo asset should be used as the primary desktop app icon if multiple uploaded variants differ
+- [x] Create the branded Windows executable for Qworship Live Console using the user's supplied logo and updated desktop title branding
+- [x] Run a fresh Windows desktop staged rebuild after the staged R2 feed publish and capture the build result
+- [x] Verify the rebuilt installer artifacts and updater feed configuration in the Windows release output
+- [ ] Continue the staged installed-user auto-update validation flow and document any remaining manual checks
+- [ ] Fix the packaged Windows build so Hands-Free Bible voice detections populate the middle content area and the live preview panels correctly
+- [ ] Fix the packaged Windows build so the On-Screen Bible page loads and renders full scripture content correctly
+- [ ] Compare development behavior against packaged executable runtime behavior to identify asset, database, or path-resolution regressions affecting Bible rendering
+- [ ] Replace the current portable Windows release with a true installable Windows artifact once the packaged runtime bugs are fixed
+- [ ] Fix the packaged Hands-Free Bible flow so detected voice references populate Detected Verses and the projection surfaces instead of only appearing in Live Transcript
+- [ ] Fix the packaged On-Screen Bible flow so the center scripture reading area renders the actual chapter verses in the Windows release instead of remaining blank
+- [x] Fix the Windows packaging flow so Qworship Live Console produces a true installer with a setup experience instead of only a portable executable
+- [x] Verify the final installer artifact name, output path, and launch behavior after the packaging flow is corrected
+- [x] Correct the Windows NSIS packaging configuration and build command so the release produces a true installer setup flow instead of only a directly opening executable
+- [x] Produce the exact desktop integration specification for wiring Live Console Online HFB to `wss://api.qworship.com/api/bible/audio-stream` without breaking the current web implementation
+- [x] Verify the current desktop speech provider, auth flow, and backend gateway contract to define a non-breaking rollout plan for centralized Online HFB
+- [x] Document latency, accuracy, offline fallback, and deployment guardrails for the centralized Online HFB desktop path
+- [ ] Trace why bundled Bible data is present in the installed Windows release but is still not reaching the renderer state used by Hands-Free Bible and On-Screen Bible
+- [ ] Trace why the packaged renderer still fails to populate Detected Verses, the center scripture area, and the live preview surfaces even when transcript and navigation data appear
+- [ ] Verify whether the installed application is reading the same packaged renderer and Electron main-process code that was modified during the packaging fixes
+- [ ] Investigate why the rebuilt win-unpacked app still shows blank center Bible content even after forcing Bible SQLite initialization before IPC chapter lookups
+- [x] Implement or specify production-safe JWT authentication and entitlement checks for the centralized `/api/bible/audio-stream` Online HFB backend path
+- [x] Resolve the Windows installer blocker so the distributable Live Console artifact contains the latest Hands-Free Bible fixes
+- [x] Validate the blocker-resolution rollout path and document release guardrails for production Online HFB deployment
+- [ ] Investigate why Hands-Free Bible still records transcript lines in the packaged app but never populates Detected Verses or projected scripture text after the initialization-race fix
+- [ ] Verify whether the packaged renderer is failing after data lookup, such as in selected-verse state, stage rendering conditions, or projection-store synchronization
+- [x] Fix packaged Windows builds so the native better-sqlite3 Bible bridge loads successfully and On-screen Bible and Hands-free Bible render bundled scripture data offline
+- [ ] Ensure packaged Windows builds provide a release-quality end-user experience before any installer is shipped, with full Bible access and no known packaged-runtime blockers
+- [x] Implement the desktop JWT-authenticated Online HFB WebSocket client path for `wss://api.qworship.com/api/bible/audio-stream`
+- [x] Reuse the existing desktop auth token source so the Electron Online HFB provider can authenticate without introducing a parallel login flow
+- [x] Validate the authenticated desktop Online HFB flow against packaged-build constraints and document the next rollout action
+- [ ] Fix the packaged On-screen Bible center reading pane so chapter content renders correctly across all supported Bible versions
+- [ ] Fix packaged Hands-free Bible so successful speech recognition populates Detected Verses and projects scripture correctly across all supported Bible versions
+- [ ] Verify packaged song, Bible, and preview synchronization flows behave correctly for end users before rebuilding the Windows installer
+- [ ] Improve Hands-free Bible immediate readiness so the first spoken command after mic-on resolves accurately without a warm-up drift period
+- [ ] Run packaged Windows QA for the JWT-authenticated Online HFB flow and confirm the new installer connects to the centralized Bible audio socket
+- [ ] Isolate any remaining packaged-runtime failures that prevent Detected Verses, projected scripture text, or the On-screen Bible center pane from rendering after successful speech or chapter lookup
+- [x] Fix packaged Windows runtime staging so the `qworship-ndi` native module includes `build/Release/qworship_ndi.node` and NDI output does not fail at startup
+- [ ] Document the exact release recommendation after packaged validation, including whether the installer is safe for staged rollout
+- [ ] Fix Windows desktop packaging so `latest.yml` is generated alongside installer artifacts for auto-update publishing
+- [ ] Re-run the desktop update-artifact verification script after the packaging fix and confirm installer, blockmap, and metadata are present
+- [ ] Prepare the staged installed-user update feed publish path once the auto-update artifacts verify successfully
+- [x] Choose and configure the Windows update hosting model and feed URL for installed-user updates without code signing for now
+- [x] Add Electron main-process update checking and renderer-facing update status events for installed Live Console users
+- [x] Automate publishing of Windows installer artifacts and `latest.yml` metadata to the selected update host
+- [x] Prepare and document a staged installed-user update verification flow from one desktop version to a newer release without manual re-download
+- [x] Design the Windows installed-user update pipeline so existing Live Console users can receive new releases without manually re-downloading installers
+- [x] Inspect the current desktop packaging and distribution setup for compatibility with automatic update delivery
+- [x] Define the recommended hosting, manifest, signing, and in-app update-check flow for direct Windows desktop updates
+- [ ] Keep Hands-free Bible recognition responsive after silence, long idle periods, and switching away to Songs or On-screen Bible and back again
+- [ ] Improve Hands-free Bible book-name accuracy for difficult references such as Philippians and Proverbs and identify other pronunciation-sensitive books that need normalization
+- [ ] Repair imported song parsing so DOCX/TEXT lyrics populate the correct title and verse/chorus section clusters instead of collapsing into one field
+- [ ] Fix the new packaged Hands-free Bible regression where mic-on can stall for minutes, produce unrelated scripture transcripts, and fail to populate detected verses, center-pane scripture, preview, or live projection
+- [ ] Fix packaged Hands-free Bible so toggling the mic on or returning from other tabs enters a truly ready state instantly, and spoken references like Luke 8:7 resolve accurately into transcript, detected verses, center pane, preview, and live output without lag or wrong-book fallback
+- [ ] Fix packaged Hands-free Bible silence where mic-on shows listening but produces no transcript, no detected verses, and no scripture projection even after repeated spoken commands such as Matthew 4:8 and Genesis 2:4
+- [ ] Fix the packaged Hands-free Bible provider-mode mismatch where the refreshed build still opens in Online mode and shows 'Online Whisper ready' despite the intended offline-default change, likely due to persisted settings or an overriding packaged code path
+- [ ] Investigate why the packaged Windows app still runs Online Whisper and shows Online mode selected even after the offline-default code change, including persisted local settings, provider initialization failure, and fallback behavior
+- [ ] Perform a scoped Electron-native rebuild for the offline Vosk dependency chain without broad desktop feature changes
+- [ ] Re-validate packaged startup behavior, app loading, microphone capture, and offline Vosk after the native rebuild
+- [ ] Re-check nearby native desktop integrations such as NDI and OBS-adjacent runtime paths after the native rebuild
+- [ ] Replace the current Electron-incompatible ref-napi and ffi-napi runtime path with an Electron-compatible fix path for the offline Vosk chain on Windows
+- [ ] Copy the TigerConnect ffi/ref packages into the app-local node_modules so win-unpacked can load the patched Vosk runtime without missing-module errors
+- [ ] Resolve the remaining Win32 error 126 dynamic-link blocker in the packaged TigerConnect Vosk runtime so offline speech can initialize in win-unpacked
+- [ ] Ensure the packaged offline Vosk runtime can resolve libvosk.dll's MinGW support DLLs during Electron startup on Windows
+- [ ] Fix the refreshed packaged TigerConnect module-resolution path so win-unpacked can find ffi-napi and ref-napi from the patched Vosk runtime
+- [ ] Resolve the remaining post-resolution Win32 error 126 native DLL load failure after the packaged TigerConnect module path is fixed
+- [ ] Promote the successful packaged offline Vosk load-path fix into the source-side patch/build workflow so future Windows builds reproduce it automatically
+- [ ] Run a clean Windows desktop rebuild after the source-level Vosk fix and verify the refreshed packaged output contains the durable offline loader repair
+- [ ] Validate live packaged microphone behavior after the durable Vosk fix and confirm nearby native integrations still start cleanly
+- [ ] Validate packaged Hands-Free Bible online Whisper mode for speed and accuracy with the user
+- [ ] Validate packaged Hands-Free Bible offline Vosk mode for speed and accuracy with the user
+- [x] Verify the default Hands-Free Bible usage mode at desktop launch and packaged app startup
+- [x] Verify whether Hands-Free Bible Online or Offline usage-mode preference persists after navigating to Songs and returning to Bible
+- [x] Change the default Hands-Free Bible usage mode so Live Console and first-load HFB start in Online Whisper mode
+- [x] Fix Hands-Free Bible usage-mode hydration so a saved Online or Offline preference is restored exactly as chosen
+- [x] Persist Hands-Free Bible Online or Offline usage-mode preference across navigation to Songs or On-screen Bible and back until the user changes it again
+- [ ] Investigate why the packaged app still shows Offline as the default HFB mode after the Online default change
+- [ ] Fix any stale HFB settings hydration or storage-migration behavior so new packaged launches default to Online unless the user explicitly saved Offline
+- [x] Remove the Background and Close buttons beneath the Audience Preview screen in the Live Console right panel
+- [ ] Identify the single packaged Windows build folder to keep as the current canonical Qworship desktop test candidate without deleting other outputs yet
+- [x] Create the full Windows installable package for Qworship Live Console Desktop from the chosen canonical build candidate
+- [x] Verify that the generated Windows installer bundles the runtime files required to run the complete desktop application
+- [x] Identify the single canonical installer file path for distribution to end users
+- [ ] Verify that the website-download Windows installer includes the complete Bible database and that it remains available after installation
+- [ ] Investigate why the website-download Windows installer does not launch on a new Windows computer when double-clicked
+- [ ] Eliminate the need for users to manually unblock the downloaded Windows installer before installation starts
+- [ ] Define and implement a trusted public Windows distribution path so the installer launches directly after download
+- [ ] Determine whether Qworship can support one-click Windows installation without manual Unblock and without purchasing a code-signing certificate
+- [ ] Identify the most realistic no-certificate or lower-cost Windows distribution path for Qworship under current budget constraints
+- [x] Fix Online Hands-Free Bible setup so Windows builds clearly handle missing OpenAI credentials and can start speech recognition when a valid key is configured
+- [x] Fix Offline Hands-Free Bible flow in Windows builds so microphone input produces transcription and Bible command results instead of no response
+- [x] Verify the previous Windows installable build path for Hands-Free Bible and document exact setup requirements for Online and Offline modes
+- [x] Verify that the Windows desktop runtime actually picks up QWORSHIP_OPENAI_API_KEY for Online Hands-Free Bible initialization
+- [ ] Assess and create a macOS desktop build path for Qworship Live Console, including identifying what can be produced from the current environment and any remaining platform-specific blockers
+- [x] Investigate why the latest Windows installer artifact appears unchanged in timestamp, size, and Hands-Free Bible behavior despite recent desktop code fixes
+- [x] Investigate why the Windows installer used on the second computer still shows generic Electron branding instead of Qworship branding
+- [x] Investigate why the Windows installer used on the second computer still reports missing Online Hands-Free Bible credentials despite the development machine having QWORSHIP_OPENAI_API_KEY configured
+- [x] Investigate why Offline Hands-Free Bible still produces no response on the second computer after installation
+- [x] Produce a genuinely updated Windows distribution package that is validated from the fresh win-unpacked build before upload to Downloads
+- [ ] Redesign Online Hands-Free Bible so desktop clients use a central Qworship-managed backend service instead of local OpenAI keys on each machine
+- [ ] Trace current desktop and web credential flow for Online Hands-Free Bible to identify the backend integration points for centralized transcription
+- [ ] Design subscription-aware authentication and entitlement checks for centralized Online Hands-Free Bible access
+- [ ] Implement desktop and backend changes so Online Hands-Free Bible uses Qworship-managed server credentials rather than machine-local secrets
+- [ ] Validate the centralized Online Hands-Free Bible flow and document rollout requirements for production
+- [ ] Design centralized Online Hands-Free Bible against the existing Qworship production backend so desktop clients stop requiring machine-local OpenAI keys
+- [ ] Define the production backend API contract, authentication path, and subscription entitlement checks for centralized Online Hands-Free Bible
+- [ ] Define the desktop client changes needed to replace direct OpenAI WebSocket use with authenticated Qworship backend calls for Online Hands-Free Bible
+- [ ] Verify whether the Qworship-V2 repository contains the production backend code needed for centralized Online Hands-Free Bible service implementation
+- [ ] Verify that centralized Online Hands-Free Bible changes remain backward-compatible with the current web application path that already uses the Qworship-managed gateway
+- [ ] Define a non-breaking rollout strategy so desktop migration to centralized Online HFB does not stop existing web Hands-Free Bible from working
+- [x] Diagnose and fix the Windows NSIS `spawn UNKNOWN` packaging failure so the staged installer build can complete successfully
+- [x] Re-run the staged Windows desktop build after the NSIS fix and verify a valid installer is produced
+- [ ] Validate the staged installed-user auto-update flow with the rebuilt Windows desktop installer
+- [ ] Run packaged QA for Online HFB in the rebuilt Windows desktop app
+- [ ] Run packaged QA for Offline HFB in the rebuilt Windows desktop app
+- [ ] Run packaged QA for NDI output in the rebuilt Windows desktop app
+- [x] Separate the installed Windows desktop app version from the published staged feed version so a real auto-update offer can be validated end to end
+- [ ] Locate or restore a usable packaged `1.0.0` Windows baseline build for staged updater validation against the published `1.0.1` feed
+- [ ] Repair the broken installed Windows app state so Qworship Live Console can relaunch after close
+- [ ] Repair the missing uninstaller path for the installed Windows app so it can uninstall cleanly if needed
+- [x] Force-clean the broken Windows install state after relaunch and uninstall both failed during staged updater testing
+- [x] Restore a clean reinstallable baseline after the invalid uninstall reference to `Uninstall Qworship Live Console.exe` blocked recovery
+- [ ] Diagnose silent staged Windows updater check: installed 1.0.0 app shows no visible update notification against the published 1.0.1 staged R2 feed and updater cache remains on installer.exe 1.0.0
+- [ ] Fix staged Windows auto-update signature validation: the installed 1.0.0 app silently reaches the staged 1.0.1 feed, begins downloading, then rejects the downloaded installer because `Qworship Live Console Setup 1.0.1.exe` is not digitally signed by the expected publisher
+- [ ] Establish consistent Windows code signing for the baseline app and staged update installers: the installed 1.0.0 executable and cached 1.0.0 installer are also unsigned, so auto-update validation cannot succeed until the full Windows build chain is signed with the intended Qworship publisher identity
+- [ ] Provide or configure a Windows code-signing certificate for the Qworship desktop release flow: no `CSC_LINK`, `CSC_KEY_PASSWORD`, or equivalent signing environment variables are currently available on the Windows machine, so signed rebuilds cannot yet be produced for updater validation
+- [x] Add visible Windows updater status UI to the desktop app so unsigned staged-update checks surface checking, download progress, downloaded, and signature-failure states instead of failing silently while production code signing remains pending
+- [x] Evaluate temporary unsigned Windows update workarounds so users can receive interim Qworship desktop updates before a production code-signing certificate is purchased
+- [x] Determine whether Qworship can mirror a Pewbeam-style Windows 'Update Available' with 'Install & Restart' flow before code signing is purchased, and define the closest safe interim behavior if fully silent install is not possible
+- [x] Replace the blank purple Live Console startup screen with the provided branded Qworship loader experience, including logo animation, loading bar, progress copy, and rotating data-loading status text during application launch
+- [x] Surface a Pewbeam-style update card on the startup loader and keep it persistent at the bottom-right after transition into Live Console until the user chooses Install & Restart
+- [x] Integrate the attached QworshipLoader.tsx into the desktop startup flow so launch-time loading states are driven by real initialization steps such as Bible datasets, songs, settings, and workspace restoration
+- [ ] Design and execute the Qworship Live Console Desktop 1.0.1 Hands-free Bible recovery plan with offline accuracy as the first priority and near-zero latency preserved
+- [ ] Diagnose the root causes behind the reported Hands-free Bible recognition mismatches across offline Vosk and online Whisper, including book-name confusion, chapter-verse drift, and translation-command failure
+- [ ] Optimise the offline Vosk grammar, command constraints, and post-recognition normalization layer to push Bible book, chapter, verse, and translation recognition toward 98% practical accuracy without sacrificing response speed
+- [ ] Align the online Whisper command-resolution path to the same constrained Bible-command grammar and normalization logic so online mode improves accuracy without introducing unnecessary latency
+- [ ] Build a representative command test pack from the reported real-world failures and use it to measure Hands-free Bible improvements for Bible references and translation-switching behavior
+- [ ] Expand the Hands-free Bible regression suite beyond the initial failure set to cover more Bible books, numbered books, translation switches, and navigation commands for the 1.0.1 accuracy pass
+- [ ] Tighten the offline Vosk Bible-command grammar and ambiguity handling further so the recognizer rejects uncertain book matches instead of drifting into valid-but-wrong references
+- [ ] Align the online Whisper command path to the stricter 1.0.1 Bible normalization and safe-execution rules after the offline pass is validated
+- [x] Optimize the Hands-free Bible post-recognition verse fetch path so a recognized command can project the selected version immediately without paying an all-translations lookup cost on every match
+- [x] Build a much larger Hands-free Bible spoken-command benchmark set covering all 66 books, numbered books, translation switches, navigation phrases, mispronunciations, and rejection cases for the v1.0.1 validation pass
+- [ ] Measure real end-to-end Hands-free Bible accuracy and latency on the Windows desktop app using live microphone testing in both offline Vosk and online Whisper modes, then document the results with hard numbers
+- [ ] Repair the Windows desktop native runtime blockers for better-sqlite3 and ref-napi so the Qworship app can launch reliably for live Hands-free Bible microphone validation
+- [ ] Confirm which Qworship desktop window/process is the active live-validation build on Windows and distinguish it clearly from any older installed version before continuing microphone testing
+- [ ] Bring the correct repo-launched Qworship desktop test window to the foreground on Windows so live Hands-free Bible validation can continue in the intended build
+- [ ] Diagnose and fix the live Hands-free Bible failure where spoken commands appear in Live Transcript but do not populate Detected Verses or project Bible content during Windows microphone testing
+- [ ] Diagnose and fix the live Qworship renderer crash shown during Hands-free Bible validation so the blocked microphone accuracy and latency test can resume
+- [ ] Preserve the current live Hands-free Bible validation stop point after the user's immediate force-stop request so the Windows test session can be resumed cleanly later if needed
+- [ ] Inventory the broader issues observed in the repo-based Qworship test app during live validation and stabilize the build before resuming microphone accuracy testing
+- [ ] Analyze the user's exhaustive offline Hands-free Bible 66-book voice test results together with the attached ChatGPT proposal, identify the highest-value accuracy improvements, and preserve near-zero-latency behavior
+- [x] Strengthen the offline Hands-free Bible parser so chapter and verse numbers are extracted and scored as structured fields instead of drifting toward chapter 1 or verse 1
+- [x] Expand all-66-book offline normalization with misspoken and transcript-noisy aliases, especially for rare books, numbered books, and phonetically similar book names
+- [x] Add safer offline validation so suspicious or weak matches are rejected instead of projecting the wrong scripture reference
+- [ ] Strengthen offline Hands-free Bible handling for ambiguous numeric phrases where the same spoken number can refer to book order, chapter, verse, or verse range
+- [ ] Add offline normalization for spoken ordinal/cardinal number variants and transcript-noisy number words before Bible command parsing
+- [ ] Expand the Hands-free Bible benchmark with real multi-use numeric cases such as numbered books, compact references, repeated numbers, and ambiguous chapter-verse phrasing
+- [x] Complete the second Hands-Free Bible offline accuracy pass for number ambiguity, including compact multi-slot parsing for repeated numbers, compound spoken chapter and verse values, and numbered-book ordinal disambiguation
+- [x] Repair the corrupted Psalms chapter verse-count metadata in `bibleBooks.ts` so valid Hands-Free Bible references such as Psalm 119:105 are accepted during offline parsing and regression validation
+- [ ] Launch the repo-based Qworship desktop build and perform a live offline Hands-Free Bible microphone retest against the updated second-pass parser
+- [ ] Fix the repo-based desktop startup path for live Hands-Free Bible retesting after the launch script surfaced a native `better-sqlite3` binding failure during initialization
+- [ ] Fix the offline Hands-Free Bible live speech path where spoken `2` or `two` is sometimes resolved as `1`, including cases such as Romans 8:2, Numbers 3:2, Leviticus 2:2, and Deuteronomy 2:2
+- [ ] Fix the offline Hands-Free Bible live speech path where valid Psalm references such as `Psalms 23 verse 2` can drift into an unrelated book and verse during microphone use
+- [ ] Fix the remaining live offline Hands-Free Bible failure where `Psalms 23 verse 2` is not detected reliably even after the broader spoken-two parser improvements
+- [ ] Fix the downstream live offline Hands-Free Bible path where correctly transcribed Psalm references such as `Psalms chapter 23 verse 2` appear in Live Transcript but do not populate Detected Verses
+- [ ] Fix the live desktop Hands-Free Bible regression where switching to Songs or On-Screen Bible and then returning prevents the microphone from receiving voice commands again when HFB is turned back on
+- [ ] Fix the repo-based desktop relaunch path when the Electron window does not appear after a restart attempt, so live Hands-Free Bible validation can continue reliably
+- [ ] Fix the end-to-end live desktop Hands-Free Bible regression where Bible references appear in Live Transcript but the fetched Bible content does not populate Detected Verses, the center Bible view, the live preview, or the live output screens
+- [ ] Fix the persistent repo-build Hands-Free Bible propagation failure where valid transcript matches such as `Genesis chapter 4 verse 6` appear in Live Transcript but still do not populate Detected Verses, the center scripture area, Live Preview, or the live output screens
+- [ ] Fix the repo-based Qworship desktop relaunch path when the Electron window starts but is not visible to the user, so Hands-Free Bible validation can continue without losing the active test session
+- [ ] Restore Hands-Free Bible downstream behavior to match Version 1.0.0 so valid live transcript references again populate Detected Verses, the center scripture area, Live Preview, Lower Third, and live output screens in the repo-based desktop build
+- [ ] Re-run the offline Hands-Free Bible regression benchmark and a short repo-build live parity check after the recent downstream fixes to verify that the recent accuracy optimizations were preserved
+- [ ] Fix the current repo-based Qworship relaunch path when Electron starts but the window cannot be found on screen, so live Hands-Free Bible verification can continue reliably
+- [ ] Diagnose the repo-based desktop Hands-Free Bible state where the UI shows Listening or Taking commands but no live transcript, Detected Verses, center scripture, preview, or live output updates occur after relaunch
+- [ ] Restore version 1.0.0-style offline preload so Bible and song datasets are fully ready before the Live Console becomes interactive.
+- [ ] Reconnect the loader to the real preload pipeline and show dynamic progress text for Bible and song dataset preparation.
+- [ ] Fix the shared offline Bible database so On-screen Bible and Hands-Free Bible use the same complete local datasets with instant translation switching and no empty verses.
+- [ ] Reduce the startup loading screen scale so the animated Qworship logo, progress bar, and supporting text feel smaller and more refined, matching the tighter visual balance the user requested before preload validation
+- [ ] Verify the Qworship desktop application's NDI functionality end to end, including startup initialization, sender availability, and live output behavior
+- [ ] Reduce the startup loading animation, loader bar, and loading-screen text further so the startup screen feels noticeably smaller and more restrained.
+- [ ] Simplify the dynamic loader Bible copy to a generic message such as 'Loading your Bible data' instead of itemising Bible versions.
+- [ ] Restore sub-second Hands-Free Bible command-to-display timing so transcript capture, detected verse resolution, chapter population, preview/live updates, and recent-detection creation happen together as in version 1.0.0.
+- [ ] Remove the newly introduced delay between successive Hands-Free Bible voice commands and restore instant readiness for the next command.
+- [ ] Restore instant Bible translation switching across KJV, NKJV, NIV, ESV, AMP, and MSG for both Hands-Free Bible and On-screen Bible.
+- [ ] Fix the shared Bible data path so MSG content and any other missing translation content render correctly in the middle panel, preview screen, and live output.
+- [ ] Eliminate stale preview/live references so a new detected verse immediately replaces the previous verse everywhere instead of leaving older references such as Matthew 7:2 visible after a new command is resolved.
+- [ ] Fix the Live Console runtime crash `chapterVerses is not defined` introduced during the latest Bible-speed synchronization patch.
+- [ ] Fix the new regression where Hands-Free Bible opens but no longer processes commands after the latest crash-recovery and Bible-speed patches.
+- [ ] Fix the Hands-Free Bible regression where transcripts continue to appear but no Bible matches are emitted into Detected Verses, the chapter panel, or the preview/live output.
+- [ ] Answer the strategic reset questions for the current desktop build, starting by verifying the exact application version under test.
+- [ ] Verify exactly which Qworship version 1.0.0 code paths, build history, and local artifacts are accessible in the mounted workspace, then report the confirmed availability.
+- [ ] Audit whether a complete recoverable Qworship 1.0.0 baseline exists locally so it can be duplicated unchanged for the next release.
+- [ ] Compare only the Hands-Free Bible improvements in 1.0.1 against the preserved 1.0.0 baseline and assess whether they can be ported without altering 1.0.0 structure.
+- [x] Identify the first low-risk version 1.0.0 parity restoration targets from packaged baseline evidence before editing source files
+- [x] Restore the first safe version 1.0.0 parity drift items in the reconstruction branch and capture before/after evidence
+- [x] Re-validate restored startup and HFB parity signals against the packaged 1.0.0 bundle and update recovery notes
+- [x] Identify the safest next behavioral parity target after the startup-loader restoration pass, focusing on HFB timing, synchronization, translation switching, or preview/live flow
+- [x] Apply the second controlled version 1.0.0 behavioral restoration pass in the reconstruction branch and capture the evidence used
+- [x] Re-validate the restored behavioral area against packaged 1.0.0 signals and update the reconstruction notes
+- [x] Identify the safest third behavioral parity target after the startup and HFB intake restorations, focusing on translation switching or preview/live synchronization
+- [x] Apply the third controlled version 1.0.0 behavioral restoration pass in the reconstruction branch and capture the supporting evidence
+- [x] Re-validate the third restored behavioral area against packaged 1.0.0 signals and update the reconstruction notes
+- [x] Verify whether release-hfb-mode-fix-v2 contains the authoritative packaged version 1.0.0 Windows baseline and update the reconstruction source accordingly
+- [x] Compare the release-hfb-mode-fix-v2 artifacts against the previously used release path before continuing parity restoration work
+- [x] Identify the safest preview/live synchronization drift to restore against the packaged 1.0.0 baseline from release-hfb-mode-fix-v2
+- [x] Apply the fourth controlled version 1.0.0 preview/live synchronization restoration pass in the reconstruction branch and preserve supporting evidence
+- [x] Re-validate restored preview/live synchronization behavior against packaged 1.0.0 signals and update the reconstruction notes
+- [x] Identify the safest translation-switching drift to restore against the packaged 1.0.0 baseline from release-hfb-mode-fix-v2
+- [x] Apply the fifth controlled version 1.0.0 translation-switching restoration pass in the reconstruction branch and preserve supporting evidence
+- [x] Re-validate restored translation-switching behavior against packaged 1.0.0 signals and update the reconstruction notes
+- [ ] Verify whether the reconstructed desktop source and any version 1.0.1 state are present on GitHub by checking remotes, branches, tags, and version references
+- [x] Assess whether the reconstructed branch is complete enough for another developer to clone, stage, and build without missing local-only state
+- [x] Identify the exact files that must be committed so the reconstruction branch is safe for another developer to clone, stage, and build
+- [x] Produce a clean commit plan that separates reconstruction-branch files into must commit, optional but recommended, and do not commit buckets for developer handoff
+- [ ] Implement the developer handoff plan by staging all must-commit reconstruction files, selectively staging reproducibility-critical scripts, and leaving disposable artifacts out of Git

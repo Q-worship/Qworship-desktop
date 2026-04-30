@@ -11,7 +11,7 @@ interface SongRAMCacheStore {
   dictionary: SongDictionary;
   songList: any[];
 
-  loadFromDisk: () => Promise<void>;
+  loadFromDisk: (force?: boolean) => Promise<void>;
   search: (query: string) => any[];
   invalidate: (song: any) => Promise<void>;
 }
@@ -22,10 +22,10 @@ export const useSongRAMCache = create<SongRAMCacheStore>((set, get) => ({
   dictionary: {},
   songList: [],
 
-  loadFromDisk: async () => {
-    if (get().isBooted || get().isBooting) return;
+  loadFromDisk: async (force = false) => {
+    if (!force && (get().isBooted || get().isBooting)) return;
     
-    set({ isBooting: true });
+    set({ isBooting: true, ...(force ? { isBooted: false } : {}) });
     try {
       console.log("⚡ [RAM Cache] Booting Songs 0ms Dictionary...");
       const startTime = performance.now();

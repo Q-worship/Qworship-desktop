@@ -11,12 +11,7 @@
  *   • Resolution: 1920×1080  •  ✅ Allow Transparency
  */
 
-// Stamp class BEFORE first paint – eliminates purple gradient flash
-if (typeof document !== "undefined") {
-  document.documentElement.classList.add("lower-third-render");
-}
-
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { LowerThirdRenderer } from "@/features/lowerThird/LowerThirdRenderer";
 import { DEFAULT_TEMPLATES } from "@/features/lowerThird/defaultTemplates";
 import { useLowerThirdStore } from "@/stores/useLowerThirdStore";
@@ -27,6 +22,22 @@ const CHANNEL_NAME = "qworship-lower-third-sync";
 // OBS user-agent contains "OBS"
 const IS_OBS =
   typeof navigator !== "undefined" && /OBS/i.test(navigator.userAgent);
+const IS_ELECTRON =
+  typeof navigator !== "undefined" && /Electron/i.test(navigator.userAgent);
+const HIDE_DEBUG = IS_OBS || IS_ELECTRON;
+
+function getUidFromLocation() {
+  if (typeof window === "undefined") return null;
+
+  const directUid = new URLSearchParams(window.location.search).get("uid");
+  if (directUid) return directUid;
+
+  const hash = window.location.hash || "";
+  const queryIndex = hash.indexOf("?");
+  if (queryIndex === -1) return null;
+
+  return new URLSearchParams(hash.slice(queryIndex + 1)).get("uid");
+}
 
 interface SyncState {
   enabled: boolean;
@@ -41,6 +52,9 @@ export default function LowerThirdRenderPage() {
     () => [...DEFAULT_TEMPLATES, ...customTemplates],
     [customTemplates],
   );
+  const uid = useMemo(() => getUidFromLocation(), []);
+  const canUseSse =
+    typeof window !== "undefined" && /^https?:$/i.test(window.location.protocol);
 
   const [syncState, setSyncState] = useState<SyncState>({
     enabled: true,
@@ -49,17 +63,17 @@ export default function LowerThirdRenderPage() {
     activeData: null,
   });
 
-  // Debug counters — visible in browser, hidden in OBS
+  // Debug counters — visible in browser, hidden in OBS/Electron
   const [sseStatus, setSseStatus] = useState<
-    "connecting" | "connected" | "error"
-  >("connecting");
+    "disabled" | "connecting" | "connected" | "error"
+  >(canUseSse ? "connecting" : "disabled");
   const [msgCount, setMsgCount] = useState(0);
 
   const sseRef = useRef<EventSource | null>(null);
   const retryRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // ── Transparent body ─────────────────────────────────────────────────────
-  useEffect(() => {
+  useLayoutEffect(() => {
     document.documentElement.classList.add("lower-third-render");
     document.body.style.margin = "0";
     document.body.style.padding = "0";
@@ -72,7 +86,26 @@ export default function LowerThirdRenderPage() {
     };
   }, []);
 
-  // ── BroadcastChannel – same-browser tabs ─────────────────────────────────
+  // ── Shared sync apply helper ─────────────────────────────────────────────
+  const applySyncPayload = (payload: Partial<{
+    enabled: boolean;
+    isVisible: boolean;
+    selectedTemplateId: string;
+    templateId: string;
+    activeData: LowerThirdBindingData | null;
+  }>) => {
+    setMsgCount((n) => n + 1);
+    setSyncState((prev) => ({
+      enabled: payload.enabled ?? prev.enabled,
+      isVisible: payload.isVisible ?? prev.isVisible,
+      templateId:
+        payload.selectedTemplateId ?? payload.templateId ?? prev.templateId,
+      activeData:
+        payload.activeData !== undefined ? payload.activeData : prev.activeData,
+    }));
+  };
+
+  // ── BroadcastChannel – same-browser tabs / Electron windows ─────────────
   useEffect(() => {
     let ch: BroadcastChannel | null = null;
     try {
@@ -80,27 +113,39 @@ export default function LowerThirdRenderPage() {
       ch.onmessage = (ev) => {
         const { type, payload } = ev.data ?? {};
         if (type !== "LOWER_THIRD_UPDATE") return;
-        setMsgCount((n) => n + 1);
-        setSyncState((prev) => ({
-          enabled: payload.enabled ?? prev.enabled,
-          isVisible: payload.isVisible ?? prev.isVisible,
-          templateId: payload.selectedTemplateId ?? prev.templateId,
-          activeData:
-            payload.activeData !== undefined
-              ? payload.activeData
-              : prev.activeData,
-        }));
+        applySyncPayload(payload ?? {});
       };
-    } catch {}
+    } catch (error) {
+      console.warn(
+        "[LowerThirdRenderPage] Failed to initialize broadcast sync",
+        error,
+      );
+    }
     return () => {
       ch?.close();
     };
   }, []);
 
-  // ── SSE – OBS browser source ─────────────────────────────────────────────
+  // ── Electron IPC – packaged desktop hidden NDI window ───────────────────
   useEffect(() => {
+    const liveApi = (window as any).api?.live;
+    if (!liveApi?.onMessage) return;
+
+    return liveApi.onMessage((payload: any) => {
+      if (payload?.type !== "LOWER_THIRD_UPDATE") return;
+      applySyncPayload(payload.payload ?? {});
+    });
+  }, []);
+
+  // ── SSE – OBS browser source / remote HTTP contexts ─────────────────────
+  useEffect(() => {
+    if (!canUseSse) {
+      setSseStatus("disabled");
+      return;
+    }
+
     function connect() {
-      const uid = new URLSearchParams(window.location.search).get("uid");
+      setSseStatus("connecting");
       const url = uid
         ? `/api/lower-third/stream?uid=${uid}`
         : "/api/lower-third/stream";
@@ -122,7 +167,12 @@ export default function LowerThirdRenderPage() {
             templateId: d.templateId ?? prev.templateId,
             activeData: "activeData" in d ? d.activeData : prev.activeData,
           }));
-        } catch {}
+        } catch (error) {
+          console.warn(
+            "[LowerThirdRenderPage] Failed to parse SSE payload",
+            error,
+          );
+        }
       };
 
       es.onerror = () => {
@@ -138,7 +188,7 @@ export default function LowerThirdRenderPage() {
       if (retryRef.current) clearTimeout(retryRef.current);
       sseRef.current?.close();
     };
-  }, []);
+  }, [canUseSse, uid]);
 
   // ── Render ────────────────────────────────────────────────────────────────
   const template =
@@ -156,8 +206,8 @@ export default function LowerThirdRenderPage() {
         background: "transparent",
         overflow: "hidden",
       }}>
-      {/* ── Debug status badge (hidden in OBS) ─────────────────────────── */}
-      {!IS_OBS && (
+      {/* ── Debug status badge (hidden in OBS/Electron) ───────────────── */}
+      {!HIDE_DEBUG && (
         <div
           style={{
             position: "absolute",
@@ -183,16 +233,15 @@ export default function LowerThirdRenderPage() {
                     ? "#4ade80"
                     : sseStatus === "error"
                       ? "#f87171"
-                      : "#facc15",
+                      : sseStatus === "disabled"
+                        ? "#94a3b8"
+                        : "#facc15",
               }}>
               {sseStatus}
             </span>{" "}
             | msgs: {msgCount}
           </div>
-          <div>
-            uid:{" "}
-            {new URLSearchParams(window.location.search).get("uid") ?? "(none)"}
-          </div>
+          <div>uid: {uid ?? "(none)"}</div>
           <div>
             enabled: {String(syncState.enabled)} | visible:{" "}
             {String(syncState.isVisible)}

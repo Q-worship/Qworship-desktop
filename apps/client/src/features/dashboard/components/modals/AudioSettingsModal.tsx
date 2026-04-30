@@ -423,12 +423,18 @@ export function AudioSettingsModal({
                       </>
                     )}
 
-                    <div className="p-4 rounded-lg bg-[#1a0f2e]/50 border border-gray-700/50">
+                    <div className="p-4 rounded-lg bg-[#1a0f2e]/50 border border-gray-700/50 space-y-2">
                       <p className="text-gray-400 text-xs">
                         <strong className="text-gray-300">Tip:</strong> If you
                         connect a new microphone, click "Refresh" to detect it.
                         Your selection is saved and will be remembered for
                         future sessions.
+                      </p>
+                      <p className="text-gray-400 text-xs">
+                        <strong className="text-gray-300">Hands-Free Bible quality:</strong>{" "}
+                        For the best offline Bible accuracy, use a close-range USB or XLR microphone,
+                        keep the speaker within a steady speaking distance, and avoid relying on noisy
+                        laptop room microphones when projecting live scripture.
                       </p>
                     </div>
                   </>

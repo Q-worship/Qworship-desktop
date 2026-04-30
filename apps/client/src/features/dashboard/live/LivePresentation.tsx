@@ -143,7 +143,9 @@ export const LivePresentation = (): JSX.Element => {
         const parsed = JSON.parse(saved);
         return parsed.type || "color";
       }
-    } catch (e) {}
+    } catch (error) {
+      console.warn("[LivePresentation] Failed to read saved background type", error);
+    }
     return "color";
   });
   const [appliedBackgroundColor, setAppliedBackgroundColor] = useState(() => {
@@ -153,7 +155,9 @@ export const LivePresentation = (): JSX.Element => {
         const parsed = JSON.parse(saved);
         return parsed.color || "#000000";
       }
-    } catch (e) {}
+    } catch (error) {
+      console.warn("[LivePresentation] Failed to read saved background color", error);
+    }
     return "#000000";
   });
   const [appliedBackgroundImage, setAppliedBackgroundImage] = useState<
@@ -165,7 +169,9 @@ export const LivePresentation = (): JSX.Element => {
         const parsed = JSON.parse(saved);
         return parsed.image || null;
       }
-    } catch (e) {}
+    } catch (error) {
+      console.warn("[LivePresentation] Failed to read saved background image", error);
+    }
     return null;
   });
   const [appliedBackgroundVideo, setAppliedBackgroundVideo] = useState<
@@ -177,7 +183,9 @@ export const LivePresentation = (): JSX.Element => {
         const parsed = JSON.parse(saved);
         return parsed.video || null;
       }
-    } catch (e) {}
+    } catch (error) {
+      console.warn("[LivePresentation] Failed to read saved background video", error);
+    }
     return null;
   });
 
@@ -199,7 +207,9 @@ export const LivePresentation = (): JSX.Element => {
             ? true
             : false;
         }
-      } catch (e) {}
+      } catch (error) {
+        console.warn("[LivePresentation] Failed to read live settings background flag", error);
+      }
       return false;
     },
   );
@@ -1226,7 +1236,7 @@ export const LivePresentation = (): JSX.Element => {
         case "CLOSE_LIVE":
           window.close();
           break;
-        case "BACKGROUND_UPDATE":
+        case "BACKGROUND_UPDATE": {
           const { background, itemId } = data;
 
           // Store background data for this item
@@ -1359,7 +1369,8 @@ export const LivePresentation = (): JSX.Element => {
             }
           }
           break;
-        case "ASSET_SELECTED_FOR_BACKGROUND":
+        }
+        case "ASSET_SELECTED_FOR_BACKGROUND": {
           console.log(
             "Live presentation: Received background asset:",
             event.data,
@@ -1415,6 +1426,7 @@ export const LivePresentation = (): JSX.Element => {
             }
           }
           break;
+        }
         case "BIBLE_VERSE_DISPLAY":
           console.log(
             "Live presentation: Received Bible verse from voice command:",
@@ -1459,7 +1471,7 @@ export const LivePresentation = (): JSX.Element => {
           }
           break;
 
-        case "GO_TO_SLIDE":
+        case "GO_TO_SLIDE": {
           console.log(
             "🎯🎯🎯 LivePresentation: RECEIVED GO_TO_SLIDE - slideIndex:",
             data.slideIndex,
@@ -1535,6 +1547,7 @@ export const LivePresentation = (): JSX.Element => {
             );
           }
           break;
+        }
         case "PROJECT_SONG":
           console.log("Live Console: Projecting song", data);
           setCurrentSongProjection({
@@ -1698,8 +1711,9 @@ export const LivePresentation = (): JSX.Element => {
             document.documentElement.requestFullscreen();
           }
           break;
-        case "SETTINGS_UPDATE":
-          console.log("Live Console: Updating settings", data);
+
+        case "LIVE_SETTINGS_UPDATE":
+         console.log("Live Console: Updating settings", data);
           // Apply all settings from Live Console (do NOT set hasLiveSettingsBackground here - only BACKGROUND_UPDATE should do that)
           if (data.slidesTransparent !== undefined)
             setSlidesTransparent(data.slidesTransparent);

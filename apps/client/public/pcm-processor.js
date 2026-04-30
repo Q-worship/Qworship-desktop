@@ -4,25 +4,37 @@
 class PCMProcessor extends AudioWorkletProcessor {
   process(inputs) {
     const input = inputs[0];
-    if (!input || !input[0] || input[0].length === 0) return true;
+    if (!input || input.length === 0 || !input[0] || input[0].length === 0) return true;
 
-    const inputData = input[0]; // Float32Array (-1.0 to 1.0)
+    const channelCount = input.length;
+    const frameLength = input[0].length;
+    const mixBuffer = new Float32Array(frameLength);
+
+    for (let channel = 0; channel < channelCount; channel += 1) {
+      const channelData = input[channel];
+      if (!channelData) continue;
+      for (let i = 0; i < frameLength; i += 1) {
+        mixBuffer[i] += channelData[i] / channelCount;
+      }
+    }
 
     // Downsample to 16kHz and convert Float32 → PCM16
     // whisper.cpp requires 16kHz mono audio for inference
     const ratio = Math.max(1, Math.floor(sampleRate / 16000));
-    const outputLength = Math.floor(inputData.length / ratio);
+    const outputLength = Math.floor(mixBuffer.length / ratio);
     const pcm16 = new Int16Array(outputLength);
 
     let outIndex = 0;
     let maxFloat = 0;
+    const softwareGain = 8;
     for (
       let i = 0;
-      i < inputData.length && outIndex < outputLength;
+      i < mixBuffer.length && outIndex < outputLength;
       i += ratio
     ) {
-      if (Math.abs(inputData[i]) > maxFloat) maxFloat = Math.abs(inputData[i]);
-      const s = Math.max(-1, Math.min(1, inputData[i]));
+      const amplified = mixBuffer[i] * softwareGain;
+      if (Math.abs(amplified) > maxFloat) maxFloat = Math.abs(amplified);
+      const s = Math.max(-1, Math.min(1, amplified));
       pcm16[outIndex++] = s < 0 ? s * 0x8000 : s * 0x7fff;
     }
 

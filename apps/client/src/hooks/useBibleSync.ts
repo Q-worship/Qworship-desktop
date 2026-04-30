@@ -5,6 +5,45 @@ import { apiClient } from "../lib/api";
 export const useBibleSync = () => {
   const [isSyncing, setIsSyncing] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const hasNativeBibleApi = Boolean((window as any).api?.bible);
+  const [canUseNativeBibleApi, setCanUseNativeBibleApi] = useState<boolean | null>(
+    hasNativeBibleApi ? null : false,
+  );
+
+  useEffect(() => {
+    let cancelled = false;
+
+    const probeNativeBibleApi = async () => {
+      if (!hasNativeBibleApi) {
+        setCanUseNativeBibleApi(false);
+        return;
+      }
+
+      try {
+        const sample = await (window as any).api.bible.getChapter("kjv", "John", 3);
+        const isUsable = Array.isArray(sample) && sample.length > 0;
+
+        if (!cancelled) {
+          setCanUseNativeBibleApi(isUsable);
+        }
+
+        if (!isUsable) {
+          console.warn("[Offline Bible] Native Bible API is present but returned no usable sample data; enabling IndexedDB fallback hydration.");
+        }
+      } catch (err) {
+        console.warn("[Offline Bible] Native Bible API probe failed; enabling IndexedDB fallback hydration.", err);
+        if (!cancelled) {
+          setCanUseNativeBibleApi(false);
+        }
+      }
+    };
+
+    void probeNativeBibleApi();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [hasNativeBibleApi]);
 
   const checkAndHydrateTargetVersion = useCallback(
     async (version: string, updateSyncState: boolean = true) => {
@@ -74,6 +113,10 @@ export const useBibleSync = () => {
   );
 
   const hydrateDefaultVersions = useCallback(async () => {
+    if (canUseNativeBibleApi !== false) {
+      return;
+    }
+
     setIsSyncing(true);
     try {
       // We sequentially download to avoid choking network/memory on initially massive payload
@@ -83,15 +126,20 @@ export const useBibleSync = () => {
       await checkAndHydrateTargetVersion("msg", false);
       await checkAndHydrateTargetVersion("esv", false);
       await checkAndHydrateTargetVersion("niv", false);
+      await checkAndHydrateTargetVersion("gn", false);
     } finally {
       setIsSyncing(false);
     }
-  }, [checkAndHydrateTargetVersion]);
+  }, [canUseNativeBibleApi, checkAndHydrateTargetVersion]);
 
   // Hook will auto-hydrate default versions if not found
   useEffect(() => {
+    if (canUseNativeBibleApi !== false) {
+      return;
+    }
+
     hydrateDefaultVersions();
-  }, [hydrateDefaultVersions]);
+  }, [canUseNativeBibleApi, hydrateDefaultVersions]);
 
   return {
     isSyncing,

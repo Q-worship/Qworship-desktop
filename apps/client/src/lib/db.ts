@@ -29,23 +29,37 @@ export interface OfflinePresentation {
   syncPending: number; // 0 or 1 for Dexie indexing boolean equivalent
 }
 
+export interface LocalBackgroundMedia {
+  id: string;
+  title: string;
+  fileName: string;
+  fileType: "IMAGE" | "VIDEO";
+  mimeType: string;
+  fileSize: number;
+  createdAt: string;
+  updatedAt: string;
+  blob: Blob;
+}
+
 const db = new Dexie("QworshipLocalDB") as Dexie & {
   verses: EntityTable<BibleVerse, "id">;
   syncState: EntityTable<SyncState, "version">;
   songs: EntityTable<any, "id">;
   presentations: EntityTable<OfflinePresentation, "id">;
+  localBackgroundMedia: EntityTable<LocalBackgroundMedia, "id">;
 };
 
 // Schema declaration:
 // [version+book+chapter] index allows for blazing fast full-chapter fetching
 // [version+book+chapter+verse] index allows immediate single verse lookup
-// Force index rebuild by bumping version to 4 (browsers with v1/v2/v3 will automatically upgrade)
-db.version(4).stores({
+// Force index rebuild by bumping version to 5 to add local background media persistence.
+db.version(5).stores({
   verses:
     "++id, version, book, chapter, [version+book], [version+book+chapter], [version+book+chapter+verse]",
   syncState: "version",
   songs: "++id, songId, title, [title+lyrics]",
   presentations: "id, syncPending, updatedAt",
+  localBackgroundMedia: "id, fileType, updatedAt, createdAt",
 });
 
 export { db };

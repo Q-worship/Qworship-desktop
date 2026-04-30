@@ -18,7 +18,7 @@ export const PricingWebView = () => {
         We use the Electron <webview> tag (needs to be enabled in webPreferences) 
         to perfectly sandbox and render the external Stripe/Pricing page.
       */}
-      {/* @ts-ignore */}
+      {/* @ts-expect-error Electron webview is provided by the desktop runtime */}
       <webview 
         src={pricingUrl}
         className="w-full flex-1"

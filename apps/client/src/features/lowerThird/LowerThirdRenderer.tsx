@@ -10,7 +10,7 @@
  *  • Shape elements are unchanged — plain absolute divs.
  */
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 
 import type {
   LowerThirdTemplate,
@@ -40,6 +40,47 @@ function resolveText(
     return (value as string) || element.binding.placeholder || element.text || "";
   }
   return element.text || "";
+}
+
+function renderPaceText(
+  element: LowerThirdElement,
+  data: LowerThirdBindingData,
+): ReactNode {
+  const text = resolveText(element, data);
+  const bindingField = element.binding?.field;
+
+  if (bindingField !== "verse" || data.type !== "lyrics" || !data.paceLines?.length || typeof data.paceLineIdx !== "number") {
+    return text;
+  }
+
+  const safeLineProgress = Math.max(0, Math.min(data.paceLineProgress ?? 0, 1));
+
+  return data.paceLines.map((line, lineIndex) => {
+    let style: React.CSSProperties | undefined;
+
+    if (lineIndex < data.paceLineIdx!) {
+      style = { color: "#f5c542" };
+    } else if (lineIndex === data.paceLineIdx) {
+      const progressPercent = Math.round(safeLineProgress * 100);
+      style = progressPercent >= 100
+        ? { color: "#f5c542" }
+        : progressPercent <= 0
+          ? undefined
+          : {
+              backgroundImage: `linear-gradient(90deg, #f5c542 ${progressPercent}%, ${element.textColor || "#ffffff"} ${progressPercent}%)`,
+              backgroundClip: "text",
+              WebkitBackgroundClip: "text",
+              color: "transparent",
+              WebkitTextFillColor: "transparent",
+            };
+    }
+
+    return (
+      <span key={`${lineIndex}-${line}`} style={{ display: "block", minHeight: "1.2em", ...style }}>
+        {line || "\u00A0"}
+      </span>
+    );
+  });
 }
 
 function getAnimationStyle(
@@ -80,7 +121,7 @@ function getAnimationStyle(
 
 interface SmartTextElementProps {
   element: LowerThirdElement;
-  text: string;
+  text: ReactNode;
   isVisible: boolean;
   isPreview: boolean;
 }
@@ -341,7 +382,7 @@ export function LowerThirdRenderer({
               <SmartTextElement
                 key={element.id}
                 element={element}
-                text={resolveText(element, data)}
+                text={renderPaceText(element, data)}
                 isVisible={isVisible}
                 isPreview={isPreview}
               />

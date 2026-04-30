@@ -53,7 +53,9 @@ function getStoredChurchName(): string {
       const user = JSON.parse(stored);
       return user.organizationName || "My Church";
     }
-  } catch {}
+  } catch (error) {
+    console.warn("[LowerThirdSettingsPage] Failed to read stored church name", error);
+  }
   return "My Church";
 }
 

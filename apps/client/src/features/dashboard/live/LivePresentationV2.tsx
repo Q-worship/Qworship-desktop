@@ -2,6 +2,8 @@ import { LiveOverlayLayer } from "./components/LiveOverlayLayer";
 import { LiveSlideLayer } from "./components/LiveSlideLayer";
 import { LiveBackgroundLayer } from "./components/LiveBackgroundLayer";
 import { useLivePresentationState } from "./useLivePresentationState";
+import { MainPresentationRenderer } from "@/features/mainPresentation/MainPresentationRenderer";
+import { useMainPresentationStore } from "@/stores/useMainPresentationStore";
 import React, { useState, useEffect, useRef } from "react";
 import {
   ChevronLeftIcon,
@@ -81,6 +83,9 @@ const isWindowOpen = (win: any): boolean => {
 
 export const LivePresentationV2 = (): JSX.Element => {
   const stateProps = useLivePresentationState();
+  const mainPresentationSettings = useMainPresentationStore((state) => state.settings);
+  const mainPresentationActiveData = useMainPresentationStore((state) => state.activeData);
+  const mainPresentationVisible = useMainPresentationStore((state) => state.isVisible);
   const {
     serviceTitleSize,
     setIsSlideNavOpen,
@@ -241,7 +246,10 @@ export const LivePresentationV2 = (): JSX.Element => {
     clearProjection,
   } = stateProps;
   const props = stateProps;
-
+  const shouldUseMainPresentationRenderer =
+    mainPresentationVisible &&
+    Boolean(mainPresentationActiveData) &&
+    (activeMode === "song" || activeMode === "on-screen-bible" || activeMode === "hfb-bible");
 
   return (
     <div
@@ -255,7 +263,7 @@ export const LivePresentationV2 = (): JSX.Element => {
         zIndex: 999999,
         margin: 0,
         padding: 0,
-        ...getBackgroundStyle(),
+        ...(shouldUseMainPresentationRenderer ? { background: "#000000" } : getBackgroundStyle()),
       }}
       onClick={async () => {
         // Try to enter fullscreen on any click if not already fullscreen
@@ -274,7 +282,9 @@ export const LivePresentationV2 = (): JSX.Element => {
           }
         }
       }}>
-      <LiveBackgroundLayer appliedBackgroundType={appliedBackgroundType as any} appliedBackgroundVideo={appliedBackgroundVideo} />
+      {!shouldUseMainPresentationRenderer ? (
+        <LiveBackgroundLayer appliedBackgroundType={appliedBackgroundType as any} appliedBackgroundVideo={appliedBackgroundVideo} />
+      ) : null}
       {/* Full Screen Content - What the audience sees */}
       <div className="w-full h-full flex items-center justify-center relative z-10">
         {/* Fullscreen Prompt - Shows only first time and when not in fullscreen */}
@@ -286,8 +296,16 @@ export const LivePresentationV2 = (): JSX.Element => {
           </div>
         )}
 
-        <LiveSlideLayer {...props} />
-        
+        {shouldUseMainPresentationRenderer ? (
+          <MainPresentationRenderer
+            settings={mainPresentationSettings}
+            activeData={mainPresentationActiveData}
+            isVisible={mainPresentationVisible}
+            className="absolute inset-0 flex h-full w-full overflow-hidden"
+          />
+        ) : (
+          <LiveSlideLayer {...props} />
+        )}
 
         <LiveOverlayLayer {...props} />
       </div>

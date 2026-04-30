@@ -7,7 +7,7 @@ export class BibleImportService {
    * (fastBibleImport, fullBibleImport, quickBibleImport, robustBibleImport, etc.)
    */
   static async importBibleJSON(filePath: string, versionKey: string) {
-    if (!["kjv", "nkjv", "amp", "msg", "esv", "niv"].includes(versionKey)) {
+    if (!["kjv", "nkjv", "amp", "msg", "esv", "niv", "gn"].includes(versionKey)) {
       throw new Error(`Unsupported version: ${versionKey}`);
     }
 

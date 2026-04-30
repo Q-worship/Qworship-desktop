@@ -46,6 +46,7 @@ interface LowerThirdState {
     sectionTitle: string,
     songTitle: string,
     forUserId?: string | number | null,
+    pace?: { lines: string[]; lineIdx: number; lineProgress: number },
   ) => void;
   projectAnnouncement: (
     text: string,
@@ -67,7 +68,9 @@ function loadPersistedState() {
   try {
     const stored = localStorage.getItem(STORAGE_KEY);
     if (stored) return JSON.parse(stored);
-  } catch {}
+  } catch (error) {
+    console.warn("[LowerThirdStore] Failed to load persisted state", error);
+  }
   return {};
 }
 
@@ -75,7 +78,9 @@ function loadCustomTemplates(): LowerThirdTemplate[] {
   try {
     const stored = localStorage.getItem(CUSTOM_TEMPLATES_KEY);
     if (stored) return JSON.parse(stored);
-  } catch {}
+  } catch (error) {
+    console.warn("[LowerThirdStore] Failed to load custom templates", error);
+  }
   return [];
 }
 
@@ -83,14 +88,18 @@ function loadThumbnailOverrides(): Record<string, string> {
   try {
     const stored = localStorage.getItem(THUMBNAIL_OVERRIDES_KEY);
     if (stored) return JSON.parse(stored);
-  } catch {}
+  } catch (error) {
+    console.warn("[LowerThirdStore] Failed to load thumbnail overrides", error);
+  }
   return {};
 }
 
 function persistThumbnailOverrides(overrides: Record<string, string>) {
   try {
     localStorage.setItem(THUMBNAIL_OVERRIDES_KEY, JSON.stringify(overrides));
-  } catch {}
+  } catch (error) {
+    console.warn("[LowerThirdStore] Failed to persist thumbnail overrides", error);
+  }
 }
 
 function persistState(state: Partial<LowerThirdState>) {
@@ -107,13 +116,17 @@ function persistState(state: Partial<LowerThirdState>) {
         renderPageEnabled: state.renderPageEnabled,
       }),
     );
-  } catch {}
+  } catch (error) {
+    console.warn("[LowerThirdStore] Failed to persist store state", error);
+  }
 }
 
 function persistCustomTemplates(templates: LowerThirdTemplate[]) {
   try {
     localStorage.setItem(CUSTOM_TEMPLATES_KEY, JSON.stringify(templates));
-  } catch {}
+  } catch (error) {
+    console.warn("[LowerThirdStore] Failed to persist custom templates", error);
+  }
 }
 
 function getStoredOrgName(): string {
@@ -123,7 +136,9 @@ function getStoredOrgName(): string {
       const user = JSON.parse(stored);
       return user.organizationName || "";
     }
-  } catch {}
+  } catch (error) {
+    console.warn("[LowerThirdStore] Failed to read stored organization name", error);
+  }
   return "";
 }
 
@@ -191,7 +206,9 @@ async function apiFetchTemplates(): Promise<LowerThirdTemplate[]> {
 let broadcastChannel: BroadcastChannel | null = null;
 try {
   broadcastChannel = new BroadcastChannel(CHANNEL_NAME);
-} catch {}
+} catch (error) {
+  console.warn("[LowerThirdStore] Broadcast channel unavailable", error);
+}
 
 // Module-level userId cache — updated by setUserId and also directly by
 // QworshipHome before the React Query resolves. Allows pushToServer to work
@@ -217,7 +234,9 @@ async function getLtBaseUrl(): Promise<string> {
       const data = await res.json();
       ltBaseUrl = data.ltBaseUrl || "http://localhost:3400";
     }
-  } catch {}
+  } catch (error) {
+    console.warn("[LowerThirdStore] Failed to resolve lower-third service URL", error);
+  }
   return ltBaseUrl || "http://localhost:3400";
 }
 
@@ -363,15 +382,13 @@ export const useLowerThirdStore = create<LowerThirdState>((set, get) => {
       if (current.length >= MAX_CUSTOM_TEMPLATES) {
         throw new Error(`Maximum of ${MAX_CUSTOM_TEMPLATES} custom templates reached. Delete one to add another.`);
       }
-      // Optimistic update
+      // Local-first persistence so offline desktop edits are not lost.
       const updated = [...current, template];
       set({ customTemplates: updated });
       persistCustomTemplates(updated);
-      // Persist to server (rollback on failure)
+      // Best-effort sync to server when available.
       await apiSaveTemplate(template).catch((err) => {
-        set({ customTemplates: current });
-        persistCustomTemplates(current);
-        throw err;
+        console.error("[LT Store] addCustomTemplate server error:", err.message);
       });
     },
 
@@ -487,7 +504,7 @@ export const useLowerThirdStore = create<LowerThirdState>((set, get) => {
       );
     },
 
-    projectLyric: (lyrics, sectionTitle, songTitle, forUserId) => {
+    projectLyric: (lyrics, sectionTitle, songTitle, forUserId, pace) => {
       const { lyricTemplateId, enabled } = get();
       const activeData: LowerThirdBindingData = {
         verse: lyrics,
@@ -496,6 +513,9 @@ export const useLowerThirdStore = create<LowerThirdState>((set, get) => {
         churchName: getStoredOrgName(),
         songTitle: songTitle || "",
         type: "lyrics",
+        paceLines: pace?.lines,
+        paceLineIdx: pace?.lineIdx,
+        paceLineProgress: pace?.lineProgress,
       };
       set({ activeData, isVisible: true, selectedTemplateId: lyricTemplateId });
       get().broadcastState();
@@ -579,7 +599,18 @@ export const useLowerThirdStore = create<LowerThirdState>((set, get) => {
       const payload = { activeData, isVisible, selectedTemplateId, enabled };
       try {
         broadcastChannel?.postMessage({ type: "LOWER_THIRD_UPDATE", payload });
-      } catch {}
+      } catch (error) {
+        console.warn("[LowerThirdStore] Failed to broadcast state", error);
+      }
+
+      try {
+        (window as any).api?.live?.sendSync?.({
+          type: "LOWER_THIRD_UPDATE",
+          payload,
+        });
+      } catch (error) {
+        console.warn("[LowerThirdStore] Failed to send desktop lower-third sync", error);
+      }
     },
 
     getRenderUrl: () => {

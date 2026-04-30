@@ -287,7 +287,23 @@ export const SongbookModal: React.FC<SongbookModalProps> = ({
   const handleImportComplete = (songData: any) => {
     setIsImportModalOpen(false);
     onClose(); // Close songbook modal
-    onOpenSongEditor(songData); // Open song editor with imported data
+
+    const songDataForEditor = {
+      id: songData.id,
+      title: songData.title,
+      authors: songData.authors,
+      topics: songData.topics,
+      copyright: songData.copyright,
+      artist: songData.artist,
+      lyrics: songData.lyrics || "",
+      sections: songData.sections,
+      structure: songData.structure || [],
+      verseOrder: Array.isArray(songData.structure)
+        ? songData.structure.join(", ")
+        : songData.verseOrder,
+    };
+
+    onOpenSongEditor(songDataForEditor); // Open song editor with imported data
   };
 
   const sortOptions = [

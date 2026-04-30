@@ -1,5 +1,6 @@
 import { contextBridge, ipcRenderer } from "electron";
 
+
 // Expose protected methods that allow the renderer process to use
 // the ipcRenderer without exposing the entire object
 contextBridge.exposeInMainWorld("api", {
@@ -16,7 +17,52 @@ contextBridge.exposeInMainWorld("api", {
     ipcRenderer.send("open-external-url", url);
   },
 
-  // ── Whisper / Hands-Free Bible IPC ──────────────────────────
+  // ── Speech / Hands-Free Bible IPC ───────────────────────────
+  speech: {
+    sendAudioChunk: (pcm16Buffer: ArrayBuffer) => {
+      ipcRenderer.send("speech:audio-chunk", pcm16Buffer);
+    },
+    startListening: () => {
+      ipcRenderer.send("speech:start-listening");
+    },
+    stopListening: () => {
+      ipcRenderer.send("speech:stop-listening");
+    },
+    getStatus: () => {
+      return ipcRenderer.invoke("speech:get-status");
+    },
+    setAuthToken: (token: string | null) => {
+      return ipcRenderer.invoke("speech:set-auth-token", token);
+    },
+    setProvider: (providerId: string) => {
+      return ipcRenderer.invoke("speech:set-provider", providerId);
+    },
+    getProviders: () => {
+      return ipcRenderer.invoke("speech:get-providers");
+    },
+    onTranscriptPartial: (callback: (payload: any) => void) => {
+      const handler = (_event: any, payload: any) => callback(payload);
+      ipcRenderer.on("speech:transcript-partial", handler);
+      return () =>
+        ipcRenderer.removeListener("speech:transcript-partial", handler);
+    },
+    onTranscriptFinal: (callback: (payload: any) => void) => {
+      const handler = (_event: any, payload: any) => callback(payload);
+      ipcRenderer.on("speech:transcript-final", handler);
+      return () => ipcRenderer.removeListener("speech:transcript-final", handler);
+    },
+    onStatusChange: (callback: (payload: any) => void) => {
+      const handler = (_event: any, payload: any) => callback(payload);
+      ipcRenderer.on("speech:status-change", handler);
+      return () => ipcRenderer.removeListener("speech:status-change", handler);
+    },
+    onModelDownloadProgress: (callback: (payload: any) => void) => {
+      const handler = (_event: any, payload: any) => callback(payload);
+      ipcRenderer.on("speech:model-download-progress", handler);
+      return () =>
+        ipcRenderer.removeListener("speech:model-download-progress", handler);
+    },
+  },
   whisper: {
     /** Send a PCM16 audio chunk to the main process WhisperService */
     sendAudioChunk: (pcm16Buffer: ArrayBuffer) => {
@@ -81,10 +127,51 @@ contextBridge.exposeInMainWorld("api", {
     },
   },
   
+  updates: {
+    getState: () => {
+      return ipcRenderer.invoke("app-updater:get-state");
+    },
+    checkForUpdates: (manual = true) => {
+      return ipcRenderer.invoke("app-updater:check", { manual });
+    },
+    quitAndInstall: () => {
+      return ipcRenderer.invoke("app-updater:quit-and-install");
+    },
+    onStateChange: (callback: (payload: any) => void) => {
+      const handler = (_event: any, payload: any) => callback(payload);
+      ipcRenderer.on("app:update-state", handler);
+      return () => ipcRenderer.removeListener("app:update-state", handler);
+    },
+  },
+
   // ── Live Presentation IPC ─────────────────────────────────
   live: {
     sendSync: (payload: any) => {
       ipcRenderer.send("live:message", payload);
+    },
+    openOutput: (options: {
+      route: string;
+      targetDisplayId: string | null;
+      connectionMethod: "wired" | "ndi" | "both";
+      fullscreen: boolean;
+      ndiSettings?: {
+        resolution: "1920x1080" | "1280x720" | "3840x2160";
+        frameRate: "24" | "30" | "60";
+        bandwidth: "highest" | "balanced" | "lowest";
+        colorFormat: "uyvy422" | "rgba" | "bgra";
+        audioEnabled: boolean;
+        alphaEnabled: boolean;
+        audienceEnabled: boolean;
+        lowerThirdEnabled: boolean;
+        audienceStreamName: string;
+        lowerThirdStreamName: string;
+      };
+      lowerThirdRenderUrl?: string | null;
+    }) => {
+      return ipcRenderer.invoke("live:open-output", options);
+    },
+    closeOutput: () => {
+      return ipcRenderer.invoke("live:close-output");
     },
     onMessage: (callback: (payload: any) => void) => {
       const handler = (_event: any, payload: any) => callback(payload);
@@ -96,6 +183,12 @@ contextBridge.exposeInMainWorld("api", {
       ipcRenderer.on("live:window-closed", handler);
       return () => ipcRenderer.removeListener("live:window-closed", handler);
     }
+  },
+
+  display: {
+    getOutputs: () => {
+      return ipcRenderer.invoke("display:get-outputs");
+    },
   },
   
   // ── Bible SQLite IPC ──────────────────────────────────────

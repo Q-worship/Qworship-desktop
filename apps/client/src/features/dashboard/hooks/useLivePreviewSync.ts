@@ -237,7 +237,7 @@ export function useLivePreviewSync({
             }
           }
           break;
-        case "SLIDE_CHANGE_FROM_LIVE":
+        case "SLIDE_CHANGE_FROM_LIVE": {
           // Slide changed from live screen - update slide counter in preview
           if (!data) break;
           console.log(
@@ -303,8 +303,9 @@ export function useLivePreviewSync({
             setAppliedBackgroundVideo(data.background.video || null);
           }
           break;
-        case "SHOW_TOAST":
-          // Display toast notification from live screen in the Live Console
+        }
+        case "REQUEST_STAGE_STATE":
+      // Display toast notification from live screen in the Live Console
           if (!data) break;
           toast({
             title: data.title || "Notification",

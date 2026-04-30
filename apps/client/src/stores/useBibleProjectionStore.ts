@@ -73,7 +73,7 @@ export const useBibleProjectionStore = create<BibleProjectionState>((set, get) =
         case 'SET_PROJECTING':
           set({ isProjecting: payload.isProjecting, lastUpdated: Date.now() });
           break;
-        case 'SYNC_REQUEST':
+        case 'SYNC_REQUEST': {
           const state = get();
           channel.postMessage({
             type: 'SYNC_RESPONSE',
@@ -85,16 +85,15 @@ export const useBibleProjectionStore = create<BibleProjectionState>((set, get) =
             },
           });
           break;
+        }
         case 'SYNC_RESPONSE':
-          if (payload.currentVerse) {
-            set({
-              currentVerse: payload.currentVerse,
-              formattedReference: payload.formattedReference,
-              bibleVersion: payload.bibleVersion,
-              isProjecting: payload.isProjecting,
-              lastUpdated: Date.now(),
-            });
-          }
+          set({
+            currentVerse: payload.currentVerse,
+            formattedReference: payload.formattedReference,
+            bibleVersion: payload.bibleVersion,
+            isProjecting: payload.isProjecting,
+            lastUpdated: Date.now(),
+          });
           break;
       }
     };

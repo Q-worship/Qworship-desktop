@@ -16,21 +16,33 @@ export const useRawAudioStream = () => {
   const startRecording = useCallback(
     async (onAudioData: (pcmBuffer: Int16Array) => void) => {
       try {
+        if (isRecordingRef.current || streamRef.current || audioContextRef.current || workletNodeRef.current) {
+          console.warn("[useRawAudioStream] Ignoring duplicate startRecording call while an audio pipeline is already active.");
+          return;
+        }
+
         console.log("[useRawAudioStream] Requesting microphone access...");
-        let audioConstraints: any = {
-          channelCount: 1,
-          echoCancellation: true,
-          noiseSuppression: true,
-          autoGainControl: false,
+        const buildAudioConstraints = (deviceId?: string | null) => {
+          const constraints: any = {
+            channelCount: 1,
+            sampleRate: 16000,
+            sampleSize: 16,
+            latency: 0.01,
+            echoCancellation: false,
+            noiseSuppression: true,
+            autoGainControl: false,
+          };
+
+          if (deviceId && deviceId !== "default") {
+            constraints.deviceId = { exact: deviceId };
+          }
+
+          return constraints;
         };
 
+        let selectedDeviceId: string | null = null;
         try {
-          const selectedDeviceId = localStorage.getItem(
-            "qworship-audio-device",
-          );
-          if (selectedDeviceId && selectedDeviceId !== "default") {
-            audioConstraints.deviceId = { exact: selectedDeviceId };
-          }
+          selectedDeviceId = localStorage.getItem("qworship-audio-device");
         } catch (e) {
           console.warn(
             "[useRawAudioStream] Failed to read audio device setting from localStorage",
@@ -38,10 +50,61 @@ export const useRawAudioStream = () => {
           );
         }
 
-        const stream = await navigator.mediaDevices.getUserMedia({
-          audio: audioConstraints,
-        });
+        const requestedDeviceId = selectedDeviceId || "default";
+        console.log(
+          "[useRawAudioStream] Requested microphone device:",
+          requestedDeviceId,
+        );
+        window.dispatchEvent(
+          new CustomEvent("hfb-audio-debug", {
+            detail: {
+              phase: "requested-device",
+              requestedDeviceId,
+            },
+          }),
+        );
+
+        let stream: MediaStream;
+        try {
+          stream = await navigator.mediaDevices.getUserMedia({
+            audio: buildAudioConstraints(selectedDeviceId),
+          });
+        } catch (err) {
+          if (selectedDeviceId && selectedDeviceId !== "default") {
+            console.warn(
+              "[useRawAudioStream] Selected microphone failed, retrying with the system default input.",
+              selectedDeviceId,
+              err,
+            );
+            stream = await navigator.mediaDevices.getUserMedia({
+              audio: buildAudioConstraints(null),
+            });
+          } else {
+            throw err;
+          }
+        }
         streamRef.current = stream;
+
+        const activeTrack = stream.getAudioTracks()[0];
+        if (activeTrack) {
+          const activeTrackDetails = {
+            label: activeTrack.label,
+            enabled: activeTrack.enabled,
+            muted: activeTrack.muted,
+            readyState: activeTrack.readyState,
+            settings: activeTrack.getSettings?.(),
+          };
+          console.log("[useRawAudioStream] Active microphone track:", activeTrackDetails);
+          window.dispatchEvent(
+            new CustomEvent("hfb-audio-debug", {
+              detail: {
+                phase: "active-track",
+                requestedDeviceId,
+                activeTrack: activeTrackDetails,
+              },
+            }),
+          );
+        }
 
         const audioContextOptions: AudioContextOptions = { sampleRate: 16000 };
         const audioContext = new (
@@ -104,7 +167,9 @@ export const useRawAudioStream = () => {
         // AudioWorkletNode runs in a dedicated audio thread, unlike the deprecated
         // ScriptProcessorNode which ran on the main thread and caused native
         // ACCESS_VIOLATION crashes (0xC0000005) in Electron on Windows.
-        await audioContext.audioWorklet.addModule("/pcm-processor.js");
+        const workletModuleUrl = new URL("pcm-processor.js", document.baseURI).toString();
+        console.log("[useRawAudioStream] Loading PCM worklet from:", workletModuleUrl);
+        await audioContext.audioWorklet.addModule(workletModuleUrl);
 
         const workletNode = new AudioWorkletNode(audioContext, "pcm-processor");
         workletNodeRef.current = workletNode;
@@ -126,6 +191,16 @@ export const useRawAudioStream = () => {
               }
               console.log(
                 `[Frontend] Audio chunk #${_feChunkCounter}. PCMPeak: ${feMax}/32768, FloatPeak: ${event.data.maxFloat}`,
+              );
+              window.dispatchEvent(
+                new CustomEvent("hfb-audio-debug", {
+                  detail: {
+                    phase: "pcm-peak",
+                    chunk: _feChunkCounter,
+                    pcmPeak: feMax,
+                    floatPeak: event.data.maxFloat,
+                  },
+                }),
               );
             }
 

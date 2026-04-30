@@ -183,101 +183,100 @@ export const OnScreenBibleEditor: React.FC<OnScreenBibleEditorProps> = ({
 
   const handleVersionChange = async (version: string) => {
     setActiveVersion(version);
-    
-    // If we have content, re-search with new version to get updated Bible text
+
     if (content?.reference && searchInput.trim()) {
       setIsSearching(true);
-      
-      try {
-        const response = await fetch(`/api/bible/search?reference=${encodeURIComponent(searchInput.trim())}&version=${version.toLowerCase()}`);
-        
-        if (response.ok) {
-          const data = await response.json();
-          
-          if (data?.success && data?.passage) {
-            const result = data.passage;
-            
-            // Create bible verses array with new translation
-            const bibleVerses = result.verses.map((v: any) => ({
-              number: v.number,
-              text: v.text
-            }));
-            
-            // Generate updated slides with new translation
-            const parentItemId = content?.id || `bible-${Date.now()}`;
-            const combinedText = bibleVerses.map((v: any) => 
-              includeVerseNumbers ? `${v.number} ${v.text}` : v.text
-            ).join(' ');
-            
-            const slides: any[] = [];
-            if (oneVersePerSlide) {
-              bibleVerses.forEach((verse: any, index: number) => {
-                slides.push({
-                  id: `slide-${parentItemId}-${index + 1}`,
-                  itemId: parentItemId,
-                  type: 'bible',
-                  title: searchInput.trim(),
-                  content: includeVerseNumbers ? `${verse.number} ${verse.text}` : verse.text,
-                  slideNumber: index + 1,
-                  reference: showBibleReference !== 'none' ? searchInput.trim() : '',
-                  version: showBibleVersion !== 'none' ? version : '',
-                  bibleReference: searchInput.trim(),
-                  bibleVersion: version
-                });
-              });
-            } else {
-              slides.push({
-                id: `slide-${parentItemId}-1`,
-                itemId: parentItemId,
-                type: 'bible',
-                title: searchInput.trim(),
-                content: combinedText,
-                slideNumber: 1,
-                reference: showBibleReference !== 'none' ? searchInput.trim() : '',
-                version: showBibleVersion !== 'none' ? version : '',
-                bibleReference: searchInput.trim(),
-                bibleVersion: version
-              });
-            }
 
-            // Create updated content with new version and verses
-            const updatedContent = {
-              id: parentItemId,
-              type: 'bible',
-              reference: searchInput.trim(),
-              version: version,
-              bibleVerses: bibleVerses,
-              title: searchInput.trim(),
-              content: combinedText,
-              referenceDisplay: showBibleReference,
-              versionDisplay: showBibleVersion,
-              oneVersePerSlide,
-              includeVerseNumbers,
-              breakSlidesOnParagraphs,
-              slideAnimation,
-              slides: slides
-            };
-            
-            // Update component state
-            setHasBibleContent(true);
-            
-            // Call parent update with updated content and slides
-            onUpdate(updatedContent);
-            
-            // Show version change success
-            toast({
-              title: "Translation Updated",
-              description: `Changed to ${version} translation`,
-              className: "bg-gradient-to-r from-purple-900/90 to-purple-800/90 border-purple-500/30 text-white"
-            });
-          } else {
-            toast({
-              title: "Translation Unavailable",
-              description: `Could not load the ${version} translation locally or from cloud.`,
-              variant: "destructive"
-            });
+      try {
+        await useBibleRAMCache.getState().ensureVersionLoaded(version.toLowerCase());
+
+        let bibleVerses: any[] = [];
+        let combinedText = '';
+
+        const offlinePassage = await searchOffline(searchInput.trim(), version.toLowerCase() as BibleVersion);
+
+        if (offlinePassage && offlinePassage.verses && offlinePassage.verses.length > 0) {
+          bibleVerses = offlinePassage.verses.map((v) => ({ number: v.number, text: v.text }));
+          combinedText = offlinePassage.verses.map((v) => v.text).join(' ');
+        } else {
+          const response = await fetch(`/api/bible/search?reference=${encodeURIComponent(searchInput.trim())}&version=${version.toLowerCase()}`);
+
+          if (response.ok) {
+            const data = await response.json();
+            if (data?.success && data?.passage?.verses) {
+              bibleVerses = data.passage.verses.map((v: any) => ({ number: v.number, text: v.text }));
+              combinedText = data.passage.verses.map((v: any) => v.text).join(' ');
+            }
           }
         }
+
+        if (!bibleVerses.length) {
+          toast({
+            title: "Translation Unavailable",
+            description: `Could not load the ${version} translation locally or from cloud.`,
+            variant: "destructive"
+          });
+          return;
+        }
+
+        const parentItemId = content?.id || `bible-${Date.now()}`;
+        const slides: any[] = [];
+
+        if (oneVersePerSlide) {
+          bibleVerses.forEach((verse: any, index: number) => {
+            slides.push({
+              id: `slide-${parentItemId}-${index + 1}`,
+              itemId: parentItemId,
+              type: 'bible',
+              title: searchInput.trim(),
+              content: includeVerseNumbers ? `${verse.number} ${verse.text}` : verse.text,
+              slideNumber: index + 1,
+              reference: showBibleReference !== 'none' ? searchInput.trim() : '',
+              version: showBibleVersion !== 'none' ? version : '',
+              bibleReference: searchInput.trim(),
+              bibleVersion: version
+            });
+          });
+        } else {
+          slides.push({
+            id: `slide-${parentItemId}-1`,
+            itemId: parentItemId,
+            type: 'bible',
+            title: searchInput.trim(),
+            content: combinedText,
+            slideNumber: 1,
+            reference: showBibleReference !== 'none' ? searchInput.trim() : '',
+            version: showBibleVersion !== 'none' ? version : '',
+            bibleReference: searchInput.trim(),
+            bibleVersion: version
+          });
+        }
+
+        const updatedContent = {
+          id: parentItemId,
+          type: 'bible',
+          reference: searchInput.trim(),
+          version,
+          bibleVerses,
+          title: searchInput.trim(),
+          content: combinedText,
+          referenceDisplay: showBibleReference,
+          versionDisplay: showBibleVersion,
+          oneVersePerSlide,
+          includeVerseNumbers,
+          breakSlidesOnParagraphs,
+          slideAnimation,
+          slides
+        };
+
+        setHasBibleContent(true);
+        onUpdate(updatedContent);
+
+        toast({
+          title: "Translation Updated",
+          description: `Changed to ${version} translation`,
+          className: "bg-gradient-to-r from-purple-900/90 to-purple-800/90 border-purple-500/30 text-white"
+        });
       } catch (error) {
         console.error('Error changing Bible version:', error);
         toast({

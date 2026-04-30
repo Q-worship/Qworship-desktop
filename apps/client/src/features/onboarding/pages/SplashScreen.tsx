@@ -134,7 +134,7 @@ export const SplashScreen = () => {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   React.useEffect(() => {
     if (isAuthenticated) {
-      setLocation("/project-selection");
+      setLocation("/live-console");
     }
   }, [isAuthenticated, setLocation]);
 
