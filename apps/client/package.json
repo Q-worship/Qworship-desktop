@@ -12,7 +12,7 @@
     "patch:vosk-electron-runtime": "node scripts/patch-vosk-electron-runtime.cjs",
     "stage:tigerconnect-runtime": "node scripts/vendor-tigerconnect-runtime.cjs",
     "stage:qworship-ndi-runtime": "node scripts/vendor-qworship-ndi-runtime.cjs",
-    "rebuild:desktop-native": "electron-rebuild -f -w better-sqlite3,smart-whisper,grandiose,qworship-ndi,vosk",
+    "rebuild:desktop-native": "electron-rebuild -f -w better-sqlite3,smart-whisper,onnxruntime-node,grandiose,qworship-ndi,vosk",
     "build:desktop": "vite build && node scripts/patch-vosk-electron-runtime.cjs && node scripts/vendor-tigerconnect-runtime.cjs && node scripts/vendor-qworship-ndi-runtime.cjs && node scripts/prepare-wincodesign-cache.cjs && electron-builder && node scripts/generate-desktop-update-metadata.cjs",
     "build:bible": "node scripts/build-bible-sqlite.js",
     "generate:desktop-update-metadata": "node scripts/generate-desktop-update-metadata.cjs",
@@ -84,6 +84,7 @@
     "ref-array-di": "^1.2.2",
     "ref-napi": "npm:@tigerconnect/ref-napi@4.0.0-tc8",
     "ref-struct-di": "^1.1.1",
+    "onnxruntime-node": "^1.20.1",
     "smart-whisper": "^0.8.1",
     "tailwind-merge": "^2.2.1",
     "tailwindcss-animate": "^1.0.7",
@@ -133,6 +134,7 @@
       ]
     },
     "asarUnpack": [
+      "node_modules/onnxruntime-node/**",
       "node_modules/smart-whisper/**",
       "node_modules/better-sqlite3/**",
       "node_modules/bindings/**",

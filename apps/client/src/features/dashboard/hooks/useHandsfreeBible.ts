@@ -20,7 +20,9 @@ export type HFBSpeechMode = "online" | "offline";
 const HFB_SPEECH_MODE_STORAGE_KEY = "qworship-hfb-speech-mode";
 const HFB_PROVIDER_ID_BY_MODE: Record<HFBSpeechMode, string> = {
   online: "online-whisper",
-  offline: "offline-vosk",
+  // Switched from offline-vosk to offline-whisper (tiny.en q5_1 + Silero VAD)
+  // for improved Bible book accuracy while maintaining sub-1s latency.
+  offline: "offline-whisper",
 };
 
 const isWindowOpen = (win: Window | null) => {
@@ -326,7 +328,7 @@ export const useHandsfreeBible = ({
     if (isWindowOpen(currentLiveWindow)) {
       currentLiveWindow!.postMessage(
         {
-          type: "BIBLE_VERSE_DISPLAY",
+          type: "PROJECT_BIBLE_VERSE",
           data: {
             book: currentContext.book,
             chapter: currentContext.chapter,
@@ -625,7 +627,7 @@ export const useHandsfreeBible = ({
     if (isWindowOpen(currentLiveWindow)) {
       currentLiveWindow!.postMessage(
         {
-          type: "BIBLE_VERSE_DISPLAY",
+          type: "PROJECT_BIBLE_VERSE",
           data: {
             book,
             chapter,
