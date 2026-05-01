@@ -1,6 +1,9 @@
 import { useState, useCallback, useEffect } from "react";
 import { db } from "../lib/db";
 import { apiClient } from "../lib/api";
+import { useBibleRAMCache } from "@/features/dashboard/hooks/useBibleRAMCache";
+
+const BUNDLED_RAM_CACHE_VERSIONS = ["kjv", "nkjv", "niv", "esv", "amp", "msg"] as const;
 
 export const useBibleSync = () => {
   const [isSyncing, setIsSyncing] = useState(false);
@@ -118,7 +121,23 @@ export const useBibleSync = () => {
     }
 
     setIsSyncing(true);
+    setError(null);
     try {
+      const ramCache = useBibleRAMCache.getState();
+      await ramCache.loadFromDisk();
+
+      const hasBundledOfflineData = BUNDLED_RAM_CACHE_VERSIONS.every((version) => {
+        const sampleChapter = ramCache.getChapter(version, "John", 3);
+        return Array.isArray(sampleChapter) && sampleChapter.length > 0;
+      });
+
+      if (hasBundledOfflineData) {
+        console.warn(
+          "[Offline Bible] Bundled RAM cache is already available locally; skipping backend hydration and continuing in offline mode.",
+        );
+        return;
+      }
+
       // We sequentially download to avoid choking network/memory on initially massive payload
       await checkAndHydrateTargetVersion("kjv", false);
       await checkAndHydrateTargetVersion("nkjv", false);

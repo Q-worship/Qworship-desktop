@@ -251,8 +251,6 @@ export const useLocalWhisper = ({
     }
 
     const command = parseVoiceCommand(trimmed, currentVersionRef.current);
-    console.log(`[HFB-VERSION-DIAG] raw="${trimmed}" | commandType="${command.commandType}" | requestedVersion="${(command as any).requestedVersion ?? ''}"`);  // TODO: remove
-
     switch (command.commandType) {
       case 'lookup': {
         if (!command.parsedReference) {

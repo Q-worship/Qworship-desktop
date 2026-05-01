@@ -100,6 +100,7 @@
     "appId": "com.qworship.liveconsole",
     "productName": "Qworship Live Console",
     "executableName": "Qworship Live Console",
+    "artifactName": "${productName} Setup ${version}.${ext}",
     "copyright": "Copyright © 2026 Qworship. All rights reserved.",
     "directories": {
       "output": "release-hfb-mode-fix-v2"
@@ -116,9 +117,16 @@
     },
     "nsis": {
       "oneClick": false,
-      "allowToChangeInstallationDirectory": true,
+      "perMachine": false,
+      "allowElevation": true,
+      "differentialPackage": false,
       "artifactName": "Qworship Live Console Setup ${version}.${ext}",
-      "script": "build/installer.nsi"
+      "installerIcon": "build/icon.ico",
+      "uninstallerIcon": "build/icon.ico",
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Qworship Live Console",
+      "deleteAppDataOnUninstall": false
     },
     "publish": [
       {
@@ -126,6 +134,9 @@
         "url": "https://pub-3fc3537dae154068a167de3a3c875c3e.r2.dev/live-console-updates/win/staged"
       }
     ],
+    "extraMetadata": {
+      "name": "qworship-live-console"
+    },
     "npmRebuild": false,
     "protocols": {
       "name": "qworship-protocol",
@@ -188,7 +199,13 @@
       "node_modules/ref-struct-di/**/*",
       "node_modules/debug/**/*",
       "node_modules/ms/**/*",
-      "node_modules/node-gyp-build/**/*"
+      "node_modules/node-gyp-build/**/*",
+      "node_modules/qworship-ndi/**/*",
+      "node_modules/grandiose/**/*",
+      "node_modules/better-sqlite3/**/*",
+      "node_modules/vosk/**/*",
+      "node_modules/onnxruntime-node/**/*",
+      "node_modules/smart-whisper/**/*"
     ]
   },
   "devDependencies": {

@@ -1183,8 +1183,6 @@ export function parseVoiceCommand(
   const original = text.trim();
   const normalized = normalizeTranscript(convertWordNumbers(original)).trim();
   const coreText = stripCommandPreamble(normalized) || normalized;
-  console.log(`[HFB-DIAG] raw="${original}" | normalized="${normalized}" | core="${coreText}"`);
-
   const lower = normalized.toLowerCase();
   const coreLower = coreText.toLowerCase();
 

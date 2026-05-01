@@ -490,7 +490,7 @@ export const useLivePresentation = ({
                 "";
 
               const payload = {
-                type: "BIBLE_VERSE_DISPLAY",
+                type: "PROJECT_BIBLE_VERSE",
                 data: {
                   book: bibleStore.currentVerse.book,
                   chapter: bibleStore.currentVerse.chapter,

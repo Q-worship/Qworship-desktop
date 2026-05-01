@@ -77,7 +77,12 @@ const AuthGuard = ({ children }: { children: React.ReactNode }) => {
   } = useDesktopUpdateState();
 
   React.useEffect(() => {
-    if (!isAuthenticated || startupStartedAtRef.current !== null) return;
+    if (!isAuthenticated) {
+      startupStartedAtRef.current = null;
+      return;
+    }
+
+    if (startupStartedAtRef.current !== null) return;
 
     let cancelled = false;
     startupStartedAtRef.current = Date.now();
@@ -131,6 +136,7 @@ const AuthGuard = ({ children }: { children: React.ReactNode }) => {
 
     return () => {
       cancelled = true;
+      startupStartedAtRef.current = null;
     };
   }, [isAuthenticated]);
 
