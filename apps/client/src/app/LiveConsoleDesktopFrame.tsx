@@ -1947,7 +1947,22 @@ export function LiveConsoleDesktopFrame({
     setHfbState("engaged");
     setDetectedReference(reference);
     setDetectedVerseText(verseText);
-  }, [active.verse, active.version, setBibleReference, setHfbState]);
+
+    // Directly project to the live screens (Audience + Lower Third) and
+    // preview panels without waiting for the useEffect chain. This ensures
+    // voice commands (next verse, previous verse, verse N, chapter N) project
+    // immediately regardless of the autoProjectDetectedVerse setting or
+    // React render batching timing.
+    if (verseText) {
+      projectScripture({
+        verseText,
+        reference,
+        version: nextVersion,
+        detectionTitle: reference,
+        userId: authenticatedUserId,
+      });
+    }
+  }, [active.verse, active.version, authenticatedUserId, projectScripture, setBibleReference, setHfbState]);
 
   const executeVoiceNavigation = useCallback(async (
     commandType: string,
@@ -1979,6 +1994,9 @@ export function LiveConsoleDesktopFrame({
 
     if (!result) return;
 
+    // Use lowercase version key so applyBibleMatch can find the text via
+    // verse[nextVersion.toLowerCase()]. result.version is uppercase (e.g. "KJV")
+    // so we must lowercase it here.
     applyBibleMatch({
       success: true,
       commandType: "lookup",
@@ -1987,8 +2005,8 @@ export function LiveConsoleDesktopFrame({
         chapter: result.chapter,
         verses: [{
           verse: result.verse.number,
-          [result.version]: result.verse.text,
-          kjv: result.version === "kjv" ? result.verse.text : undefined,
+          [result.version.toLowerCase()]: result.verse.text,
+          kjv: result.verse.text, // always populate kjv as final fallback
         }],
       },
     });
@@ -2045,8 +2063,35 @@ export function LiveConsoleDesktopFrame({
       setMicrophoneStatus("Listening...");
     },
     onVersionChange: (version) => {
-      setBibleReference({ version: version.toUpperCase() });
-      setMicrophoneStatus(`Version changed to ${version.toUpperCase()}`);
+      const newVersion = version.toUpperCase();
+      setBibleReference({ version: newVersion });
+      setMicrophoneStatus(`Version changed to ${newVersion}`);
+
+      // Re-fetch the current verse in the new version and project it
+      // immediately to the live screens and preview panels.
+      // We must pass the new version explicitly because active.version
+      // won't have updated yet (React state is async).
+      void (async () => {
+        const result = await resolveSingleVerseReference({
+          book: active.book,
+          chapter: active.chapter,
+          verse: active.verse ?? 1,
+          version: newVersion,
+        });
+        if (!result) return;
+        const verseText = result.verse.text;
+        const reference = shortRef(result.book, result.chapter, result.verse.number ?? (active.verse ?? 1));
+        setDetectedReference(reference);
+        setDetectedVerseText(verseText);
+        setHfbState("engaged");
+        projectScripture({
+          verseText,
+          reference,
+          version: newVersion,
+          detectionTitle: reference,
+          userId: authenticatedUserId,
+        });
+      })();
     },
     onNavigation: (commandType, direction, targetVerse, offset) => {
       void executeVoiceNavigation(commandType, direction, targetVerse, offset);
@@ -2490,11 +2535,78 @@ export function LiveConsoleDesktopFrame({
                 state={liveHfbState}
                 active={active}
                 onSelectVerse={(verse) => {
+                  // Update the navigation reference so the middle panel highlights
+                  // the selected verse immediately.
                   setBibleReference({ verse });
                   setQuery(searchInput(active.book, active.chapter, verse));
+                  // Ensure HFB state is engaged so the projection effect fires.
+                  setHfbState("engaged");
+                  // Directly project to the live screens using the already-loaded
+                  // chapter verses — no async fetch, no stale closure, no effect
+                  // timing issues. This mirrors exactly what the on-screen-bible
+                  // mode does when a verse is clicked.
+                  const verseText = currentChapterVerses[verse - 1]?.text ?? "";
+                  const reference = shortRef(active.book, active.chapter, verse);
+                  if (verseText) {
+                    // Immediate projection from cached chapter data.
+                    setDetectedReference(reference);
+                    setDetectedVerseText(verseText);
+                    projectScripture({
+                      verseText,
+                      reference,
+                      version: (active.version || "KJV").toUpperCase(),
+                      detectionTitle: reference,
+                      userId: authenticatedUserId,
+                    });
+                  } else {
+                    // Fallback: fetch the verse if not in cache (e.g. first load).
+                    void (async () => {
+                      const result = await resolveSingleVerseReference({
+                        book: active.book,
+                        chapter: active.chapter,
+                        verse,
+                        version: active.version,
+                      });
+                      if (!result) return;
+                      const fetchedText = result.verse.text;
+                      const fetchedRef = shortRef(result.book, result.chapter, result.verse.number ?? verse);
+                      setDetectedReference(fetchedRef);
+                      setDetectedVerseText(fetchedText);
+                      projectScripture({
+                        verseText: fetchedText,
+                        reference: fetchedRef,
+                        version: result.version.toUpperCase(),
+                        detectionTitle: fetchedRef,
+                        userId: authenticatedUserId,
+                      });
+                    })();
+                  }
                 }}
                 onSelectVersion={(version) => {
-                  setBibleReference({ version });
+                  const newVersion = version.toUpperCase();
+                  setBibleReference({ version: newVersion });
+                  // Re-fetch current verse in new version and project immediately.
+                  void (async () => {
+                    const result = await resolveSingleVerseReference({
+                      book: active.book,
+                      chapter: active.chapter,
+                      verse: active.verse ?? 1,
+                      version: newVersion,
+                    });
+                    if (!result) return;
+                    const verseText = result.verse.text;
+                    const reference = shortRef(result.book, result.chapter, result.verse.number ?? (active.verse ?? 1));
+                    setDetectedReference(reference);
+                    setDetectedVerseText(verseText);
+                    setHfbState("engaged");
+                    projectScripture({
+                      verseText,
+                      reference,
+                      version: newVersion,
+                      detectionTitle: reference,
+                      userId: authenticatedUserId,
+                    });
+                  })();
                 }}
               />
             ) : primaryMode === "on-screen-bible" ? (
@@ -2506,7 +2618,28 @@ export function LiveConsoleDesktopFrame({
                   setQuery(searchInput(active.book, active.chapter, verse));
                 }}
                 onSelectVersion={(version) => {
-                  setBibleReference({ version });
+                  const newVersion = version.toUpperCase();
+                  setBibleReference({ version: newVersion });
+                  // Re-fetch current verse in new version and project immediately.
+                  void (async () => {
+                    const result = await resolveSingleVerseReference({
+                      book: active.book,
+                      chapter: active.chapter,
+                      verse: active.verse ?? 1,
+                      version: newVersion,
+                    });
+                    if (!result) return;
+                    const verseText = result.verse.text;
+                    const reference = shortRef(result.book, result.chapter, result.verse.number ?? (active.verse ?? 1));
+                    setBibleReference({ verse: result.verse.number ?? (active.verse ?? 1) });
+                    projectScripture({
+                      verseText,
+                      reference,
+                      version: newVersion,
+                      detectionTitle: reference,
+                      userId: authenticatedUserId,
+                    });
+                  })();
                 }}
               />
             ) : (

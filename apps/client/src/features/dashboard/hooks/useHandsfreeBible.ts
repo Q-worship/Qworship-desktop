@@ -12,6 +12,7 @@ import { useLocalWhisper } from "@/hooks/useLocalWhisper";
 import { useRawAudioStream } from "@/hooks/useRawAudioStream";
 import { useToast } from "@/hooks/use-toast";
 import { useHFBStore } from "./useHFBStore";
+import { useLiveConsoleStore } from "./useLiveConsoleStore";
 import { ALL_BIBLE_VERSION_KEYS_LCC } from "../data/bibleBooks";
 import { fetchMultiVersionVerseRange } from "@/lib/sharedBibleEngine";
 
@@ -640,6 +641,19 @@ export const useHandsfreeBible = ({
         "*",
       );
     }
+
+    // Update the Live Console preview panels directly so the Audience preview
+    // and Lower-Third preview refresh immediately without waiting for the
+    // LIVE_STATE_UPDATE round-trip from the live window (which only works when
+    // window.opener is the console, not always the case in Electron).
+    useLiveConsoleStore.getState().setPreviewBibleProjection({
+      reference: referenceLabel,
+      text,
+      version: effectiveVersion,
+    });
+    useLiveConsoleStore.getState().setPreviewSongProjection(null);
+    useLiveConsoleStore.getState().setPreviewProjectionType('bible');
+    useLiveConsoleStore.getState().setActiveMode('bible');
 
     void hydrateAdditionalVerseVersions({
       book,

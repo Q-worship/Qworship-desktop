@@ -251,6 +251,7 @@ export const useLocalWhisper = ({
     }
 
     const command = parseVoiceCommand(trimmed, currentVersionRef.current);
+    console.log(`[HFB-VERSION-DIAG] raw="${trimmed}" | commandType="${command.commandType}" | requestedVersion="${(command as any).requestedVersion ?? ''}"`);  // TODO: remove
 
     switch (command.commandType) {
       case 'lookup': {
@@ -340,18 +341,6 @@ export const useLocalWhisper = ({
     cleanupRef.current.forEach((unsub) => unsub());
     cleanupRef.current = [];
 
-    let resolveReady: (() => void) | null = null;
-    const readyPromise = new Promise<void>((resolve) => {
-      resolveReady = resolve;
-    });
-
-    const settleReady = () => {
-      if (resolveReady) {
-        resolveReady();
-        resolveReady = null;
-      }
-    };
-
     const unsubPartial = speechAPI.onTranscriptPartial((payload) => {
       callbacks.current.onPartialTranscript?.(payload.text);
     });
@@ -365,9 +354,6 @@ export const useLocalWhisper = ({
       console.log('[useLocalWhisper] Speech status:', payload.status, payload.message, payload.provider?.id);
       const ready = payload.status === 'ready' || payload.status === 'processing';
       setIsConnected(ready);
-      if (ready || payload.status === 'error') {
-        settleReady();
-      }
     });
 
     cleanupRef.current = [unsubPartial, unsubFinal, unsubStatus];
@@ -376,19 +362,13 @@ export const useLocalWhisper = ({
       const status = await speechAPI.getStatus();
       if (status.status === 'ready' || status.status === 'processing') {
         setIsConnected(true);
-        settleReady();
       }
     } catch (error) {
       console.warn('[useLocalWhisper] Failed to read speech status before connect', error);
     }
 
     speechAPI.startListening();
-    await Promise.race([
-      readyPromise,
-      new Promise<void>((resolve) => {
-        window.setTimeout(resolve, 2200);
-      }),
-    ]);
+    setIsConnected(true);
   }, [processTranscript]);
 
   const disconnect = useCallback(() => {

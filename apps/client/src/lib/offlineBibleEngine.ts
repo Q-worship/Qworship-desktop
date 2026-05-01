@@ -194,56 +194,20 @@ const BOOK_ALIASES: Record<string, string> = {
   mic: "Micah",
   nahum: "Nahum",
   nah: "Nahum",
-  naham: "Nahum",
-  nahem: "Nahum",
-  nayhum: "Nahum",
-  nayum: "Nahum",
-  nahom: "Nahum",
-  nahoum: "Nahum",
   habakkuk: "Habakkuk",
   hab: "Habakkuk",
   habbakkuk: "Habakkuk",
   habbakuk: "Habakkuk",
-  habacuc: "Habakkuk",
-  habakuk: "Habakkuk",
-  habakuc: "Habakkuk",
-  habakkuc: "Habakkuk",
-  habacuk: "Habakkuk",
-  habacucc: "Habakkuk",
-  habakukk: "Habakkuk",
-  habakook: "Habakkuk",
   zephaniah: "Zephaniah",
   zeph: "Zephaniah",
-  zafaniah: "Zephaniah",
-  zephania: "Zephaniah",
-  zefaniah: "Zephaniah",
-  zefania: "Zephaniah",
-  zepania: "Zephaniah",
-  zepaniah: "Zephaniah",
   haggai: "Haggai",
   hag: "Haggai",
   zechariah: "Zechariah",
   zech: "Zechariah",
   zachariah: "Zechariah",
-  zacharia: "Zechariah",
-  zecharia: "Zechariah",
-  zakaria: "Zechariah",
-  zakariah: "Zechariah",
-  zacharias: "Zechariah",
-  zecharias: "Zechariah",
-  zecharya: "Zechariah",
-  zacharya: "Zechariah",
   malachi: "Malachi",
   malachia: "Malachi",
   mal: "Malachi",
-  malaki: "Malachi",
-  malachai: "Malachi",
-  malaky: "Malachi",
-  malaci: "Malachi",
-  malakai: "Malachi",
-  malakhi: "Malachi",
-  malache: "Malachi",
-  malachee: "Malachi",
   matthew: "Matthew",
   mathew: "Matthew",
   matt: "Matthew",
@@ -290,13 +254,6 @@ const BOOK_ALIASES: Record<string, string> = {
   "second corintian": "2 Corinthians",
   galatians: "Galatians",
   gal: "Galatians",
-  galations: "Galatians",
-  galacians: "Galatians",
-  galasians: "Galatians",
-  galatian: "Galatians",
-  galatiens: "Galatians",
-  galateons: "Galatians",
-  galashians: "Galatians",
   ephesians: "Ephesians",
   eph: "Ephesians",
   philippians: "Philippians",
@@ -309,16 +266,6 @@ const BOOK_ALIASES: Record<string, string> = {
   filippians: "Philippians",
   filipianss: "Philippians",
   phil: "Philippians",
-  philippions: "Philippians",
-  philippins: "Philippians",
-  filipianos: "Philippians",
-  filipinos: "Philippians",
-  philippinos: "Philippians",
-  phillipions: "Philippians",
-  phillipins: "Philippians",
-  filipins: "Philippians",
-  filipianes: "Philippians",
-  philippianes: "Philippians",
   colossians: "Colossians",
   colosians: "Colossians",
   collossians: "Colossians",
@@ -701,21 +648,39 @@ const VERSION_MAP: Record<string, BibleVersion> = {
   kjv: "kjv",
   "king james": "kjv",
   "king james version": "kjv",
+  "king james bible": "kjv",
+  // Vosk mishearings of "KJV"
+  "k j v": "kjv",
   nkjv: "nkjv",
   "new king james": "nkjv",
   "new king james version": "nkjv",
+  "new king james bible": "nkjv",
+  // Vosk mishearings of "NKJV" — it often drops the N or hears "in cave"
+  "in king james": "nkjv",
+  "and king james": "nkjv",
   niv: "niv",
   "new international": "niv",
   "new international version": "niv",
+  "new international bible": "niv",
+  // Vosk mishearings of "NIV"
+  "n i v": "niv",
   esv: "esv",
   "english standard": "esv",
   "english standard version": "esv",
+  "english standard bible": "esv",
+  // Vosk mishearings of "ESV"
+  "e s v": "esv",
   amp: "amp",
   amplified: "amp",
   "amplified bible": "amp",
+  "amplified version": "amp",
+  // Vosk mishearings of "AMP" — it often hears "amp" correctly
+  "the amplified": "amp",
   msg: "msg",
   message: "msg",
   "the message": "msg",
+  "message bible": "msg",
+  "message version": "msg",
   gn: "gn",
   gnt: "gn",
   "good news": "gn",
@@ -738,7 +703,7 @@ const NAV_NEXT_CH =
 const NAV_PREV_CH =
   /^(previous chapter|prev chapter|chapter back|last chapter|prior chapter)$/i;
 const VERSION_SWITCH =
-  /(?:(?:show me|switch to|use|change to|read in|give me|put it in)\s+)?(?:the\s+)?(kjv|nkjv|niv|esv|amp|msg|gn|gnt|amplified|king james|king james version|new king james|new king james version|english standard|english standard version|new international|new international version|good news|good news bible|the message|message)\s*(version|translation|bible)?$/i;
+  /(?:(?:show me|switch to|use|change to|read in|give me|put it in)\s+)?(?:the\s+)?(kjv|nkjv|niv|esv|amp|msg|gn|gnt|amplified|king james|king james version|new king james|new king james version|english standard|english standard version|new international|new international version|good news|good news bible|the message|message)\s*(version|translation|bible)?(?:\s+\w+){0,3}$/i;
 const JUMP_TO_VERSE =
   /^(?:(?:take|bring|move|jump|go|proceed|show|open|let(?:'|â€™)s go|lets go)\s+(?:me|us)?\s*(?:to\s+)?)?(?:the\s+)?(?:verse\s+)?(\d+)$/i;
 const EXPLICIT_JUMP_TO_VERSE =
@@ -811,18 +776,69 @@ const WORD_NUMS: Record<string, number> = {
 const NUMBER_CONNECTOR_WORDS = new Set(["and"]);
 
 function convertWordNumbers(text: string): string {
-  // Match single words only â€” greedy two-word matching swallows "five is" as one token.
-  // Keep the conversion intentionally lightweight and let the structured parser rebuild
-  // multi-token number phrases such as "twenty three" or "one hundred nineteen" safely.
-  return text
+  // Step 0: context-aware phonetic number recovery.
+  //
+  // Vosk frequently mishears number words as other English words, especially
+  // when those words appear in a numeric position (after "chapter" or "verse").
+  // We apply replacements ONLY in that context so that actual Bible book names
+  // (e.g. "Ezra chapter 3") are never corrupted.
+  //
+  // The table maps each Vosk mishearing to its correct digit. "Eight" is the
+  // most problematic — Vosk transcribes it as "ezra", "english", "ate", "a",
+  // "hey", "h" etc. depending on the audio quality and accent.
+  //
+  // Format: [mishearing, digit] — applied after "chapter" or "verse" keyword.
+  const PHONETIC_NUMBER_RECOVERY: [RegExp, string][] = [
+    // "eight" mishearings
+    [/\b(chapter|verse)(\s+the)?\s+ezra\b/gi,   (_m, kw, th) => `${kw}${th ?? ""} 8`],
+    [/\b(chapter|verse)(\s+the)?\s+english\b/gi, (_m, kw, th) => `${kw}${th ?? ""} 8`],
+    [/\b(chapter|verse)(\s+the)?\s+ate\b/gi,    (_m, kw, th) => `${kw}${th ?? ""} 8`],
+    [/\b(chapter|verse)(\s+the)?\s+hey\b/gi,    (_m, kw, th) => `${kw}${th ?? ""} 8`],
+    // Also handle when the mishearing appears in chapter position before "verse"
+    [/\bezra\s+verse\b/gi,    "8 verse"],
+    [/\benglish\s+verse\b/gi, "8 verse"],
+    [/\bate\s+verse\b/gi,     "8 verse"],
+  ];
+  let result = text;
+  for (const [pattern, replacement] of PHONETIC_NUMBER_RECOVERY) {
+    result = result.replace(pattern, replacement as any);
+  }
+
+  // Step 1: normalise ordinal suffixes so they become plain number words.
+  result = result
     .replace(/\b1st\b/gi, "first")
     .replace(/\b2nd\b/gi, "second")
-    .replace(/\b3rd\b/gi, "third")
-    .replace(/\b([a-z]+)\b/gi, (match) => {
-      const lower = match.toLowerCase();
-      if (WORD_NUMS[lower] !== undefined) return String(WORD_NUMS[lower]);
-      return match;
-    });
+    .replace(/\b3rd\b/gi, "third");
+
+  // Step 2: collapse compound spoken numbers BEFORE single-word replacement so
+  // that phrases like "twenty one" → "21", "thirty five" → "35", etc. are
+  // handled correctly.  We match the pattern:
+  //   (twenty|thirty|forty|fifty|sixty|seventy|eighty|ninety) (one|two|...|nine)
+  // with an optional "and" connector ("twenty and one" is rare but valid speech).
+  //
+  // NOTE: Vosk commonly mishears "two" as "to" (the preposition), so we include
+  // "to" in the ONES_WORDS list and map it to 2 in the replacement.
+  const TENS_WORDS = "twenty|thirty|forty|fifty|sixty|seventy|eighty|ninety";
+  const ONES_WORDS = "one|two|to|three|four|five|six|seven|eight|nine";
+  const ONES_MAP: Record<string, number> = { one: 1, two: 2, to: 2, three: 3, four: 4, five: 5, six: 6, seven: 7, eight: 8, nine: 9 };
+  const compoundRe = new RegExp(
+    `\\b(${TENS_WORDS})(?:\\s+and)?\\s+(${ONES_WORDS})\\b`,
+    "gi",
+  );
+  result = result.replace(compoundRe, (_match, tens, ones) => {
+    const t = WORD_NUMS[tens.toLowerCase()] ?? 0;
+    const o = ONES_MAP[ones.toLowerCase()] ?? WORD_NUMS[ones.toLowerCase()] ?? 0;
+    return String(t + o);
+  });
+
+  // Step 3: replace remaining single number words with digits.
+  result = result.replace(/\b([a-z]+)\b/gi, (match) => {
+    const lower = match.toLowerCase();
+    if (WORD_NUMS[lower] !== undefined) return String(WORD_NUMS[lower]);
+    return match;
+  });
+
+  return result;
 }
 
 function isNumericToken(token: string): boolean {
@@ -938,7 +954,34 @@ function splitRangeFragment(fragment: string): { startFragment: string; endFragm
 
 function normalizeCueNumericSlotFragment(fragment: string): string {
   const normalized = fragment.trim().toLowerCase();
+
+  // Handle single-word homophones of "two".
   if (/^(?:to|too)$/.test(normalized)) return "two";
+
+  // Generic recovery: if the fragment contains a mix of non-numeric words and
+  // digits/number-words, strip the non-numeric prefix words.
+  //
+  // This handles Vosk mishearing any number word as an arbitrary English word
+  // (e.g. "eight" → "english", "ezra", "ate", "hey", etc.). The digit that
+  // follows is still correctly transcribed, so we just discard the garbage word
+  // and keep the digit.
+  //
+  // Example: "english 6" → "6", "ezra 6" → "6", "ate 6" → "6"
+  // Safe: "twenty six" stays as-is (both tokens are number words).
+  // Safe: "6" stays as-is (already a digit).
+  const tokens = normalized.split(/\s+/).filter(Boolean);
+  if (tokens.length >= 2) {
+    // Check if the fragment has at least one digit/number-word token.
+    const hasNumericToken = tokens.some((t) => /^\d+$/.test(t) || WORD_NUMS[t] !== undefined);
+    if (hasNumericToken) {
+      // Strip leading tokens that are neither digits nor known number words.
+      const cleaned = tokens.filter((t) => /^\d+$/.test(t) || WORD_NUMS[t] !== undefined || NUMBER_CONNECTOR_WORDS.has(t));
+      if (cleaned.length > 0 && cleaned.length < tokens.length) {
+        return cleaned.join(" ");
+      }
+    }
+  }
+
   return fragment;
 }
 
@@ -1140,21 +1183,23 @@ export function parseVoiceCommand(
   const original = text.trim();
   const normalized = normalizeTranscript(convertWordNumbers(original)).trim();
   const coreText = stripCommandPreamble(normalized) || normalized;
+  console.log(`[HFB-DIAG] raw="${original}" | normalized="${normalized}" | core="${coreText}"`);
+
   const lower = normalized.toLowerCase();
   const coreLower = coreText.toLowerCase();
 
   // Standalone version-switch commands should be handled before the generic
   // transcript-language rejection gate so short phrases such as "show me the amplified bible"
   // are not discarded too early.
-  if (/\bamplified bible\b/i.test(coreLower)) {
-    return {
-      originalText: original,
-      parsedReference: null,
-      commandType: "version_change",
-      requestedVersion: "amp",
-      confidence: 1,
-    };
-  }
+  //
+  // Strategy: try multiple matching approaches in order of specificity.
+  // 1. Exact match of the full coreLower against VERSION_MAP.
+  // 2. VERSION_SWITCH regex (allows optional trailing noise words).
+  // 3. Broad keyword scan: look for any version keyword anywhere in the
+  //    transcript (handles Vosk noise like "show me the amplified eighty").
+  //    Only fire this if the phrase contains a version-switch intent word
+  //    ("show", "switch", "use", "change", "give", "read") or is short
+  //    (≤ 6 words) and contains no book/chapter/verse cues.
 
   const earlyDirectVersion = resolveVersion(coreLower);
   if (earlyDirectVersion) {
@@ -1181,16 +1226,36 @@ export function parseVoiceCommand(
     }
   }
 
-  if (!isLikelyEnglishBibleTranscript(normalized)) {
-    return {
-      originalText: original,
-      parsedReference: null,
-      commandType: "lookup",
-      confidence: 0,
-    };
+  // Broad version keyword scan: handles Vosk noise artifacts after the version
+  // name (e.g. "show me the amplified eighty" → amp, "the message bible please" → msg).
+  // Only fires when the phrase has a version-switch intent word OR is short (≤ 6 words)
+  // AND has no book/chapter/verse cues (to avoid false positives on scripture references).
+  {
+    const hasVersionIntent = /\b(show|switch|use|change|give|read|put)\b/i.test(coreLower);
+    const wordCount = coreLower.split(/\s+/).filter(Boolean).length;
+    const hasScriptureCue = /\b(chapter|verse|psalm|psalms)\b/i.test(coreLower);
+    if ((hasVersionIntent || wordCount <= 6) && !hasScriptureCue) {
+      // Try all multi-word version phrases longest-first to avoid partial matches.
+      const versionPhrases = Object.keys(VERSION_MAP).sort((a, b) => b.length - a.length);
+      for (const phrase of versionPhrases) {
+        const escaped = phrase.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+        if (new RegExp(`\\b${escaped}\\b`, "i").test(coreLower)) {
+          const ver = VERSION_MAP[phrase];
+          return {
+            originalText: original,
+            parsedReference: null,
+            commandType: "version_change",
+            requestedVersion: ver,
+            confidence: 0.95,
+          };
+        }
+      }
+    }
   }
 
-  // Navigation
+  // Navigation commands are checked BEFORE the English-transcript gate because
+  // they are short phrases (e.g. "verse 21", "next verse") that would otherwise
+  // fail the vocabulary-density check and be silently dropped.
   if (NAV_NEXT.test(lower))
     return {
       originalText: original,
@@ -1234,6 +1299,15 @@ export function parseVoiceCommand(
       targetVerse: parseInt(jumpMatch[1]),
       confidence: 1,
     };
+
+  if (!isLikelyEnglishBibleTranscript(normalized)) {
+    return {
+      originalText: original,
+      parsedReference: null,
+      commandType: "lookup",
+      confidence: 0,
+    };
+  }
 
   const structuredLookup = parseStructuredLookupByCue(coreText, original, defaultVersion);
   if (structuredLookup) {
