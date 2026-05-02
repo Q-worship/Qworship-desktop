@@ -108,7 +108,9 @@ type NDISenderState = {
 
 const ndiBridge: NDINativeModule | null = (() => {
   try {
-    return require("qworship-ndi") as NDINativeModule;
+    const bridge = require("qworship-ndi") as NDINativeModule;
+    console.log("[NDI] Native bridge loaded successfully");
+    return bridge;
   } catch (error) {
     console.warn("[NDI] Native bridge unavailable", error);
     return null;
