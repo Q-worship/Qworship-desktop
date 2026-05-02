@@ -298,6 +298,12 @@ const BOOK_ALIASES: Record<string, string> = {
   heb: "Hebrews",
   james: "James",
   jas: "James",
+  // James — Whisper phonetic aliases (Category D)
+  jame: "James",
+  jaymes: "James",
+  jaimes: "James",
+  jams: "James",
+  jame: "James",
   "1 peter": "1 Peter",
   "1pet": "1 Peter",
   "1pe": "1 Peter",
@@ -317,7 +323,65 @@ const BOOK_ALIASES: Record<string, string> = {
   revelation: "Revelation",
   rev: "Revelation",
 
-  // â”€â”€ STT phonetic aliases (common Whisper misheard variants) â”€â”€
+  // ─── STT phonetic aliases (common Whisper misheard variants) ───
+  // Category C: Whole-book failures — Galatians, Philippians, Colossians,
+  //              1/2 Thessalonians, Philemon
+  // Galatians — Whisper commonly hears: galations, galashans, galashions, galatians (correct), galations
+  galations: "Galatians",
+  galashans: "Galatians",
+  galashions: "Galatians",
+  galations: "Galatians",
+  galashens: "Galatians",
+  galashins: "Galatians",
+  galacians: "Galatians",
+  galaceans: "Galatians",
+  galacians: "Galatians",
+  galatian: "Galatians",
+  // Philippians — Whisper may hear: philippine, philippines, filipinos, philippine chapter
+  philippine: "Philippians",
+  philippines: "Philippians",
+  filipinos: "Philippians",
+  filipinos: "Philippians",
+  filipinas: "Philippians",
+  philipines: "Philippians",
+  phillipines: "Philippians",
+  phillippines: "Philippians",
+  // Colossians — Whisper may hear: colossions, colosions, colossions, colosians (already covered), colossions
+  colossions: "Colossians",
+  colosions: "Colossians",
+  colosseons: "Colossians",
+  colosseons: "Colossians",
+  colosseans: "Colossians",
+  colossean: "Colossians",
+  colossian: "Colossians",
+  // 1 Thessalonians — Whisper may hear: thessalonions, thessolonians, thessalonica, thessalonions
+  "1 thessalonions": "1 Thessalonians",
+  "1 thessolonians": "1 Thessalonians",
+  "1 thessolonian": "1 Thessalonians",
+  "1 thessalonions": "1 Thessalonians",
+  "1 thessalonica": "1 Thessalonians",
+  "first thessalonions": "1 Thessalonians",
+  "first thessolonians": "1 Thessalonians",
+  "first thessalonica": "1 Thessalonians",
+  "1 thessalonions": "1 Thessalonians",
+  "1 thess": "1 Thessalonians",
+  // 2 Thessalonians
+  "2 thessalonions": "2 Thessalonians",
+  "2 thessolonians": "2 Thessalonians",
+  "2 thessolonian": "2 Thessalonians",
+  "2 thessalonica": "2 Thessalonians",
+  "second thessalonions": "2 Thessalonians",
+  "second thessolonians": "2 Thessalonians",
+  "second thessalonica": "2 Thessalonians",
+  "2 thess": "2 Thessalonians",
+  // Philemon — Whisper may hear: phillemon, philamen, fileman, philemon (correct)
+  phillemon: "Philemon",
+  philamen: "Philemon",
+  fileman: "Philemon",
+  philamon: "Philemon",
+  philamon: "Philemon",
+  phylemon: "Philemon",
+  phylamon: "Philemon",
   look: "Luke",
   luck: "Luke",
   luc: "Luke",
@@ -789,7 +853,7 @@ function convertWordNumbers(text: string): string {
   //
   // Format: [mishearing, digit] — applied after "chapter" or "verse" keyword.
   const PHONETIC_NUMBER_RECOVERY: [RegExp, string][] = [
-    // "eight" mishearings
+    // "eight" mishearings (Vosk/Whisper both affected)
     [/\b(chapter|verse)(\s+the)?\s+ezra\b/gi,   (_m, kw, th) => `${kw}${th ?? ""} 8`],
     [/\b(chapter|verse)(\s+the)?\s+english\b/gi, (_m, kw, th) => `${kw}${th ?? ""} 8`],
     [/\b(chapter|verse)(\s+the)?\s+ate\b/gi,    (_m, kw, th) => `${kw}${th ?? ""} 8`],
@@ -798,6 +862,36 @@ function convertWordNumbers(text: string): string {
     [/\bezra\s+verse\b/gi,    "8 verse"],
     [/\benglish\s+verse\b/gi, "8 verse"],
     [/\bate\s+verse\b/gi,     "8 verse"],
+    // Category B: Whisper-specific single-digit mishearings in verse/chapter position
+    // "four" — Whisper sometimes hears "for" (preposition) or "fore" in numeric context
+    [/\b(chapter|verse)(\s+the)?\s+for\b(?!\s+(?:me|you|us|him|her|them|it|the|a|an))/gi,
+      (_m, kw, th) => `${kw}${th ?? ""} 4`],
+    [/\b(chapter|verse)(\s+the)?\s+fore\b/gi,   (_m, kw, th) => `${kw}${th ?? ""} 4`],
+    // "six" — Whisper sometimes hears "sex" or "sicks" in numeric context
+    [/\b(chapter|verse)(\s+the)?\s+sex\b/gi,    (_m, kw, th) => `${kw}${th ?? ""} 6`],
+    [/\b(chapter|verse)(\s+the)?\s+sicks\b/gi,  (_m, kw, th) => `${kw}${th ?? ""} 6`],
+    [/\b(chapter|verse)(\s+the)?\s+sics\b/gi,   (_m, kw, th) => `${kw}${th ?? ""} 6`],
+    // "three" — Whisper sometimes hears "free" or "tree" in numeric context
+    [/\b(chapter|verse)(\s+the)?\s+free\b/gi,   (_m, kw, th) => `${kw}${th ?? ""} 3`],
+    [/\b(chapter|verse)(\s+the)?\s+tree\b/gi,   (_m, kw, th) => `${kw}${th ?? ""} 3`],
+    // "seven" — Whisper sometimes hears "heaven" in numeric context
+    [/\b(chapter|verse)(\s+the)?\s+heaven\b/gi, (_m, kw, th) => `${kw}${th ?? ""} 7`],
+    // Category B: Tens+units collapse — Whisper drops the tens word, leaving only the units digit.
+    // e.g. "thirty seven" → Whisper transcribes as "thirty" then drops it, leaving "seven" → 7
+    // We fix this by detecting when a tens word appears AFTER chapter/verse and is followed by
+    // a units word, ensuring they are kept together for compound number parsing.
+    // This is handled by the existing compoundRe in Step 2, but we add explicit recovery for
+    // cases where Whisper drops the tens word entirely and only emits the units.
+    // The real fix is to ensure the TENS_WORDS list in Step 2 also covers Whisper mishearings
+    // of tens words ("thirdy", "thirtee", "terty", etc.).
+    [/\b(chapter|verse)(\s+the)?\s+thirdy\b/gi,  (_m, kw, th) => `${kw}${th ?? ""} thirty`],
+    [/\b(chapter|verse)(\s+the)?\s+thirtee\b/gi, (_m, kw, th) => `${kw}${th ?? ""} thirty`],
+    [/\b(chapter|verse)(\s+the)?\s+terty\b/gi,   (_m, kw, th) => `${kw}${th ?? ""} thirty`],
+    [/\b(chapter|verse)(\s+the)?\s+forty\b/gi,   (_m, kw, th) => `${kw}${th ?? ""} forty`],
+    // NIV/version word appearing mid-reference (Category D prep): strip it from numeric slots
+    // e.g. "hebrews chapter niv one" → "hebrews chapter one"
+    [/\b(chapter|verse)(\s+the)?\s+(?:niv|kjv|nkjv|esv|amp|msg)\s+(\d+|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty|thirty|forty|fifty|sixty|seventy|eighty|ninety|hundred)\b/gi,
+      (_m, kw, th, num) => `${kw}${th ?? ""} ${num}`],
   ];
   let result = text;
   for (const [pattern, replacement] of PHONETIC_NUMBER_RECOVERY) {
@@ -1166,10 +1260,35 @@ function normalizeTranscript(raw: string): string {
     /\b(true|false|was|were|are|been|being|um|uh|just|really|actually|basically|okay|ok|yeah|very|much|also|too)\b/gi,
     "",
   );
-  // "chapter 5 is 5"  â†’  "chapter 5 verse 5"
-  // "chapter 5 and 6" â†’  "chapter 5 verse 6"
-  // "chapter 5 or 6"  â†’  "chapter 5 verse 6"
-  // "chapter 5 was 5"  â†’ "chapter 5 verse 5"
+
+  // Category D fix 1: Version word inserted mid-reference by Whisper
+  // e.g. "hebrews chapter niv one" → "hebrews chapter one"
+  // e.g. "hebrews chapter niv 9" → "hebrews chapter 9"
+  t = t.replace(
+    /\b(chapter|verse)\s+(?:niv|kjv|nkjv|esv|amp|msg)\s+/gi,
+    "$1 ",
+  );
+
+  // Category D fix 2: James/John disambiguation
+  // Whisper sometimes transcribes "James" as "John" when followed by chapter/verse cues.
+  // We cannot blindly rename John→James, but we can add a context rule:
+  // if the transcript is exactly "john chapter N verse M" with no ordinal prefix (1/2/3/first/second/third),
+  // we leave it as John (correct). The James→John confusion is handled by adding more
+  // phonetic aliases for James in BOOK_ALIASES instead (see below).
+
+  // Category D fix 3: Numbered John books — ensure "1 john", "2 john", "3 john"
+  // are not collapsed to plain "john" by stripping the ordinal.
+  // Whisper sometimes transcribes "1 John" as "one john" or "first john" correctly,
+  // but may also emit "john" alone when the "1" is swallowed.
+  // We normalise "one john" → "first john" and "two john" → "second john" here.
+  t = t.replace(/\bone\s+john\b/gi, "first john");
+  t = t.replace(/\btwo\s+john\b/gi, "second john");
+  t = t.replace(/\bthree\s+john\b/gi, "third john");
+
+  // "chapter 5 is 5"  → "chapter 5 verse 5"
+  // "chapter 5 and 6" → "chapter 5 verse 6"
+  // "chapter 5 or 6"  → "chapter 5 verse 6"
+  // "chapter 5 was 5" → "chapter 5 verse 5"
   t = t.replace(/(\d+)\s+(?:is|and|or|was|versus)\s+(\d+)/gi, "$1 verse $2");
   // Collapse multiple spaces
   t = t.replace(/\s+/g, " ").trim();

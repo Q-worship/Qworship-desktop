@@ -42,6 +42,15 @@ const BIBLE_INITIAL_PROMPT = [
   'KJV, NKJV, NIV, ESV, AMP, MSG,',
   // Navigation commands
   'chapter, verse, next verse, previous verse, show me, wake up, amen, thank you.',
+  // Number words — biases Whisper toward correct spoken number transcription
+  // (reduces "thirty seven" → "seven" and similar tens-word drop failures)
+  'one, two, three, four, five, six, seven, eight, nine, ten,',
+  'eleven, twelve, thirteen, fourteen, fifteen, sixteen, seventeen, eighteen, nineteen,',
+  'twenty, twenty-one, twenty-two, twenty-three, twenty-four, twenty-five,',
+  'twenty-six, twenty-seven, twenty-eight, twenty-nine,',
+  'thirty, thirty-one, thirty-two, thirty-three, thirty-four, thirty-five,',
+  'thirty-six, thirty-seven, thirty-eight, thirty-nine,',
+  'forty, forty-one, fifty, sixty, seventy, eighty, ninety, one hundred.',
 ].join(' ');
 
 // ---------------------------------------------------------------------------
