@@ -453,6 +453,51 @@ const REJECTION_CASES: HfbRegressionCase[] = [
   },
 ];
 
+/**
+ * Category C — CGE confidence-gating cases.
+ *
+ * These are transcripts that are structurally complete (book + chapter + verse)
+ * but were produced from live sessions where the wrong verse was projected.
+ * The CGE must assign a confidence score that routes them to the Confidence
+ * Queue (0.65–0.87) rather than auto-projecting them.
+ *
+ * NOTE: These cases are intentionally NOT added to HFB_REGRESSION_CASES because
+ * they are not parseVoiceCommand() correctness tests — they are CGE routing
+ * tests. They are kept here for documentation and future CGE unit test coverage.
+ */
+export const CGE_ROUTING_CASES: HfbRegressionCase[] = [
+  {
+    input: "ecclesiastes chapter 2 verse 1",
+    expected: { type: "lookup", book: "Ecclesiastes", chapter: 2, verseStart: 1 },
+    note: "Category C: Vosk sometimes emits 'ecclesiastes chapter 2 verse 1' but projects 1:1 due to premature utterance boundary. CGE must gate this.",
+  },
+  {
+    input: "ecclesiastes chapter 1 verse 8",
+    expected: { type: "lookup", book: "Ecclesiastes", chapter: 1, verseStart: 8 },
+    note: "Category C: Vosk sometimes emits 'exodus chapter 1 verse 8' for this. CGE must gate borderline book scores.",
+  },
+  {
+    input: "malachi chapter 2 verse 1",
+    expected: { type: "lookup", book: "Malachi", chapter: 2, verseStart: 1 },
+    note: "Category C: Vosk emits 'mark chapter 2 verse 1' for this. CGE must gate when book confidence is borderline.",
+  },
+  {
+    input: "malachi chapter 1 verse 25",
+    expected: { type: "lookup", book: "Malachi", chapter: 1, verseStart: 25 },
+    note: "Category C: Vosk emits 'mark chapter 1 verse 25' for this. CGE must gate when book confidence is borderline.",
+  },
+  {
+    input: "nahum chapter 3 verse 2",
+    expected: { type: "lookup", book: "Nahum", chapter: 3, verseStart: 2 },
+    note: "Category C: Vosk emits 'luke chapter 3 verse 2' for this. CGE must gate when book confidence is borderline.",
+  },
+  {
+    input: "nahum chapter 1 verse 4",
+    expected: { type: "lookup", book: "Nahum", chapter: 1, verseStart: 4 },
+    note: "Category C: Vosk emits 'luke chapter 1 verse 4' for this. CGE must gate when book confidence is borderline.",
+  },
+];
+
 export const HFB_REGRESSION_CASES: HfbRegressionCase[] = [
   ...ALL_BOOK_LOOKUP_CASES,
   ...NUMBERED_BOOK_CASES,

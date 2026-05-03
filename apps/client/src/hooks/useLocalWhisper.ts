@@ -9,6 +9,26 @@
 
 import { useState, useRef, useCallback, useEffect } from 'react';
 import { parseVoiceCommand, lookupOffline, type BibleVersion } from '@/lib/offlineBibleEngine';
+import { evaluateConfidence, type CGEConfig } from '@/lib/confidenceGatingEngine';
+import { CGE_CONFIG_OFFLINE_VOSK, CGE_CONFIG_ONLINE_WHISPER } from '@/lib/cgeConfigs';
+
+/** A candidate that the CGE has routed to the Confidence Queue. */
+export interface CGEQueueCandidate {
+  /** Unique ID (Date.now()) for React key and removal. */
+  id: number;
+  /** Resolved Bible reference label, e.g. "Malachi 3:10". */
+  reference: string;
+  /** Bible version abbreviation, e.g. "KJV". */
+  version: string;
+  /** Effective confidence score after structural penalties (0–1). */
+  confidence: number;
+  /** Human-readable reason the CGE queued this result. */
+  reason: string;
+  /** The full parsed result ready to project if the pastor confirms. */
+  lookupResult: any;
+  /** Timestamp when this candidate was created (ms). */
+  createdAt: number;
+}
 
 interface LocalWhisperProps {
   onBibleMatch: (result: any) => void;
@@ -23,6 +43,16 @@ interface LocalWhisperProps {
     targetVerse?: number,
     offset?: number,
   ) => void;
+  /**
+   * Called when the CGE routes a lookup result to the Confidence Queue instead
+   * of projecting it automatically. The pastor can confirm or dismiss it.
+   */
+  onConfidenceQueue?: (candidate: CGEQueueCandidate) => void;
+  /**
+   * The active speech provider ID — used to select the appropriate CGE config.
+   * Defaults to 'offline-vosk' if not supplied.
+   */
+  activeSpeechProviderId?: string | null;
 }
 
 interface LegacyWhisperAPI {
@@ -193,6 +223,14 @@ const WAKE_PATTERNS = [
 ];
 const IGNORED_TRANSCRIPT_PATTERNS = [/^\[(silence|pause|noise)\]$/i, /^(silence|noise)$/i];
 
+/** Select the CGE config appropriate for the active speech provider. */
+function getCGEConfig(providerId: string | null | undefined): CGEConfig {
+  if (providerId && providerId.includes('whisper') && !providerId.includes('legacy')) {
+    return CGE_CONFIG_ONLINE_WHISPER;
+  }
+  return CGE_CONFIG_OFFLINE_VOSK;
+}
+
 export const useLocalWhisper = ({
   onBibleMatch,
   onPartialTranscript,
@@ -201,6 +239,8 @@ export const useLocalWhisper = ({
   onWakeCommand,
   onVersionChange,
   onNavigation,
+  onConfidenceQueue,
+  activeSpeechProviderId,
 }: LocalWhisperProps) => {
   const [isConnected, setIsConnected] = useState(false);
   const isSleepingRef = useRef(false);
@@ -214,6 +254,8 @@ export const useLocalWhisper = ({
     onWakeCommand,
     onVersionChange,
     onNavigation,
+    onConfidenceQueue,
+    activeSpeechProviderId,
   });
 
   useEffect(() => {
@@ -225,6 +267,8 @@ export const useLocalWhisper = ({
       onWakeCommand,
       onVersionChange,
       onNavigation,
+      onConfidenceQueue,
+      activeSpeechProviderId,
     };
   });
 
@@ -262,31 +306,83 @@ export const useLocalWhisper = ({
           return;
         }
 
+        // ── Confidence Gating Engine ─────────────────────────────────────
+        const cgeConfig = getCGEConfig(cb.activeSpeechProviderId);
+        const cgeInput = {
+          commandType: command.commandType,
+          confidence: command.confidence,
+          hasChapterCue: command.hasChapterCue ?? false,
+          hasVerseCue: command.hasVerseCue ?? false,
+          hasBook: !!command.parsedReference.book,
+          hasChapter: command.parsedReference.chapter > 0,
+          hasVerse: command.parsedReference.verseStart > 0,
+        };
+        const cgeDecision = evaluateConfidence(cgeInput, trimmed, cgeConfig);
+
+        console.log(
+          `[CGE] ${cgeDecision.action.toUpperCase()} — ${cgeDecision.reason}`,
+          `(effective confidence: ${Math.round(cgeDecision.effectiveConfidence * 100)}%)`,
+        );
+
+        if (cgeDecision.action === 'drop') {
+          // Silently discard — do not project, do not show error
+          return;
+        }
+
+        // Perform the lookup regardless of action (needed for both project and queue)
         const result = await lookupOffline(command.parsedReference);
 
-        if (result && result.verses.length > 0) {
-          const versesFormatted = result.verses.map((v) => {
-            const entry: Record<string, any> = { verse: v.number };
-            entry[result.version] = v.text;
-            return entry;
-          });
-          cb.onBibleMatch?.({
-            success: true,
-            commandType: 'lookup',
-            requestedVersion: command.parsedReference.version,
-            result: {
-              book: result.book,
-              chapter: result.chapter,
-              version: result.version,
-              verses: versesFormatted,
-            },
-          });
-        } else {
+        if (!result || result.verses.length === 0) {
           cb.onBibleMatch?.({
             success: false,
             error: `Verse not found: ${trimmed}`,
           });
+          return;
         }
+
+        const versesFormatted = result.verses.map((v) => {
+          const entry: Record<string, any> = { verse: v.number };
+          entry[result.version] = v.text;
+          return entry;
+        });
+
+        const matchPayload = {
+          success: true,
+          commandType: 'lookup',
+          requestedVersion: command.parsedReference.version,
+          result: {
+            book: result.book,
+            chapter: result.chapter,
+            version: result.version,
+            verses: versesFormatted,
+          },
+        };
+
+        if (cgeDecision.action === 'queue') {
+          // Route to Confidence Queue — do not project automatically
+          if (cb.onConfidenceQueue) {
+            const referenceLabel =
+              result.book + ' ' + result.chapter + ':' +
+              (result.verses[0]?.number ?? command.parsedReference.verseStart);
+            const candidate: CGEQueueCandidate = {
+              id: Date.now(),
+              reference: referenceLabel,
+              version: result.version.toUpperCase(),
+              confidence: cgeDecision.effectiveConfidence,
+              reason: cgeDecision.reason,
+              lookupResult: matchPayload,
+              createdAt: Date.now(),
+            };
+            cb.onConfidenceQueue(candidate);
+          } else {
+            // No queue handler registered — fall through to project
+            cb.onBibleMatch?.(matchPayload);
+          }
+          return;
+        }
+
+        // action === 'project' — auto-project immediately
+        cb.onBibleMatch?.(matchPayload);
         break;
       }
 

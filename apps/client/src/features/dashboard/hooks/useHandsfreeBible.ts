@@ -400,6 +400,17 @@ export const useHandsfreeBible = ({
       resetInactivityTimer();
       executeNavigation(commandType, direction, targetVerse, offset);
     },
+    onConfidenceQueue: (candidate) => {
+      resetInactivityTimer();
+      const store = useHFBStore.getState();
+      store.addHfbPendingCandidate(candidate);
+
+      // Auto-expire the candidate after 8 seconds if not acted on
+      setTimeout(() => {
+        useHFBStore.getState().removeHfbPendingCandidate(candidate.id);
+      }, 8_000);
+    },
+    activeSpeechProviderId,
   });
 
   const clearInactivityTimer = useCallback(() => {

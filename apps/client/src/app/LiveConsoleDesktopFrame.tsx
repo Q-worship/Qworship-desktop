@@ -1,8 +1,10 @@
 import type { KeyboardEvent, ReactNode } from "react";
+import { useHFBStore, type CGEQueueCandidate } from "@/features/dashboard/hooks/useHFBStore";
 import { type CSSProperties, useCallback, useEffect, useMemo, useState } from "react";
 import { useLocation } from "wouter";
 import {
   BookOpen,
+  CheckCircle2,
   ChevronLeft,
   ChevronRight,
   Layers,
@@ -13,6 +15,7 @@ import {
   Search,
   Settings2,
   Upload,
+  X,
 } from "lucide-react";
 
 import qworshipLogo from "@assets/Group 1_1753843572404.png";
@@ -954,6 +957,71 @@ function Card({ title, children }: { title: string; children: ReactNode }) {
   );
 }
 
+function ConfidenceQueueCard({
+  candidates,
+  onProject,
+  onDismiss,
+}: {
+  candidates: CGEQueueCandidate[];
+  onProject: (candidate: CGEQueueCandidate) => void;
+  onDismiss: (id: number) => void;
+}) {
+  const count = candidates.length;
+
+  return (
+    <Card title={count > 0 ? `Confidence Queue (${count})` : "Confidence Queue"}>
+      {count === 0 ? (
+        <div className="flex h-[140px] flex-col items-center justify-center px-5 text-center">
+          <p className="text-[13px] font-semibold text-[#d8d2eb]">All Clear</p>
+          <p className="mt-2 text-[10px] leading-5 text-[#8f83b3]">
+            Low-confidence commands will appear here for review
+          </p>
+        </div>
+      ) : (
+        <div className="max-h-[220px] overflow-y-auto px-4 py-3 space-y-3">
+          {candidates.map((candidate) => (
+            <div
+              key={candidate.id}
+              className="rounded-lg border border-amber-500/30 bg-amber-500/10 px-4 py-3"
+            >
+              <div className="flex items-start justify-between gap-2">
+                <div className="flex-1 min-w-0">
+                  <p className="text-[13px] font-semibold text-amber-200">
+                    {candidate.reference}
+                    <span className="ml-2 text-[10px] font-normal text-amber-300/70">
+                      · {candidate.version}
+                    </span>
+                  </p>
+                  <p className="mt-1 text-[10px] text-amber-300/60">
+                    Confidence: {Math.round(candidate.confidence * 100)}%
+                  </p>
+                </div>
+              </div>
+              <div className="mt-3 flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => onProject(candidate)}
+                  className="flex flex-1 items-center justify-center gap-1.5 rounded-md bg-emerald-600/80 px-3 py-1.5 text-[11px] font-semibold text-white hover:bg-emerald-600 transition-colors"
+                >
+                  <CheckCircle2 className="h-3.5 w-3.5" />
+                  Project
+                </button>
+                <button
+                  type="button"
+                  onClick={() => onDismiss(candidate.id)}
+                  className="flex items-center justify-center rounded-md border border-[#5a4b84] bg-white/5 px-3 py-1.5 text-[11px] font-semibold text-[#b0a2db] hover:bg-white/10 transition-colors"
+                >
+                  <X className="h-3.5 w-3.5" />
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </Card>
+  );
+}
+
 function HfbLeft({
   state,
   isListeningMode,
@@ -962,6 +1030,9 @@ function HfbLeft({
   detectedReference,
   detectedVerseText,
   onToggleListening,
+  pendingCandidates,
+  onProjectCandidate,
+  onDismissCandidate,
 }: {
   state: HfbState;
   isListeningMode: boolean;
@@ -970,6 +1041,9 @@ function HfbLeft({
   detectedReference: string | null;
   detectedVerseText: string | null;
   onToggleListening: (nextState: boolean) => void;
+  pendingCandidates: CGEQueueCandidate[];
+  onProjectCandidate: (candidate: CGEQueueCandidate) => void;
+  onDismissCandidate: (id: number) => void;
 }) {
   if (state === "engaged") {
     return (
@@ -1031,11 +1105,11 @@ function HfbLeft({
             )}
           </div>
         </Card>
-        <Card title="Queue">
-          <div className="flex h-[140px] items-center justify-center text-center text-[11px] text-gray-400">
-            No Verses in Queue
-          </div>
-        </Card>
+        <ConfidenceQueueCard
+          candidates={pendingCandidates}
+          onProject={onProjectCandidate}
+          onDismiss={onDismissCandidate}
+        />
       </div>
     );
   }
@@ -1112,12 +1186,11 @@ function HfbLeft({
           </div>
         </div>
       </Card>
-      <Card title="Queue">
-        <div className="flex h-[230px] flex-col items-center justify-center px-5 text-center">
-          <p className="text-[13px] font-semibold text-[#d8d2eb]">No Verses in Queue</p>
-          <p className="mt-2 text-[10px] leading-5 text-[#8f83b3]">Verses from your voice command will appear here</p>
-        </div>
-      </Card>
+      <ConfidenceQueueCard
+        candidates={pendingCandidates}
+        onProject={onProjectCandidate}
+        onDismiss={onDismissCandidate}
+      />
     </div>
   );
 }
@@ -1878,6 +1951,10 @@ export function LiveConsoleDesktopFrame({
   const [detectedReference, setDetectedReference] = useState<string | null>(null);
   const [detectedVerseText, setDetectedVerseText] = useState<string | null>(null);
   const [resolvedChapterOverride, setResolvedChapterOverride] = useState<ResolvedChapterOverride | null>(null);
+
+  // ── Confidence Queue ────────────────────────────────────────────────────────
+  const pendingCandidates = useHFBStore((state) => state.hfbPendingCandidates);
+  const removeHfbPendingCandidate = useHFBStore((state) => state.removeHfbPendingCandidate);
   const [recentSongIds, setRecentSongIds] = useState<string[]>(() => {
     if (typeof window === "undefined") return [];
 
@@ -2011,6 +2088,39 @@ export function LiveConsoleDesktopFrame({
       },
     });
   }, [active.book, active.chapter, active.verse, active.version, applyBibleMatch]);
+
+  const handleProjectCandidate = useCallback(async (candidate: CGEQueueCandidate) => {
+    removeHfbPendingCandidate(candidate.id);
+    const result = await resolveSingleVerseReference({
+      book: candidate.book,
+      chapter: candidate.chapter,
+      verse: candidate.verse,
+      version: candidate.version,
+    });
+    if (!result) return;
+    const verseText = result.verse.text;
+    const reference = shortRef(result.book, result.chapter, result.verse.number ?? candidate.verse);
+    setBibleReference({
+      book: result.book,
+      chapter: result.chapter,
+      verse: result.verse.number ?? candidate.verse,
+      version: candidate.version,
+    });
+    setHfbState("engaged");
+    setDetectedReference(reference);
+    setDetectedVerseText(verseText);
+    projectScripture({
+      verseText,
+      reference,
+      version: candidate.version,
+      detectionTitle: reference,
+      userId: authenticatedUserId,
+    });
+  }, [authenticatedUserId, projectScripture, removeHfbPendingCandidate, setBibleReference, setHfbState]);
+
+  const handleDismissCandidate = useCallback((id: number) => {
+    removeHfbPendingCandidate(id);
+  }, [removeHfbPendingCandidate]);
 
   const { connect, disconnect, sendPCMData, isConnected, setSpeechProvider, getSpeechProviders } = useLocalWhisper({
     onBibleMatch: (match) => {
@@ -2472,6 +2582,9 @@ export function LiveConsoleDesktopFrame({
               detectedReference={detectedReference}
               detectedVerseText={detectedVerseText}
               onToggleListening={toggleHfbListening}
+              pendingCandidates={pendingCandidates}
+              onProjectCandidate={handleProjectCandidate}
+              onDismissCandidate={handleDismissCandidate}
             />
           ) : primaryMode === "on-screen-bible" ? (
             <BibleLeft

@@ -1,5 +1,9 @@
 import { create } from 'zustand';
 import { fetchBibleChapterWithFallback } from '../../../lib/sharedBibleEngine';
+import type { CGEQueueCandidate } from '../../../hooks/useLocalWhisper';
+
+// Re-export so UI components can import from one place
+export type { CGEQueueCandidate };
 
 export interface HFBChapterVerse {
   number: number;
@@ -56,6 +60,14 @@ interface HFBStore {
   addHfbDetectedVerse: (verse: HFBDetectedVerse) => void;
   hfbCurrentProjected: HFBProjectedVerse | null;
   setHfbCurrentProjected: (projected: HFBProjectedVerse | null) => void;
+
+  // ── Confidence Queue ────────────────────────────────────────────────────────
+  /** Candidates routed to the Confidence Queue by the CGE, awaiting pastor review. */
+  hfbPendingCandidates: CGEQueueCandidate[];
+  addHfbPendingCandidate: (candidate: CGEQueueCandidate) => void;
+  removeHfbPendingCandidate: (id: number) => void;
+  clearHfbPendingCandidates: () => void;
+
   fetchHFBChapter: (
     book: string,
     chapter: number,
@@ -101,6 +113,18 @@ export const useHFBStore = create<HFBStore>((set) => ({
 
   hfbCurrentProjected: null,
   setHfbCurrentProjected: (projected) => set({ hfbCurrentProjected: projected }),
+
+  // ── Confidence Queue ────────────────────────────────────────────────────────
+  hfbPendingCandidates: [],
+  addHfbPendingCandidate: (candidate) =>
+    set((state) => ({
+      hfbPendingCandidates: [...state.hfbPendingCandidates, candidate],
+    })),
+  removeHfbPendingCandidate: (id) =>
+    set((state) => ({
+      hfbPendingCandidates: state.hfbPendingCandidates.filter((c) => c.id !== id),
+    })),
+  clearHfbPendingCandidates: () => set({ hfbPendingCandidates: [] }),
 
   fetchHFBChapter: async (book, chapter, version, highlightVerse) => {
     set({
@@ -151,5 +175,6 @@ export const useHFBStore = create<HFBStore>((set) => ({
       hfbTranscriptLines: [],
       hfbDetectedVerses: [],
       hfbCurrentProjected: null,
+      hfbPendingCandidates: [],
     }),
 }));

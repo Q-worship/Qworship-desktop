@@ -91,6 +91,16 @@ export interface ParsedVoiceCommand {
   requestedVersion?: BibleVersion;
   targetVerse?: number;
   offset?: number;
+  /**
+   * CGE: true when the transcript contained an explicit "chapter" cue word.
+   * Used by the Confidence Gating Engine to apply structural penalties.
+   */
+  hasChapterCue?: boolean;
+  /**
+   * CGE: true when the transcript contained an explicit "verse" cue word.
+   * Used by the Confidence Gating Engine to apply structural penalties.
+   */
+  hasVerseCue?: boolean;
 }
 
 // ============================================================
@@ -1098,6 +1108,8 @@ function parseStructuredLookupByCue(
       parsedReference: null,
       commandType: "lookup",
       confidence: 0,
+      hasChapterCue,
+      hasVerseCue,
     };
   }
 
@@ -1173,6 +1185,8 @@ function parseStructuredLookupByCue(
       parsedReference: null,
       commandType: "lookup",
       confidence: 0,
+      hasChapterCue,
+      hasVerseCue,
     };
   }
 
@@ -1181,6 +1195,8 @@ function parseStructuredLookupByCue(
     commandType: "lookup",
     confidence: Math.max(0.88, Math.min(0.98, bookCandidate.score + 0.08)),
     parsedReference,
+    hasChapterCue,
+    hasVerseCue,
   };
 }
 
@@ -1426,6 +1442,10 @@ export function parseVoiceCommand(
     };
   }
 
+  // Detect cues here so fallback paths can propagate them to the CGE
+  const _hasChapterCue = /\bchapter\b/i.test(normalizeTranscript(coreText));
+  const _hasVerseCue = /\bverses?\b/i.test(normalizeTranscript(coreText));
+
   const structuredLookup = parseStructuredLookupByCue(coreText, original, defaultVersion);
   if (structuredLookup) {
     return structuredLookup;
@@ -1433,7 +1453,8 @@ export function parseVoiceCommand(
 
   const compactLookup = parseCompactLookupBySlots(coreText, original, defaultVersion);
   if (compactLookup) {
-    return compactLookup;
+    // compact lookup has no cue words by definition
+    return { ...compactLookup, hasChapterCue: false, hasVerseCue: false };
   }
 
   // Try pattern matching
@@ -1481,6 +1502,8 @@ export function parseVoiceCommand(
       commandType: "lookup",
       confidence: 0.95,
       parsedReference,
+      hasChapterCue: _hasChapterCue,
+      hasVerseCue: _hasVerseCue,
     };
   }
 
@@ -1523,6 +1546,8 @@ export function parseVoiceCommand(
           commandType: "lookup",
           confidence: Math.max(0.84, Math.min(0.98, matchedBook.score)),
           parsedReference,
+          hasChapterCue: _hasChapterCue,
+          hasVerseCue: _hasVerseCue,
         };
       }
     }
