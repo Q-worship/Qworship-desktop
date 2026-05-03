@@ -4,10 +4,13 @@
  * A real-time decision layer that sits between the speech recognition pipeline
  * and the Bible projection system. For every parsed voice command it decides:
  *
- *   - AUTO-PROJECT  (confidence ≥ autoProjectThreshold + structurally complete)
+ *   - AUTO-PROJECT   (confidence ≥ autoProjectThreshold + structurally complete
+ *                     AND the resolved book is NOT in a collision group)
  *   - CONFIDENCE QUEUE  (confidence ≥ queueThreshold but below auto-project, or
  *                        structurally incomplete but still resolvable)
- *   - DROP  (confidence < queueThreshold, or structurally unresolvable)
+ *   - QUEUE_MULTI    (resolved book belongs to a collision group — all group
+ *                     members are sent to the queue as a ranked batch)
+ *   - DROP           (confidence < queueThreshold, or structurally unresolvable)
  *
  * The engine is stateless and engine-agnostic. Callers supply a CGEConfig that
  * sets the thresholds appropriate for the active speech provider (offline-vosk
@@ -20,8 +23,8 @@
 // Types
 // ---------------------------------------------------------------------------
 
-/** The three possible routing decisions returned by the CGE. */
-export type CGEAction = 'project' | 'queue' | 'drop';
+/** The four possible routing decisions returned by the CGE. */
+export type CGEAction = 'project' | 'queue' | 'queue_multi' | 'drop';
 
 export interface CGEDecision {
   action: CGEAction;
@@ -32,6 +35,13 @@ export interface CGEDecision {
    * This is what is displayed in the Confidence Queue card (e.g. "71%").
    */
   effectiveConfidence: number;
+  /**
+   * For queue_multi action: the ordered list of collision-group book names
+   * (canonical, e.g. ["Zechariah", "Jeremiah", "Zephaniah"]).
+   * The primary candidate (spoken book) is always first.
+   * Undefined for all other actions.
+   */
+  collisionGroup?: string[];
 }
 
 /**
@@ -102,6 +112,11 @@ export interface CGECommandInput {
   hasChapter: boolean;
   /** True if a verse number was successfully resolved. */
   hasVerse: boolean;
+  /**
+   * The resolved canonical book name (e.g. "Zechariah").
+   * Used for collision-group detection.
+   */
+  resolvedBook?: string;
 }
 
 // ---------------------------------------------------------------------------
@@ -112,15 +127,18 @@ export interface CGECommandInput {
  * Evaluate a parsed voice command against the supplied CGE configuration and
  * return a routing decision.
  *
- * @param command   Parsed command fields needed for evaluation.
+ * @param command        Parsed command fields needed for evaluation.
  * @param rawTranscript  The raw transcript string (used for word-count check).
- * @param config    Per-engine CGE configuration.
+ * @param config         Per-engine CGE configuration.
+ * @param collisionGroups  Optional map of spoken-book → collision group members.
+ *                         Pass VOSK_COLLISION_GROUPS for offline-vosk.
  * @returns A CGEDecision with action, reason, and effectiveConfidence.
  */
 export function evaluateConfidence(
   command: CGECommandInput,
   rawTranscript: string,
   config: CGEConfig,
+  collisionGroups?: Record<string, string[]>,
 ): CGEDecision {
   // Only lookup commands are gated — navigation/version commands pass through.
   if (command.commandType !== 'lookup') {
@@ -185,7 +203,24 @@ export function evaluateConfidence(
   // Clamp to [0, 1]
   const effectiveConfidence = Math.max(0, Math.min(1, score));
 
-  // ── Routing decision ─────────────────────────────────────────────────────
+  // ── Collision group detection ────────────────────────────────────────────
+
+  if (collisionGroups && command.resolvedBook) {
+    const group = findCollisionGroup(command.resolvedBook, collisionGroups);
+    if (group) {
+      // The resolved book is in a known collision group — always route to
+      // queue_multi regardless of confidence score, so the pastor can pick
+      // the correct book from the full ranked list.
+      return {
+        action: 'queue_multi',
+        reason: `Book "${command.resolvedBook}" is in acoustic collision group [${group.join(', ')}]`,
+        effectiveConfidence,
+        collisionGroup: group,
+      };
+    }
+  }
+
+  // ── Standard routing decision ────────────────────────────────────────────
 
   if (effectiveConfidence >= config.autoProjectThreshold) {
     return {
@@ -223,6 +258,23 @@ export function evaluateConfidence(
 // ---------------------------------------------------------------------------
 // Helpers
 // ---------------------------------------------------------------------------
+
+/**
+ * Find the collision group that contains the given book name.
+ * Returns the group array (with the spoken book first) if found, or null.
+ */
+export function findCollisionGroup(
+  bookName: string,
+  collisionGroups: Record<string, string[]>,
+): string[] | null {
+  const normalised = bookName.toLowerCase().trim();
+  for (const [, members] of Object.entries(collisionGroups)) {
+    if (members.some((m) => m.toLowerCase() === normalised)) {
+      return members;
+    }
+  }
+  return null;
+}
 
 function pct(score: number): string {
   return `${Math.round(score * 100)}%`;

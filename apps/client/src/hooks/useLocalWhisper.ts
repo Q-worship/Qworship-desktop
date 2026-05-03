@@ -9,8 +9,9 @@
 
 import { useState, useRef, useCallback, useEffect } from 'react';
 import { parseVoiceCommand, lookupOffline, type BibleVersion } from '@/lib/offlineBibleEngine';
-import { evaluateConfidence, type CGEConfig } from '@/lib/confidenceGatingEngine';
-import { CGE_CONFIG_OFFLINE_VOSK, CGE_CONFIG_ONLINE_WHISPER } from '@/lib/cgeConfigs';
+import { evaluateConfidence, findCollisionGroup, type CGEConfig } from '@/lib/confidenceGatingEngine';
+import { CGE_CONFIG_OFFLINE_VOSK, CGE_CONFIG_ONLINE_WHISPER, VOSK_COLLISION_GROUPS, COLLISION_CANDIDATE_SCORE_STEP } from '@/lib/cgeConfigs';
+import { getLiveConsoleBibleBooks } from '@/features/dashboard/data/bibleBooks';
 
 /** A candidate that the CGE has routed to the Confidence Queue. */
 export interface CGEQueueCandidate {
@@ -231,6 +232,34 @@ function getCGEConfig(providerId: string | null | undefined): CGEConfig {
   return CGE_CONFIG_OFFLINE_VOSK;
 }
 
+/**
+ * Return the collision groups map for the active provider.
+ * Only offline-vosk uses collision groups; online-whisper does not.
+ */
+function getCGECollisionGroups(
+  providerId: string | null | undefined,
+): Record<string, string[]> | undefined {
+  if (providerId && providerId.includes('whisper') && !providerId.includes('legacy')) {
+    return undefined; // Whisper is accurate enough — no collision groups needed
+  }
+  return VOSK_COLLISION_GROUPS;
+}
+
+/** Bible book metadata cache — built once at module load. */
+const BIBLE_BOOK_CHAPTER_MAP = new Map<string, number>(
+  getLiveConsoleBibleBooks().map((b) => [b.name.toLowerCase(), b.chapters]),
+);
+
+/**
+ * Return true if the given book has at least `chapter` chapters.
+ * Used to filter impossible collision-group candidates.
+ */
+function bookHasChapter(bookName: string, chapter: number): boolean {
+  const maxChapters = BIBLE_BOOK_CHAPTER_MAP.get(bookName.toLowerCase());
+  if (maxChapters == null) return true; // Unknown book — allow through
+  return chapter >= 1 && chapter <= maxChapters;
+}
+
 export const useLocalWhisper = ({
   onBibleMatch,
   onPartialTranscript,
@@ -308,6 +337,7 @@ export const useLocalWhisper = ({
 
         // ── Confidence Gating Engine ─────────────────────────────────────
         const cgeConfig = getCGEConfig(cb.activeSpeechProviderId);
+        const cgeCollisionGroups = getCGECollisionGroups(cb.activeSpeechProviderId);
         const cgeInput = {
           commandType: command.commandType,
           confidence: command.confidence,
@@ -316,8 +346,9 @@ export const useLocalWhisper = ({
           hasBook: !!command.parsedReference.book,
           hasChapter: command.parsedReference.chapter > 0,
           hasVerse: command.parsedReference.verseStart > 0,
+          resolvedBook: command.parsedReference.book,
         };
-        const cgeDecision = evaluateConfidence(cgeInput, trimmed, cgeConfig);
+        const cgeDecision = evaluateConfidence(cgeInput, trimmed, cgeConfig, cgeCollisionGroups);
 
         console.log(
           `[CGE] ${cgeDecision.action.toUpperCase()} — ${cgeDecision.reason}`,
@@ -329,7 +360,101 @@ export const useLocalWhisper = ({
           return;
         }
 
-        // Perform the lookup regardless of action (needed for both project and queue)
+        // ── Multi-candidate collision group path ─────────────────────────
+        if (cgeDecision.action === 'queue_multi' && cgeDecision.collisionGroup) {
+          if (cb.onConfidenceQueue) {
+            const chapter = command.parsedReference.chapter;
+            const verseStart = command.parsedReference.verseStart;
+            const version = command.parsedReference.version;
+            const baseScore = cgeDecision.effectiveConfidence;
+            const batchId = Date.now();
+
+            // Generate a candidate for each book in the collision group,
+            // filtering out books that don't have the requested chapter.
+            const candidatePromises = cgeDecision.collisionGroup
+              .filter((bookName) => bookHasChapter(bookName, chapter))
+              .map(async (bookName, index) => {
+                const candidateRef = {
+                  book: bookName,
+                  chapter,
+                  verseStart,
+                  version,
+                };
+                const candidateResult = await lookupOffline(candidateRef);
+                if (!candidateResult || candidateResult.verses.length === 0) return null;
+
+                const versesFormatted = candidateResult.verses.map((v) => {
+                  const entry: Record<string, any> = { verse: v.number };
+                  entry[candidateResult.version] = v.text;
+                  return entry;
+                });
+
+                const matchPayload = {
+                  success: true,
+                  commandType: 'lookup',
+                  requestedVersion: version,
+                  result: {
+                    book: candidateResult.book,
+                    chapter: candidateResult.chapter,
+                    version: candidateResult.version,
+                    verses: versesFormatted,
+                  },
+                };
+
+                const referenceLabel =
+                  candidateResult.book + ' ' + candidateResult.chapter + ':' +
+                  (candidateResult.verses[0]?.number ?? verseStart);
+
+                // Fixed-spread confidence: primary candidate keeps base score,
+                // each subsequent candidate is reduced by COLLISION_CANDIDATE_SCORE_STEP.
+                const candidateConfidence = Math.max(
+                  0,
+                  baseScore - index * COLLISION_CANDIDATE_SCORE_STEP,
+                );
+
+                const candidate: CGEQueueCandidate = {
+                  id: batchId + index,
+                  reference: referenceLabel,
+                  version: candidateResult.version.toUpperCase(),
+                  confidence: candidateConfidence,
+                  reason: `Acoustic collision group — candidate ${index + 1} of ${cgeDecision.collisionGroup!.length}`,
+                  lookupResult: matchPayload,
+                  createdAt: batchId,
+                };
+                return candidate;
+              });
+
+            const candidates = (await Promise.all(candidatePromises)).filter(
+              (c): c is CGEQueueCandidate => c !== null,
+            );
+
+            candidates.forEach((candidate) => cb.onConfidenceQueue!(candidate));
+          } else {
+            // No queue handler — fall through to project the primary result
+            const result = await lookupOffline(command.parsedReference);
+            if (result && result.verses.length > 0) {
+              const versesFormatted = result.verses.map((v) => {
+                const entry: Record<string, any> = { verse: v.number };
+                entry[result.version] = v.text;
+                return entry;
+              });
+              cb.onBibleMatch?.({
+                success: true,
+                commandType: 'lookup',
+                requestedVersion: command.parsedReference.version,
+                result: {
+                  book: result.book,
+                  chapter: result.chapter,
+                  version: result.version,
+                  verses: versesFormatted,
+                },
+              });
+            }
+          }
+          return;
+        }
+
+        // ── Single-candidate path (project or queue) ─────────────────────
         const result = await lookupOffline(command.parsedReference);
 
         if (!result || result.verses.length === 0) {

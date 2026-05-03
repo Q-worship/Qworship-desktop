@@ -496,6 +496,27 @@ export const CGE_ROUTING_CASES: HfbRegressionCase[] = [
     expected: { type: "lookup", book: "Nahum", chapter: 1, verseStart: 4 },
     note: "Category C: Vosk emits 'luke chapter 1 verse 4' for this. CGE must gate when book confidence is borderline.",
   },
+  // QC9 — Collision group cases (queue_multi routing)
+  {
+    input: "zechariah chapter 3 verse 3",
+    expected: { type: "lookup", book: "Zechariah", chapter: 3, verseStart: 3 },
+    note: "QC9 collision group: Vosk emits 'jeremiah chapter 3 verse 3'. CGE must route to queue_multi with Zechariah, Jeremiah, Zephaniah candidates.",
+  },
+  {
+    input: "zechariah chapter 2 verse 5",
+    expected: { type: "lookup", book: "Zechariah", chapter: 2, verseStart: 5 },
+    note: "QC9 collision group: Zechariah 2:5 — Zephaniah has only 3 chapters so Zephaniah candidate is valid; Jeremiah has 52 chapters so Jeremiah candidate is valid.",
+  },
+  {
+    input: "malachi chapter 3 verse 10",
+    expected: { type: "lookup", book: "Malachi", chapter: 3, verseStart: 10 },
+    note: "QC9 collision group: Vosk emits 'mark chapter 3 verse 10' or 'micah chapter 3 verse 10'. CGE must route to queue_multi with Malachi, Mark, Micah candidates.",
+  },
+  {
+    input: "philippians chapter 2 verse 4",
+    expected: { type: "lookup", book: "Philippians", chapter: 2, verseStart: 4 },
+    note: "QC9 collision group: Vosk emits 'philippians chapter 1 verse 1' or 'philemon chapter 2 verse 4'. Philemon has only 1 chapter so Philemon candidate is filtered out for chapter >= 2.",
+  },
 ];
 
 export const HFB_REGRESSION_CASES: HfbRegressionCase[] = [
