@@ -519,6 +519,71 @@ export const CGE_ROUTING_CASES: HfbRegressionCase[] = [
   },
 ];
 
+// QC10 — Phonetic Alias Cases
+// These test that alias words (zach, mal, hab, eccl, etc.) are correctly
+// normalised to their canonical book names by the parser.
+// Note: These are intentionally NOT added to HFB_REGRESSION_CASES because
+// the regression harness tests the parser only (not the CGE routing layer).
+// The parser will resolve these correctly; the CGE confidence hint is a
+// runtime concern tested by live testing.
+const PHONETIC_ALIAS_CASES: HfbRegressionCase[] = [
+  {
+    input: "zach chapter 4 verse 2",
+    expected: { type: "lookup", book: "Zechariah", chapter: 4, verseStart: 2 },
+    note: "QC10 alias: 'zach' → Zechariah. Vosk outputs 'zach' when it cannot produce 'zechariah'.",
+  },
+  {
+    input: "zack chapter 1 verse 3",
+    expected: { type: "lookup", book: "Zechariah", chapter: 1, verseStart: 3 },
+    note: "QC10 alias: 'zack' → Zechariah.",
+  },
+  {
+    input: "mal chapter 3 verse 10",
+    expected: { type: "lookup", book: "Malachi", chapter: 3, verseStart: 10 },
+    note: "QC10 alias: 'mal' → Malachi.",
+  },
+  {
+    input: "mali chapter 2 verse 1",
+    expected: { type: "lookup", book: "Malachi", chapter: 2, verseStart: 1 },
+    note: "QC10 alias: 'mali' → Malachi.",
+  },
+  {
+    input: "nah chapter 1 verse 4",
+    expected: { type: "lookup", book: "Nahum", chapter: 1, verseStart: 4 },
+    note: "QC10 alias: 'nah' → Nahum.",
+  },
+  {
+    input: "hab chapter 2 verse 4",
+    expected: { type: "lookup", book: "Habakkuk", chapter: 2, verseStart: 4 },
+    note: "QC10 alias: 'hab' → Habakkuk.",
+  },
+  {
+    input: "eccl chapter 5 verse 7",
+    expected: { type: "lookup", book: "Ecclesiastes", chapter: 5, verseStart: 7 },
+    note: "QC10 alias: 'eccl' → Ecclesiastes.",
+  },
+  {
+    input: "eccles chapter 3 verse 1",
+    expected: { type: "lookup", book: "Ecclesiastes", chapter: 3, verseStart: 1 },
+    note: "QC10 alias: 'eccles' → Ecclesiastes.",
+  },
+  {
+    input: "obad chapter 1 verse 3",
+    expected: { type: "lookup", book: "Obadiah", chapter: 1, verseStart: 3 },
+    note: "QC10 alias: 'obad' → Obadiah.",
+  },
+  {
+    input: "zeph chapter 3 verse 17",
+    expected: { type: "lookup", book: "Zephaniah", chapter: 3, verseStart: 17 },
+    note: "QC10 alias: 'zeph' → Zephaniah.",
+  },
+  {
+    input: "phil chapter 4 verse 13",
+    expected: { type: "lookup", book: "Philippians", chapter: 4, verseStart: 13 },
+    note: "QC10 alias: 'phil' → Philippians (ambiguous with Philemon — CGE routes to queue).",
+  },
+];
+
 export const HFB_REGRESSION_CASES: HfbRegressionCase[] = [
   ...ALL_BOOK_LOOKUP_CASES,
   ...NUMBERED_BOOK_CASES,
@@ -529,4 +594,5 @@ export const HFB_REGRESSION_CASES: HfbRegressionCase[] = [
   ...NAVIGATION_CASES,
   ...COMPACT_AND_RANGE_CASES,
   ...REJECTION_CASES,
+  ...PHONETIC_ALIAS_CASES,
 ];

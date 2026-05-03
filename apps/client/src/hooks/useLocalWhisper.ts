@@ -216,6 +216,37 @@ function getSpeechAPI(): NormalizedSpeechAPI | null {
   return null;
 }
 
+// ── QC10 Phonetic Alias Detection ───────────────────────────────────────────
+// These are the raw alias words that Vosk outputs when it cannot produce the
+// full book name. When any of these appear in the raw transcript, the result
+// is capped at ALIAS_CONFIDENCE_HINT to force routing to the Confidence Queue.
+const VOSK_PHONETIC_ALIASES = new Set([
+  'zach', 'zack', 'zacka',           // Zechariah
+  'mal', 'mali',                      // Malachi
+  'nah',                              // Nahum
+  'hab', 'habba',                     // Habakkuk
+  'eccl', 'eccles',                   // Ecclesiastes
+  'obad',                             // Obadiah
+  'zeph',                             // Zephaniah
+  'phil',                             // Philippians (ambiguous)
+]);
+const ALIAS_CONFIDENCE_HINT = 0.80;
+
+/**
+ * Return true if the raw transcript contains a QC10 phonetic alias word.
+ * Checks word boundaries to avoid false positives (e.g. 'philemon' contains 'phil').
+ */
+function transcriptContainsAlias(raw: string): boolean {
+  const lower = raw.toLowerCase();
+  for (const alias of VOSK_PHONETIC_ALIASES) {
+    // Use word-boundary check: alias must be surrounded by space/start/end
+    const re = new RegExp(`(?:^|\\s)${alias}(?:\\s|$)`);
+    if (re.test(lower)) return true;
+  }
+  return false;
+}
+// ── End QC10 Phonetic Alias Detection ────────────────────────────────────────
+
 const SLEEP_PATTERNS = [
   /\b(go to sleep|sleep|stop listening|pause|be quiet|shut up|mute)\b/i,
 ];
@@ -224,9 +255,17 @@ const WAKE_PATTERNS = [
 ];
 const IGNORED_TRANSCRIPT_PATTERNS = [/^\[(silence|pause|noise)\]$/i, /^(silence|noise)$/i];
 
-/** Select the CGE config appropriate for the active speech provider. */
+/**
+ * Return true only for the online Whisper provider.
+ * The offline provider ID is 'offline-whisper' (uses Vosk under the hood)
+ * and must NOT be treated as the online Whisper provider.
+ */
+function isOnlineWhisper(providerId: string | null | undefined): boolean {
+  return !!providerId && providerId === 'online-whisper';
+}
+
 function getCGEConfig(providerId: string | null | undefined): CGEConfig {
-  if (providerId && providerId.includes('whisper') && !providerId.includes('legacy')) {
+  if (isOnlineWhisper(providerId)) {
     return CGE_CONFIG_ONLINE_WHISPER;
   }
   return CGE_CONFIG_OFFLINE_VOSK;
@@ -234,13 +273,14 @@ function getCGEConfig(providerId: string | null | undefined): CGEConfig {
 
 /**
  * Return the collision groups map for the active provider.
- * Only offline-vosk uses collision groups; online-whisper does not.
+ * Only offline-vosk / offline-whisper uses collision groups.
+ * online-whisper is accurate enough to not need them.
  */
 function getCGECollisionGroups(
   providerId: string | null | undefined,
 ): Record<string, string[]> | undefined {
-  if (providerId && providerId.includes('whisper') && !providerId.includes('legacy')) {
-    return undefined; // Whisper is accurate enough — no collision groups needed
+  if (isOnlineWhisper(providerId)) {
+    return undefined; // Online Whisper is accurate enough — no collision groups needed
   }
   return VOSK_COLLISION_GROUPS;
 }
@@ -338,9 +378,22 @@ export const useLocalWhisper = ({
         // ── Confidence Gating Engine ─────────────────────────────────────
         const cgeConfig = getCGEConfig(cb.activeSpeechProviderId);
         const cgeCollisionGroups = getCGECollisionGroups(cb.activeSpeechProviderId);
+
+        // QC10: If the raw transcript contained a phonetic alias, cap the
+        // confidence at ALIAS_CONFIDENCE_HINT (0.80) to ensure the result
+        // is routed to the Confidence Queue rather than auto-projected.
+        const usedAlias = transcriptContainsAlias(trimmed);
+        const effectiveParserConfidence = usedAlias
+          ? Math.min(command.confidence, ALIAS_CONFIDENCE_HINT)
+          : command.confidence;
+
+        if (usedAlias) {
+          console.log('[CGE/QC10] Phonetic alias detected in transcript — capping confidence to', ALIAS_CONFIDENCE_HINT);
+        }
+
         const cgeInput = {
           commandType: command.commandType,
-          confidence: command.confidence,
+          confidence: effectiveParserConfidence,
           hasChapterCue: command.hasChapterCue ?? false,
           hasVerseCue: command.hasVerseCue ?? false,
           hasBook: !!command.parsedReference.book,

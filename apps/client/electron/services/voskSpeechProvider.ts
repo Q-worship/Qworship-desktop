@@ -109,6 +109,36 @@ const TRANSCRIPT_NORMALIZATION_RULES: Array<[RegExp, string]> = [
   [/\b2 timothy\b/gi, "second timothy"],
   [/\b1 peter\b/gi, "first peter"],
   [/\b2 peter\b/gi, "second peter"],
+  // ── QC10 Phonetic Alias Rules ─────────────────────────────────────────────
+  // These aliases are short, phonetically simple words that Vosk can reliably
+  // produce when the full book name is acoustically difficult. They are mapped
+  // to the canonical book name here so the parser receives the correct name.
+  // Alias matches are flagged for Confidence Queue routing (0.80 confidence).
+  //
+  // Zechariah aliases: "zach", "zack", "zacka"
+  [/\bzacka\b/gi, "zechariah"],
+  [/\bzack\b/gi, "zechariah"],
+  [/\bzach\b/gi, "zechariah"],
+  // Malachi aliases: "mal", "mali"
+  [/\bmali\b/gi, "malachi"],
+  [/\bmal\b/gi, "malachi"],
+  // Nahum aliases: "nah" (in addition to "nahum" already in grammar)
+  [/\bnah\b/gi, "nahum"],
+  // Habakkuk aliases: "hab", "habba"
+  [/\bhabba\b/gi, "habakkuk"],
+  [/\bhab\b/gi, "habakkuk"],
+  // Ecclesiastes aliases: "eccl", "eccles"
+  [/\beccles\b/gi, "ecclesiastes"],
+  [/\beccl\b/gi, "ecclesiastes"],
+  // Obadiah aliases: "obad"
+  [/\bobad\b/gi, "obadiah"],
+  // Zephaniah aliases: "zeph"
+  [/\bzeph\b/gi, "zephaniah"],
+  // Philippians short alias: "phil" (only when followed by chapter/verse context)
+  // Note: "phil" alone is ambiguous (Philemon vs Philippians) — the CGE will
+  // route to Confidence Queue where the pastor can select the correct book.
+  [/\bphil\b/gi, "philippians"],
+  // ── End QC10 Phonetic Alias Rules ──────────────────────────────────────────
   [/\bshow me the amplified\b/gi, "show me the amplified bible"],
   [/\bshow me niv\b/gi, "show me the niv"],
   [/\bshow me kjv\b/gi, "show me the kjv"],
@@ -127,7 +157,7 @@ const WEAK_TRANSCRIPT_PATTERNS = [
   /^(?:show|open|read|bring|take|go)(?: me)?(?: to)?(?: the)? [a-z]+$/i,
 ];
 
-const BIBLE_SIGNAL_REGEX = /\b(?:chapter|verse|verses|psalm|psalms|niv|kjv|nkjv|esv|amp|msg|message|amplified|bible|genesis|exodus|leviticus|numbers|deuteronomy|joshua|judges|ruth|samuel|kings|chronicles|ezra|nehemiah|esther|job|proverbs|ecclesiastes|isaiah|jeremiah|ezekiel|daniel|hosea|joel|amos|obadiah|jonah|micah|nahum|habakkuk|zephaniah|haggai|zechariah|malachi|matthew|mark|luke|john|acts|romans|corinthians|galatians|galations|galatian|galashans|galayshans|ephesians|philippians|philipians|philippian|philippeans|philipeans|philippines|philipines|filipians|filipeans|colossians|colosians|colossian|coloshans|coloshuns|thessalonians|thesalonians|thessalonian|thesalonian|thessaloneans|thasalonians|timothy|titus|philemon|phillemon|philamen|philamon|phylemon|fileman|filemon|hebrews|james|peter|jude|revelation|first|second|third|1|2|3)\b/i;
+const BIBLE_SIGNAL_REGEX = /\b(?:chapter|verse|verses|psalm|psalms|niv|kjv|nkjv|esv|amp|msg|message|amplified|bible|genesis|exodus|leviticus|numbers|deuteronomy|joshua|judges|ruth|samuel|kings|chronicles|ezra|nehemiah|esther|job|proverbs|ecclesiastes|eccl|eccles|isaiah|jeremiah|ezekiel|daniel|hosea|joel|amos|obadiah|obad|jonah|micah|nahum|nah|habakkuk|hab|habba|zephaniah|zeph|haggai|zechariah|zach|zack|zacka|malachi|mal|mali|matthew|mark|luke|john|acts|romans|corinthians|galatians|galations|galatian|galashans|galayshans|ephesians|philippians|philipians|philippian|philippeans|philipeans|philippines|philipines|filipians|filipeans|phil|colossians|colosians|colossian|coloshans|coloshuns|thessalonians|thesalonians|thessalonian|thesalonian|thessaloneans|thasalonians|timothy|titus|philemon|phillemon|philamen|philamon|phylemon|fileman|filemon|hebrews|james|peter|jude|revelation|first|second|third|1|2|3)\b/i;
 const BIBLE_GRAMMAR = [
   "genesis",
   "genesis chapter",
@@ -178,6 +208,13 @@ const BIBLE_GRAMMAR = [
   "ecclesiastes",
   "ecclesiastes chapter",
   "show me ecclesiastes",
+  // QC10 Ecclesiastes aliases
+  "eccl",
+  "eccl chapter",
+  "show me eccl",
+  "eccles",
+  "eccles chapter",
+  "show me eccles",
   "song of solomon",
   "isaiah",
   "jeremiah",
@@ -188,26 +225,62 @@ const BIBLE_GRAMMAR = [
   "joel",
   "amos",
   "obadiah",
+  // QC10 Obadiah aliases
+  "obad",
+  "obad chapter",
+  "show me obad",
   "jonah",
   "micah",
   "nahum",
   "nahum chapter",
   "show me nahum",
+  // QC10 Nahum aliases
+  "nah",
+  "nah chapter",
+  "show me nah",
   "habakkuk",
   "habakkuk chapter",
   "show me habakkuk",
+  // QC10 Habakkuk aliases
+  "hab",
+  "hab chapter",
+  "show me hab",
+  "habba",
+  "habba chapter",
+  "show me habba",
   "zephaniah",
   "zephaniah chapter",
   "show me zephaniah",
+  // QC10 Zephaniah aliases
+  "zeph",
+  "zeph chapter",
+  "show me zeph",
   "haggai",
   "haggai chapter",
   "show me haggai",
   "zechariah",
   "zechariah chapter",
   "show me zechariah",
+  // QC10 Zechariah aliases
+  "zach",
+  "zach chapter",
+  "show me zach",
+  "zack",
+  "zack chapter",
+  "show me zack",
+  "zacka",
+  "zacka chapter",
+  "show me zacka",
   "malachi",
   "malachi chapter",
   "show me malachi",
+  // QC10 Malachi aliases
+  "mal",
+  "mal chapter",
+  "show me mal",
+  "mali",
+  "mali chapter",
+  "show me mali",
   "matthew",
   "matthew chapter",
   "mathew",
@@ -254,6 +327,10 @@ const BIBLE_GRAMMAR = [
   "philipians",
   "philippians chapter",
   "show me philippians",
+  // QC10 Philippians short alias
+  "phil",
+  "phil chapter",
+  "show me phil",
   "show me philipians",
   "philippian",
   "philippeans",

@@ -436,6 +436,35 @@ const BOOK_ALIASES: Record<string, string> = {
   jame: "James",
   revelations: "Revelation",
   revelacion: "Revelation",
+
+  // ─── QC10 Phonetic Alias Mappings ───────────────────────────────────────────
+  // Short aliases for acoustically difficult OT/NT books.
+  // These are added to the Vosk grammar so the engine can produce them,
+  // and mapped here so the parser resolves them to canonical book names.
+  // All alias-matched commands are routed to the Confidence Queue (0.80).
+  //
+  // Zechariah
+  zach: "Zechariah",
+  zack: "Zechariah",
+  zacka: "Zechariah",
+  // Malachi
+  mal: "Malachi",
+  mali: "Malachi",
+  // Nahum
+  nah: "Nahum",
+  // Habakkuk
+  hab: "Habakkuk",
+  habba: "Habakkuk",
+  // Ecclesiastes
+  eccl: "Ecclesiastes",
+  eccles: "Ecclesiastes",
+  // Obadiah
+  obad: "Obadiah",
+  // Zephaniah
+  zeph: "Zephaniah",
+  // Philippians short alias (ambiguous with Philemon — CGE routes to queue)
+  phil: "Philippians",
+  // ─── End QC10 Phonetic Alias Mappings ───────────────────────────────────────
 };
 
 const ALL_CANONICAL_BOOKS = [...new Set(Object.values(BOOK_ALIASES))];
