@@ -114,6 +114,16 @@ export interface BibleSearchResult {
   }>;
   version: string;
   formattedReference: string;
+  /** QC38: Set when the requested verse was out of range and was clamped to the last valid verse */
+  clampedFrom?: number;
+  /** QC38: Human-readable note explaining the clamp */
+  clampNote?: string;
+  /**
+   * QC52: Full chapter verses — all verses in the detected book+chapter.
+   * Populated by searchBible so the client can display the entire chapter
+   * in the middle section and allow click-to-project navigation.
+   */
+  chapterVerses?: Array<{ number: number; text: string }>;
 }
 
 export interface VoiceCommand {
@@ -165,33 +175,40 @@ export class BibleService {
     "1samuel": "1 Samuel",
     "1sam": "1 Samuel",
     "1sa": "1 Samuel",
+    "1 sam": "1 Samuel",
     "second samuel": "2 Samuel",
     "2 samuel": "2 Samuel",
     "2samuel": "2 Samuel",
     "2sam": "2 Samuel",
     "2sa": "2 Samuel",
+    "2 sam": "2 Samuel",
     "first kings": "1 Kings",
     "1 kings": "1 Kings",
     "1kings": "1 Kings",
     "1ki": "1 Kings",
+    "1 kgs": "1 Kings",
     "second kings": "2 Kings",
     "2 kings": "2 Kings",
     "2kings": "2 Kings",
     "2ki": "2 Kings",
+    "2 kgs": "2 Kings",
     "first chronicles": "1 Chronicles",
     "1 chronicles": "1 Chronicles",
     "1chronicles": "1 Chronicles",
     "1ch": "1 Chronicles",
+    "1 chron": "1 Chronicles",
     "second chronicles": "2 Chronicles",
     "2 chronicles": "2 Chronicles",
     "2chronicles": "2 Chronicles",
     "2ch": "2 Chronicles",
+    "2 chron": "2 Chronicles",
     ezra: "Ezra",
     ezr: "Ezra",
     nehemiah: "Nehemiah",
     neh: "Nehemiah",
     esther: "Esther",
     est: "Esther",
+    esth: "Esther",
     job: "Job",
     psalms: "Psalms",
     psalm: "Psalms",
@@ -214,6 +231,7 @@ export class BibleService {
     lam: "Lamentations",
     ezekiel: "Ezekiel",
     eze: "Ezekiel",
+    ezek: "Ezekiel",
     daniel: "Daniel",
     dan: "Daniel",
     hosea: "Hosea",
@@ -224,6 +242,7 @@ export class BibleService {
     amo: "Amos",
     obadiah: "Obadiah",
     oba: "Obadiah",
+    obad: "Obadiah",
     jonah: "Jonah",
     jon: "Jonah",
     micah: "Micah",
@@ -234,10 +253,12 @@ export class BibleService {
     hab: "Habakkuk",
     zephaniah: "Zephaniah",
     zep: "Zephaniah",
+    zeph: "Zephaniah",
     haggai: "Haggai",
     hag: "Haggai",
     zechariah: "Zechariah",
     zec: "Zechariah",
+    zech: "Zechariah",
     malachi: "Malachi",
     mal: "Malachi",
     matthew: "Matthew",
@@ -257,10 +278,12 @@ export class BibleService {
     "1 corinthians": "1 Corinthians",
     "1corinthians": "1 Corinthians",
     "1co": "1 Corinthians",
+    "1 cor": "1 Corinthians",
     "second corinthians": "2 Corinthians",
     "2 corinthians": "2 Corinthians",
     "2corinthians": "2 Corinthians",
     "2co": "2 Corinthians",
+    "2 cor": "2 Corinthians",
     galatians: "Galatians",
     gal: "Galatians",
     ephesians: "Ephesians",
@@ -270,26 +293,41 @@ export class BibleService {
     phi: "Philippians",
     colossians: "Colossians",
     col: "Colossians",
+    colosians: "Colossians",
+    collossians: "Colossians",
+    colossions: "Colossians",
+    colosions: "Colossians",
+    colosseons: "Colossians",
+    colosseans: "Colossians",
+    colossean: "Colossians",
+    colossian: "Colossians",
+    kolossians: "Colossians",
+    koloshians: "Colossians",
     "first thessalonians": "1 Thessalonians",
     "1 thessalonians": "1 Thessalonians",
     "1thessalonians": "1 Thessalonians",
     "1th": "1 Thessalonians",
+    "1 thess": "1 Thessalonians",
     "second thessalonians": "2 Thessalonians",
     "2 thessalonians": "2 Thessalonians",
     "2thessalonians": "2 Thessalonians",
     "2th": "2 Thessalonians",
+    "2 thess": "2 Thessalonians",
     "first timothy": "1 Timothy",
     "1 timothy": "1 Timothy",
     "1timothy": "1 Timothy",
     "1ti": "1 Timothy",
+    "1 tim": "1 Timothy",
     "second timothy": "2 Timothy",
     "2 timothy": "2 Timothy",
     "2timothy": "2 Timothy",
     "2ti": "2 Timothy",
+    "2 tim": "2 Timothy",
     titus: "Titus",
     tit: "Titus",
     philemon: "Philemon",
     phm: "Philemon",
+    philem: "Philemon",
     hebrews: "Hebrews",
     heb: "Hebrews",
     james: "James",
@@ -298,10 +336,12 @@ export class BibleService {
     "1 peter": "1 Peter",
     "1peter": "1 Peter",
     "1pe": "1 Peter",
+    "1 pet": "1 Peter",
     "second peter": "2 Peter",
     "2 peter": "2 Peter",
     "2peter": "2 Peter",
     "2pe": "2 Peter",
+    "2 pet": "2 Peter",
     "first john": "1 John",
     "1 john": "1 John",
     "1john": "1 John",
@@ -799,17 +839,20 @@ export class BibleService {
 
     console.log(`After number normalization: "${normalizedText}"`);
 
+    // QC43 Fix 3: Book name group now also handles numbered books (1 Kings, 2 Samuel etc.)
+    // by using (?:\d\s+)?[a-z]+ so that the ordinal digit is included in the book capture.
+    const BOOK_PATTERN = '(?:\\d\\s+)?[a-z]+(?:\\s+[a-z]+)*';
     const patterns = [
-      // Conversational format: "In Jeremiah chapter 1, verse 2" or "in jeremiah chapter one, verse two"
-      /(?:in\s+|show me\s+|find\s+|read\s+|go to\s+)?(?:book of\s+|the\s+)?([a-z]+(?:\s+[a-z]+)*)\s+chapter\s+(\d+),?\s+verse\s+(\d+)/i,
-      // "show me john chapter 3 verse 16" - Handle verbose voice commands
-      /(?:show me |find |read |go to )?(?:book of |the )?([a-z]+(?:\s+[a-z]+)*)\s+chapter\s+(\d+)[,\s]+verse\s+(\d+)/i,
-      // "book chapter:verse-verse" (John 3:16, Genesis 1:1-3)
-      /(?:show me |find |read |go to )?(?:book of |the )?([a-z]+(?:\s+[a-z]+)*)\s+(\d+):(\d+)(?:[-–—](\d+))?/i,
-      // "book chapter verse to verse" (John 3 16 to 17, Jeremiah 4 6 to 7)
-      /(?:show me |find |read |go to )?(?:book of |the )?([a-z]+(?:\s+[a-z]+)*)\s+(?:chapter\s+)?(\d+)\s+(?:verse\s+)?(\d+)(?:\s+(?:to|through|and)\s+(\d+))?/i,
-      // Simple "book chapter verse" (John 3 16, Genesis 1 1)
-      /(?:show me |find |read |go to )?(?:book of |the )?([a-z]+(?:\s+[a-z]+)*)\s+(\d+)\s+(\d+)/i,
+      // Conversational numbered-book format: "from the book of 1 kings chapter 2 verse 2"
+      new RegExp(`(?:in\\s+|show me\\s+|find\\s+|read\\s+|go to\\s+|from\\s+)?(?:book of\\s+|the\\s+)?(${BOOK_PATTERN})\\s+chapter\\s+(\\d+),?\\s+verse\\s+(\\d+)`, 'i'),
+      // "show me 1 kings chapter 2 verse 2" - verbose numbered-book voice commands
+      new RegExp(`(?:show me |find |read |go to )?(?:book of |the )?(${BOOK_PATTERN})\\s+chapter\\s+(\\d+)[,\\s]+verse\\s+(\\d+)`, 'i'),
+      // "1 kings 2:2" (numbered colon format)
+      new RegExp(`(?:show me |find |read |go to )?(?:book of |the )?(${BOOK_PATTERN})\\s+(\\d+):(\\d+)(?:[-\u2013\u2014](\\d+))?`, 'i'),
+      // "1 kings 2 2 to 5" (numbered space format with optional range)
+      new RegExp(`(?:show me |find |read |go to )?(?:book of |the )?(${BOOK_PATTERN})\\s+(?:chapter\\s+)?(\\d+)\\s+(?:verse\\s+)?(\\d+)(?:\\s+(?:to|through|and)\\s+(\\d+))?`, 'i'),
+      // Simple "1 kings 2 2" (numbered space format)
+      new RegExp(`(?:show me |find |read |go to )?(?:book of |the )?(${BOOK_PATTERN})\\s+(\\d+)\\s+(\\d+)`, 'i'),
     ];
 
     for (let i = 0; i < patterns.length; i++) {
@@ -856,7 +899,9 @@ export class BibleService {
         }
         for (const [alias, bookName] of Object.entries(this.BOOK_ALIASES)) {
           if (alias.length < 3 || bookText.length < 3) continue;
-          if (alias.includes(bookText) || bookText.includes(alias)) {
+          // SAFE: only match if the alias is a PREFIX of bookText or bookText is a PREFIX of alias.
+          // The previous bidirectional includes() check caused "colossions".includes("jon") → John.
+          if (bookText.startsWith(alias) || alias.startsWith(bookText)) {
             console.log(
               `Found partial book match: ${bookText} -> ${bookName} (via ${alias})`,
             );
@@ -981,13 +1026,15 @@ export class BibleService {
     console.log(`After number normalization: "${normalizedText}"`);
 
     // More flexible patterns for voice input including punctuation
+    // QC43 Fix 3: Use BOOK_PAT to also capture numbered books like "1 kings", "2 samuel"
+    const BOOK_PAT = '(?:\\d\\s+)?[a-z]+(?:\\s+[a-z]+)*';
     const patterns = [
-      // "john 3:16" format
-      /\b([a-z]+(?:\s+[a-z]+)*)\s+(\d+):(\d+)(?:-(\d+))?/i,
-      // "john 3 16" or "john three sixteen" (two separate numbers)
-      /\b([a-z]+(?:\s+[a-z]+)*)\s+(\d+)\s+(\d+)/i,
-      // "john chapter 3 verse 16"
-      /\b([a-z]+(?:\s+[a-z]+)*)\s+(?:chapter\s+)?(\d+)\s+(?:verse\s+)?(\d+)/i,
+      // "1 kings 2:2" or "john 3:16" format (numbered + unnumbered books)
+      new RegExp(`\\b(${BOOK_PAT})\\s+(\\d+):(\\d+)(?:-(\\d+))?`, 'i'),
+      // "1 kings 2 2" or "john 3 16" (two separate numbers)
+      new RegExp(`\\b(${BOOK_PAT})\\s+(\\d+)\\s+(\\d+)`, 'i'),
+      // "1 kings chapter 2 verse 2" or "john chapter 3 verse 16"
+      new RegExp(`\\b(${BOOK_PAT})\\s+(?:chapter\\s+)?(\\d+)\\s+(?:verse\\s+)?(\\d+)`, 'i'),
       // "john, 316" or "john 316" (compressed 3-digit format from voice recognition)
       /\b([a-z]+(?:\s+[a-z]+)*)[,\s]*(\d)(\d{2})[.,]*$/i,
       // Handle "john, 316." format specifically
@@ -1059,9 +1106,10 @@ export class BibleService {
           );
         }
 
-        // Try partial matches
+        // Try partial matches (prefix-only — bidirectional includes() caused wrong-book substitutions)
         for (const [alias, bookName] of Object.entries(this.BOOK_ALIASES)) {
-          if (alias.includes(bookText) || bookText.includes(alias)) {
+          if (alias.length < 3 || bookText.length < 3) continue;
+          if (bookText.startsWith(alias) || alias.startsWith(bookText)) {
             console.log(
               `Lenient found partial book match: ${bookText} -> ${bookName} (via ${alias})`,
             );
@@ -1174,6 +1222,11 @@ export class BibleService {
       /^(the\s+)?scripture\s+(from\s+)?/i,
       /^(the\s+)?verse\s+(from\s+)?/i,
       /^(the\s+)?text\s+(from\s+)?/i,
+      // Pastoral/preaching phrases — e.g. "the words of Psalm 21"
+      /^(?:with\s+)?the\s+words\s+of\s+(?:the\s+)?(?:book of\s+)?/i,
+      /^(?:with\s+)?(?:the\s+)?words\s+from\s+(?:the\s+)?(?:book of\s+)?/i,
+      /^(?:start(?:ing)?\s+(?:off\s+)?)?today\s+with\s+(?:the\s+)?(?:words\s+of\s+)?(?:book of\s+)?/i,
+      /^we\s+are\s+going\s+to\s+start\s+(?:off\s+)?today\s+with\s+(?:the\s+)?(?:words\s+of\s+)?(?:book of\s+)?/i,
     ];
 
     for (const prefix of prefixes) {
@@ -1197,6 +1250,11 @@ export class BibleService {
       /\s+on (the\s+)?screen$/i,
       /\s+on (the\s+)?display$/i,
       /\s+for (the\s+)?(congregation|church|service|everyone)$/i,
+      // Trailing conversational content after a Bible reference
+      /\s+where\s+(?:god|jesus|the lord|paul|he|she|it|david|moses)\s+.+$/i,
+      /\s+which\s+(?:says|talks|speaks|reads|mentions).+$/i,
+      /\s+(?:that|which)\s+(?:talks|speaks|says|reads)\s+about.+$/i,
+      /\s+(?:about|regarding|concerning)\s+(?:god|jesus|the lord|faith|love|hope|grace|salvation).+$/i,
     ];
 
     for (const suffix of suffixes) {
@@ -1254,17 +1312,37 @@ export class BibleService {
     // First normalize spoken numbers
     result = this.normalizeSpokenNumbers(result);
 
+    // Fix Whisper digit-splitting: "verse 1 4" → "verse 14", "verse 2 3" → "verse 23"
+    // Whisper sometimes splits a two-digit number into two separate tokens
+    result = result.replace(
+      /\b(verse[s]?\s+)(\d)\s+(\d)\b/gi,
+      (_, v, d1, d2) => `${v}${d1}${d2}`,
+    );
+    result = result.replace(
+      /\b(chapter\s+)(\d)\s+(\d)\b/gi,
+      (_, c, d1, d2) => `${c}${d1}${d2}`,
+    );
+
     // Handle "chapter X verse Y" or "chapter X verses Y through Z"
     result = result.replace(
       /chapter\s+(\d+)\s+verse[s]?\s+(\d+)(?:\s+(?:through|to|thru|-)\s+(\d+))?/gi,
       (_, ch, v1, v2) => (v2 ? `${ch}:${v1}-${v2}` : `${ch}:${v1}`),
     );
 
+    // Handle "chapter X" followed by a bare number (Whisper drops "verse" keyword)
+    // e.g. "romans chapter 7 14" → "romans 7:14"
+    result = result.replace(
+      /chapter\s+(\d+)\s+(\d+)(?!\s*[-:])/gi,
+      (_, ch, v) => `${ch}:${v}`,
+    );
+
     // Handle "chapter X" alone (no verse specified, default to verse 1)
     result = result.replace(/chapter\s+(\d+)(?!\s*[:\d])/gi, "$1:1");
 
     // Handle "verse X" without chapter (keep as is for context-aware parsing)
+    // Remove any stray space before the colon
     result = result.replace(/verse\s+(\d+)/gi, ":$1");
+    result = result.replace(/\s+:/g, ":");
 
     return result.trim();
   }
@@ -1335,6 +1413,16 @@ export class BibleService {
     "close eye": "colossians",
     collision: "colossians",
     collisions: "colossians",
+    colossions: "colossians",
+    colosions: "colossians",
+    colosseons: "colossians",
+    colosseans: "colossians",
+    colossean: "colossians",
+    colossian: "colossians",
+    colosians: "colossians",
+    collossians: "colossians",
+    kolossians: "colossians",
+    koloshians: "colossians",
     philippine: "philippians",
     "philippine is": "philippians",
     "fill up pins": "philippians",
@@ -1499,6 +1587,32 @@ export class BibleService {
   ]);
 
   private static readonly KEYWORD_CORRECTIONS: Array<[RegExp, string]> = [
+    // ── Whisper number mishearings ─────────────────────────────────────────────────
+    // Whisper often transcribes spoken digits as words with slight variations
+    [/\bheaven\b/gi, "seven"],          // "chapter heaven" → "chapter seven"
+    [/\bfor\s+teen\b/gi, "fourteen"],   // "for teen" → "fourteen"
+    [/\bfor\s+team\b/gi, "fourteen"],
+    [/\bfour\s+teen\b/gi, "fourteen"],
+    [/\ba\s+level\b/gi, "eleven"],      // "a level" → "eleven"
+    [/\belevan\b/gi, "eleven"],
+    [/\beleven\s+th\b/gi, "eleventh"],
+    [/\btwelve\s+th\b/gi, "twelfth"],
+    [/\bthirty\s+th\b/gi, "thirtieth"],
+    [/\btwenty\s+th\b/gi, "twentieth"],
+    [/\bforty\s+th\b/gi, "fortieth"],
+    [/\bfifty\s+th\b/gi, "fiftieth"],
+    [/\bsixty\s+th\b/gi, "sixtieth"],
+    [/\bseventy\s+th\b/gi, "seventieth"],
+    [/\beighty\s+th\b/gi, "eightieth"],
+    [/\bninety\s+th\b/gi, "ninetieth"],
+    // Whisper digit-word splits
+    [/\bfif\s+teen\b/gi, "fifteen"],
+    [/\bsix\s+teen\b/gi, "sixteen"],
+    [/\bsev\s+en\s+teen\b/gi, "seventeen"],
+    [/\beigh\s+teen\b/gi, "eighteen"],
+    [/\bnine\s+teen\b/gi, "nineteen"],
+    [/\bthir\s+teen\b/gi, "thirteen"],
+    // ── "was [number]" → "verse [number]" (gated on biblical context) ────────
     [/\bwas\s+to\b/gi, "verse 2"],
     [/\bwas\s+too\b/gi, "verse 2"],
     [/\bwas\s+two\b/gi, "verse 2"],
@@ -1567,19 +1681,9 @@ export class BibleService {
     }
 
 
-    result = result
-      .replace(/\bone\b/g, "1")
-      .replace(/\btwo\b/g, "2")
-      .replace(/\bthree\b/g, "3")
-      .replace(/\bfour\b/g, "4")
-      .replace(/\bfive\b/g, "5")
-      .replace(/\bsix\b/g, "6")
-      .replace(/\bseven\b/g, "7")
-      .replace(/\beight\b/g, "8")
-      .replace(/\bnine\b/g, "9")
-      .replace(/\bten\b/g, "10")
-      .replace(/\beleven\b/g, "11")
-      .replace(/\btwelve\b/g, "12");
+    // Number-word → digit conversion is handled by normalizeSpokenNumbers(),
+    // which is called from normalizeSpokenChapterVerse() AFTER phonetic corrections.
+    // Do NOT duplicate number replacement here — it caused ordinal conflicts.
 
     const hasChapterVerseContext =
       /\b(chapter|verse|\d+\s*:\s*\d+|\d+\s+\d+)\b/i.test(result);
@@ -1769,6 +1873,14 @@ export class BibleService {
       }
     }
 
+    // ========== QC40 Phase 3: Sliding-window scanner ==========
+    const slidingResult = this.scanForBibleReference(text);
+    if (slidingResult) {
+      const dur = performance.now() - startTime;
+      console.log("Stage 0.1: Sliding-window in " + dur.toFixed(2) + "ms");
+      return { originalText: text, parsedReference: slidingResult, commandType: "lookup", confidence: 0.93 };
+    }
+
     // ========== STAGE 0.5: Phonetic corrections for ASR misrecognitions ==========
     // Must run BEFORE spoken number normalization so "first of the" → "first samuel" works
     // (normalizeSpokenNumbers converts "first" → "1" which would break phonetic matching)
@@ -1852,11 +1964,95 @@ export class BibleService {
     }
 
     // ========== FALLBACK: Original parser ==========
+    // QC51: Only invoke the legacy parser if the transcript has at least 4 words.
+    // Short fragments like "that", "where", "you know" cannot contain a valid
+    // Bible reference and the legacy parser produces garbage on them.
+    const wordCount = text.trim().split(/\s+/).filter(w => w.length > 0).length;
+    if (wordCount < 4) {
+      console.log(`[AudioSocket] Legacy fallback skipped — too short (${wordCount} words): "${text.trim().slice(0, 60)}"`);
+      return { originalText: text, parsedReference: null, commandType: 'lookup', confidence: 0 };
+    }
     const duration = performance.now() - startTime;
     console.log(
       `⚠️ Falling back to legacy parser after ${duration.toFixed(2)}ms`,
     );
     return this.parseVoiceCommand(text);
+  }
+
+  /**
+   * QC40 Phase 3: Sliding-window scanner for conversational Bible references.
+   *
+   * Scans the ENTIRE input text (not just the last 25 words) using a sliding
+   * window of 1-3 words to find a Bible book name, preceded by an optional
+   * conversational anchor phrase (e.g. "as written in", "turn to", "in").
+   * Falls back to a raw sliding-window scan without any anchor.
+   *
+   * @param text - Raw (already lower-cased + phonetic-corrected) transcript text
+   * @returns BibleReference if a valid book+chapter+verse is found, else null
+   */
+  private static scanForBibleReference(text: string): BibleReference | null {
+    const ANCHORS: RegExp[] = [
+      /\b(?:show me|find|read|go to|open|turn to|flip to)\s+(?:the\s+)?(?:book of\s+)?/gi,
+      /\b(?:book of|the book of)\s+/gi,
+      /\bas written in\s+(?:the\s+)?(?:book of\s+)?/gi,
+      /\bas it says in\s+(?:the\s+)?(?:book of\s+)?/gi,
+      /\bas stated in\s+(?:the\s+)?(?:book of\s+)?/gi,
+      /\bas found in\s+(?:the\s+)?(?:book of\s+)?/gi,
+      /\bas recorded in\s+(?:the\s+)?(?:book of\s+)?/gi,
+      /\bthe scripture in\s+(?:the\s+)?(?:book of\s+)?/gi,
+      /\bthe passage in\s+(?:the\s+)?(?:book of\s+)?/gi,
+      /\bscripture says\s+(?:in\s+)?(?:the\s+)?(?:book of\s+)?/gi,
+      /\bthe bible says\s+(?:in\s+)?(?:the\s+)?(?:book of\s+)?/gi,
+      /\bthe word says\s+(?:in\s+)?(?:the\s+)?(?:book of\s+)?/gi,
+      /\bit is written in\s+(?:the\s+)?(?:book of\s+)?/gi,
+      /\bit says in\s+(?:the\s+)?(?:book of\s+)?/gi,
+      /\bwe read in\s+(?:the\s+)?(?:book of\s+)?/gi,
+      /\bwe find in\s+(?:the\s+)?(?:book of\s+)?/gi,
+      /\blook at\s+(?:the\s+)?(?:book of\s+)?/gi,
+      /\blet us look at\s+(?:the\s+)?(?:book of\s+)?/gi,
+      /\bturn your bibles to\s+(?:the\s+)?(?:book of\s+)?/gi,
+      /\bturn with me to\s+(?:the\s+)?(?:book of\s+)?/gi,
+      /\bour text (?:is|comes) from\s+(?:the\s+)?(?:book of\s+)?/gi,
+      /\bfound in\s+(?:the\s+)?(?:book of\s+)?/gi,
+      /\bwritten in\s+(?:the\s+)?(?:book of\s+)?/gi,
+      /\baccording to\s+(?:the\s+)?(?:book of\s+)?/gi,
+      /\bfrom the book of\s+/gi,
+      /\bin the book of\s+/gi,
+      /\bin\s+(?:the\s+)?(?:book of\s+)?/gi,
+      // Pastoral/preaching phrases — e.g. "the words of Psalm 21", "with the words of John 3"
+      /\b(?:with\s+)?the\s+words\s+of\s+(?:the\s+)?(?:book of\s+)?/gi,
+      /\b(?:with\s+)?(?:the\s+)?words\s+from\s+(?:the\s+)?(?:book of\s+)?/gi,
+      /\bstart(?:ing)?\s+(?:off\s+)?(?:today\s+)?with\s+(?:the\s+)?(?:words\s+of\s+)?(?:book of\s+)?/gi,
+      /\bthe\s+(?:scripture|passage|text|verse)\s+(?:is\s+)?(?:from\s+)?(?:found\s+in\s+)?(?:the\s+)?(?:book of\s+)?/gi,
+      /\btoday(?:'s|\s+we\s+are\s+looking\s+at)?\s+(?:the\s+)?(?:words\s+of\s+)?(?:book of\s+)?/gi,
+      /\b(?:let(?:'s|\s+us)\s+)?(?:look\s+at|read|open)\s+(?:the\s+)?(?:words\s+of\s+)?(?:book of\s+)?/gi,
+    ];
+    const lowerText = text.toLowerCase().trim();
+    let normalizedText = this.normalizeSpokenChapterVerse(this.applyPhoneticCorrections(lowerText));
+    // Pass 1: anchor-based scan
+    for (const anchor of ANCHORS) {
+      anchor.lastIndex = 0;
+      const m = anchor.exec(normalizedText);
+      if (m) {
+        const after = normalizedText.slice(m.index + m[0].length).trim();
+        if (!after) continue;
+        const { book, remainingText } = extractBookFromCommand(after);
+        if (book) {
+          const cv = parseChapterVerse(remainingText);
+          if (cv && cv.chapter > 0 && cv.verseStart > 0) {
+            console.log(`[SlidingWindow] Anchor: ${m[0].trim()} -> ${book.name} ${cv.chapter}:${cv.verseStart}`);
+            return { book: book.name, chapter: cv.chapter, verseStart: cv.verseStart, verseEnd: cv.verseEnd, version: 'kjv' };
+          }
+        }
+      }
+    }
+    // QC51: Pass 2 (raw sliding-window with no anchor) has been REMOVED.
+    // It matched Bible book names as substrings of ordinary words and combined
+    // them with any nearby number in the sentence, causing false scripture
+    // projections from normal speech (e.g. "Proverbs" in a sentence, "Amos" in
+    // "the Amos high", "Esther" from "let's see the NIV").
+    // Only anchor-based matches (Pass 1 above) are trusted.
+    return null;
   }
 
   /**
@@ -1991,48 +2187,58 @@ export class BibleService {
   }
 
   private static normalizeSpokenNumbers(text: string): string {
-    const numberWords: Record<string, string> = {
-      one: "1",
-      two: "2",
-      three: "3",
-      four: "4",
-      five: "5",
-      six: "6",
-      seven: "7",
-      eight: "8",
-      nine: "9",
-      ten: "10",
-      eleven: "11",
-      twelve: "12",
-      thirteen: "13",
-      fourteen: "14",
-      fifteen: "15",
-      sixteen: "16",
-      seventeen: "17",
-      eighteen: "18",
-      nineteen: "19",
-      twenty: "20",
-      thirty: "30",
-      forty: "40",
-      fifty: "50",
-      sixty: "60",
-      seventy: "70",
-      eighty: "80",
-      ninety: "90",
-      hundred: "100",
-      first: "1",
-      second: "2",
-      third: "3",
+    // ── Ones ──────────────────────────────────────────────────────────────────
+    const ones: Record<string, number> = {
+      zero: 0, one: 1, two: 2, three: 3, four: 4, five: 5, six: 6, seven: 7,
+      eight: 8, nine: 9, ten: 10, eleven: 11, twelve: 12, thirteen: 13,
+      fourteen: 14, fifteen: 15, sixteen: 16, seventeen: 17, eighteen: 18,
+      nineteen: 19,
+      // Ordinals (Whisper often outputs "chapter seventh" instead of "chapter seven")
+      first: 1, second: 2, third: 3, fourth: 4, fifth: 5, sixth: 6, seventh: 7,
+      eighth: 8, ninth: 9, tenth: 10, eleventh: 11, twelfth: 12,
+      thirteenth: 13, fourteenth: 14, fifteenth: 15, sixteenth: 16,
+      seventeenth: 17, eighteenth: 18, nineteenth: 19,
+    };
+    const tens: Record<string, number> = {
+      twenty: 20, thirty: 30, forty: 40, fifty: 50,
+      sixty: 60, seventy: 70, eighty: 80, ninety: 90,
+      // Ordinal tens
+      twentieth: 20, thirtieth: 30, fortieth: 40, fiftieth: 50,
+      sixtieth: 60, seventieth: 70, eightieth: 80, ninetieth: 90,
     };
 
-    let result = text;
-    const sortedWords = Object.keys(numberWords).sort(
-      (a, b) => b.length - a.length,
+    // ── Step 1: Collapse compound spoken numbers (e.g. "twenty seven" → "27",
+    //           "one hundred and nineteen" → "119", "a hundred" → "100") ──────
+    let result = text.toLowerCase();
+
+    // "a hundred [and] X" / "one hundred [and] X"
+    result = result.replace(
+      /\b(?:a|one)\s+hundred\s+(?:and\s+)?(twenty|thirty|forty|fifty|sixty|seventy|eighty|ninety)(?:[\s-](one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen))?\b/gi,
+      (_, t, o) => String(100 + (tens[t.toLowerCase()] ?? 0) + (o ? (ones[o.toLowerCase()] ?? 0) : 0)),
     );
+    result = result.replace(
+      /\b(?:a|one)\s+hundred\s+(?:and\s+)?(one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen)\b/gi,
+      (_, o) => String(100 + (ones[o.toLowerCase()] ?? 0)),
+    );
+    result = result.replace(/\b(?:a|one)\s+hundred\b/gi, "100");
+
+    // "twenty[-]one" … "ninety[-]nine"
+    result = result.replace(
+      /\b(twenty|thirty|forty|fifty|sixty|seventy|eighty|ninety)[\s-](one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen)\b/gi,
+      (_, t, o) => String((tens[t.toLowerCase()] ?? 0) + (ones[o.toLowerCase()] ?? 0)),
+    );
+
+    // ── Step 2: Replace remaining single number-words ──────────────────────────
+    const allSingle: Record<string, string> = {};
+    for (const [k, v] of Object.entries(ones)) allSingle[k] = String(v);
+    for (const [k, v] of Object.entries(tens)) allSingle[k] = String(v);
+    allSingle["hundred"] = "100";
+
+    const sortedWords = Object.keys(allSingle).sort((a, b) => b.length - a.length);
     for (const word of sortedWords) {
       result = result.replace(
         new RegExp(`\\b${word}\\b`, "gi"),
-        numberWords[word],
+        allSingle[word],
       );
     }
     return result;
@@ -2078,8 +2284,64 @@ export class BibleService {
       }).sort({ verse: 1 }).lean();
 
       if (verseResults.length === 0) {
+        // QC38: Verse not found — check if the chapter exists, then try to clamp to last valid verse
+        console.warn(
+          `[searchBible] No results for ${normalizedBookName} ${reference.chapter}:${reference.verseStart}-${verseEnd}. Checking chapter max verse...`,
+        );
+        const maxVerse = await BibleService.getChapterMaxVerse(normalizedBookName, reference.chapter);
+        if (maxVerse === null) {
+          // Chapter itself does not exist in the DB
+          console.error(
+            `[searchBible] Chapter not found: ${normalizedBookName} ${reference.chapter}`,
+          );
+          return null;
+        }
+        if (reference.verseStart > maxVerse) {
+          // Out-of-range verse — clamp to last valid verse and retry
+          console.warn(
+            `[searchBible] Verse ${reference.verseStart} out of range for ${normalizedBookName} ${reference.chapter} (max: ${maxVerse}). Clamping to ${maxVerse}.`,
+          );
+          const clampedVerseResults = await BibleVerse.find({
+            bookName: new RegExp(`^${normalizedBookName}$`, 'i'),
+            chapter: reference.chapter,
+            verse: { $gte: maxVerse, $lte: maxVerse },
+          }).sort({ verse: 1 }).lean();
+          if (clampedVerseResults.length === 0) {
+            console.error(`[searchBible] Clamp retry also returned no results for ${normalizedBookName} ${reference.chapter}:${maxVerse}`);
+            return null;
+          }
+          const exactClampedBookName = clampedVerseResults[0].bookName || normalizedBookName;
+          const clampedFormatted = `${exactClampedBookName} ${reference.chapter}:${maxVerse}`;
+          const clampedFormattedVerses = clampedVerseResults.map((v) => ({
+            verse: v.verse,
+            kjv: v.kjv || null,
+            nkjv: v.nkjv || null,
+            amp: v.amp || null,
+            msg: v.msg || null,
+            esv: v.esv || null,
+            niv: v.niv || null,
+          }));
+          const clampedResult: BibleSearchResult = {
+            book: exactClampedBookName,
+            chapter: reference.chapter,
+            verses: clampedFormattedVerses,
+            version: (reference.version || 'kjv').toUpperCase(),
+            formattedReference: clampedFormatted,
+            clampedFrom: reference.verseStart,
+            clampNote: `${exactClampedBookName} ${reference.chapter} only has ${maxVerse} verse${maxVerse === 1 ? '' : 's'} — showing verse ${maxVerse}`,
+          };
+          // Cache the clamped result under the original key
+          if (verseCache.size >= VERSE_CACHE_MAX) {
+            const firstKey = verseCache.keys().next().value;
+            if (firstKey) verseCache.delete(firstKey);
+          }
+          verseCache.set(cacheKey, clampedResult);
+          console.log(`[searchBible] Clamped result cached for ${cacheKey}`);
+          return clampedResult;
+        }
+        // Verse in range but still no results — genuine DB miss
         console.error(
-          `Verses not found: ${normalizedBookName} ${reference.chapter}:${reference.verseStart}-${verseEnd}`,
+          `[searchBible] Genuine DB miss: ${normalizedBookName} ${reference.chapter}:${reference.verseStart}-${verseEnd}`,
         );
         return null;
       }
@@ -2108,12 +2370,32 @@ export class BibleService {
           ? `${exactBookName} ${reference.chapter}:${reference.verseStart}-${verseEnd}`
           : `${exactBookName} ${reference.chapter}:${reference.verseStart}`;
 
+      // QC52: Fetch all verses of the matched chapter so the client can
+      // populate the middle section with the full chapter for navigation.
+      let chapterVerses: Array<{ number: number; text: string }> | undefined;
+      try {
+        const versionKey = version.toLowerCase() as keyof typeof verseResults[0];
+        const allChapterVerses = await BibleVerse.find({
+          bookName: new RegExp(`^${exactBookName}$`, 'i'),
+          chapter: reference.chapter,
+        }).sort({ verse: 1 }).lean();
+        chapterVerses = allChapterVerses
+          .map((v) => ({
+            number: v.verse,
+            text: (v as any)[versionKey] || v.kjv || "",
+          }))
+          .filter((v) => v.number > 0 && v.text.trim().length > 0);
+      } catch (chapterErr) {
+        console.warn(`[searchBible] Could not fetch chapterVerses for ${exactBookName} ${reference.chapter}:`, chapterErr);
+      }
+
       const result: BibleSearchResult = {
         book: exactBookName,
         chapter: reference.chapter,
         verses: formattedVerses,
         version: version.toUpperCase(),
         formattedReference,
+        chapterVerses,
       };
 
       // Store in LRU cache (evict oldest if at capacity)

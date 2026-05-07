@@ -16,7 +16,8 @@ const BIBLE_BOOKS: BibleBook[] = [
   {
     id: 3,
     name: "Leviticus",
-    aliases: ["leviticus", "lev", "le", "lv", "levitius", "live focus"],
+    // QC45: Removed 'live focus' — not a genuine phonetic alias
+    aliases: ["leviticus", "lev", "le", "lv", "levitius"],
     testament: "old",
   },
   {
@@ -177,6 +178,7 @@ const BIBLE_BOOKS: BibleBook[] = [
     id: 19,
     name: "Psalms",
     aliases: [
+      // QC45: Removed 'sam' — too broad, collides with Samuel abbreviation
       "psalms",
       "psalm",
       "psa",
@@ -186,7 +188,6 @@ const BIBLE_BOOKS: BibleBook[] = [
       "salms",
       "samms",
       "zams",
-      "sam",
       "psalms",
       "salm",
       "zarms",
@@ -228,10 +229,10 @@ const BIBLE_BOOKS: BibleBook[] = [
     id: 22,
     name: "Song of Songs",
     aliases: [
+      // QC45: Removed bare 'song' — too broad, matches common English word
       "song of songs",
       "song of solomon",
       "songs",
-      "song",
       "sos",
       "ss",
       "cant",
@@ -260,7 +261,13 @@ const BIBLE_BOOKS: BibleBook[] = [
   {
     id: 24,
     name: "Jeremiah",
-    aliases: ["jeremiah", "jer", "je", "jr", "jeremaya", "jeromia", "jeremia"],
+    aliases: [
+      "jeremiah", "jer", "je", "jr",
+      "jeremaya", "jeromia", "jeremia",
+      "jeremaiah", "jerimiah", "jerimia",
+      "jeramiah", "jeramia", "jeremyah",
+      "jeremie", "jeremy",
+    ],
     testament: "old",
   },
   {
@@ -288,7 +295,7 @@ const BIBLE_BOOKS: BibleBook[] = [
     testament: "old",
   },
   { id: 29, name: "Joel", aliases: ["joel", "jl", "joe"], testament: "old" },
-  { id: 30, name: "Amos", aliases: ["amos", "amo", "am"], testament: "old" },
+  { id: 30, name: "Amos", aliases: ["amos", "amo", "am", "amos book", "the book of amos", "aimos", "aymos"], testament: "old" },
   {
     id: 31,
     name: "Obadiah",
@@ -298,7 +305,8 @@ const BIBLE_BOOKS: BibleBook[] = [
   {
     id: 32,
     name: "Jonah",
-    aliases: ["jonah", "jon", "jnh", "jona"],
+    // QC45: Removed 'jon' — too broad, also collides with John alias
+    aliases: ["jonah", "jnh", "jona"],
     testament: "old",
   },
   {
@@ -353,7 +361,8 @@ const BIBLE_BOOKS: BibleBook[] = [
   {
     id: 42,
     name: "Luke",
-    aliases: ["luke", "luk", "lk", "lu", "look"],
+    // QC45: Removed 'look' — too broad, matches common English word
+    aliases: ["luke", "luk", "lk", "lu"],
     testament: "new",
   },
   {
@@ -380,7 +389,12 @@ const BIBLE_BOOKS: BibleBook[] = [
   {
     id: 45,
     name: "Romans",
-    aliases: ["romans", "rom", "ro", "rm", "romanz"],
+    aliases: [
+      // QC45: Removed 'romance' — common English word, causes false positives
+      "romans", "rom", "ro", "rm",
+      "romanz", "roman", "romens", "romanss",
+      "romanes", "romins",
+    ],
     testament: "new",
   },
   {
@@ -420,7 +434,14 @@ const BIBLE_BOOKS: BibleBook[] = [
   {
     id: 48,
     name: "Galatians",
-    aliases: ["galatians", "gal", "ga", "galeshians", "galashians"],
+    aliases: [
+      "galatians", "gal", "ga",
+      "galeshians", "galashians",
+      "galations", "galashans", "galashions",
+      "galashens", "galashins", "galacians",
+      "galaceans", "galatian", "galations",
+      "galaytians", "galaytions", "galeeshans",
+    ],
     testament: "new",
   },
   {
@@ -456,7 +477,12 @@ const BIBLE_BOOKS: BibleBook[] = [
   {
     id: 51,
     name: "Colossians",
-    aliases: ["colossians", "col", "co", "koloshians", "kolossians"],
+    aliases: [
+      "colossians", "col", "co",
+      "colosians", "collossians", "colossions", "colosions",
+      "colosseons", "colosseans", "colossean", "colossian",
+      "kolossians", "koloshians",
+    ],
     testament: "new",
   },
   {
@@ -598,16 +624,12 @@ const BIBLE_BOOKS: BibleBook[] = [
     id: 62,
     name: "1 John",
     aliases: [
-      "1 john",
-      "1john",
-      "first john",
-      "1jn",
-      "1jo",
-      "1 jn",
-      "i john",
-      "i jn",
-      "1 jon",
-      "first jon",
+      "1 john", "1john", "first john",
+      "1jn", "1jo", "1 jn",
+      "i john", "i jn",
+      "1 jon", "first jon",
+      "1st john", "one john",
+      "first jon", "1 joh",
     ],
     testament: "new",
   },
@@ -615,16 +637,12 @@ const BIBLE_BOOKS: BibleBook[] = [
     id: 63,
     name: "2 John",
     aliases: [
-      "2 john",
-      "2john",
-      "second john",
-      "2jn",
-      "2jo",
-      "2 jn",
-      "ii john",
-      "ii jn",
-      "2 jon",
-      "second jon",
+      "2 john", "2john", "second john",
+      "2jn", "2jo", "2 jn",
+      "ii john", "ii jn",
+      "2 jon", "second jon",
+      "2nd john", "two john",
+      "second jon", "2 joh",
     ],
     testament: "new",
   },
@@ -632,16 +650,12 @@ const BIBLE_BOOKS: BibleBook[] = [
     id: 64,
     name: "3 John",
     aliases: [
-      "3 john",
-      "3john",
-      "third john",
-      "3jn",
-      "3jo",
-      "3 jn",
-      "iii john",
-      "iii jn",
-      "3 jon",
-      "third jon",
+      "3 john", "3john", "third john",
+      "3jn", "3jo", "3 jn",
+      "iii john", "iii jn",
+      "3 jon", "third jon",
+      "3rd john", "three john",
+      "third jon", "3 joh",
     ],
     testament: "new",
   },

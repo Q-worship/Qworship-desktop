@@ -77,6 +77,16 @@ export function extractBookFromCommand(command: string): {
     /go to\s+/g,
     /the book of\s+/g,
     /book of\s+/g,
+    /show me\s+(?:the\s+)?/g,
+    /take me to\s+(?:the\s+)?/g,
+    /give me\s+(?:the\s+)?/g,
+    /bring me to\s+(?:the\s+)?/g,
+    /please\s+/g,
+    /can you show me\s+(?:the\s+)?/g,
+    // Pastoral/preaching phrases — e.g. "the words of Psalm 21"
+    /(?:with\s+)?the\s+words\s+of\s+/g,
+    /(?:with\s+)?(?:the\s+)?words\s+from\s+/g,
+    /start(?:ing)?\s+(?:off\s+)?(?:today\s+)?with\s+(?:the\s+)?(?:words\s+of\s+)?/g,
     /chapter\s+\d+/g, // We will re-extract this later, but for book matching it gets in the way
   ];
 
